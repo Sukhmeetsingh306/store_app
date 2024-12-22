@@ -25,7 +25,7 @@ Padding textFormField(
           ),
         ),
         labelText: labelText,
-        errorText: 'Invalid input',
+        //errorText: 'Invalid input',
         labelStyle: googleFonts(
           fontFamily: 'Nunito Sans',
           fontSize: 14,

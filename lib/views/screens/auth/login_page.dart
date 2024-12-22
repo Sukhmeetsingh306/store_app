@@ -60,6 +60,40 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
+              SizedBox(height: 20),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Color.fromRGBO(144, 213, 255, 7),
+                ),
+                child: googleText(
+                  'Sign Up',
+                  fontWeight: FontWeight.w400,
+                  fontSize: 21,
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  googleText(
+                    'Already has an account?',
+                    fontWeight: FontWeight.w300,
+                    fontSize: 15,
+                  ),
+                  TextButton(
+                    onPressed: () {},
+                    child: googleText(
+                      'Sign In',
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
