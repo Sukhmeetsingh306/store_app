@@ -73,6 +73,27 @@ class _LoginPageState extends State<LoginPage> {
                   fontSize: 21,
                 ),
               ),
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  googleText(
+                    'Already has an account?',
+                    fontWeight: FontWeight.w300,
+                    fontSize: 15,
+                  ),
+                  TextButton(
+                    onPressed: () {},
+                    child: googleText(
+                      'Sign In',
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
