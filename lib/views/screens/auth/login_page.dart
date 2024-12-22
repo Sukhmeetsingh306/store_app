@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
+import '../../../components/color/color_theme.dart';
+import '../../../components/googleFonts.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -31,24 +33,33 @@ class LoginPage extends StatelessWidget {
                 'assets/images/mail-p.png',
                 width: 300,
                 height: 300,
-              )
+              ),
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    fillColor: ColorTheme.color.whiteColor,
+                    filled: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(9),
+                      borderSide:
+                          BorderSide(color: ColorTheme.color.lustRedColor),
+                    ),
+                    labelText: 'Email',
+                    //focusedBorder: InputBorder.none,
+                    //enabledBorder: InputBorder.none,
+                    labelStyle: googleFonts(
+                      fontFamily: 'Nunito Sans',
+                      fontSize: 14,
+                      letterSpacing: 0.1,
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
       ),
     );
   }
-}
-
-Text googleText(String text, {double? fontSize, FontWeight? fontWeight}) {
-  return Text(
-    text,
-    style: GoogleFonts.getFont(
-      'Lato',
-      color: Colors.black,
-      fontWeight: fontWeight ?? FontWeight.bold,
-      letterSpacing: 0.2,
-      fontSize: fontSize ?? 23, // Defaults to 23 if fontSize is null
-    ),
-  );
 }
