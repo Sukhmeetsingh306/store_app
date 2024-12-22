@@ -27,6 +27,11 @@ class LoginPage extends StatelessWidget {
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
               ),
+              Image.asset(
+                'assets/images/mail-p.png',
+                width: 300,
+                height: 300,
+              )
             ],
           ),
         ),
