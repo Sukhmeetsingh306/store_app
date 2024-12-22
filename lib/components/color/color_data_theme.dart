@@ -10,6 +10,9 @@ class ColorThemeData{
   final backgroundBlack = const Color.fromRGBO(15, 15, 14, 0.5);
   final deepPuceColor =  const Color(0xffAC5F5F);
   final blackColor = const Color(0xff000000);
+  final grayColor = const Color(0xff9A9A9A);
+  final blueColor = const Color(0xff0000FF);
+  final verySoftCyan = const Color(0xB2F3F3);
 
 
   const ColorThemeData();
