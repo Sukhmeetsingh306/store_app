@@ -18,7 +18,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Scaffold(
         body: Container(
           width: double.infinity,
           height: double.infinity,
@@ -104,7 +103,6 @@ class _LoginPageState extends State<LoginPage> {
             ],
           ),
         ),
-      ),
     );
   }
 }
