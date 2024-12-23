@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:store_app/components/text/textFormField.dart';
 import 'package:store_app/models/navigate_models.dart';
-import 'package:store_app/views/screens/auth/register_page.dart';
+import 'package:store_app/views/screens/auth/login_page.dart';
 
 import '../../../components/text/googleFonts.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   bool _obscureText = true;
 
   @override
@@ -32,16 +33,26 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              googleText('Login Your Account'),
+              SizedBox(
+                height: 10,
+              ),
+              googleText('Create Your Account'),
               googleText(
                 'To Explore the World Model',
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
               ),
-              Image.asset(
-                'assets/images/mail-p.png',
+              SvgPicture.asset(
+                'assets/images/register.svg',
                 width: 300,
                 height: 300,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              textFormField(
+                "Username",
+                'assets/icons/name.png',
               ),
               textFormField(
                 "Email",
@@ -82,19 +93,19 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   googleText(
-                    'Create a New Account?',
+                    'Already has an account?',
                     fontWeight: FontWeight.w300,
                     fontSize: 15,
                   ),
                   TextButton(
                     onPressed: () {
-                      materialRouteNavigator(
+                      pushAndRemoveUntil(
                         context,
-                        RegisterPage(),
+                        LoginPage(),
                       );
                     },
                     child: googleText(
-                      'Sign In',
+                      'Log In',
                       fontSize: 15,
                       fontWeight: FontWeight.w500,
                     ),
