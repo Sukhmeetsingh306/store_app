@@ -38,6 +38,16 @@ Future<void> materialRouteNavigatorRep(BuildContext context, Widget classname) {
   );
 }
 
-void pop(BuildContext context){
+Future<void> pushAndRemoveUntil(BuildContext context, Widget classname) {
+  return Navigator.pushAndRemoveUntil(
+    context,
+    MaterialPageRoute(
+      builder: (context) => classname,
+    ),
+    (Route<dynamic> route) => false, // Remove all previous routes
+  );
+}
+
+void pop(BuildContext context) {
   return Navigator.of(context).pop();
 }
