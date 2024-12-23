@@ -17,6 +17,6 @@ app.route('/api/signup')
                     res.status(201).json({newUser: newUser});
                }
           }catch(err){
-
+               res.status(500).json({message: err.message});
           }
      });
