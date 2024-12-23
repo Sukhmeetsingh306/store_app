@@ -1,7 +1,7 @@
 import express from "express";
-import User from "../models/signup.js"
+import User from "../models/userInf.js"
 
-const appAuthSignInAuthSignIn = express();
+const appAuthSignIn= express();
 
 appAuthSignIn.route('/api/signup')
      .post(async(req, res)=>{
@@ -21,4 +21,4 @@ appAuthSignIn.route('/api/signup')
           }
      });
 
-export {appAuthSignInAuthSignIn};
+export {appAuthSignIn};
