@@ -12,11 +12,13 @@ Padding textFormField(
   IconButton? passObscureText,
   double? width,
   double? height,
+  String? Function(String?)? validator,
 }) {
   return Padding(
     padding: const EdgeInsets.all(12.0),
     child: TextFormField(
       obscureText: obscureText ?? false,
+      validator: validator,
       decoration: InputDecoration(
         fillColor: ColorTheme.color.whiteColor,
         filled: true,
