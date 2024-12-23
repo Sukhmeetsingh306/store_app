@@ -1,9 +1,9 @@
 import express from "express";
 import User from "../models/signup.js"
 
-const app = express();
+const appAuthSignInAuthSignIn = express();
 
-app.route('/api/signup')
+appAuthSignIn.route('/api/signup')
      .post(async(req, res)=>{
           try{
                const {name, email, password} = req.body;
@@ -20,3 +20,5 @@ app.route('/api/signup')
                res.status(500).json({message: err.message});
           }
      });
+
+export {appAuthSignInAuthSignIn};
