@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:store_app/components/text/textFormField.dart';
+import 'package:store_app/models/navigate_models.dart';
+import 'package:store_app/views/screens/auth/login_page.dart';
 
 import '../../../components/text/googleFonts.dart';
 
@@ -31,6 +33,9 @@ class _RegisterPageState extends State<RegisterPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              SizedBox(
+                height: 10,
+              ),
               googleText('Create Your Account'),
               googleText(
                 'To Explore the World Model',
@@ -41,6 +46,9 @@ class _RegisterPageState extends State<RegisterPage> {
                 'assets/images/register.svg',
                 width: 300,
                 height: 300,
+              ),
+              SizedBox(
+                height: 10,
               ),
               textFormField(
                 "Username",
@@ -90,9 +98,14 @@ class _RegisterPageState extends State<RegisterPage> {
                     fontSize: 15,
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      pushAndRemoveUntil(
+                        context,
+                        LoginPage(),
+                      );
+                    },
                     child: googleText(
-                      'Sign In',
+                      'Log In',
                       fontSize: 15,
                       fontWeight: FontWeight.w500,
                     ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:store_app/components/text/textFormField.dart';
+import 'package:store_app/models/navigate_models.dart';
+import 'package:store_app/views/screens/auth/register_page.dart';
 
 import '../../../components/text/googleFonts.dart';
 
@@ -80,12 +82,17 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   googleText(
-                    'Already has an account?',
+                    'Create a New Account?',
                     fontWeight: FontWeight.w300,
                     fontSize: 15,
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      materialRouteNavigator(
+                        context,
+                        RegisterPage(),
+                      );
+                    },
                     child: googleText(
                       'Sign In',
                       fontSize: 15,
