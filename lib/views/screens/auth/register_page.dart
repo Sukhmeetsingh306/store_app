@@ -15,21 +15,23 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   bool _obscureText = true;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Scaffold(
-        body: Container(
-          width: double.infinity,
-          height: double.infinity,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/images/pencil.jpg'),
-              fit: BoxFit.cover,
-              opacity: 0.5,
-            ),
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/pencil.jpg'),
+            fit: BoxFit.cover,
+            opacity: 0.5,
           ),
+        ),
+        child: Form(
+          key: _formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -53,10 +55,27 @@ class _RegisterPageState extends State<RegisterPage> {
               textFormField(
                 "Username",
                 'assets/icons/name.png',
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return "Username is required";
+                  } else if (value.length < 3) {
+                    return "Username should be at least 3 characters long";
+                  } else {
+                    return null;
+                  }
+                },
               ),
               textFormField(
                 "Email",
                 'assets/icons/email.png',
+                validator: (value) {
+                  final regex = RegExp(
+                      r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
+                  if (!regex.hasMatch(value!)) {
+                    return 'Invalid email address';
+                  }
+                  return null;
+                },
               ),
               textFormField(
                 "Password",
@@ -72,6 +91,15 @@ class _RegisterPageState extends State<RegisterPage> {
                     _obscureText ? Icons.visibility : Icons.visibility_off,
                   ),
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a password';
+                  }
+                  if (value.length < 8) {
+                    return 'Password must be at least 8 characters long';
+                  }
+                  return null;
+                },
               ),
               SizedBox(height: 20),
               Container(
@@ -80,10 +108,20 @@ class _RegisterPageState extends State<RegisterPage> {
                   borderRadius: BorderRadius.circular(10),
                   color: Color.fromRGBO(144, 213, 255, 7),
                 ),
-                child: googleText(
-                  'Sign Up',
-                  fontWeight: FontWeight.w400,
-                  fontSize: 21,
+                child: InkWell(
+                  onTap: () {
+                    _formKey.currentState?.validate() ?? false
+                        ? pushAndRemoveUntil(
+                            context,
+                            LoginPage(),
+                          )
+                        : null;
+                  },
+                  child: googleText(
+                    'Sign Up',
+                    fontWeight: FontWeight.w400,
+                    fontSize: 21,
+                  ),
                 ),
               ),
               SizedBox(

@@ -12,11 +12,13 @@ Padding textFormField(
   IconButton? passObscureText,
   double? width,
   double? height,
+  String? Function(String?)? validator,
 }) {
   return Padding(
     padding: const EdgeInsets.all(12.0),
     child: TextFormField(
       obscureText: obscureText ?? false,
+      validator: validator,
       decoration: InputDecoration(
         fillColor: ColorTheme.color.whiteColor,
         filled: true,
@@ -32,6 +34,12 @@ Padding textFormField(
           fontFamily: 'Nunito Sans',
           fontSize: 14,
           letterSpacing: 0.1,
+        ),
+        errorStyle: googleFonts(
+          fontFamily: 'Nunito Sans',
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+          color: Colors.red,
         ),
         prefixIcon: Padding(
           padding: const EdgeInsets.all(10.0),
