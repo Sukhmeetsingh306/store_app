@@ -43,6 +43,10 @@ class _RegisterPageState extends State<RegisterPage> {
                 height: 300,
               ),
               textFormField(
+                "Username",
+                'assets/icons/name.png',
+              ),
+              textFormField(
                 "Email",
                 'assets/icons/email.png',
               ),
