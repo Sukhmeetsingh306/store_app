@@ -3,7 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-Text googleText(String text, {double? fontSize, FontWeight? fontWeight, Color? color}) {
+Text googleText(String text,
+    {double? fontSize, FontWeight? fontWeight, Color? color}) {
   return Text(
     text,
     style: GoogleFonts.getFont(
@@ -16,14 +17,16 @@ Text googleText(String text, {double? fontSize, FontWeight? fontWeight, Color? c
   );
 }
 
-TextStyle googleFonts(
-    {double? fontSize,
-    FontWeight? fontWeight,
-    String? fontFamily,
-    double? letterSpacing}) {
+TextStyle googleFonts({
+  double? fontSize,
+  FontWeight? fontWeight,
+  String? fontFamily,
+  double? letterSpacing,
+  Color? color,
+}) {
   return GoogleFonts.getFont(
     fontFamily ?? 'Lato',
-    color: Colors.black,
+    color: color ?? Colors.black,
     fontWeight: fontWeight ?? FontWeight.bold,
     letterSpacing: letterSpacing ?? 0.2,
     fontSize: fontSize ?? 23, // Defaults to 23 if fontSize is null
