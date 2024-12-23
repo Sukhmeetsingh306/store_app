@@ -35,6 +35,12 @@ Padding textFormField(
           fontSize: 14,
           letterSpacing: 0.1,
         ),
+        errorStyle: googleFonts(
+          fontFamily: 'Nunito Sans',
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+          color: Colors.red,
+        ),
         prefixIcon: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Image.asset(
