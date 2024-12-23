@@ -10,6 +10,8 @@ Padding textFormField(
   String image, {
   bool? obscureText,
   IconButton? passObscureText,
+  double? width,
+  double? height,
 }) {
   return Padding(
     padding: const EdgeInsets.all(12.0),
@@ -35,8 +37,8 @@ Padding textFormField(
           padding: const EdgeInsets.all(10.0),
           child: Image.asset(
             image,
-            width: 20,
-            height: 20,
+            width: width ?? 20,
+            height: height ?? 20,
           ),
         ),
         suffixIcon: passObscureText, // Use the passed IconButton directly
