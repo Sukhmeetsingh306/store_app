@@ -30,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              googleText('Create Your Own Account'),
+              googleText('Login Your Account'),
               googleText(
                 'To Explore the World Model',
                 fontSize: 14,
