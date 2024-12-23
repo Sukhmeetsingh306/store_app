@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:store_app/components/text/textFormField.dart';
 
 import '../../../components/text/googleFonts.dart';
@@ -30,14 +31,14 @@ class _RegisterPageState extends State<RegisterPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              googleText('Login Your Account'),
+              googleText('Create Your Account'),
               googleText(
                 'To Explore the World Model',
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
               ),
-              Image.asset(
-                'assets/images/mail-p.png',
+              SvgPicture.asset(
+                'assets/images/register.svg',
                 width: 300,
                 height: 300,
               ),
