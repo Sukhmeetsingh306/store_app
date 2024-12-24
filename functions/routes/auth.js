@@ -2,9 +2,9 @@ import express from "express";
 import bcrypt from "bcrypt";
 import User from "../models/userInf.js"
 
-const appAuthSignIn= express();
+const appAuthSign= express();
 
-appAuthSignIn.route('/api/signup')
+appAuthSign.route('/api/signup')
      .post(async (req, res) => {
           try {
           const { name, email, password } = req.body;
@@ -28,4 +28,4 @@ appAuthSignIn.route('/api/signup')
           }
      });
 
-export {appAuthSignIn};
+export {appAuthSign};
