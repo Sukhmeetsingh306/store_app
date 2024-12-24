@@ -37,12 +37,28 @@ appAuthSign.route('/api/signin')
                const {email, password} = req.body;
                const findUser = await User.findOne({ email});
                if (!findUser) {
-                    return res.status(400).json({ message: 'Please provide both email and password' });
+                    return res.status(400).json({ message: 'Provide Correct Email' });
                }else{
                     const isMatch = await bcrypt.compare(password, findUser.password);
                     if (!isMatch) {
-                         return res.status(400).json({ message: 'Invalid credentials' });
+                         return res.status(400).json({ 
+                              
+                              message: 'Password is incorrect' });
                     }else{
+                    // const user = await User.findOne({ email });
+                    // if (!user) {
+                    //      return res.status(400).json({
+                    //      message: 'Email is incorrect.',
+                    //      });
+                    // }
+
+                    // // Validate password (assuming passwords are hashed)
+                    // const isPasswordCorrect = await bcrypt.compare(password, user.password); // Ensure bcrypt is set up for password hashing
+                    // if (!isPasswordCorrect) {
+                    //      return res.status(400).json({
+                    //      message: 'Password is incorrect.',
+                    //      });
+                    // }else{
                          const token = jwt.sign({ id: findUser._id }, "passwordKey", { expiresIn: '1h' });
                          //remove sensitive information 
                          const {password, ...userWithoutPassword} = findUser._doc;
