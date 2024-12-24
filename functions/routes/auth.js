@@ -1,10 +1,13 @@
 import express from "express";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import User from "../models/userInf.js"
 
-const appAuthSignIn= express();
+const appAuthSign= express();
 
-appAuthSignIn.route('/api/signup')
+
+// Sign up route
+appAuthSign.route('/api/signup')
      .post(async (req, res) => {
           try {
           const { name, email, password } = req.body;
@@ -28,4 +31,44 @@ appAuthSignIn.route('/api/signup')
           }
      });
 
-export {appAuthSignIn};
+appAuthSign.route('/api/signin')
+     .post(async (req, res) => {
+          try{
+               const {email, password} = req.body;
+               const findUser = await User.findOne({ email});
+               if (!findUser) {
+                    return res.status(400).json({ message: 'Provide Correct Email' });
+               }else{
+                    const isMatch = await bcrypt.compare(password, findUser.password);
+                    if (!isMatch) {
+                         return res.status(400).json({ 
+                              
+                              message: 'Password is incorrect' });
+                    }else{
+                    // const user = await User.findOne({ email });
+                    // if (!user) {
+                    //      return res.status(400).json({
+                    //      message: 'Email is incorrect.',
+                    //      });
+                    // }
+
+                    // // Validate password (assuming passwords are hashed)
+                    // const isPasswordCorrect = await bcrypt.compare(password, user.password); // Ensure bcrypt is set up for password hashing
+                    // if (!isPasswordCorrect) {
+                    //      return res.status(400).json({
+                    //      message: 'Password is incorrect.',
+                    //      });
+                    // }else{
+                         const token = jwt.sign({ id: findUser._id }, "passwordKey", { expiresIn: '1h' });
+                         //remove sensitive information 
+                         const {password, ...userWithoutPassword} = findUser._doc;
+                         res.json({ token, ...userWithoutPassword });
+                    }
+                    res.json({ message: 'Logged in successfully' });
+               }
+          }catch (err) {
+               res.status(500).json({ message: err.message});
+          }
+     });
+
+export {appAuthSign};
