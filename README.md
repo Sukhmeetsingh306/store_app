@@ -35,3 +35,5 @@ Api's are created in the auth.js where we have created the sign-in and sign-up w
      As mapping with in the object can be done easily
      or want to display the data for the ui
 6. AS after the deserialization we have to take the information from the factory and the convert it to the map then user objects
+
+7. To connect the node and flutter we have to add the http with 'dart pub add http' 
