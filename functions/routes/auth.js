@@ -67,7 +67,7 @@ appAuthSign.route('/api/signin')
                     res.json({ message: 'Logged in successfully' });
                }
           }catch (err) {
-
+               res.status(500).json({ message: err.message});
           }
      });
 
