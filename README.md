@@ -29,3 +29,8 @@ Api's are created in the auth.js where we have created the sign-in and sign-up w
 4. convert the map to json string using the json.encode()
      As to convert it import the 'dart:convert'
      As converting to the json.encode() means serialization of the information that is to be used or taken from the user to send it to the DB for checking it.
+
+5. After serialization of the data deserialization is also important
+     As this is important to convert the string to the User object
+     As mapping with in the object can be done easily
+     or want to display the data for the ui
