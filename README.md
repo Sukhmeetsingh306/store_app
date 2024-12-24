@@ -34,3 +34,4 @@ Api's are created in the auth.js where we have created the sign-in and sign-up w
      As this is important to convert the string to the User object
      As mapping with in the object can be done easily
      or want to display the data for the ui
+6. AS after the deserialization we have to take the information from the factory and the convert it to the map then user objects

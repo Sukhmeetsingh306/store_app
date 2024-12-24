@@ -54,16 +54,20 @@ class User {
   //deserialization
   // to do this kind of data data is again needed to be opened
 
-  factory User.fromMap(Map<String, dynamic>map){
+  factory User.fromMap(Map<String, dynamic> map) {
     return User(
       id: map['_id'] as String? ?? "",
-      name: map['name']  as String? ?? "",
-      email: map['email']  as String? ?? "",
-      state: map['state']  as String? ?? "",
-      city: map['city']  as String? ?? "",
-      locality: map['locality']  as String? ?? "",
-      password: map['password']  as String? ?? "",
+      name: map['name'] as String? ?? "",
+      email: map['email'] as String? ?? "",
+      state: map['state'] as String? ?? "",
+      city: map['city'] as String? ?? "",
+      locality: map['locality'] as String? ?? "",
+      password: map['password'] as String? ?? "",
       // (as String? ?? "") as this will replace the data that is not given to the empty string
     );
   }
+
+  // converting factory to the map then user object
+  factory User.fromJson(String source) =>
+      User.fromMap(json.decode(source) as Map<String, dynamic>);
 }
