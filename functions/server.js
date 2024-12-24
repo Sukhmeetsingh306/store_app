@@ -1,7 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import { homeRoute } from './routes/home.js';
+import { appAuthSignIn } from './routes/auth.js';
 
 dotenv.config(); // Load .env variables
 
@@ -9,6 +9,9 @@ const app = express();
 
 const port = process.env.PORT || 3000;
 const uri = process.env.MONGODB_URI;
+
+app.use(express.json());
+app.use(appAuthSignIn);
 
 if (!uri) {
   console.error('MongoDB URI is not defined. Please check your .env file.');
@@ -26,7 +29,10 @@ const connectDB = async () => {
   }
 };
 
-app.use(homeRoute);
+app.route('/')
+    .get((req, res) => {
+        res.send("Welcome to my page!");
+    });
 
 const main = async () => {
   await connectDB();
