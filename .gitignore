@@ -107,3 +107,6 @@ flutter_export_environment.sh
 # Node Related
 **/node_modules/
 .env
+
+# Ignore the globals_variable.dart file
+lib/globals_variable.dart
