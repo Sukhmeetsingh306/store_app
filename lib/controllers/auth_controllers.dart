@@ -21,25 +21,29 @@ class AuthController {
         password: password,
       );
 
-      http.Response response = await http.post(
-        Uri.parse('$uri/api/signup/'),
-        body: user
-            .toJson(), // converting the user object to json for the request body
-        headers: <String, String>{
-          //set the headers for the request body
-          'Content-Type':
-              'application/json; charset=UTF-8', // specify the context type to json
-        },
-      );
+      http.Response response = await http
+          .post(
+            Uri.parse('$uri/api/signup/'),
+            body: user.toJson(),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+          )
+          .timeout(const Duration(seconds: 10), onTimeout: () {
+        throw Exception('Request timed out');
+      });
 
       manageHttpResponse(
-          response: response,
-          context: context,
-          onSuccess: () {
-            showSnackBar(context, 'Account has been Created');
-          });
+        response: response,
+        context: context,
+        onSuccess: () {
+          //showSnackBar(context, 'Account has been Created');
+          print("Account is successfully Created");
+        },
+      );
     } catch (e) {
-      context.addError(e.toString());
+      // showSnackBar(context, 'Error: ${e.toString()}');
+      print('Error: ${e.toString()}');
     }
   }
 }
