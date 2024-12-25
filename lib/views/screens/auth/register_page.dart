@@ -16,6 +16,9 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   bool _obscureText = true;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  late String name;
+  late String email;
+  late String password;
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +58,11 @@ class _RegisterPageState extends State<RegisterPage> {
               textFormField(
                 "Username",
                 'assets/icons/name.png',
+                onChanged: (val) {
+                  setState(() {
+                    name = val;
+                  });
+                },
                 validator: (value) {
                   if (value!.isEmpty) {
                     return "Username is required";
@@ -68,6 +76,11 @@ class _RegisterPageState extends State<RegisterPage> {
               textFormField(
                 "Email",
                 'assets/icons/email.png',
+                onChanged: (val){
+                  setState(() {
+                    email = val;
+                  });
+                },
                 validator: (value) {
                   final regex = RegExp(
                       r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
@@ -80,6 +93,11 @@ class _RegisterPageState extends State<RegisterPage> {
               textFormField(
                 "Password",
                 'assets/icons/password.png',
+                onChanged: (val){
+                  setState(() {
+                    password = val;
+                  });
+                },
                 obscureText: _obscureText,
                 passObscureText: IconButton(
                   onPressed: () {
@@ -110,12 +128,17 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 child: InkWell(
                   onTap: () {
-                    _formKey.currentState?.validate() ?? false
-                        ? pushAndRemoveUntil(
-                            context,
-                            LoginPage(),
-                          )
-                        : null;
+                    // _formKey.currentState?.validate() ?? false
+                    //     ? pushAndRemoveUntil(
+                    //         context,
+                    //         LoginPage(),
+                    //       )
+                    //     : null;
+                    if(_formKey.currentState!.validate()){
+                      print(name);
+                      print(email);
+                      print(password);
+                    }
                   },
                   child: googleText(
                     'Sign Up',
