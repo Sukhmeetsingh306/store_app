@@ -46,10 +46,10 @@ const userSchema = new mongoose.Schema({
       }
 
       // Regular expression to check for required complexity
-      const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-      if (!passwordRegex.test(value)) {
-        throw new Error('Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.');
-      }
+      // const passwordRegex = /r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$'/;
+      // if (!passwordRegex.test(value)) {
+      //   throw new Error('Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.');
+      // }
 
       return true; // If all checks pass, the validation succeeds
     },

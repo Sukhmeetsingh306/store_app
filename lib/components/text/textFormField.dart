@@ -13,10 +13,12 @@ Padding textFormField(
   double? width,
   double? height,
   String? Function(String?)? validator,
+  void Function(String)? onChanged,
 }) {
   return Padding(
     padding: const EdgeInsets.all(12.0),
     child: TextFormField(
+      onChanged: onChanged,
       obscureText: obscureText ?? false,
       validator: validator,
       decoration: InputDecoration(
