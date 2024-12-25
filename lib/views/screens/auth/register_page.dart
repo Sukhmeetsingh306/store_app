@@ -18,9 +18,9 @@ class _RegisterPageState extends State<RegisterPage> {
   bool _obscureText = true;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final AuthController _authController = AuthController();
-  late String name;
-  late String email;
-  late String password;
+  String name = ''; // Initialize with a default value
+  String email = '';
+  String password = '';
 
   @override
   Widget build(BuildContext context) {
@@ -149,6 +149,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         password: password,
                       );
                     }
+                    print(email);
+                    print(name);
+                    print(password);
                   },
                   child: googleText(
                     'Sign Up',
