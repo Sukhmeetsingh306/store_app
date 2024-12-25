@@ -98,7 +98,7 @@ class _LoginPageState extends State<LoginPage> {
                         : null;
                   },
                   child: googleText(
-                    'Sign Up',
+                    'Log In',
                     fontWeight: FontWeight.w400,
                     fontSize: 21,
                   ),
@@ -109,6 +109,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   googleText(
                     'Create a New Account?',
@@ -123,9 +124,9 @@ class _LoginPageState extends State<LoginPage> {
                       );
                     },
                     child: googleText(
-                      'Sign In',
+                      'Sign Up',
                       fontSize: 15,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ],

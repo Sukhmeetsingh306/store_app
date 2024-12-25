@@ -145,7 +145,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     child: googleText(
                       'Log In',
                       fontSize: 15,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ],
