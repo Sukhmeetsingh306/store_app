@@ -4,6 +4,7 @@ import 'package:store_app/models/navigate_models.dart';
 import 'package:store_app/views/screens/auth/register_page.dart';
 
 import '../../../components/text/googleFonts.dart';
+import '../../../controllers/auth_controllers.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -15,6 +16,9 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   bool _obscureText = true;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final AuthController _authController = AuthController();
+  String email = '';
+  String password = '';
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +50,9 @@ class _LoginPageState extends State<LoginPage> {
                 height: 300,
               ),
               textFormField(
+                onChanged: (value) => setState(() {
+                  email = value;
+                }),
                 "Email",
                 'assets/icons/email.png',
                 validator: (value) {
@@ -58,6 +65,9 @@ class _LoginPageState extends State<LoginPage> {
                 },
               ),
               textFormField(
+                onChanged: (value) => setState(() {
+                  password = value;
+                }),
                 "Password",
                 'assets/icons/password.png',
                 obscureText: _obscureText,
@@ -89,13 +99,20 @@ class _LoginPageState extends State<LoginPage> {
                   color: Color.fromRGBO(144, 213, 255, 7),
                 ),
                 child: InkWell(
-                  onTap: () {
-                    _formKey.currentState?.validate() ?? false
-                        ? pushAndRemoveUntil(
-                            context,
-                            RegisterPage(), // change this when the login is successful
-                          )
-                        : null;
+                  onTap: () async {
+                    // _formKey.currentState?.validate() ?? false
+                    //     ? pushAndRemoveUntil(
+                    //         context,
+                    //         RegisterPage(), // change this when the login is successful
+                    //       )
+                    //     : null;
+                    if (_formKey.currentState!.validate()) {
+                      await _authController.signInUsers(
+                        context: context,
+                        email: email,
+                        password: password,
+                      );
+                    }
                   },
                   child: googleText(
                     'Log In',
