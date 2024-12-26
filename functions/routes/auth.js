@@ -62,9 +62,9 @@ appAuthSign.route('/api/signin')
                          const token = jwt.sign({ id: findUser._id }, "passwordKey", { expiresIn: '1h' });
                          //remove sensitive information 
                          const {password, ...userWithoutPassword} = findUser._doc;
+                         
                          res.json({ token, ...userWithoutPassword });
                     }
-                    res.json({ message: 'Logged in successfully' });
                }
           }catch (err) {
                res.status(500).json({ message: err.message});
