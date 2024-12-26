@@ -64,6 +64,8 @@ class AuthController {
         ),
       headers: <String,String>{
         'Content-Type': 'application/json; charset=UTF-8',
+      }).timeout(const Duration(seconds: 10), onTimeout: () {
+        throw Exception('Request timed out');
       });
 
       manageHttpResponse(
