@@ -8,6 +8,7 @@ class User {
   final String city;
   final String locality;
   final String password;
+  final String token;
 
   User({
     required this.id,
@@ -17,6 +18,7 @@ class User {
     required this.city,
     required this.locality,
     required this.password,
+    required this.token,
   });
 
   // serialization or mapping
@@ -43,6 +45,7 @@ class User {
       'city': city,
       'locality': locality,
       'password': password,
+      'token': token, // assuming token is also a field in the JSON response
     };
   }
 
@@ -63,6 +66,7 @@ class User {
       city: map['city'] as String? ?? "",
       locality: map['locality'] as String? ?? "",
       password: map['password'] as String? ?? "",
+      token: map['token'] as String? ?? "", // assuming token is also a field in the JSON response
       // (as String? ?? "") as this will replace the data that is not given to the empty string
     );
   }
