@@ -50,21 +50,20 @@ class AuthController {
 
   Future<void> signInUsers({
     required context,
-    required String email,
-    required String password,
+    String? email,
+    String? password,
   }) async {
     try {
-      http.Response response = await http.post(
-        Uri.parse("$uri/api/signin"),
-        body: jsonEncode(
-          {
-            'email': email,
-            'password': password,
-          },
-        ),
-      headers: <String,String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      }).timeout(const Duration(seconds: 10), onTimeout: () {
+      http.Response response = await http.post(Uri.parse("$uri/api/signin"),
+          body: jsonEncode(
+            {
+              'email': email,
+              'password': password,
+            },
+          ),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          }).timeout(const Duration(seconds: 10), onTimeout: () {
         throw Exception('Request timed out');
       });
 
@@ -77,7 +76,7 @@ class AuthController {
         },
       );
     } catch (e) {
-      showSnackBar(context, 'Error: ${e.toString()}');
+      //showSnackBar(context, 'Error: ${e.toString()}');
       print('Error: ${e.toString()}');
     }
   }
