@@ -96,6 +96,7 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(height: 20),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 20),
+                height: MediaQuery.of(context).size.height * 0.045,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Color.fromRGBO(144, 213, 255, 7),
@@ -126,8 +127,12 @@ class _LoginPageState extends State<LoginPage> {
                     }
                   },
                   child: isLoading
-                      ? CircularProgressIndicator(
-                          color: ColorTheme.color.whiteColor,
+                      ? SizedBox(
+                          height: 3,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 3,
+                            color: ColorTheme.color.blackColor,
+                          ),
                         )
                       : googleText(
                           'Log In',
