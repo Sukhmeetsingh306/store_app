@@ -4,6 +4,7 @@ import 'package:store_app/components/text/textFormField.dart';
 import 'package:store_app/models/navigate_models.dart';
 import 'package:store_app/views/screens/auth/login_page.dart';
 
+import '../../../components/color/color_theme.dart';
 import '../../../components/text/googleFonts.dart';
 import '../../../controllers/auth_controllers.dart';
 
@@ -21,6 +22,7 @@ class _RegisterPageState extends State<RegisterPage> {
   String name = ''; // Initialize with a default value
   String email = '';
   String password = '';
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -142,22 +144,38 @@ class _RegisterPageState extends State<RegisterPage> {
                     //       )
                     //     : null;
                     if (_formKey.currentState!.validate()) {
-                      await _authController.signUpUsers(
+                      setState(() {
+                        isLoading = true;
+                      });
+                      await _authController
+                          .signUpUsers(
                         context: context,
                         email: email,
                         name: name,
                         password: password,
-                      );
+                      )
+                          .whenComplete(() {
+                        setState(() {
+                          isLoading = false;
+                        });
+                      });
                     }
                     print(email);
                     print(name);
                     print(password);
                   },
-                  child: googleText(
-                    'Sign Up',
-                    fontWeight: FontWeight.w400,
-                    fontSize: 21,
-                  ),
+                  child: isLoading
+                      ? SizedBox(
+                          child: CircularProgressIndicator(
+                            strokeWidth: 3,
+                            color: ColorTheme.color.blackColor,
+                          ),
+                        )
+                      : googleText(
+                          'Sign Up',
+                          fontWeight: FontWeight.w400,
+                          fontSize: 21,
+                        ),
                 ),
               ),
               SizedBox(
