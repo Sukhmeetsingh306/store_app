@@ -19,6 +19,7 @@ class _LoginPageState extends State<LoginPage> {
   final AuthController _authController = AuthController();
   String email = '';
   String password = '';
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -107,11 +108,18 @@ class _LoginPageState extends State<LoginPage> {
                     //       )
                     //     : null;
                     if (_formKey.currentState!.validate()) {
+                      setState(() {
+                        isLoading = true;
+                      });
                       await _authController.signInUsers(
                         context: context,
                         email: email,
                         password: password,
-                      );
+                      ).whenComplete((){
+                        setState(() {
+                          isLoading = false;
+                        });
+                      });
                     }
                   },
                   child: googleText(
