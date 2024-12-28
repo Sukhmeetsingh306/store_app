@@ -120,6 +120,7 @@ class _LoginPageState extends State<LoginPage> {
                         password: password,
                       )
                           .whenComplete(() {
+                          _formKey.currentState!.reset();
                         setState(() {
                           isLoading = false;
                         });
