@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-//import 'package:store_app/components/text/googleFonts.dart';
+import 'package:store_app/components/text/googleFonts.dart';
 
 void manageHttpResponse({
   required http.Response response,
@@ -31,10 +31,10 @@ void manageHttpResponse({
   }
 }
 
-// void showSnackBar(BuildContext context, String text) {
-//   ScaffoldMessenger.of(context).showSnackBar(
-//     SnackBar(
-//       content: googleText(text),
-//     ),
-//   );
-// }
+void showSnackBar(BuildContext context, String text) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: googleText(text),
+    ),
+  );
+}
