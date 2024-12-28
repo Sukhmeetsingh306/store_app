@@ -128,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
                   },
                   child: isLoading
                       ? SizedBox(
-                          height: 3,
+                          height: 2,
                           child: CircularProgressIndicator(
                             strokeWidth: 3,
                             color: ColorTheme.color.blackColor,
