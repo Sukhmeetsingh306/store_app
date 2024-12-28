@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:store_app/components/color/color_theme.dart';
 import 'package:store_app/components/text/textFormField.dart';
 import 'package:store_app/models/navigate_models.dart';
 import 'package:store_app/views/screens/auth/register_page.dart';
@@ -111,22 +112,28 @@ class _LoginPageState extends State<LoginPage> {
                       setState(() {
                         isLoading = true;
                       });
-                      await _authController.signInUsers(
+                      await _authController
+                          .signInUsers(
                         context: context,
                         email: email,
                         password: password,
-                      ).whenComplete((){
+                      )
+                          .whenComplete(() {
                         setState(() {
                           isLoading = false;
                         });
                       });
                     }
                   },
-                  child: googleText(
-                    'Log In',
-                    fontWeight: FontWeight.w400,
-                    fontSize: 21,
-                  ),
+                  child: isLoading
+                      ? CircularProgressIndicator(
+                          color: ColorTheme.color.whiteColor,
+                        )
+                      : googleText(
+                          'Log In',
+                          fontWeight: FontWeight.w400,
+                          fontSize: 21,
+                        ),
                 ),
               ),
               SizedBox(
