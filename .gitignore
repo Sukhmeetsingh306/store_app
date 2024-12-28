@@ -4,8 +4,6 @@
 *.pyc
 *.swp
 .DS_Store
-.env
-.atom/
 .build/
 .buildlog/
 .history
@@ -105,3 +103,10 @@ flutter_export_environment.sh
 *.iws
 *.iml
 *.hprof
+
+# Node Related
+**/node_modules/
+.env
+
+# Ignore the globals_variable.dart file
+lib/globals_variables.dart
