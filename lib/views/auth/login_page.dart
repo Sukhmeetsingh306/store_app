@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:store_app/components/color/color_theme.dart';
 import 'package:store_app/components/text/textFormField.dart';
 import 'package:store_app/models/navigate_models.dart';
-import 'package:store_app/views/screens/auth/register_page.dart';
+import 'package:store_app/views/auth/register_page.dart';
 
-import '../../../components/text/googleFonts.dart';
-import '../../../controllers/auth_controllers.dart';
+import '../../components/text/googleFonts.dart';
+import '../../controllers/auth_controllers.dart';
+import '../../models/image_model.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -46,7 +47,7 @@ class _LoginPageState extends State<LoginPage> {
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
               ),
-              Image.asset(
+              imageAssets(
                 'assets/images/mail-p.png',
                 width: 300,
                 height: 300,
@@ -120,7 +121,7 @@ class _LoginPageState extends State<LoginPage> {
                         password: password,
                       )
                           .whenComplete(() {
-                          _formKey.currentState!.reset();
+                        _formKey.currentState!.reset();
                         setState(() {
                           isLoading = false;
                         });

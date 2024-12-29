@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:store_app/components/text/textFormField.dart';
 import 'package:store_app/models/navigate_models.dart';
-import 'package:store_app/views/screens/auth/login_page.dart';
+import 'package:store_app/views/auth/login_page.dart';
 
-import '../../../components/color/color_theme.dart';
-import '../../../components/text/googleFonts.dart';
-import '../../../controllers/auth_controllers.dart';
+import '../../components/color/color_theme.dart';
+import '../../components/text/googleFonts.dart';
+import '../../controllers/auth_controllers.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
