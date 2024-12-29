@@ -1,4 +1,4 @@
-import 'dart:convert';
+//import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -14,16 +14,19 @@ void manageHttpResponse({
       onSuccess();
       break;
     case 400:
-      showSnackBar(context, json.decode(response.body)['message']);
+      print("400");
+      //showSnackBar(context, json.decode(response.body)['message']);
       break;
     case 500:
-      showSnackBar(context, json.decode(response.body)['message']);
+    print("500");
+      //showSnackBar(context, json.decode(response.body)['message']);
       break;
     case 201:
       onSuccess();
       break;
     case 404:
-      showSnackBar(context, "Not Found");
+    print("404");
+      //showSnackBar(context, "Not Found");
       break;
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:store_app/components/color/color_theme.dart';
 import 'package:store_app/components/text/textFormField.dart';
 import 'package:store_app/models/navigate_models.dart';
 import 'package:store_app/views/screens/auth/register_page.dart';
@@ -19,6 +20,7 @@ class _LoginPageState extends State<LoginPage> {
   final AuthController _authController = AuthController();
   String email = '';
   String password = '';
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -94,6 +96,7 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(height: 20),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 20),
+                height: MediaQuery.of(context).size.height * 0.045,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Color.fromRGBO(144, 213, 255, 7),
@@ -107,18 +110,36 @@ class _LoginPageState extends State<LoginPage> {
                     //       )
                     //     : null;
                     if (_formKey.currentState!.validate()) {
-                      await _authController.signInUsers(
+                      setState(() {
+                        isLoading = true;
+                      });
+                      await _authController
+                          .signInUsers(
                         context: context,
                         email: email,
                         password: password,
-                      );
+                      )
+                          .whenComplete(() {
+                          _formKey.currentState!.reset();
+                        setState(() {
+                          isLoading = false;
+                        });
+                      });
                     }
                   },
-                  child: googleText(
-                    'Log In',
-                    fontWeight: FontWeight.w400,
-                    fontSize: 21,
-                  ),
+                  child: isLoading
+                      ? SizedBox(
+                          height: 2,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 3,
+                            color: ColorTheme.color.blackColor,
+                          ),
+                        )
+                      : googleText(
+                          'Log In',
+                          fontWeight: FontWeight.w400,
+                          fontSize: 21,
+                        ),
                 ),
               ),
               SizedBox(
