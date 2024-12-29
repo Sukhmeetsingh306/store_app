@@ -66,6 +66,7 @@ class _MainScreenState extends State<MainScreen> {
         ],
         elevation: 5,
       ),
+      body: _pages[_pageIndex],
     );
   }
 }
