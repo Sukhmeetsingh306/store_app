@@ -51,6 +51,29 @@ class HeaderWidgetScreen extends StatelessWidget {
               ),
             ),
           ),
+          Positioned(
+            bottom: mediaQueryHeight * 0.022,
+            right: mediaQueryWidth * 0.10,
+            child: Material(
+              type: MaterialType.transparency,
+              child: InkWell(
+                onTap: () {},
+                child: Ink(
+                  width: 35,
+                  height: 35,
+                  decoration: BoxDecoration(
+                  color: Colors.transparent, // Set a background color if needed
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.notifications_active_outlined,
+                  size: 28, // Adjust the size as needed
+                  color: ColorTheme.color.whiteColor,
+                ),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
