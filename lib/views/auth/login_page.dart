@@ -1,25 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:store_app/components/color/color_theme.dart';
 import 'package:store_app/components/text/textFormField.dart';
 import 'package:store_app/models/navigate_models.dart';
-import 'package:store_app/views/screens/auth/login_page.dart';
+import 'package:store_app/views/auth/register_page.dart';
 
-import '../../../components/color/color_theme.dart';
-import '../../../components/text/googleFonts.dart';
-import '../../../controllers/auth_controllers.dart';
+import '../../components/text/googleFonts.dart';
+import '../../controllers/auth_controllers.dart';
 
-class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class _LoginPageState extends State<LoginPage> {
   bool _obscureText = true;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final AuthController _authController = AuthController();
-  String name = ''; // Initialize with a default value
   String email = '';
   String password = '';
   bool isLoading = false;
@@ -42,49 +40,23 @@ class _RegisterPageState extends State<RegisterPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(
-                height: 10,
-              ),
-              googleText('Create Your Account'),
+              googleText('Login Your Account'),
               googleText(
                 'To Explore the World Model',
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
               ),
-              SvgPicture.asset(
-                'assets/images/register.svg',
+              Image.asset(
+                'assets/images/mail-p.png',
                 width: 300,
                 height: 300,
               ),
-              SizedBox(
-                height: 10,
-              ),
               textFormField(
-                "Username",
-                'assets/icons/name.png',
-                onChanged: (val) {
-                  setState(() {
-                    name = val;
-                  });
-                },
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return "Username is required";
-                  } else if (value.length < 3) {
-                    return "Username should be at least 3 characters long";
-                  } else {
-                    return null;
-                  }
-                },
-              ),
-              textFormField(
+                onChanged: (value) => setState(() {
+                  email = value;
+                }),
                 "Email",
                 'assets/icons/email.png',
-                onChanged: (val) {
-                  setState(() {
-                    email = val;
-                  });
-                },
                 validator: (value) {
                   final regex = RegExp(
                       r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
@@ -95,13 +67,11 @@ class _RegisterPageState extends State<RegisterPage> {
                 },
               ),
               textFormField(
+                onChanged: (value) => setState(() {
+                  password = value;
+                }),
                 "Password",
                 'assets/icons/password.png',
-                onChanged: (val) {
-                  setState(() {
-                    password = val;
-                  });
-                },
                 obscureText: _obscureText,
                 passObscureText: IconButton(
                   onPressed: () {
@@ -114,16 +84,11 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
                 validator: (value) {
-                  RegExp regex = RegExp(
-                      r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
                   if (value == null || value.isEmpty) {
                     return 'Please enter a password';
                   }
                   if (value.length < 8) {
                     return 'Password must be at least 8 characters long';
-                  }
-                  if (!regex.hasMatch(value)) {
-                    return 'Enter valid password';
                   }
                   return null;
                 },
@@ -131,6 +96,7 @@ class _RegisterPageState extends State<RegisterPage> {
               SizedBox(height: 20),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 20),
+                height: MediaQuery.of(context).size.height * 0.045,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Color.fromRGBO(144, 213, 255, 7),
@@ -140,7 +106,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     // _formKey.currentState?.validate() ?? false
                     //     ? pushAndRemoveUntil(
                     //         context,
-                    //         LoginPage(),
+                    //         RegisterPage(), // change this when the login is successful
                     //       )
                     //     : null;
                     if (_formKey.currentState!.validate()) {
@@ -148,31 +114,29 @@ class _RegisterPageState extends State<RegisterPage> {
                         isLoading = true;
                       });
                       await _authController
-                          .signUpUsers(
+                          .signInUsers(
                         context: context,
                         email: email,
-                        name: name,
                         password: password,
                       )
                           .whenComplete(() {
+                          _formKey.currentState!.reset();
                         setState(() {
                           isLoading = false;
                         });
                       });
                     }
-                    print(email);
-                    print(name);
-                    print(password);
                   },
                   child: isLoading
                       ? SizedBox(
+                          height: 2,
                           child: CircularProgressIndicator(
                             strokeWidth: 3,
                             color: ColorTheme.color.blackColor,
                           ),
                         )
                       : googleText(
-                          'Sign Up',
+                          'Log In',
                           fontWeight: FontWeight.w400,
                           fontSize: 21,
                         ),
@@ -183,21 +147,22 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   googleText(
-                    'Already has an account?',
+                    'Create a New Account?',
                     fontWeight: FontWeight.w300,
                     fontSize: 15,
                   ),
                   TextButton(
                     onPressed: () {
-                      pushAndRemoveUntil(
+                      materialRouteNavigator(
                         context,
-                        LoginPage(),
+                        RegisterPage(),
                       );
                     },
                     child: googleText(
-                      'Log In',
+                      'Sign Up',
                       fontSize: 15,
                       fontWeight: FontWeight.w600,
                     ),
