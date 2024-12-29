@@ -2,6 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:store_app/components/color/color_theme.dart';
 import 'package:store_app/models/image_model.dart';
 
+import './navigation/account__navigation_screen.dart';
+import './navigation/cart_navigation_screen.dart';
+import './navigation/fav_navigation_screen.dart';
+import './navigation/home_navigation_screen.dart';
+import './navigation/store_navigation_screen.dart';
+
+
+
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
@@ -11,6 +19,14 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _pageIndex = 0;
+  final List<Widget> _pages = [
+    HomeNavigationScreen(),
+    FavNavigationScreen(),
+    StoreNavigationScreen(),
+    CartNavigationScreen(),
+    AccountNavigationScreen(),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
