@@ -1,0 +1,10 @@
+import 'package:flutter/material.dart';
+
+class AccountNavigationScreen extends StatelessWidget {
+  const AccountNavigationScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
+}
