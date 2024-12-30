@@ -1,5 +1,5 @@
 import express from "express";
-import Category from "../models/category_models";
+import Category from "../models/category_models.js";
 
 const categoryRouter = express.Router();
 
@@ -14,6 +14,6 @@ categoryRouter.route('/api/category').post(async (req, res) => {
           console.log('error in category in post request');
           return res.status(400).json({ error: e.message });
      }
-})
+});
 
-export default categoryRouter;
+export { categoryRouter };
