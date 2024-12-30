@@ -3,6 +3,8 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import { appAuthSign } from './routes/auth.js';
 import { bannerRouter } from './routes/banner_routes.js';
+import { categoryRouter } from './routes/category_router.js';
+
 
 dotenv.config(); // Load .env variables
 
@@ -14,6 +16,7 @@ const uri = process.env.MONGODB_URI;
 app.use(express.json());
 app.use(appAuthSign);
 app.use(bannerRouter);
+app.use(categoryRouter);
 
 if (!uri) {
   console.error('MongoDB URI is not defined. Please check your .env file.');
