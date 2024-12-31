@@ -1,5 +1,5 @@
 import express from "express";
-import { SubCategory } from "../models/subCategory_models";
+import { SubCategory } from "../models/subCategory_models.js";
 
 const subCategoryRouter = express.Router();
 

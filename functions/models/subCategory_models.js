@@ -16,7 +16,7 @@ const subCategoryModel = mongoose.Schema({
           required: true
      },
 
-     subCategory:{
+     subCategoryName:{
           'type': String,
           required: true
      }
