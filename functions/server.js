@@ -5,6 +5,7 @@ import { appAuthSign } from './routes/auth.js';
 import { bannerRouter } from './routes/banner_routes.js';
 import { categoryRouter } from './routes/category_router.js';
 import { subCategoryRouter } from './routes/subCategory_routes.js';
+import { productRouter } from './routes/product_routes.js';
 
 
 dotenv.config(); // Load .env variables
@@ -19,6 +20,7 @@ app.use(appAuthSign);
 app.use(bannerRouter);
 app.use(categoryRouter);
 app.use(subCategoryRouter);
+app.use(productRouter)
 
 if (!uri) {
   console.error('MongoDB URI is not defined. Please check your .env file.');
