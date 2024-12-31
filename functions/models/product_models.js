@@ -41,8 +41,8 @@ const productSchema = mongoose.Schema({
      ],
 
      productPopularity:{
-          type: Number,
-          default: 0,
+          type: Boolean,
+          default: false,
      },
 
      productRecommended:{
