@@ -32,4 +32,22 @@ productRouter.post("/api/add-product", async (req, res) => {
   }
 });
 
+productRouter.get("/api/popular-product", async (req, res) => {
+  try {
+    const popularProducts = await Product.find({ productPopularity: true });
+    if (!popularProducts || popularProducts.length == 0) {
+     console.log("No popular products")
+      return res.status(404).json({
+        message: "No popular products found",
+      });
+    } else {
+      console.log("Popular Products are", popularProducts);
+      return res.status(200).json(popularProducts);
+    }
+  } catch (e) {
+    console.log("Error in getting popular products", e);
+    return res.status(400).json({ error: e.message });
+  }
+});
+
 export { productRouter };
