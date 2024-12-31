@@ -3,7 +3,7 @@ import { Product } from "../models/product_models.js";
 
 const productRouter = express.Router();
 
-productRouter.route("/api/add-product").post(async (req, res) => {
+productRouter.post("/api/add-product", async (req, res) => {
   try {
     const {
       productName,
