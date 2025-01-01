@@ -12,14 +12,14 @@ const ratingReviewSchema = mongoose.Schema({
     required: true,
     unique: true,
     lowercase: true,
-//     validate: {
-//       validator: (value) => {
-//         const result =
-//           /^[-!#$%&'*+\/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
-//         return result.test(value);
-//       },
-//       message: "Please enter a valid email address.",
-//     },
+    validate: {
+      validator: (value) => {
+        const result =
+          /^[-!#$%&'*+\/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
+        return result.test(value);
+      },
+      message: "Please enter a valid email address.",
+    },
   },
 
   buyerFullName: {
@@ -37,7 +37,6 @@ const ratingReviewSchema = mongoose.Schema({
 
   productRating: {
     type: Number,
-    default: 0,
   },
 
   productReview: {
