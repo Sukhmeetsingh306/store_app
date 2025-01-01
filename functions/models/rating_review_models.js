@@ -1,5 +1,4 @@
-import { MongoDBCollectionNamespace } from 'mongodb';
-import mongoose, { mongo } from 'mongoose';
+import mongoose from 'mongoose';
 
 const ratingReviewSchema = mongoose.Schema({
      buyerId: {
