@@ -1,12 +1,12 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import mongoose from 'mongoose';
-import { appAuthSign } from './routes/auth.js';
-import { bannerRouter } from './routes/banner_routes.js';
-import { categoryRouter } from './routes/category_router.js';
-import { subCategoryRouter } from './routes/subCategory_routes.js';
-import { productRouter } from './routes/product_routes.js';
-
+import express from "express";
+import dotenv from "dotenv";
+import mongoose from "mongoose";
+import { appAuthSign } from "./routes/auth.js";
+import { bannerRouter } from "./routes/banner_routes.js";
+import { categoryRouter } from "./routes/category_router.js";
+import { subCategoryRouter } from "./routes/subCategory_routes.js";
+import { productRouter } from "./routes/product_routes.js";
+import { ProductRatingReview } from "./models/rating_review_models.js";
 
 dotenv.config(); // Load .env variables
 
@@ -20,10 +20,11 @@ app.use(appAuthSign);
 app.use(bannerRouter);
 app.use(categoryRouter);
 app.use(subCategoryRouter);
-app.use(productRouter)
+app.use(productRouter);
+app.use(ProductRatingReview);
 
 if (!uri) {
-  console.error('MongoDB URI is not defined. Please check your .env file.');
+  console.error("MongoDB URI is not defined. Please check your .env file.");
   process.exit(1);
 }
 
@@ -31,17 +32,16 @@ if (!uri) {
 const connectDB = async () => {
   try {
     await mongoose.connect(uri);
-    console.log('Connected to MongoDB');
+    console.log("Connected to MongoDB");
   } catch (err) {
-    console.error('Error connecting to MongoDB:', err);
+    console.error("Error connecting to MongoDB:", err);
     process.exit(1);
   }
 };
 
-app.route('/')
-    .get((req, res) => {
-        res.send("Welcome to my page!");
-    });
+app.route("/").get((req, res) => {
+  res.send("Welcome to my page!");
+});
 
 const main = async () => {
   await connectDB();
