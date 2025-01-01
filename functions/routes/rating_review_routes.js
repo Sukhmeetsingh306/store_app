@@ -37,3 +37,5 @@ productRatingReviewRouter.post(
     }
   }
 );
+
+export { productRatingReviewRouter };
