@@ -35,6 +35,18 @@ productRatingReviewRouter
       console.log("Error in saving product rating review", e);
       return res.status(400).json({ error: e.message });
     }
+  })
+
+  // Get all product rating reviews that are present in the db
+  .get(async (req, res) => {
+     try{
+          const productRatingReview = await ProductRatingReview.find();
+          console.log("Product rating review", productRatingReview, "fetched successfully");
+          return res.status(200).json(productRatingReview);
+     }catch(e){
+          console.log("Error in getting product rating review", e);
+          return res.status(400).json({ error: e.message });
+     }
   });
 
 export { productRatingReviewRouter };
