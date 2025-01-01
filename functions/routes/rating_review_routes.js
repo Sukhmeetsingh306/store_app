@@ -3,9 +3,9 @@ import { ProductRatingReview } from "../models/rating_review_models.js";
 
 const productRatingReviewRouter = express.Router();
 
-productRatingReviewRouter.post(
-  "/api/product-rating-review",
-  async (req, res) => {
+productRatingReviewRouter
+  .route("/api/product-rating-review")
+  .post(async (req, res) => {
     const {
       buyerId,
       buyerEmail,
@@ -35,7 +35,6 @@ productRatingReviewRouter.post(
       console.log("Error in saving product rating review", e);
       return res.status(400).json({ error: e.message });
     }
-  }
-);
+  });
 
 export { productRatingReviewRouter };
