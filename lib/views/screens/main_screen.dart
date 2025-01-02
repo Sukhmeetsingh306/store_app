@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import 'package:store_app/components/color/color_theme.dart';
 import 'package:store_app/components/text/googleFonts.dart';
 import 'package:store_app/models/image_model.dart';
@@ -28,19 +29,23 @@ class _MainScreenState extends State<MainScreen> {
     AccountNavigationScreen(),
   ];
 
-  Icon iconBlack(IconData icon) {
-    return Icon(icon, color: Colors.black);
-  }
+  // Icon iconBlack(IconData icon) {
+  //   return Icon(icon, color: Colors.black);
+  // }
 
-  Widget listTitle(IconData icon, String text) {
-    return ListTile(
-      leading: iconBlack(icon),
-      title: googleText(text, fontSize: 15, fontWeight: FontWeight.w400,),
-      onTap: () {
-        // Handle item 2 tap
-      },
-    );
-  }
+  // Widget listTitle(IconData icon, String text) {
+  //   return ListTile(
+  //     leading: iconBlack(icon),
+  //     title: googleText(
+  //       text,
+  //       fontSize: 15,
+  //       fontWeight: FontWeight.w400,
+  //     ),
+  //     onTap: () {
+  //       // Handle item 2 tap
+  //     },
+  //   );
+  // }
 
   Widget iosDevice() {
     return Scaffold(
@@ -85,35 +90,82 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Widget webDevice() {
-    return Scaffold(
+    return AdminScaffold(
       appBar: AppBar(
         backgroundColor: ColorTheme.color.dodgerBlue,
         title: googleText("Management"),
+        centerTitle: false,
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.082,
-              child: DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                ),
-                child: Text('Drawer Header'),
-              ),
-            ),
-            listTitle(CupertinoIcons.person_3, 'Vendors'),
-            listTitle(CupertinoIcons.person, 'Buyers'),
-            listTitle(Icons.shopping_cart_outlined, 'Orders'),
-            listTitle(Icons.category_outlined, 'Categories'),
-            listTitle(Icons.upload, 'Upload Banner'),
-            listTitle(Icons.shopping_bag_outlined, 'Products'),
-          ],
-        ),
+      body: googleText('DashBoard'),
+      sideBar: SideBar(
+        items: const [
+          AdminMenuItem(
+            title: 'Vendors',
+            route: "",
+            icon: CupertinoIcons.person_3,
+          ),
+          AdminMenuItem(
+            title: 'Buyers',
+            route: "",
+            icon: CupertinoIcons.person,
+          ),
+          AdminMenuItem(
+            title: 'Orders',
+            route: '',
+            icon: Icons.shopping_cart_outlined,
+          ),
+          AdminMenuItem(
+            title: 'Categories',
+            route: "",
+            icon: Icons.category_outlined,
+          ),
+          AdminMenuItem(
+            title: 'Upload Banners',
+            route: "",
+            icon: Icons.upload_sharp,
+          ),
+          AdminMenuItem(
+            title: 'Products',
+            route: '',
+            icon: Icons.shopping_cart_outlined,
+          ),
+        ],
+        selectedRoute: '/',
+        textStyle: TextStyle(color: Colors.black),
+        iconColor: Colors.black,
       ),
     );
   }
+
+  // return Scaffold(
+  //   appBar: AppBar(
+  //     backgroundColor: ColorTheme.color.dodgerBlue,
+  //     title: googleText("Management"),
+  //   ),
+  //   drawer: Drawer(
+  //     child: ListView(
+  //       padding: EdgeInsets.zero,
+  //       children: [
+  //         SizedBox(
+  //           height: MediaQuery.of(context).size.height * 0.082,
+  //           child: DrawerHeader(
+  //             decoration: BoxDecoration(
+  //               color: Colors.blue,
+  //             ),
+  //             child: Text('Drawer Header'),
+  //           ),
+  //         ),
+  //         listTitle(CupertinoIcons.person_3, 'Vendors'),
+  //         listTitle(CupertinoIcons.person, 'Buyers'),
+  //         listTitle(Icons.shopping_cart_outlined, 'Orders'),
+  //         listTitle(Icons.category_outlined, 'Categories'),
+  //         listTitle(Icons.upload, 'Upload Banner'),
+  //         listTitle(Icons.shopping_bag_outlined, 'Products'),
+  //       ],
+  //     ),
+  //   ),
+  // );
+  //}
 
   @override
   Widget build(BuildContext context) {
