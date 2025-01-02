@@ -70,6 +70,20 @@ class _WebDeviceViewState extends State<WebDeviceView> {
       ),
       body: _selectedScreen,
       sideBar: SideBar(
+        header: Container(
+          height: MediaQuery.of(context).size.height * 0.07,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: ColorTheme.color.blackColor,
+            borderRadius: BorderRadius.all(Radius.circular(1)),
+          ),
+          child: Center(
+            child: googleText(
+              'Multi Vendor Admin',
+              color: ColorTheme.color.whiteColor,
+            ),
+          ),
+        ),
         items: const [
           AdminMenuItem(
             title: 'Vendors',
