@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import 'package:store_app/components/color/color_theme.dart';
 import 'package:store_app/components/text/googleFonts.dart';
 import 'package:store_app/models/image_model.dart';
@@ -28,6 +27,20 @@ class _MainScreenState extends State<MainScreen> {
     CartNavigationScreen(),
     AccountNavigationScreen(),
   ];
+
+  Icon iconBlack(IconData icon) {
+    return Icon(icon, color: Colors.black);
+  }
+
+  Widget listTitle(IconData icon, String text) {
+    return ListTile(
+      leading: iconBlack(icon),
+      title: googleText(text, fontSize: 15, fontWeight: FontWeight.w400,),
+      onTap: () {
+        // Handle item 2 tap
+      },
+    );
+  }
 
   Widget iosDevice() {
     return Scaffold(
@@ -72,36 +85,32 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Widget webDevice() {
-    return AdminScaffold(
+    return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorTheme.color.dodgerBlue,
         title: googleText("Management"),
       ),
-      body: googleText('DashBoard'),
-      sideBar: SideBar(
-        items: [
-          AdminMenuItem(
-            title: 'Vendors',
-            route: "",
-            icon: CupertinoIcons.person_3,
-          ),
-          AdminMenuItem(
-            title: 'Buyers',
-            route: "",
-            icon: CupertinoIcons.person,
-          ),
-          AdminMenuItem(
-            title: 'Categories',
-            route: "",
-            icon: Icons.category_outlined,
-          ),
-          AdminMenuItem(
-            title: 'Banners',
-            route: "",
-            icon: CupertinoIcons.bandage,
-          ),
-        ],
-        selectedRoute: '',
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.082,
+              child: DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                ),
+                child: Text('Drawer Header'),
+              ),
+            ),
+            listTitle(CupertinoIcons.person_3, 'Vendors'),
+            listTitle(CupertinoIcons.person, 'Buyers'),
+            listTitle(Icons.shopping_cart_outlined, 'Orders'),
+            listTitle(Icons.category_outlined, 'Categories'),
+            listTitle(Icons.add, 'Upload Banner'),
+            listTitle(Icons.shopping_bag_outlined, 'Products'),
+          ],
+        ),
       ),
     );
   }
