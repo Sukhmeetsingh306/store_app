@@ -20,8 +20,8 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int _pageIndex = 0;
-  final List<Widget> _pages = [
+  int _mobilePagesIndex = 0;
+  final List<Widget> _mobilePages = [
     HomeNavigationScreen(),
     FavNavigationScreen(),
     StoreNavigationScreen(),
@@ -29,36 +29,18 @@ class _MainScreenState extends State<MainScreen> {
     AccountNavigationScreen(),
   ];
 
-  // Icon iconBlack(IconData icon) {
-  //   return Icon(icon, color: Colors.black);
-  // }
-
-  // Widget listTitle(IconData icon, String text) {
-  //   return ListTile(
-  //     leading: iconBlack(icon),
-  //     title: googleText(
-  //       text,
-  //       fontSize: 15,
-  //       fontWeight: FontWeight.w400,
-  //     ),
-  //     onTap: () {
-  //       // Handle item 2 tap
-  //     },
-  //   );
-  // }
-
   Widget iosDevice() {
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        currentIndex: _pageIndex,
+        currentIndex: _mobilePagesIndex,
         selectedItemColor: ColorTheme.color.deepPuceColor,
         selectedFontSize: 14,
         unselectedFontSize: 12,
         unselectedItemColor: ColorTheme.color.grayColor,
         onTap: (value) => setState(
           () {
-            _pageIndex = value;
+            _mobilePagesIndex = value;
           },
         ),
         items: [
@@ -85,7 +67,7 @@ class _MainScreenState extends State<MainScreen> {
         ],
         elevation: 5,
       ),
-      body: _pages[_pageIndex],
+      body: _mobilePages[_mobilePagesIndex],
     );
   }
 
@@ -139,36 +121,6 @@ class _MainScreenState extends State<MainScreen> {
       ),
     );
   }
-
-  // return Scaffold(
-  //   appBar: AppBar(
-  //     backgroundColor: ColorTheme.color.dodgerBlue,
-  //     title: googleText("Management"),
-  //   ),
-  //   drawer: Drawer(
-  //     child: ListView(
-  //       padding: EdgeInsets.zero,
-  //       children: [
-  //         SizedBox(
-  //           height: MediaQuery.of(context).size.height * 0.082,
-  //           child: DrawerHeader(
-  //             decoration: BoxDecoration(
-  //               color: Colors.blue,
-  //             ),
-  //             child: Text('Drawer Header'),
-  //           ),
-  //         ),
-  //         listTitle(CupertinoIcons.person_3, 'Vendors'),
-  //         listTitle(CupertinoIcons.person, 'Buyers'),
-  //         listTitle(Icons.shopping_cart_outlined, 'Orders'),
-  //         listTitle(Icons.category_outlined, 'Categories'),
-  //         listTitle(Icons.upload, 'Upload Banner'),
-  //         listTitle(Icons.shopping_bag_outlined, 'Products'),
-  //       ],
-  //     ),
-  //   ),
-  // );
-  //}
 
   @override
   Widget build(BuildContext context) {
