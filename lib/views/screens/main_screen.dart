@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:store_app/components/color/color_theme.dart';
 import 'package:store_app/models/image_model.dart';
+import 'package:store_app/src/support/platform.dart';
 
 import './navigation/account__navigation_screen.dart';
 import './navigation/cart_navigation_screen.dart';
@@ -27,8 +28,7 @@ class _MainScreenState extends State<MainScreen> {
     AccountNavigationScreen(),
   ];
 
-  @override
-  Widget build(BuildContext context) {
+  Widget iosDevice(){
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
@@ -68,5 +68,19 @@ class _MainScreenState extends State<MainScreen> {
       ),
       body: _pages[_pageIndex],
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (lkPlatformIs(PlatformType.iOS)) {
+      return iosDevice();
+    } else {
+      // Provide a default widget for non-iOS platforms
+      return Scaffold(
+        body: Center(
+          child: Text('Platform not supported'),
+        ),
+      );
+    }
   }
 }
