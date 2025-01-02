@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import 'package:store_app/components/color/color_theme.dart';
+import 'package:store_app/components/text/googleFonts.dart';
 import 'package:store_app/models/image_model.dart';
-import 'package:store_app/src/support/platform.dart';
+ import 'package:flutter/foundation.dart';
+
 
 import './navigation/account__navigation_screen.dart';
 import './navigation/cart_navigation_screen.dart';
@@ -73,25 +75,30 @@ class _MainScreenState extends State<MainScreen> {
     return AdminScaffold(
       appBar: AppBar(
         backgroundColor: ColorTheme.color.dodgerBlue,
-        title: Text('Management'),
+        title: googleText("Management"),
       ),
-      body: Text('DashBoard'),
+      body: googleText('DashBoard'),
+      sideBar: SideBar(
+        items: [],
+        selectedRoute: '',
+      ),
     );
   }
 
   @override
-  Widget build(BuildContext context) {
-    if (lkPlatformIs(PlatformType.iOS)) {
-      return iosDevice();
-    } else if (lkPlatformIs(PlatformType.web)) {
-      return webDevice();
-    } else {
-      // Provide a default widget for non-iOS platforms
-      return Scaffold(
-        body: Center(
-          child: Text('Platform not supported'),
-        ),
-      );
-    }
+
+
+Widget build(BuildContext context) {
+  if (defaultTargetPlatform == TargetPlatform.iOS) {
+    return iosDevice();
+  } else if (kIsWeb) {
+    return webDevice();
+  } else {
+    // Default case for Android, Windows, etc.
+    return Scaffold(
+      body: Center(child: Text('Platform not supported')),
+    );
   }
+}
+
 }
