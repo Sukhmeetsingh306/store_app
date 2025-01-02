@@ -11,6 +11,7 @@ class ColorThemeData {
   final grayColor = const Color(0xff9A9A9A);
   final blueColor = const Color(0xff0000FF);
   final verySoftCyan = const Color(0x00b2f3f3);
+  final dodgerBlue = const Color(0xFF2196F3);
 
   const ColorThemeData();
 }
