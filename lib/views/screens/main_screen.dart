@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import 'package:store_app/components/color/color_theme.dart';
 import 'package:store_app/models/image_model.dart';
 import 'package:store_app/src/support/platform.dart';
@@ -8,8 +9,6 @@ import './navigation/cart_navigation_screen.dart';
 import './navigation/fav_navigation_screen.dart';
 import './navigation/home_navigation_screen.dart';
 import './navigation/store_navigation_screen.dart';
-
-
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -28,7 +27,7 @@ class _MainScreenState extends State<MainScreen> {
     AccountNavigationScreen(),
   ];
 
-  Widget iosDevice(){
+  Widget iosDevice() {
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
@@ -70,10 +69,22 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
+  Widget webDevice() {
+    return AdminScaffold(
+      appBar: AppBar(
+        backgroundColor: ColorTheme.color.dodgerBlue,
+        title: Text('Management'),
+      ),
+      body: Text('DashBoard'),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (lkPlatformIs(PlatformType.iOS)) {
       return iosDevice();
+    } else if (lkPlatformIs(PlatformType.web)) {
+      return webDevice();
     } else {
       // Provide a default widget for non-iOS platforms
       return Scaffold(
