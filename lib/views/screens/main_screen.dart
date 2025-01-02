@@ -107,7 +107,7 @@ class _MainScreenState extends State<MainScreen> {
             listTitle(CupertinoIcons.person, 'Buyers'),
             listTitle(Icons.shopping_cart_outlined, 'Orders'),
             listTitle(Icons.category_outlined, 'Categories'),
-            listTitle(Icons.add, 'Upload Banner'),
+            listTitle(Icons.upload, 'Upload Banner'),
             listTitle(Icons.shopping_bag_outlined, 'Products'),
           ],
         ),
