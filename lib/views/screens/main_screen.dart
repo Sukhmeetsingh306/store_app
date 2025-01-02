@@ -1,10 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import 'package:store_app/components/color/color_theme.dart';
 import 'package:store_app/components/text/googleFonts.dart';
 import 'package:store_app/models/image_model.dart';
- import 'package:flutter/foundation.dart';
-
+import 'package:flutter/foundation.dart';
 
 import './navigation/account__navigation_screen.dart';
 import './navigation/cart_navigation_screen.dart';
@@ -79,26 +79,44 @@ class _MainScreenState extends State<MainScreen> {
       ),
       body: googleText('DashBoard'),
       sideBar: SideBar(
-        items: [],
+        items: [
+          AdminMenuItem(
+            title: 'Vendors',
+            route: "",
+            icon: CupertinoIcons.person_3,
+          ),
+          AdminMenuItem(
+            title: 'Buyers',
+            route: "",
+            icon: CupertinoIcons.person,
+          ),
+          AdminMenuItem(
+            title: 'Categories',
+            route: "",
+            icon: Icons.category_outlined,
+          ),
+          AdminMenuItem(
+            title: 'Banners',
+            route: "",
+            icon: CupertinoIcons.bandage,
+          ),
+        ],
         selectedRoute: '',
       ),
     );
   }
 
   @override
-
-
-Widget build(BuildContext context) {
-  if (defaultTargetPlatform == TargetPlatform.iOS) {
-    return iosDevice();
-  } else if (kIsWeb) {
-    return webDevice();
-  } else {
-    // Default case for Android, Windows, etc.
-    return Scaffold(
-      body: Center(child: Text('Platform not supported')),
-    );
+  Widget build(BuildContext context) {
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
+      return iosDevice();
+    } else if (kIsWeb) {
+      return webDevice();
+    } else {
+      // Default case for Android, Windows, etc.
+      return Scaffold(
+        body: Center(child: Text('Platform not supported')),
+      );
+    }
   }
-}
-
 }
