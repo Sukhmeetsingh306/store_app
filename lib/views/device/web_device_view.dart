@@ -19,9 +19,49 @@ class WebDeviceView extends StatefulWidget {
 }
 
 class _WebDeviceViewState extends State<WebDeviceView> {
-  final Widget _selectedScreen = VendorSideScreen();
+  Widget _selectedScreen = VendorSideScreen();
 
-  Widget web(){
+  screenSelector(screen) {
+    switch (screen.route) {
+      case VendorSideScreen.routeName:
+        setState(() {
+          _selectedScreen = VendorSideScreen();
+        });
+        break;
+
+      case BuyerSideScreen.routeName:
+        setState(() {
+          _selectedScreen = BuyerSideScreen();
+        });
+        break;
+
+      case OrderSideScreen.routeName:
+        setState(() {
+          _selectedScreen = OrderSideScreen();
+        });
+        break;
+
+      case CategorySideScreen.routeName:
+        setState(() {
+          _selectedScreen = CategorySideScreen();
+        });
+        break;
+
+      case ProductSideScreen.routeName:
+        setState(() {
+          _selectedScreen = ProductSideScreen();
+        });
+        break;
+
+      case UploadBannerSideScreen.routeName:
+        setState(() {
+          _selectedScreen = UploadBannerSideScreen();
+        });
+        break;
+    }
+  }
+
+  Widget web() {
     return AdminScaffold(
       appBar: AppBar(
         backgroundColor: ColorTheme.color.dodgerBlue,
@@ -62,18 +102,19 @@ class _WebDeviceViewState extends State<WebDeviceView> {
             icon: Icons.shopping_cart_outlined,
           ),
         ],
-        selectedRoute: '/',
         textStyle: TextStyle(
           color: Colors.black,
           fontWeight: FontWeight.w400,
         ),
         iconColor: Colors.black,
+        selectedRoute: '',
+        onSelected: (route) => screenSelector(route),
       ),
     );
   }
 
   @override
-  Widget build(BuildContext context)  {
+  Widget build(BuildContext context) {
     return web();
   }
 }
