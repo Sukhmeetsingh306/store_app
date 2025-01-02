@@ -131,7 +131,10 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ],
         selectedRoute: '/',
-        textStyle: TextStyle(color: Colors.black),
+        textStyle: TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.w400,
+        ),
         iconColor: Colors.black,
       ),
     );
