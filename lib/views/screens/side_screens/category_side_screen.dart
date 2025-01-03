@@ -3,10 +3,15 @@ import 'package:store_app/components/text/googleFonts.dart';
 
 import '../../../components/color/color_theme.dart';
 
-class CategorySideScreen extends StatelessWidget {
+class CategorySideScreen extends StatefulWidget {
   static const String routeName = '/categoryScreen';
   const CategorySideScreen({super.key});
 
+  @override
+  State<CategorySideScreen> createState() => _CategorySideScreenState();
+}
+
+class _CategorySideScreenState extends State<CategorySideScreen> {
   @override
   Widget build(BuildContext context) {
     double mediaQueryWidth = MediaQuery.of(context).size.width;
