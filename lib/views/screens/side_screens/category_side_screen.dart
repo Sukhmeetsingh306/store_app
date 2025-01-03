@@ -79,7 +79,17 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
                 ),
                 child: Center(
                   child: _image != null
-                      ? Image.memory(_image)
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(
+                              5), // Match container radius
+                          child: Image.memory(
+                            _image,
+                            width: squareSize,
+                            height: squareSize,
+                            fit: BoxFit
+                                .cover, // Adjust to 'contain', 'cover', or 'fill' based on your design
+                          ),
+                        )
                       : googleText(
                           'Category Image',
                           fontSize: 12,
