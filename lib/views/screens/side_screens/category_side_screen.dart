@@ -14,6 +14,9 @@ class CategorySideScreen extends StatefulWidget {
 
 class _CategorySideScreenState extends State<CategorySideScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  late String categoryName;
+
   dynamic _image;
 
   uploadImage() async {
@@ -105,12 +108,14 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
                   child: SizedBox(
                     width: mediaQueryWidth * 0.15,
                     child: TextFormField(
+                      onChanged: (value) {
+                        categoryName = value;
+                      },
                       validator: (value) {
-                        if (value!.isNotEmpty && value.length < 3) {
-                          return 'Please Enter a valid value';
-                        } else {
-                          return 'Please Enter Category Name';
+                        if (value == null || value.isEmpty || value.length <= 3) {
+                          return 'Please Enter Valid Category Name';
                         }
+                        return null;
                       },
                       decoration: InputDecoration(
                         labelText: 'Enter Category Name',
@@ -132,7 +137,12 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: ColorTheme.color.dodgerBlue,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      print(categoryName);
+                    } // will change it when the api creation will begin
+                    ;
+                  },
                   child: webButtonGoogleText(
                     'Submit',
                     color: ColorTheme.color.whiteColor,
