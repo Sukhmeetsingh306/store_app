@@ -13,17 +13,16 @@ class CategorySideScreen extends StatefulWidget {
 }
 
 class _CategorySideScreenState extends State<CategorySideScreen> {
+  dynamic _image;
 
-  dynamic image;
-
-  uploadImage() async{
+  uploadImage() async {
     FilePickerResult? fileImage = await FilePicker.platform.pickFiles(
       type: FileType.image,
       allowMultiple: false,
     );
-    if(fileImage != null){
+    if (fileImage != null) {
       setState(() {
-        image = fileImage.files.first.bytes;
+        _image = fileImage.files.first.bytes;
       });
     }
   }
@@ -79,11 +78,13 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
                   ),
                 ),
                 child: Center(
-                  child: googleText(
-                    'Category Image',
-                    fontSize: 12,
-                    fontWeight: FontWeight.normal,
-                  ),
+                  child: _image != null
+                      ? Image.memory(_image)
+                      : googleText(
+                          'Category Image',
+                          fontSize: 12,
+                          fontWeight: FontWeight.normal,
+                        ),
                 ),
               ),
               Padding(
