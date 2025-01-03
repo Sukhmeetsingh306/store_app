@@ -66,6 +66,7 @@ class _WebDeviceViewState extends State<WebDeviceView> {
 
   Widget web() {
     return AdminScaffold(
+      backgroundColor: ColorTheme.color.transparentBack,
       appBar: AppBar(
         backgroundColor: ColorTheme.color.dodgerBlue,
         title: googleText("Management"),
