@@ -24,63 +24,100 @@ class CategorySideScreen extends StatelessWidget {
       );
     }
 
-    return Column(
-      children: [
-        Container(
-          alignment: Alignment.topLeft,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: googleText(
-              'Category',
-              fontSize: 36,
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: 15,
+        vertical: 4,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            alignment: Alignment.topLeft,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: googleText(
+                'Category',
+                fontSize: 36,
+              ),
             ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Divider(),
-        ),
-        Row(
-          children: [
-            Container(
-              width: squareSize,
-              height: squareSize,
-              decoration: BoxDecoration(
-                color: ColorTheme.color.grayColor,
-                borderRadius: BorderRadius.circular(
-                  5,
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Divider(),
+          ),
+          Row(
+            children: [
+              Container(
+                width: squareSize,
+                height: squareSize,
+                decoration: BoxDecoration(
+                  color: ColorTheme.color.grayColor,
+                  borderRadius: BorderRadius.circular(
+                    5,
+                  ),
                 ),
-              ),
-              child: Center(
-                child: googleText(
-                  'Category Image',
-                  fontSize: 12,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SizedBox(
-                width: mediaQueryWidth * 0.15,
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'Enter Category Name',
+                child: Center(
+                  child: googleText(
+                    'Category Image',
+                    fontSize: 12,
+                    fontWeight: FontWeight.normal,
                   ),
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SizedBox(
+                  width: mediaQueryWidth * 0.15,
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      labelText: 'Enter Category Name',
+                    ),
+                  ),
+                ),
+              ),
+              sizedBoxMediaQuery(
+                0.023,
+                0,
+              ),
+              TextButton(
+                onPressed: () {},
+                child: webButtonGoogleText(
+                  'Cancel',
+                ),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: ColorTheme.color.dodgerBlue,
+                ),
+                onPressed: () {},
+                child: webButtonGoogleText(
+                  'Submit',
+                  color: ColorTheme.color.whiteColor,
+                ),
+              ),
+            ],
+          ),
+          sizedBoxMediaQuery(
+            0,
+            0.02,
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: ColorTheme.color.dodgerBlue,
             ),
-            sizedBoxMediaQuery(
-              0.023,
-              0,
+            onPressed: () {},
+            child: webButtonGoogleText(
+              'Upload Image',
+              color: ColorTheme.color.whiteColor,
             ),
-            TextButton(
-              onPressed: () {},
-              child: webButtonGoogleText('Cancel',),
-            ),
-          ],
-        ),
-      ],
+          ),
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: const Divider(),
+          ),
+        ],
+      ),
     );
   }
 }
