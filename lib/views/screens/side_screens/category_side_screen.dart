@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:store_app/components/text/googleFonts.dart';
 
@@ -12,6 +13,21 @@ class CategorySideScreen extends StatefulWidget {
 }
 
 class _CategorySideScreenState extends State<CategorySideScreen> {
+
+  dynamic image;
+
+  uploadImage() async{
+    FilePickerResult? fileImage = await FilePicker.platform.pickFiles(
+      type: FileType.image,
+      allowMultiple: false,
+    );
+    if(fileImage != null){
+      setState(() {
+        image = fileImage.files.first.bytes;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     double mediaQueryWidth = MediaQuery.of(context).size.width;
@@ -111,7 +127,9 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
             style: ElevatedButton.styleFrom(
               backgroundColor: ColorTheme.color.dodgerBlue,
             ),
-            onPressed: () {},
+            onPressed: () {
+              uploadImage();
+            },
             child: webButtonGoogleText(
               'Upload Image',
               color: ColorTheme.color.whiteColor,
