@@ -61,7 +61,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               textFormField(
                 "Username",
-                'assets/icons/name.png',
+                image:'assets/icons/name.png',
                 onChanged: (val) {
                   setState(() {
                     name = val;
@@ -79,7 +79,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               textFormField(
                 "Email",
-                'assets/icons/email.png',
+                image:'assets/icons/email.png',
                 onChanged: (val) {
                   setState(() {
                     email = val;
@@ -96,7 +96,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               textFormField(
                 "Password",
-                'assets/icons/password.png',
+                image:'assets/icons/password.png',
                 onChanged: (val) {
                   setState(() {
                     password = val;
