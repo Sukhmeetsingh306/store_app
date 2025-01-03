@@ -37,3 +37,28 @@ Api's are created in the auth.js where we have created the sign-in and sign-up w
 6. AS after the deserialization we have to take the information from the factory and the convert it to the map then user objects
 
 7. To connect the node and flutter we have to add the http with 'dart pub add http' 
+
+
+<!-- MARK: Error information -->
+# Error in TextField
+[
+     1dart-sdk/lib/_internal/js_dev_runtime/patch/js_allow_interop_patch.dart 212:27  _callDartFunctionFast1
+     DartError: Assertion failed: org-dartlang-sdk:///lib/_engine/engine/pointer_binding/event_position_helper.dart:70:10
+     targetElement == domElement
+     "The targeted input element must be the active input element"
+     dart-sdk/lib/_internal/js_dev_runtime/private/ddc_runtime/errors.dart 288:3     throw_
+     dart-sdk/lib/_internal/js_dev_runtime/private/profile.dart 110:39               assertFailed
+     dart-sdk/lib/_internal/js_dev_runtime/private/profile.dart 110:39               _computeOffsetForInputs
+     lib/_engine/engine/pointer_binding/event_position_helper.dart 38:14             computeEventOffsetToTarget
+     lib/_engine/engine/pointer_binding.dart 1088:30                                 [_convertEventsToPointerData]
+     lib/_engine/engine/pointer_binding.dart 1016:9                                  <fn>
+     lib/_engine/engine/pointer_binding.dart 948:7                                   <fn>
+     lib/_engine/engine/pointer_binding.dart 541:9                                   loggedHandler
+     dart-sdk/lib/_internal/js_dev_runtime/patch/js_allow_interop_patch.dart 212:27  _callDartFunctionFast1
+]
+
+As this error is occurring in the code on clicking on the textfield.
+Visit 
+[detail](https://stackoverflow.com/questions/79277404/flutter-web-debugging-issue-assertion-failed-on-text-input-click-in-chrome-flu)
+
+As the error is occurring due to the version not as per code that is done in the code
