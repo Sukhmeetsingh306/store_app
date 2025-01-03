@@ -44,6 +44,13 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
     }
   }
 
+  Widget divider() {
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: const Divider(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     double mediaQueryWidth = MediaQuery.of(context).size.width;
@@ -113,10 +120,7 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Divider(),
-            ),
+            divider(),
             Row(
               children: [
                 categoryImage(
@@ -188,15 +192,25 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
                 color: ColorTheme.color.whiteColor,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: const Divider(),
-            ),
+            divider(),
             categoryImage(_bannerImage, 'Banner Image'),
-            ElevatedButton(
-              onPressed: () {},
-              child: Text("Pick Image"),
+            sizedBoxMediaQuery(
+              0,
+              0.02,
             ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: ColorTheme.color.dodgerBlue,
+              ),
+              onPressed: () {
+                bannerUploadImage();
+              },
+              child: webButtonGoogleText(
+                'Upload Image',
+                color: ColorTheme.color.whiteColor,
+              ),
+            ),
+            divider(),
           ],
         ),
       ),
