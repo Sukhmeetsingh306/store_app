@@ -43,6 +43,6 @@ Text webButtonGoogleText(
     text,
     fontSize: fontSize ?? 16,
     fontWeight: fontWeight ?? FontWeight.w600,
-    color: color ?? Colors.white,
+    color: color ?? Colors.black,
   );
 }

@@ -76,11 +76,7 @@ class CategorySideScreen extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {},
-              child: googleText(
-                'Cancel',
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-              ),
+              child: webButtonGoogleText('Cancel',),
             ),
           ],
         ),
