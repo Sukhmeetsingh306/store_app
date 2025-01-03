@@ -32,3 +32,17 @@ TextStyle googleFonts({
     fontSize: fontSize ?? 23, // Defaults to 23 if fontSize is null
   );
 }
+
+Text webButtonGoogleText(
+  String text, {
+  double? fontSize,
+  FontWeight? fontWeight,
+  Color? color,
+}) {
+  return googleText(
+    text,
+    fontSize: fontSize ?? 16,
+    fontWeight: fontWeight ?? FontWeight.w600,
+    color: color ?? Colors.white,
+  );
+}
