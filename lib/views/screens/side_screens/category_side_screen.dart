@@ -17,6 +17,13 @@ class CategorySideScreen extends StatelessWidget {
             : mediaQueryHeight) *
         0.20;
 
+    Widget sizedBoxMediaQuery(double? width, double? height) {
+      return SizedBox(
+        width: mediaQueryWidth * width!,
+        height: mediaQueryHeight * height!,
+      );
+    }
+
     return Column(
       children: [
         Container(
@@ -61,6 +68,18 @@ class CategorySideScreen extends StatelessWidget {
                     labelText: 'Enter Category Name',
                   ),
                 ),
+              ),
+            ),
+            sizedBoxMediaQuery(
+              0.023,
+              0,
+            ),
+            TextButton(
+              onPressed: () {},
+              child: googleText(
+                'Cancel',
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
               ),
             ),
           ],
