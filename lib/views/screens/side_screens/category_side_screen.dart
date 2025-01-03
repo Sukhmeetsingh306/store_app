@@ -51,6 +51,21 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
     );
   }
 
+  Widget elevatedButton(VoidCallback upload) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: ColorTheme.color.dodgerBlue,
+      ),
+      onPressed: () {
+        upload();
+      },
+      child: webButtonGoogleText(
+        'Upload Image',
+        color: ColorTheme.color.whiteColor,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     double mediaQueryWidth = MediaQuery.of(context).size.width;
@@ -180,36 +195,14 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
               0,
               0.02,
             ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: ColorTheme.color.dodgerBlue,
-              ),
-              onPressed: () {
-                categoryUploadImage();
-              },
-              child: webButtonGoogleText(
-                'Upload Image',
-                color: ColorTheme.color.whiteColor,
-              ),
-            ),
+            elevatedButton(categoryUploadImage),
             divider(),
             categoryImage(_bannerImage, 'Banner Image'),
             sizedBoxMediaQuery(
               0,
               0.02,
             ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: ColorTheme.color.dodgerBlue,
-              ),
-              onPressed: () {
-                bannerUploadImage();
-              },
-              child: webButtonGoogleText(
-                'Upload Image',
-                color: ColorTheme.color.whiteColor,
-              ),
-            ),
+            elevatedButton(bannerUploadImage),
             divider(),
           ],
         ),
