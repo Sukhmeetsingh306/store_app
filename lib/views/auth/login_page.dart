@@ -57,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
                   email = value;
                 }),
                 "Email",
-                image: 'assets/icons/email.png',
+                'assets/icons/email.png',
                 validator: (value) {
                   final regex = RegExp(
                       r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
@@ -72,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
                   password = value;
                 }),
                 "Password",
-                image:'assets/icons/password.png',
+                'assets/icons/password.png',
                 obscureText: _obscureText,
                 passObscureText: IconButton(
                   onPressed: () {

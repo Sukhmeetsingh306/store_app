@@ -7,7 +7,7 @@ import 'googleFonts.dart';
 
 Padding textFormField(
   String labelText,
-  { String? image,
+  String image, {
   bool? obscureText,
   IconButton? passObscureText,
   double? width,
@@ -46,7 +46,7 @@ Padding textFormField(
         prefixIcon: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Image.asset(
-            image ?? '',
+            image,
             width: width ?? 20,
             height: height ?? 20,
           ),
