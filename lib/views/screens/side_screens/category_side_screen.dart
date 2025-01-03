@@ -17,16 +17,29 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
 
   late String categoryName;
 
-  dynamic _image;
+  dynamic _categoryImage;
+  dynamic _bannerImage;
 
-  uploadImage() async {
+  categoryUploadImage() async {
     FilePickerResult? fileImage = await FilePicker.platform.pickFiles(
       type: FileType.image,
       allowMultiple: false,
     );
     if (fileImage != null) {
       setState(() {
-        _image = fileImage.files.first.bytes;
+        _categoryImage = fileImage.files.first.bytes;
+      });
+    }
+  }
+
+  bannerUploadImage() async {
+    FilePickerResult? fileImage = await FilePicker.platform.pickFiles(
+      type: FileType.image,
+      allowMultiple: false,
+    );
+    if (fileImage != null) {
+      setState(() {
+        _bannerImage = fileImage.files.first.bytes;
       });
     }
   }
@@ -48,7 +61,7 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
       );
     }
 
-    Widget categoryImage(Widget child) {
+    Widget categoryImage(dynamic dynamicImage, String text) {
       return Container(
         width: squareSize,
         height: squareSize,
@@ -59,7 +72,23 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
           ),
         ),
         child: Center(
-          child: child,
+          child: dynamicImage != null
+              ? ClipRRect(
+                  borderRadius:
+                      BorderRadius.circular(5), // Match container radius
+                  child: Image.memory(
+                    dynamicImage,
+                    width: squareSize,
+                    height: squareSize,
+                    fit: BoxFit
+                        .cover, // Adjust to 'contain', 'cover', or 'fill' based on your design
+                  ),
+                )
+              : googleText(
+                  text,
+                  fontSize: 12,
+                  fontWeight: FontWeight.normal,
+                ),
         ),
       );
     }
@@ -91,23 +120,8 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
             Row(
               children: [
                 categoryImage(
-                  _image != null
-                      ? ClipRRect(
-                          borderRadius: BorderRadius.circular(
-                              5), // Match container radius
-                          child: Image.memory(
-                            _image,
-                            width: squareSize,
-                            height: squareSize,
-                            fit: BoxFit
-                                .cover, // Adjust to 'contain', 'cover', or 'fill' based on your design
-                          ),
-                        )
-                      : googleText(
-                          'Category Image',
-                          fontSize: 12,
-                          fontWeight: FontWeight.normal,
-                        ),
+                  _categoryImage,
+                  'Category Image',
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -167,7 +181,7 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
                 backgroundColor: ColorTheme.color.dodgerBlue,
               ),
               onPressed: () {
-                uploadImage();
+                categoryUploadImage();
               },
               child: webButtonGoogleText(
                 'Upload Image',
@@ -177,6 +191,11 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
             Padding(
               padding: const EdgeInsets.all(4.0),
               child: const Divider(),
+            ),
+            categoryImage(_bannerImage, 'Banner Image'),
+            ElevatedButton(
+              onPressed: () {},
+              child: Text("Pick Image"),
             ),
           ],
         ),
