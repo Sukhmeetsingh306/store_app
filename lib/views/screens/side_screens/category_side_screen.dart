@@ -13,6 +13,7 @@ class CategorySideScreen extends StatefulWidget {
 }
 
 class _CategorySideScreenState extends State<CategorySideScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   dynamic _image;
 
   uploadImage() async {
@@ -44,113 +45,123 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
       );
     }
 
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: 15,
-        vertical: 4,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            alignment: Alignment.topLeft,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: googleText(
-                'Category',
-                fontSize: 36,
+    return Form(
+      key: _formKey,
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: 15,
+          vertical: 4,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              alignment: Alignment.topLeft,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: googleText(
+                  'Category',
+                  fontSize: 36,
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: Divider(),
-          ),
-          Row(
-            children: [
-              Container(
-                width: squareSize,
-                height: squareSize,
-                decoration: BoxDecoration(
-                  color: ColorTheme.color.grayColor,
-                  borderRadius: BorderRadius.circular(
-                    5,
+            Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Divider(),
+            ),
+            Row(
+              children: [
+                Container(
+                  width: squareSize,
+                  height: squareSize,
+                  decoration: BoxDecoration(
+                    color: ColorTheme.color.grayColor,
+                    borderRadius: BorderRadius.circular(
+                      5,
+                    ),
+                  ),
+                  child: Center(
+                    child: _image != null
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(
+                                5), // Match container radius
+                            child: Image.memory(
+                              _image,
+                              width: squareSize,
+                              height: squareSize,
+                              fit: BoxFit
+                                  .cover, // Adjust to 'contain', 'cover', or 'fill' based on your design
+                            ),
+                          )
+                        : googleText(
+                            'Category Image',
+                            fontSize: 12,
+                            fontWeight: FontWeight.normal,
+                          ),
                   ),
                 ),
-                child: Center(
-                  child: _image != null
-                      ? ClipRRect(
-                          borderRadius: BorderRadius.circular(
-                              5), // Match container radius
-                          child: Image.memory(
-                            _image,
-                            width: squareSize,
-                            height: squareSize,
-                            fit: BoxFit
-                                .cover, // Adjust to 'contain', 'cover', or 'fill' based on your design
-                          ),
-                        )
-                      : googleText(
-                          'Category Image',
-                          fontSize: 12,
-                          fontWeight: FontWeight.normal,
-                        ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SizedBox(
-                  width: mediaQueryWidth * 0.15,
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Enter Category Name',
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SizedBox(
+                    width: mediaQueryWidth * 0.15,
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value!.isNotEmpty && value.length < 3) {
+                          return 'Please Enter a valid value';
+                        } else {
+                          return 'Please Enter Category Name';
+                        }
+                      },
+                      decoration: InputDecoration(
+                        labelText: 'Enter Category Name',
+                      ),
                     ),
                   ),
                 ),
-              ),
-              sizedBoxMediaQuery(
-                0.023,
-                0,
-              ),
-              TextButton(
-                onPressed: () {},
-                child: webButtonGoogleText(
-                  'Cancel',
+                sizedBoxMediaQuery(
+                  0.023,
+                  0,
                 ),
-              ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: ColorTheme.color.dodgerBlue,
+                TextButton(
+                  onPressed: () {},
+                  child: webButtonGoogleText(
+                    'Cancel',
+                  ),
                 ),
-                onPressed: () {},
-                child: webButtonGoogleText(
-                  'Submit',
-                  color: ColorTheme.color.whiteColor,
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: ColorTheme.color.dodgerBlue,
+                  ),
+                  onPressed: () {},
+                  child: webButtonGoogleText(
+                    'Submit',
+                    color: ColorTheme.color.whiteColor,
+                  ),
                 ),
-              ),
-            ],
-          ),
-          sizedBoxMediaQuery(
-            0,
-            0.02,
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: ColorTheme.color.dodgerBlue,
+              ],
             ),
-            onPressed: () {
-              uploadImage();
-            },
-            child: webButtonGoogleText(
-              'Upload Image',
-              color: ColorTheme.color.whiteColor,
+            sizedBoxMediaQuery(
+              0,
+              0.02,
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: const Divider(),
-          ),
-        ],
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: ColorTheme.color.dodgerBlue,
+              ),
+              onPressed: () {
+                uploadImage();
+              },
+              child: webButtonGoogleText(
+                'Upload Image',
+                color: ColorTheme.color.whiteColor,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: const Divider(),
+            ),
+          ],
+        ),
       ),
     );
   }
