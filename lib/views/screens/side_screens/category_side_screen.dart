@@ -40,6 +40,27 @@ class CategorySideScreen extends StatelessWidget {
               height: squareSize,
               decoration: BoxDecoration(
                 color: ColorTheme.color.grayColor,
+                borderRadius: BorderRadius.circular(
+                  5,
+                ),
+              ),
+              child: Center(
+                child: googleText(
+                  'Category Image',
+                  fontSize: 12,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SizedBox(
+                width: mediaQueryWidth * 0.15,
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    labelText: 'Enter Category Name',
+                  ),
+                ),
               ),
             ),
           ],
