@@ -48,6 +48,22 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
       );
     }
 
+    Widget categoryImage(Widget child) {
+      return Container(
+        width: squareSize,
+        height: squareSize,
+        decoration: BoxDecoration(
+          color: ColorTheme.color.grayColor,
+          borderRadius: BorderRadius.circular(
+            5,
+          ),
+        ),
+        child: Center(
+          child: child,
+        ),
+      );
+    }
+
     return Form(
       key: _formKey,
       child: Padding(
@@ -74,34 +90,24 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
             ),
             Row(
               children: [
-                Container(
-                  width: squareSize,
-                  height: squareSize,
-                  decoration: BoxDecoration(
-                    color: ColorTheme.color.grayColor,
-                    borderRadius: BorderRadius.circular(
-                      5,
-                    ),
-                  ),
-                  child: Center(
-                    child: _image != null
-                        ? ClipRRect(
-                            borderRadius: BorderRadius.circular(
-                                5), // Match container radius
-                            child: Image.memory(
-                              _image,
-                              width: squareSize,
-                              height: squareSize,
-                              fit: BoxFit
-                                  .cover, // Adjust to 'contain', 'cover', or 'fill' based on your design
-                            ),
-                          )
-                        : googleText(
-                            'Category Image',
-                            fontSize: 12,
-                            fontWeight: FontWeight.normal,
+                categoryImage(
+                  _image != null
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(
+                              5), // Match container radius
+                          child: Image.memory(
+                            _image,
+                            width: squareSize,
+                            height: squareSize,
+                            fit: BoxFit
+                                .cover, // Adjust to 'contain', 'cover', or 'fill' based on your design
                           ),
-                  ),
+                        )
+                      : googleText(
+                          'Category Image',
+                          fontSize: 12,
+                          fontWeight: FontWeight.normal,
+                        ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -112,7 +118,9 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
                         categoryName = value;
                       },
                       validator: (value) {
-                        if (value == null || value.isEmpty || value.length <= 3) {
+                        if (value == null ||
+                            value.isEmpty ||
+                            value.length <= 3) {
                           return 'Please Enter Valid Category Name';
                         }
                         return null;
