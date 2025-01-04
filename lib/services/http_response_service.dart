@@ -31,10 +31,15 @@ void manageHttpResponse({
   }
 }
 
+// void showSnackBar(BuildContext context, String text) {
+//   ScaffoldMessenger.of(context).showSnackBar(
+//     SnackBar(
+//       content: googleText(text),
+//     ),
+//   );
+// }
+
 void showSnackBar(BuildContext context, String text) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: googleText(text),
-    ),
-  );
+  Text error = googleText(text);
+  print(error);
 }
