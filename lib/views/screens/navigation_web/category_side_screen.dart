@@ -25,37 +25,28 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
   dynamic _categoryImage;
   dynamic _bannerImage;
 
-  categoryUploadImage() async {
+  Future<void> uploadImage(ValueSetter<dynamic> updateImage) async {
     FilePickerResult? fileImage = await FilePicker.platform.pickFiles(
       type: FileType.image,
       allowMultiple: false,
     );
+
     if (fileImage != null) {
       setState(() {
-        _categoryImage = fileImage.files.first.bytes;
+        updateImage(fileImage
+            .files.first.bytes); // Use the callback to update the image
+        print('Image uploaded');
       });
     }
   }
 
-  bannerUploadImage() async {
-    FilePickerResult? fileImage = await FilePicker.platform.pickFiles(
-      type: FileType.image,
-      allowMultiple: false,
-    );
-    if (fileImage != null) {
-      setState(() {
-        _bannerImage = fileImage.files.first.bytes;
-      });
-    }
-  }
-
-  Widget elevatedButton(VoidCallback upload) {
+  Widget elevatedButton(ValueSetter<dynamic> image) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: ColorTheme.color.dodgerBlue,
       ),
       onPressed: () {
-        upload();
+        uploadImage(image);
       },
       child: webButtonGoogleText(
         'Upload Image',
@@ -156,15 +147,27 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
               width: 0,
               height: 0.02,
             ),
-            elevatedButton(categoryUploadImage),
+            elevatedButton(
+              (image) {
+                _categoryImage = image;
+              },
+            ),
             divider(),
-            webImageInput(_bannerImage, 'Banner Image', context,),
+            webImageInput(
+              _bannerImage,
+              'Banner Image',
+              context,
+            ),
             sizedBoxMediaQuery(
               context,
               width: 0,
-              height:  0.02,
+              height: 0.02,
             ),
-            elevatedButton(bannerUploadImage),
+            elevatedButton(
+              (image) {
+                _bannerImage = image;
+              },
+            ),
             divider(),
           ],
         ),
