@@ -1,15 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
-import 'package:store_app/views/screens/side_screens/buyer_side_screen.dart';
-import 'package:store_app/views/screens/side_screens/category_side_screen.dart';
-import 'package:store_app/views/screens/side_screens/order_side_screen.dart';
-import 'package:store_app/views/screens/side_screens/product_side_screen.dart';
-import 'package:store_app/views/screens/side_screens/upload_banner_side_screen.dart';
+import 'package:store_app/views/screens/navigation_web/buyer_side_screen.dart';
+import 'package:store_app/views/screens/navigation_web/category_side_screen.dart';
+import 'package:store_app/views/screens/navigation_web/order_side_screen.dart';
+import 'package:store_app/views/screens/navigation_web/product_side_screen.dart';
+import 'package:store_app/views/screens/navigation_web/upload_banner_side_screen.dart';
 
 import '../../components/color/color_theme.dart';
 import '../../components/text/googleFonts.dart';
-import '../screens/side_screens/vendor_side_screen.dart';
+import '../screens/navigation_web/vendor_side_screen.dart';
 
 class WebDeviceView extends StatefulWidget {
   const WebDeviceView({super.key});
