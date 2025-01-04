@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:store_app/components/text/googleFonts.dart';
+import 'package:store_app/components/code/text/googleFonts.dart';
 
 void manageHttpResponse({
   required http.Response response,

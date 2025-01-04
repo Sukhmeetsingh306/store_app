@@ -1,7 +1,8 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:store_app/components/text/googleFonts.dart';
+import 'package:store_app/components/code/text/googleFonts.dart';
 
+import '../../../components/code/divider_code.dart';
 import '../../../components/color/color_theme.dart';
 import '../../../controllers/category_controllers.dart';
 
@@ -44,13 +45,6 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
         _bannerImage = fileImage.files.first.bytes;
       });
     }
-  }
-
-  Widget divider() {
-    return Padding(
-      padding: const EdgeInsets.all(4.0),
-      child: const Divider(),
-    );
   }
 
   Widget elevatedButton(VoidCallback upload) {

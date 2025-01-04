@@ -8,7 +8,7 @@ import 'package:store_app/views/screens/navigation_web/product_side_screen.dart'
 import 'package:store_app/views/screens/navigation_web/upload_banner_side_screen.dart';
 
 import '../../components/color/color_theme.dart';
-import '../../components/text/googleFonts.dart';
+import '../../components/code/text/googleFonts.dart';
 import '../screens/navigation_web/vendor_side_screen.dart';
 
 class WebDeviceView extends StatefulWidget {
