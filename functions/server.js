@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import cors from "cors";
 import { appAuthSign } from "./routes/auth.js";
 import { bannerRouter } from "./routes/banner_routes.js";
 import { categoryRouter } from "./routes/category_router.js";
@@ -16,6 +17,7 @@ const port = process.env.PORT || 3000;
 const uri = process.env.MONGODB_URI;
 
 app.use(express.json());
+app.use(cors()); // enable CORS for all routes
 app.use(appAuthSign);
 app.use(bannerRouter);
 app.use(categoryRouter);
