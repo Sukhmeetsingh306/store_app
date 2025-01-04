@@ -186,6 +186,8 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
                       _categoryController.uploadCategory(
                         pickedImage: _categoryImage,
                         pickedBanner: _bannerImage,
+                        categoryName: categoryName,
+                        context: context,
                       );
                     } // will change it when the api creation will begin
                   },
