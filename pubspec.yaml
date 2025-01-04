@@ -21,6 +21,8 @@ dependencies:
   flutter_dotenv: ^5.2.1
   platform_detect: ^2.1.0
   flutter_admin_scaffold: ^1.4.0
+  file_picker: ^8.1.7
+  cloudinary_public: ^0.23.1
 
 dev_dependencies:
   flutter_test:

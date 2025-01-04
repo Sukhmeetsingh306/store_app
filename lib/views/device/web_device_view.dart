@@ -1,15 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
-import 'package:store_app/views/screens/side_screens/buyer_side_screen.dart';
-import 'package:store_app/views/screens/side_screens/category_side_screen.dart';
-import 'package:store_app/views/screens/side_screens/order_side_screen.dart';
-import 'package:store_app/views/screens/side_screens/product_side_screen.dart';
-import 'package:store_app/views/screens/side_screens/upload_banner_side_screen.dart';
+import 'package:store_app/views/screens/navigation_web/buyer_side_screen.dart';
+import 'package:store_app/views/screens/navigation_web/category_side_screen.dart';
+import 'package:store_app/views/screens/navigation_web/order_side_screen.dart';
+import 'package:store_app/views/screens/navigation_web/product_side_screen.dart';
+import 'package:store_app/views/screens/navigation_web/upload_banner_side_screen.dart';
 
 import '../../components/color/color_theme.dart';
 import '../../components/text/googleFonts.dart';
-import '../screens/side_screens/vendor_side_screen.dart';
+import '../screens/navigation_web/vendor_side_screen.dart';
 
 class WebDeviceView extends StatefulWidget {
   const WebDeviceView({super.key});
@@ -19,7 +19,10 @@ class WebDeviceView extends StatefulWidget {
 }
 
 class _WebDeviceViewState extends State<WebDeviceView> {
-  Widget _selectedScreen = VendorSideScreen();
+  // MARK: when the code completed change it back
+  //Widget _selectedScreen = VendorSideScreen();
+    Widget _selectedScreen = CategorySideScreen();
+
 
   screenSelector(screen) {
     switch (screen.route) {
@@ -63,6 +66,7 @@ class _WebDeviceViewState extends State<WebDeviceView> {
 
   Widget web() {
     return AdminScaffold(
+      backgroundColor: ColorTheme.color.transparentBack,
       appBar: AppBar(
         backgroundColor: ColorTheme.color.dodgerBlue,
         title: googleText("Management"),
