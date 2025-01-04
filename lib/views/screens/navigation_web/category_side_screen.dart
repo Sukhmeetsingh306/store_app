@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:store_app/components/code/text/googleFonts.dart';
 import 'package:store_app/components/code/webImageInput_code.dart';
 
+import '../../../components/code/button_code.dart';
 import '../../../components/code/divider_code.dart';
 import '../../../components/code/sized_space_code.dart';
 import '../../../components/color/color_theme.dart';
@@ -40,18 +41,12 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
     }
   }
 
-  Widget elevatedButton(ValueSetter<dynamic> image) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: ColorTheme.color.dodgerBlue,
-      ),
-      onPressed: () {
+  Widget elevatedButtonCategory(ValueSetter<dynamic> image) {
+    return elevatedButton(
+      () {
         uploadImage(image);
       },
-      child: webButtonGoogleText(
-        'Upload Image',
-        color: ColorTheme.color.whiteColor,
-      ),
+      'Upload Image',
     );
   }
 
@@ -147,7 +142,7 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
               width: 0,
               height: 0.02,
             ),
-            elevatedButton(
+            elevatedButtonCategory(
               (image) {
                 _categoryImage = image;
               },
@@ -163,7 +158,7 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
               width: 0,
               height: 0.02,
             ),
-            elevatedButton(
+            elevatedButtonCategory(
               (image) {
                 _bannerImage = image;
               },
