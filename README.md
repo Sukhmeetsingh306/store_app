@@ -38,6 +38,8 @@ Api's are created in the auth.js where we have created the sign-in and sign-up w
 
 7. To connect the node and flutter we have to add the http with 'dart pub add http' 
 
+# Cloudinary
+We are using the cloudinary library for saving and accessing the images from the cloud.
 
 <!-- MARK: Error information -->
 # Error in TextField
