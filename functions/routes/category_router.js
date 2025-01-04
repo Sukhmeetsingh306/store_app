@@ -7,13 +7,17 @@ categoryRouter
   .route("/api/category")
   .post(async (req, res) => {
     try {
-      const { name, image, banner } = req.body;
-      const category = new Category({ name, image, banner });
+      const { categoryName, categoryImage, categoryBanner } = req.body;
+      const category = new Category({
+        categoryName,
+        categoryImage,
+        categoryBanner,
+      });
       await category.save();
       console.log("category ", category, "success in post");
       return res.status(201).json(category);
     } catch (e) {
-      console.log("error in category in post request");
+      console.log("error in category in post request" + e.message);
       return res.status(400).json({ error: e.message });
     }
   })

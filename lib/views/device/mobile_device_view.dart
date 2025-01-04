@@ -2,11 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:store_app/components/color/color_theme.dart';
 
-import '../screens/navigation/account__navigation_screen.dart';
-import '../screens/navigation/cart_navigation_screen.dart';
-import '../screens/navigation/fav_navigation_screen.dart';
-import '../screens/navigation/home_navigation_screen.dart';
-import '../screens/navigation/store_navigation_screen.dart';
+import '../screens/navigation_mobile/account__navigation_screen.dart';
+import '../screens/navigation_mobile/cart_navigation_screen.dart';
+import '../screens/navigation_mobile/fav_navigation_screen.dart';
+import '../screens/navigation_mobile/home_navigation_screen.dart';
+import '../screens/navigation_mobile/store_navigation_screen.dart';
 
 class MobileDevice extends StatefulWidget {
   const MobileDevice({super.key});

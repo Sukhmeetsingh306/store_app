@@ -1,17 +1,17 @@
 import mongoose from "mongoose";
 
 const categorySchema = mongoose.Schema({
-     name:{
+     categoryName:{
           type: String,
           required: true,
      },
 
-     image: {
+     categoryImage: {
           type: String,
           required: true,
      },
 
-     banner :{
+     categoryBanner :{
           type: String,
      }
 });
