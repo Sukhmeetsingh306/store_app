@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:store_app/globals_variables.dart';
-import 'package:store_app/models/user.dart';
+import 'package:store_app/models/api/user.dart';
 import 'package:store_app/services/http_response_service.dart';
 import 'package:http/http.dart' as http;
 
