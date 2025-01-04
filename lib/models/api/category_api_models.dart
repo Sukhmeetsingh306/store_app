@@ -26,7 +26,7 @@ class Category {
   factory Category.categoryFromMap(Map<String, dynamic> map) {
     //getting from the map
     return Category(
-      categoryId: map['categoryId'] as String,
+      categoryId: map['_id'] as String,
       categoryName: map['categoryName'] as String,
       categoryImage: map['categoryImage'] as String,
       categoryBanner: map['categoryBanner'] as String,
