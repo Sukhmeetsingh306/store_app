@@ -17,7 +17,7 @@ class UploadBannerSideScreen extends StatefulWidget {
 }
 
 class _UploadBannerSideScreenState extends State<UploadBannerSideScreen> {
-  UploadBannerControllers _uploadBannerControllers = UploadBannerControllers();
+  final UploadBannerControllers _uploadBannerControllers = UploadBannerControllers();
   dynamic _uploadBannerImage;
 
   Future<void> uploadImage(ValueSetter<dynamic> updateImage) async {
