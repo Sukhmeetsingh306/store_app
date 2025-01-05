@@ -6,7 +6,6 @@ import 'package:store_app/components/code/webImageInput_code.dart';
 import '../../../components/code/button_code.dart';
 import '../../../components/code/divider_code.dart';
 import '../../../components/code/sized_space_code.dart';
-import '../../../components/color/color_theme.dart';
 import '../../../controllers/category_controllers.dart';
 
 class CategorySideScreen extends StatefulWidget {
@@ -115,11 +114,8 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
                     'Cancel',
                   ),
                 ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: ColorTheme.color.dodgerBlue,
-                  ),
-                  onPressed: () async {
+                elevatedButton(
+                  () async {
                     if (_formKey.currentState!.validate()) {
                       print(categoryName);
                       _categoryController.uploadCategory(
@@ -130,10 +126,7 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
                       );
                     } // will change it when the api creation will begin
                   },
-                  child: webButtonGoogleText(
-                    'Submit',
-                    color: ColorTheme.color.whiteColor,
-                  ),
+                  "Submit",
                 ),
               ],
             ),
