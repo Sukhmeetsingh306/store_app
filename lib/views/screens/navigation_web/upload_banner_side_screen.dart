@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../../components/code/button_code.dart';
@@ -16,6 +17,21 @@ class UploadBannerSideScreen extends StatefulWidget {
 
 class _UploadBannerSideScreenState extends State<UploadBannerSideScreen> {
   dynamic _uploadBannerImage;
+
+  Future<void> uploadImage(ValueSetter<dynamic> updateImage) async {
+    FilePickerResult? fileImage = await FilePicker.platform.pickFiles(
+      type: FileType.image,
+      allowMultiple: false,
+    );
+
+    if (fileImage != null) {
+      setState(() {
+        updateImage(fileImage
+            .files.first.bytes); // Use the callback to update the image
+        print('Image uploaded');
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +78,13 @@ class _UploadBannerSideScreenState extends State<UploadBannerSideScreen> {
             height: 0.02,
           ),
           elevatedButton(
-            () {},
+            () {
+              uploadImage(
+                (img) {
+                  _uploadBannerImage = img;
+                },
+              );
+            },
             "Upload Image",
           ),
           divider(),
