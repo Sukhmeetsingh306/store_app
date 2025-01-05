@@ -50,7 +50,7 @@ class _BannerWidgetState extends State<BannerWidget> {
             shrinkWrap: true,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 6,
-              crossAxisSpacing: 8,
+              crossAxisSpacing: 15,
               mainAxisSpacing: 8,
             ),
             itemBuilder: (context, index) {
