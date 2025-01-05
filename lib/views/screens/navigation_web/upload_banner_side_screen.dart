@@ -6,6 +6,7 @@ import '../../../components/code/divider_code.dart';
 import '../../../components/code/sized_space_code.dart';
 import '../../../components/code/text/googleFonts.dart';
 import '../../../components/code/webImageInput_code.dart';
+import '../../../controllers/upload_banner_controllers.dart';
 
 class UploadBannerSideScreen extends StatefulWidget {
   static const String routeName = '/uploadBannerScreen';
@@ -16,6 +17,7 @@ class UploadBannerSideScreen extends StatefulWidget {
 }
 
 class _UploadBannerSideScreenState extends State<UploadBannerSideScreen> {
+  UploadBannerControllers _uploadBannerControllers = UploadBannerControllers();
   dynamic _uploadBannerImage;
 
   Future<void> uploadImage(ValueSetter<dynamic> updateImage) async {
@@ -67,7 +69,12 @@ class _UploadBannerSideScreenState extends State<UploadBannerSideScreen> {
                 height: 0,
               ),
               elevatedButton(
-                () {},
+                () async {
+                  await _uploadBannerControllers.uploadBanner(
+                    pickedBanner: _uploadBannerImage,
+                    context: context,
+                  );
+                },
                 "Submit",
               ),
             ],
