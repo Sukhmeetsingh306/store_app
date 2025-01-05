@@ -38,7 +38,7 @@ class CategoryControllers {
 
       String categoryBannerImage = categoryBannerResponse.secureUrl;
 
-      Category category = Category(
+      CategoryApiModels category = CategoryApiModels(
         categoryId: "",
         categoryName: categoryName,
         categoryImage: categoryImage,

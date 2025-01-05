@@ -1,7 +1,7 @@
 import mongoose, { mongo } from "mongoose";
 
 const bannerSchema = mongoose.Schema({
-  image: {
+  bannerImage: {
     type: String,
     required: true,
   },

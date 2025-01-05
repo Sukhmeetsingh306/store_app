@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:store_app/components/color/color_theme.dart';
-import 'package:store_app/components/text/textFormField.dart';
+import 'package:store_app/components/code/text/textFormField.dart';
 import 'package:store_app/models/navigate_models.dart';
 import 'package:store_app/views/auth/register_page.dart';
 
-import '../../components/text/googleFonts.dart';
+import '../../components/code/text/googleFonts.dart';
 import '../../controllers/auth_controllers.dart';
 import '../../models/image_model.dart';
 

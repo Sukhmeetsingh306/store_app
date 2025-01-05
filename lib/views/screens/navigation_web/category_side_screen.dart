@@ -1,8 +1,11 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:store_app/components/text/googleFonts.dart';
+import 'package:store_app/components/code/text/googleFonts.dart';
+import 'package:store_app/components/code/webImageInput_code.dart';
 
-import '../../../components/color/color_theme.dart';
+import '../../../components/code/button_code.dart';
+import '../../../components/code/divider_code.dart';
+import '../../../components/code/sized_space_code.dart';
 import '../../../controllers/category_controllers.dart';
 
 class CategorySideScreen extends StatefulWidget {
@@ -22,100 +25,33 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
   dynamic _categoryImage;
   dynamic _bannerImage;
 
-  categoryUploadImage() async {
+  Future<void> uploadImage(ValueSetter<dynamic> updateImage) async {
     FilePickerResult? fileImage = await FilePicker.platform.pickFiles(
       type: FileType.image,
       allowMultiple: false,
     );
+
     if (fileImage != null) {
       setState(() {
-        _categoryImage = fileImage.files.first.bytes;
+        updateImage(fileImage
+            .files.first.bytes); // Use the callback to update the image
+        print('Image uploaded');
       });
     }
   }
 
-  bannerUploadImage() async {
-    FilePickerResult? fileImage = await FilePicker.platform.pickFiles(
-      type: FileType.image,
-      allowMultiple: false,
-    );
-    if (fileImage != null) {
-      setState(() {
-        _bannerImage = fileImage.files.first.bytes;
-      });
-    }
-  }
-
-  Widget divider() {
-    return Padding(
-      padding: const EdgeInsets.all(4.0),
-      child: const Divider(),
-    );
-  }
-
-  Widget elevatedButton(VoidCallback upload) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: ColorTheme.color.dodgerBlue,
-      ),
-      onPressed: () {
-        upload();
+  Widget elevatedButtonCategory(ValueSetter<dynamic> image) {
+    return elevatedButton(
+      () {
+        uploadImage(image);
       },
-      child: webButtonGoogleText(
-        'Upload Image',
-        color: ColorTheme.color.whiteColor,
-      ),
+      'Upload Image',
     );
   }
 
   @override
   Widget build(BuildContext context) {
     double mediaQueryWidth = MediaQuery.of(context).size.width;
-    double mediaQueryHeight = MediaQuery.of(context).size.height;
-
-    double squareSize = (mediaQueryWidth < mediaQueryHeight
-            ? mediaQueryWidth
-            : mediaQueryHeight) *
-        0.20;
-
-    Widget sizedBoxMediaQuery(double? width, double? height) {
-      return SizedBox(
-        width: mediaQueryWidth * width!,
-        height: mediaQueryHeight * height!,
-      );
-    }
-
-    Widget categoryImage(dynamic dynamicImage, String text) {
-      return Container(
-        width: squareSize,
-        height: squareSize,
-        decoration: BoxDecoration(
-          color: ColorTheme.color.grayColor,
-          borderRadius: BorderRadius.circular(
-            5,
-          ),
-        ),
-        child: Center(
-          child: dynamicImage != null
-              ? ClipRRect(
-                  borderRadius:
-                      BorderRadius.circular(5), // Match container radius
-                  child: Image.memory(
-                    dynamicImage,
-                    width: squareSize,
-                    height: squareSize,
-                    fit: BoxFit
-                        .cover, // Adjust to 'contain', 'cover', or 'fill' based on your design
-                  ),
-                )
-              : googleText(
-                  text,
-                  fontSize: 12,
-                  fontWeight: FontWeight.normal,
-                ),
-        ),
-      );
-    }
 
     return Form(
       key: _formKey,
@@ -140,9 +76,10 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
             divider(),
             Row(
               children: [
-                categoryImage(
+                webImageInput(
                   _categoryImage,
                   'Category Image',
+                  context,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -167,8 +104,9 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
                   ),
                 ),
                 sizedBoxMediaQuery(
-                  0.023,
-                  0,
+                  context,
+                  width: 0.023,
+                  height: 0,
                 ),
                 TextButton(
                   onPressed: () {},
@@ -176,11 +114,8 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
                     'Cancel',
                   ),
                 ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: ColorTheme.color.dodgerBlue,
-                  ),
-                  onPressed: () async {
+                elevatedButton(
+                  () async {
                     if (_formKey.currentState!.validate()) {
                       print(categoryName);
                       _categoryController.uploadCategory(
@@ -191,25 +126,36 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
                       );
                     } // will change it when the api creation will begin
                   },
-                  child: webButtonGoogleText(
-                    'Submit',
-                    color: ColorTheme.color.whiteColor,
-                  ),
+                  "Submit",
                 ),
               ],
             ),
             sizedBoxMediaQuery(
-              0,
-              0.02,
+              context,
+              width: 0,
+              height: 0.02,
             ),
-            elevatedButton(categoryUploadImage),
+            elevatedButtonCategory(
+              (image) {
+                _categoryImage = image;
+              },
+            ),
             divider(),
-            categoryImage(_bannerImage, 'Banner Image'),
-            sizedBoxMediaQuery(
-              0,
-              0.02,
+            webImageInput(
+              _bannerImage,
+              'Banner Image',
+              context,
             ),
-            elevatedButton(bannerUploadImage),
+            sizedBoxMediaQuery(
+              context,
+              width: 0,
+              height: 0.02,
+            ),
+            elevatedButtonCategory(
+              (image) {
+                _bannerImage = image;
+              },
+            ),
             divider(),
           ],
         ),
