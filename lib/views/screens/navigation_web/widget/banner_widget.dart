@@ -55,10 +55,13 @@ class _BannerWidgetState extends State<BannerWidget> {
             ),
             itemBuilder: (context, index) {
               final banner = bannerCount[index];
-              return Image.network(
-                width: 100,
-                height: 10,
-                banner.bannerImage,
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Image.network(
+                  width: 100,
+                  height: 10,
+                  banner.bannerImage,
+                ),
               );
             },
           );
