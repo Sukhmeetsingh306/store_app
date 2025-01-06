@@ -7,8 +7,8 @@ bannerRouter
   .route("/api/banner")
   .post(async (req, res) => {
     try {
-      const { image } = req.body;
-      const banner = new Banner({ image });
+      const { bannerImage } = req.body;
+      const banner = new Banner({ bannerImage });
       await banner.save();
       console.log("banner ", banner, "success");
       return res.status(201).json(banner);

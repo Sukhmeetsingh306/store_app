@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../color/color_theme.dart';
+import '../../color/color_theme.dart';
 import 'googleFonts.dart';
 
 Padding textFormField(
