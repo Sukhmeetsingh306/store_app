@@ -1,5 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:store_app/views/screens/navigation_web/widget/banner_widget.dart';
 
 import '../../../components/code/button_code.dart';
 import '../../../components/code/divider_code.dart';
@@ -95,6 +96,7 @@ class _UploadBannerSideScreenState extends State<UploadBannerSideScreen> {
             "Upload Image",
           ),
           divider(),
+          BannerWidget(),
         ],
       ),
     );

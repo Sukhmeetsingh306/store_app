@@ -16,7 +16,7 @@ class UploadBannerApiModels {
     };
   }
 
-  factory UploadBannerApiModels.bannerFromMap(
+  factory UploadBannerApiModels.bannerFromJson(
       Map<String, dynamic> bannerToMap) {
     return UploadBannerApiModels(
       bannerId: bannerToMap['_id'] as String,
@@ -28,9 +28,9 @@ class UploadBannerApiModels {
     return json.encode(bannerToMap());
   }
 
-  factory UploadBannerApiModels.bannerFromJson(String source) {
-    return UploadBannerApiModels.bannerFromMap(
-      json.decode(source) as Map<String, dynamic>,
-    );
-  }
+  // factory UploadBannerApiModels.bannerFromJson(String source) {
+  //   return UploadBannerApiModels.bannerFromMap(
+  //     json.decode(source) as Map<String, dynamic>,
+  //   );
+  // }
 }
