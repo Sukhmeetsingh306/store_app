@@ -77,7 +77,7 @@ class CategoryControllers {
         },
       );
 
-      print(response.body);
+      //print(response.body);
       if(response.statusCode == 200) {
         List<dynamic> categoryData = jsonDecode(response.body);
 

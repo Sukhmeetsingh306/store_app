@@ -32,7 +32,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return Center(
             child: googleText(
-              "No banners found",
+              "No Category found",
               fontWeight: FontWeight.normal,
               fontSize: 18,
             ),
