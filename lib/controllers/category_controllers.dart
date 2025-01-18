@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:store_app/globals_variables.dart';
 import 'package:store_app/models/api/category_api_models.dart';
@@ -62,6 +64,34 @@ class CategoryControllers {
       );
     } catch (e) {
       print("Error uploading in cloudinary in category_controller : $e");
+    }
+  }
+
+  //fetching of the categories
+  Future<List<CategoryApiModels>> fetchCategory() async {
+    try {
+      http.Response response = await http.get(
+        Uri.parse("$webUri/api/category"),
+        headers: <String, String>{
+          "content-type": "application/json; charset=UTF-8",
+        },
+      );
+
+      //print(response.body);
+      if(response.statusCode == 200) {
+        List<dynamic> categoryData = jsonDecode(response.body);
+
+        List<CategoryApiModels> categoryModel = categoryData.map((category) {
+          return CategoryApiModels.categoryFromMap(category);
+        }).toList();
+
+        return categoryModel;
+      }else{
+        throw Exception("Failed to fetch categories");
+      }
+    } catch (e) {
+      print("Error fetching categories : $e");
+      return [];
     }
   }
 }

@@ -1,5 +1,5 @@
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:store_app/views/screens/navigation_web/widget/banner_widget.dart';
 
 import '../../../components/code/button_code.dart';
@@ -22,11 +22,14 @@ class _UploadBannerSideScreenState extends State<UploadBannerSideScreen> {
   final UploadBannerControllers _uploadBannerControllers =
       UploadBannerControllers();
   dynamic _uploadBannerImage;
-  bool _isLoading = false; 
-  Key _widgetKey = UniqueKey(); 
+
+  bool _isLoading = false;
+  bool _isSnackBarVisible = false;
+
+  Key _widgetKey = UniqueKey();
 
   Future<dynamic> simulateImageUpload() async {
-    await Future.delayed(Duration(seconds: 2)); 
+    await Future.delayed(Duration(seconds: 2));
   }
 
   Future<void> uploadImage(ValueSetter<dynamic> updateImage) async {
@@ -45,7 +48,7 @@ class _UploadBannerSideScreenState extends State<UploadBannerSideScreen> {
 
   void reloadWidget() {
     setState(() {
-      _widgetKey = UniqueKey(); 
+      _widgetKey = UniqueKey();
     });
   }
 
@@ -88,8 +91,28 @@ class _UploadBannerSideScreenState extends State<UploadBannerSideScreen> {
                   elevatedButton(
                     () async {
                       setState(() {
-                        _isLoading = true; 
+                        _isLoading = true;
                       });
+                      if (_uploadBannerImage == null) {
+                        if (!_isSnackBarVisible) {
+                          _isSnackBarVisible = true;
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(
+                                SnackBar(
+                                  content: Text('Please add an image'),
+                                  duration: Duration(seconds: 2),
+                                ),
+                              )
+                              .closed
+                              .then((_) {
+                            _isSnackBarVisible = false;
+                          });
+                        }
+                        setState(() {
+                          _isLoading = false;
+                        });
+                        return;
+                      }
                       await _uploadBannerControllers.uploadBanner(
                         pickedBanner: _uploadBannerImage,
                         context: context,
@@ -97,7 +120,7 @@ class _UploadBannerSideScreenState extends State<UploadBannerSideScreen> {
                       dynamic newImage = await simulateImageUpload();
                       setState(() {
                         _uploadBannerImage = newImage;
-                        _isLoading = false; 
+                        _isLoading = false;
                       });
                       reloadWidget();
                     },
