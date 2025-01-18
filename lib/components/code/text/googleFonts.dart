@@ -46,3 +46,15 @@ Text webButtonGoogleText(
     color: color ?? Colors.black,
   );
 }
+
+Center errormessage(
+  String text,
+) {
+  return Center(
+    child: googleText(
+      text,
+      fontWeight: FontWeight.normal,
+      fontSize: 18,
+    ),
+  );
+}
