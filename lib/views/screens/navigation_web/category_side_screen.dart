@@ -2,6 +2,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:store_app/components/code/text/googleFonts.dart';
 import 'package:store_app/components/code/webImageInput_code.dart';
+import 'package:store_app/views/screens/navigation_web/widget/category_widget.dart';
 
 import '../../../components/code/button_code.dart';
 import '../../../components/code/divider_code.dart';
@@ -157,6 +158,7 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
               },
             ),
             divider(),
+            CategoryWidget(),
           ],
         ),
       ),
