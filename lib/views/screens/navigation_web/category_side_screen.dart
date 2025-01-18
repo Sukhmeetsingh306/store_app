@@ -27,6 +27,7 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
   dynamic _bannerImage;
 
   bool _isLoading = false;
+  bool _isSnackBarVisible = false;
 
   Future<dynamic> simulateImageUpload() async {
     await Future.delayed(Duration(seconds: 2));
@@ -135,6 +136,27 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
                           setState(() {
                             _isLoading = true;
                           });
+                          if (_bannerImage == null || _categoryImage == null) {
+                            if (!_isSnackBarVisible) {
+                              _isSnackBarVisible = true; 
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(
+                                    SnackBar(
+                                      content: Text('Please add an image'),
+                                      duration: Duration(seconds: 2),
+                                    ),
+                                  )
+                                  .closed
+                                  .then((_) {
+                                _isSnackBarVisible =
+                                    false;
+                              });
+                            }
+                            setState(() {
+                              _isLoading = false;
+                            });
+                            return; 
+                          }
                           if (_formKey.currentState!.validate()) {
                             print(categoryName);
                             _categoryController.uploadCategory(
