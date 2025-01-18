@@ -11,6 +11,7 @@ import '../../../controllers/upload_banner_controllers.dart';
 
 class UploadBannerSideScreen extends StatefulWidget {
   static const String routeName = '/uploadBannerScreen';
+
   const UploadBannerSideScreen({super.key});
 
   @override
@@ -20,6 +21,7 @@ class UploadBannerSideScreen extends StatefulWidget {
 class _UploadBannerSideScreenState extends State<UploadBannerSideScreen> {
   final UploadBannerControllers _uploadBannerControllers = UploadBannerControllers();
   dynamic _uploadBannerImage;
+  Key _widgetKey = UniqueKey(); // Key to reload the widget
 
   Future<void> uploadImage(ValueSetter<dynamic> updateImage) async {
     FilePickerResult? fileImage = await FilePicker.platform.pickFiles(
@@ -29,16 +31,22 @@ class _UploadBannerSideScreenState extends State<UploadBannerSideScreen> {
 
     if (fileImage != null) {
       setState(() {
-        updateImage(fileImage
-            .files.first.bytes); // Use the callback to update the image
+        updateImage(fileImage.files.first.bytes);
         print('Image uploaded');
       });
     }
   }
 
+  void reloadWidget() {
+    setState(() {
+      _widgetKey = UniqueKey(); // Assign a new key to reload the widget
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
+      key: _widgetKey, // Use the key here
       padding: EdgeInsets.symmetric(
         horizontal: 15,
         vertical: 4,
@@ -75,6 +83,7 @@ class _UploadBannerSideScreenState extends State<UploadBannerSideScreen> {
                     pickedBanner: _uploadBannerImage,
                     context: context,
                   );
+                  reloadWidget(); // Reload the widget after submission
                 },
                 "Submit",
               ),
