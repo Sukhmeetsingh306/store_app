@@ -147,6 +147,7 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
                           dynamic newImage = await simulateImageUpload();
                           setState(() {
                             _categoryImage = newImage;
+                            _bannerImage = newImage;
                             _isLoading = false;
                           });
                           reloadWidget();
