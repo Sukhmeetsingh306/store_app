@@ -143,14 +143,21 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
                               categoryName: categoryName,
                               context: context,
                             );
-                          } // will change it when the api creation will begin
-                          dynamic newImage = await simulateImageUpload();
-                          setState(() {
-                            _categoryImage = newImage;
-                            _bannerImage = newImage;
-                            _isLoading = false;
-                          });
-                          reloadWidget();
+
+                            dynamic newImage = await simulateImageUpload();
+                            setState(() {
+                              _categoryImage = newImage;
+                              _bannerImage = newImage;
+                              _isLoading = false;
+                            });
+
+                            reloadWidget(); // Only called when validation passes
+                          } else {
+                            setState(() {
+                              _isLoading =
+                                  false; // Reset loading if validation fails
+                            });
+                          }
                         },
                         "Submit",
                       ),
