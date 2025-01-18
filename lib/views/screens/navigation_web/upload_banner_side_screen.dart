@@ -1,7 +1,5 @@
-import 'dart:typed_data';
-
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart'; 
 import 'package:store_app/views/screens/navigation_web/widget/banner_widget.dart';
 
 import '../../../components/code/button_code.dart';
@@ -24,11 +22,11 @@ class _UploadBannerSideScreenState extends State<UploadBannerSideScreen> {
   final UploadBannerControllers _uploadBannerControllers =
       UploadBannerControllers();
   dynamic _uploadBannerImage;
-  Key _widgetKey = UniqueKey(); // Key to reload the widget
+  bool _isLoading = false; 
+  Key _widgetKey = UniqueKey(); 
 
   Future<dynamic> simulateImageUpload() async {
-    await Future.delayed(
-        Duration(seconds: 1)); // Simulate delay// Simulated image data
+    await Future.delayed(Duration(seconds: 2)); 
   }
 
   Future<void> uploadImage(ValueSetter<dynamic> updateImage) async {
@@ -47,79 +45,103 @@ class _UploadBannerSideScreenState extends State<UploadBannerSideScreen> {
 
   void reloadWidget() {
     setState(() {
-      _widgetKey = UniqueKey(); // Assign a new key to reload the widget
+      _widgetKey = UniqueKey(); 
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      key: _widgetKey, // Use the key here
-      padding: EdgeInsets.symmetric(
-        horizontal: 15,
-        vertical: 4,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            alignment: Alignment.topLeft,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: googleText(
-                'Banner',
-                fontSize: 36,
-              ),
-            ),
+    return Stack(
+      children: [
+        Padding(
+          key: _widgetKey, // Use the key here
+          padding: EdgeInsets.symmetric(
+            horizontal: 15,
+            vertical: 4,
           ),
-          divider(),
-          Row(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              webImageInput(
-                _uploadBannerImage,
-                "Banner Image",
-                context,
+              Container(
+                alignment: Alignment.topLeft,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: googleText(
+                    'Banner',
+                    fontSize: 36,
+                  ),
+                ),
+              ),
+              divider(),
+              Row(
+                children: [
+                  webImageInput(
+                    _uploadBannerImage,
+                    "Banner Image",
+                    context,
+                  ),
+                  sizedBoxMediaQuery(
+                    context,
+                    width: 0.023,
+                    height: 0,
+                  ),
+                  elevatedButton(
+                    () async {
+                      setState(() {
+                        _isLoading = true; 
+                      });
+                      await _uploadBannerControllers.uploadBanner(
+                        pickedBanner: _uploadBannerImage,
+                        context: context,
+                      );
+                      dynamic newImage = await simulateImageUpload();
+                      setState(() {
+                        _uploadBannerImage = newImage;
+                        _isLoading = false; 
+                      });
+                      reloadWidget();
+                    },
+                    "Submit",
+                  ),
+                ],
               ),
               sizedBoxMediaQuery(
                 context,
-                width: 0.023,
-                height: 0,
+                width: 0,
+                height: 0.02,
               ),
               elevatedButton(
-                () async {
-                  await _uploadBannerControllers.uploadBanner(
-                    pickedBanner: _uploadBannerImage,
-                    context: context,
+                () {
+                  uploadImage(
+                    (img) {
+                      setState(() {
+                        _uploadBannerImage = img;
+                      });
+                    },
                   );
-                  dynamic newImage = await simulateImageUpload();
-                  setState(() {
-                    _uploadBannerImage = newImage; // Update the dynamicImage
-                  });
-                  reloadWidget(); // Reload the widget after submission
                 },
-                "Submit",
+                "Upload Image",
               ),
+              divider(),
+              BannerWidget(),
             ],
           ),
-          sizedBoxMediaQuery(
-            context,
-            width: 0,
-            height: 0.02,
+        ),
+        if (_isLoading)
+          Positioned.fill(
+            child: Stack(
+              children: [
+                ModalBarrier(
+                  dismissible: false,
+                  color: Colors.black.withOpacity(0.5),
+                ),
+                Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ],
+            ),
           ),
-          elevatedButton(
-            () {
-              uploadImage(
-                (img) {
-                  _uploadBannerImage = img;
-                },
-              );
-            },
-            "Upload Image",
-          ),
-          divider(),
-          BannerWidget(),
-        ],
-      ),
+      ],
     );
   }
 }
