@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:store_app/views/screens/navigation_web/widget/banner_widget.dart';
@@ -19,9 +21,15 @@ class UploadBannerSideScreen extends StatefulWidget {
 }
 
 class _UploadBannerSideScreenState extends State<UploadBannerSideScreen> {
-  final UploadBannerControllers _uploadBannerControllers = UploadBannerControllers();
+  final UploadBannerControllers _uploadBannerControllers =
+      UploadBannerControllers();
   dynamic _uploadBannerImage;
   Key _widgetKey = UniqueKey(); // Key to reload the widget
+
+  Future<dynamic> simulateImageUpload() async {
+    await Future.delayed(
+        Duration(seconds: 1)); // Simulate delay// Simulated image data
+  }
 
   Future<void> uploadImage(ValueSetter<dynamic> updateImage) async {
     FilePickerResult? fileImage = await FilePicker.platform.pickFiles(
@@ -83,6 +91,10 @@ class _UploadBannerSideScreenState extends State<UploadBannerSideScreen> {
                     pickedBanner: _uploadBannerImage,
                     context: context,
                   );
+                  dynamic newImage = await simulateImageUpload();
+                  setState(() {
+                    _uploadBannerImage = newImage; // Update the dynamicImage
+                  });
                   reloadWidget(); // Reload the widget after submission
                 },
                 "Submit",
