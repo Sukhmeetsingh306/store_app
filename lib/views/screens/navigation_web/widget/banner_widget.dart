@@ -28,13 +28,7 @@ class _BannerWidgetState extends State<BannerWidget> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator();
         } else if (snapshot.hasError) {
-          return Center(
-            child: googleText(
-              "Error: ${snapshot.error}",
-              fontWeight: FontWeight.normal,
-              fontSize: 18,
-            ),
-          );
+          return errormessage("Error: ${snapshot.error}");
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return Center(
             child: googleText(
