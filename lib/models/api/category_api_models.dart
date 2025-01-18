@@ -36,8 +36,8 @@ class CategoryApiModels {
   String categoryToJson() =>
       json.encode(categoryToMap()); // coding the map to the json
 
-  factory CategoryApiModels.categoryFromJson(String source) =>
-      CategoryApiModels.categoryFromMap(
-        json.decode(source) as Map<String, dynamic>,
-      );
+  // factory CategoryApiModels.categoryFromJson(String source) =>
+  //     CategoryApiModels.categoryFromMap(
+  //       json.decode(source) as Map<String, dynamic>,
+  //     );
 }
