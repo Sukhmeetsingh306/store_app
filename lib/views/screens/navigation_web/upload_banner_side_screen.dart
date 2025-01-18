@@ -133,7 +133,7 @@ class _UploadBannerSideScreenState extends State<UploadBannerSideScreen> {
               children: [
                 ModalBarrier(
                   dismissible: false,
-                  color: Colors.black.withOpacity(0.5),
+                  color: Colors.black.withValues(alpha: .5),
                 ),
                 Center(
                   child: CircularProgressIndicator(),
