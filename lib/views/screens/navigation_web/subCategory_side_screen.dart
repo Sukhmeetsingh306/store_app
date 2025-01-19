@@ -17,6 +17,8 @@ class SubCategorySideScreen extends StatefulWidget {
 class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
   late Future<List<CategoryApiModels>> futureSubCategory;
 
+  CategoryApiModels? selectedCategory;
+
   @override
   void initState() {
     super.initState();
@@ -76,7 +78,12 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
                         ),
                       );
                     }).toList(),
-                    onChanged: (context) {});
+                    onChanged: (value) {
+                      setState(() {
+                        selectedCategory = value;
+                      });
+                      print(selectedCategory);
+                    });
               }
             },
           ),
