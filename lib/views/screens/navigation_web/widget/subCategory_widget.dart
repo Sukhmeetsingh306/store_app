@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:store_app/components/code/divider_code.dart';
+import 'package:store_app/components/color/color_theme.dart';
 
 import '../../../../components/code/text/googleFonts.dart';
 import '../../../../controllers/category_controllers.dart';
@@ -41,6 +43,11 @@ class _SubCategoryWidgetState extends State<SubCategoryWidget> {
           );
         } else {
           return DropdownButton<CategoryApiModels>(
+              focusColor: ColorTheme.color.transparentBack,
+              dropdownColor: ColorTheme.color.whiteColor,
+              menuWidth: MediaQuery.of(context).size.width * 0.1,
+              menuMaxHeight: MediaQuery.of(context).size.height * 0.3,
+              elevation: 4,
               hint: googleText(
                 "Select Category",
                 fontWeight: FontWeight.normal,
@@ -48,13 +55,18 @@ class _SubCategoryWidgetState extends State<SubCategoryWidget> {
               ),
               items: snapshot.data!.map((CategoryApiModels category) {
                 return DropdownMenuItem<CategoryApiModels>(
-                  value: category,
-                  child: googleText(
-                    category.categoryName,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 16,
-                  ),
-                );
+                    value: category,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        googleText(
+                          category.categoryName,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 16,
+                        ),
+                        divider(),
+                      ],
+                    ));
               }).toList(),
               onChanged: (value) {
                 setState(() {
