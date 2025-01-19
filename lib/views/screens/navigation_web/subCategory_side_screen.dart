@@ -61,11 +61,19 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
                 );
               } else {
                 return DropdownButton<CategoryApiModels>(
-                    hint: googleText("Select Category"),
+                    hint: googleText(
+                      "Select Category",
+                      fontWeight: FontWeight.normal,
+                      fontSize: 18,
+                    ),
                     items: snapshot.data!.map((CategoryApiModels category) {
                       return DropdownMenuItem<CategoryApiModels>(
                         value: category,
-                        child: googleText(category.categoryName),
+                        child: googleText(
+                          category.categoryName,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 16,
+                        ),
                       );
                     }).toList(),
                     onChanged: (context) {});
