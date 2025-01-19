@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../../components/code/divider_code.dart';
 import '../../../components/code/text/googleFonts.dart';
+import '../../../controllers/category_controllers.dart';
+import '../../../models/api/category_api_models.dart';
 
 class SubCategorySideScreen extends StatefulWidget {
   static const String routeName = '/subCategoryScreen';
@@ -13,6 +15,14 @@ class SubCategorySideScreen extends StatefulWidget {
 }
 
 class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
+  late Future<List<CategoryApiModels>> futureSubCategory;
+
+  @override
+  void initState() {
+    super.initState();
+    futureSubCategory = CategoryControllers().fetchCategory();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
