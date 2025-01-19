@@ -22,7 +22,7 @@ class WebDeviceView extends StatefulWidget {
 class _WebDeviceViewState extends State<WebDeviceView> {
   // MARK: when the code completed change it back
   //Widget _selectedScreen = VendorSideScreen();
-  Widget _selectedScreen = CategorySideScreen();
+  Widget _selectedScreen = SubCategorySideScreen();
 
   screenSelector(screen) {
     switch (screen.route) {
