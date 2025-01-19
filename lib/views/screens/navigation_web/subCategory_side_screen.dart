@@ -194,7 +194,6 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
                       return;
                     }
                     if (_formKey.currentState!.validate()) {
-
                       // dynamic newImage = await simulateImageUpload();
                       // setState(() {
                       //   _categoryImage = newImage;
@@ -213,19 +212,24 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
                 ),
               ],
             ),
+            sizedBoxMediaQuery(
+              context,
+              width: 0,
+              height: 0.02,
+            ),
             elevatedButton(
-                () {
-                  uploadImage(
-                    (img) {
-                      setState(() {
-                        _categoryImage = img;
-                      });
-                    },
-                  );
-                },
-                "Upload Image",
-              ),
-               divider(),
+              () {
+                uploadImage(
+                  (img) {
+                    setState(() {
+                      _categoryImage = img;
+                    });
+                  },
+                );
+              },
+              "Upload Image",
+            ),
+            divider(),
             if (_isLoading)
               Positioned.fill(
                 child: Stack(
