@@ -44,6 +44,34 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
             ),
           ),
           divider(),
+          FutureBuilder(
+            future: futureSubCategory,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator();
+              } else if (snapshot.hasError) {
+                return errormessage("Error: ${snapshot.error}");
+              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return Center(
+                  child: googleText(
+                    "No Category found",
+                    fontWeight: FontWeight.normal,
+                    fontSize: 18,
+                  ),
+                );
+              } else {
+                return DropdownButton<CategoryApiModels>(
+                    hint: googleText("Select Category"),
+                    items: snapshot.data!.map((CategoryApiModels category) {
+                      return DropdownMenuItem<CategoryApiModels>(
+                        value: category,
+                        child: googleText(category.categoryName),
+                      );
+                    }).toList(),
+                    onChanged: (context) {});
+              }
+            },
+          ),
         ],
       ),
     );
