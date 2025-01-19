@@ -3,11 +3,16 @@ import 'package:flutter/material.dart';
 import '../../../components/code/divider_code.dart';
 import '../../../components/code/text/googleFonts.dart';
 
-class SubCategorySideScreen extends StatelessWidget {
+class SubCategorySideScreen extends StatefulWidget {
   static const String routeName = '/subCategoryScreen';
 
   const SubCategorySideScreen({super.key});
 
+  @override
+  State<SubCategorySideScreen> createState() => _SubCategorySideScreenState();
+}
+
+class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
   @override
   Widget build(BuildContext context) {
     return Padding(
