@@ -1,13 +1,12 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:store_app/views/screens/navigation_web/widget/subCategory_widget.dart';
 
 import '../../../components/code/button_code.dart';
 import '../../../components/code/divider_code.dart';
 import '../../../components/code/sized_space_code.dart';
 import '../../../components/code/text/googleFonts.dart';
 import '../../../components/code/webImageInput_code.dart';
-import '../../../controllers/category_controllers.dart';
-import '../../../models/api/category_api_models.dart';
 
 class SubCategorySideScreen extends StatefulWidget {
   static const String routeName = '/subCategoryScreen';
@@ -20,9 +19,6 @@ class SubCategorySideScreen extends StatefulWidget {
 
 class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  late Future<List<CategoryApiModels>> futureSubCategory;
-
-  CategoryApiModels? selectedCategory;
 
   late String categoryName;
 
@@ -48,12 +44,6 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
         print('Image uploaded');
       });
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    futureSubCategory = CategoryControllers().fetchCategory();
   }
 
   void reloadWidget() {
@@ -87,47 +77,7 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
               ),
             ),
             divider(),
-            FutureBuilder(
-              future: futureSubCategory,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
-                } else if (snapshot.hasError) {
-                  return errormessage("Error: ${snapshot.error}");
-                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return Center(
-                    child: googleText(
-                      "No Category found",
-                      fontWeight: FontWeight.normal,
-                      fontSize: 18,
-                    ),
-                  );
-                } else {
-                  return DropdownButton<CategoryApiModels>(
-                      hint: googleText(
-                        "Select Category",
-                        fontWeight: FontWeight.normal,
-                        fontSize: 18,
-                      ),
-                      items: snapshot.data!.map((CategoryApiModels category) {
-                        return DropdownMenuItem<CategoryApiModels>(
-                          value: category,
-                          child: googleText(
-                            category.categoryName,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 16,
-                          ),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          selectedCategory = value;
-                        });
-                        print(selectedCategory);
-                      });
-                }
-              },
-            ),
+            SubCategoryWidget(),
             sizedBoxMediaQuery(
               context,
               width: 0,

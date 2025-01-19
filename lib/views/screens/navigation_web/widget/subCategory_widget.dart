@@ -1,0 +1,69 @@
+import 'package:flutter/material.dart';
+
+import '../../../../components/code/text/googleFonts.dart';
+import '../../../../controllers/category_controllers.dart';
+import '../../../../models/api/category_api_models.dart';
+
+class SubCategoryWidget extends StatefulWidget {
+  const SubCategoryWidget({super.key});
+
+  @override
+  State<SubCategoryWidget> createState() => _SubCategoryWidgetState();
+}
+
+class _SubCategoryWidgetState extends State<SubCategoryWidget> {
+  late Future<List<CategoryApiModels>> futureSubCategory;
+
+  CategoryApiModels? selectedCategory;
+
+  @override
+  void initState() {
+    super.initState();
+    futureSubCategory = CategoryControllers().fetchCategory();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: futureSubCategory,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          return errormessage("Error: ${snapshot.error}");
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Center(
+            child: googleText(
+              "No Category found",
+              fontWeight: FontWeight.normal,
+              fontSize: 18,
+            ),
+          );
+        } else {
+          return DropdownButton<CategoryApiModels>(
+              hint: googleText(
+                "Select Category",
+                fontWeight: FontWeight.normal,
+                fontSize: 18,
+              ),
+              items: snapshot.data!.map((CategoryApiModels category) {
+                return DropdownMenuItem<CategoryApiModels>(
+                  value: category,
+                  child: googleText(
+                    category.categoryName,
+                    fontWeight: FontWeight.normal,
+                    fontSize: 16,
+                  ),
+                );
+              }).toList(),
+              onChanged: (value) {
+                setState(() {
+                  selectedCategory = value;
+                });
+                print(selectedCategory);
+              });
+        }
+      },
+    );
+  }
+}
