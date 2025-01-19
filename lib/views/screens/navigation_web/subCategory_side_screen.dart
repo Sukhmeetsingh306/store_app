@@ -128,6 +128,11 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
                 }
               },
             ),
+            sizedBoxMediaQuery(
+              context,
+              width: 0,
+              height: 0.01,
+            ),
             Row(
               children: [
                 webImageInput(
