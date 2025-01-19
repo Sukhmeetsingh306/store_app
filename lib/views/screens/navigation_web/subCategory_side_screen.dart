@@ -27,7 +27,6 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
   late String categoryName;
 
   dynamic _categoryImage;
-  dynamic _bannerImage;
 
   bool _isLoading = false;
   bool _isSnackBarVisible = false;
@@ -174,7 +173,7 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
                     setState(() {
                       _isLoading = true;
                     });
-                    if (_bannerImage == null || _categoryImage == null) {
+                    if (_categoryImage == null) {
                       if (!_isSnackBarVisible) {
                         _isSnackBarVisible = true;
                         ScaffoldMessenger.of(context)
@@ -214,6 +213,19 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
                 ),
               ],
             ),
+            elevatedButton(
+                () {
+                  uploadImage(
+                    (img) {
+                      setState(() {
+                        _categoryImage = img;
+                      });
+                    },
+                  );
+                },
+                "Upload Image",
+              ),
+               divider(),
             if (_isLoading)
               Positioned.fill(
                 child: Stack(
