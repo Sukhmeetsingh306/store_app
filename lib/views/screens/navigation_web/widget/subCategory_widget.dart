@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:store_app/components/code/divider_code.dart';
 import 'package:store_app/components/color/color_theme.dart';
 
 import '../../../../components/code/text/googleFonts.dart';
@@ -56,16 +55,10 @@ class _SubCategoryWidgetState extends State<SubCategoryWidget> {
               items: snapshot.data!.map((CategoryApiModels category) {
                 return DropdownMenuItem<CategoryApiModels>(
                     value: category,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        googleText(
-                          category.categoryName,
-                          fontWeight: FontWeight.normal,
-                          fontSize: 16,
-                        ),
-                        divider(),
-                      ],
+                    child: googleText(
+                      category.categoryName,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 16,
                     ));
               }).toList(),
               onChanged: (value) {
