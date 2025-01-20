@@ -11,7 +11,7 @@ const subCategoryModel = mongoose.Schema({
           required: true
      },
 
-     image: {
+     subCategoryImage: {
           'type': String,
           required: true
      },
@@ -22,5 +22,5 @@ const subCategoryModel = mongoose.Schema({
      }
 });
 
-const SubCategory = mongoose.model('SubCategory', subCategoryModel);
+const  SubCategory = mongoose.model('SubCategory', subCategoryModel);
 export { SubCategory };
