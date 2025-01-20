@@ -6,7 +6,9 @@ import '../../../../controllers/category_controllers.dart';
 import '../../../../models/api/category_api_models.dart';
 
 class SubCategoryWidget extends StatefulWidget {
-  const SubCategoryWidget({super.key});
+  final ValueSetter<CategoryApiModels?> onCategorySelected;
+
+  const SubCategoryWidget({super.key, required this.onCategorySelected});
 
   @override
   State<SubCategoryWidget> createState() => _SubCategoryWidgetState();
@@ -14,7 +16,6 @@ class SubCategoryWidget extends StatefulWidget {
 
 class _SubCategoryWidgetState extends State<SubCategoryWidget> {
   late Future<List<CategoryApiModels>> futureSubCategory;
-
   CategoryApiModels? selectedCategory;
 
   @override
@@ -42,31 +43,34 @@ class _SubCategoryWidgetState extends State<SubCategoryWidget> {
           );
         } else {
           return DropdownButton<CategoryApiModels>(
-              focusColor: ColorTheme.color.transparentBack,
+            value: selectedCategory,
+            focusColor: ColorTheme.color.transparentBack,
               dropdownColor: ColorTheme.color.whiteColor,
               menuWidth: MediaQuery.of(context).size.width * 0.1,
               menuMaxHeight: MediaQuery.of(context).size.height * 0.3,
               elevation: 4,
-              hint: googleText(
-                "Select Category",
-                fontWeight: FontWeight.normal,
-                fontSize: 18,
-              ),
-              items: snapshot.data!.map((CategoryApiModels category) {
-                return DropdownMenuItem<CategoryApiModels>(
-                    value: category,
-                    child: googleText(
-                      category.categoryName,
-                      fontWeight: FontWeight.normal,
-                      fontSize: 16,
-                    ));
-              }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  selectedCategory = value;
-                });
-                print(selectedCategory);
+            hint: googleText(
+              "Select Category",
+              fontWeight: FontWeight.normal,
+              fontSize: 18,
+            ),
+            items: snapshot.data!.map((CategoryApiModels category) {
+              return DropdownMenuItem<CategoryApiModels>(
+                value: category,
+                child: googleText(
+                  category.categoryName,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 16,
+                ),
+              );
+            }).toList(),
+            onChanged: (value) {
+              setState(() {
+                selectedCategory = value;
               });
+              widget.onCategorySelected(value);
+            },
+          );
         }
       },
     );

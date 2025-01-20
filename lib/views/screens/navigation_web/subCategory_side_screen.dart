@@ -85,7 +85,13 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
                     ),
                   ),
                   divider(),
-                  SubCategoryWidget(),
+                  SubCategoryWidget(
+                    onCategorySelected: (category) {
+                      setState(() {
+                        selectedCategory = category;
+                      });
+                    },
+                  ),
                   sizedBoxMediaQuery(
                     context,
                     width: 0,
