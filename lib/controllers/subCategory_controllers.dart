@@ -1,6 +1,9 @@
 import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:store_app/models/api/subCategory_api_models.dart';
 
+import 'package:http/http.dart' as http;
+import 'package:store_app/services/http_response_service.dart';
+
 import '../globals_variables.dart';
 
 class SubCategoryControllers {
@@ -9,6 +12,7 @@ class SubCategoryControllers {
     required String categoryName,
     required String subCategoryName,
     required dynamic subCategoryPickedImage,
+    required context,
   }) async {
     try {
       final subCategoryCloudinary = CloudinaryPublic(
@@ -25,12 +29,28 @@ class SubCategoryControllers {
 
       String subCategoryImage = subcategoryImageResponse.secureUrl;
 
-      SubCategoryApiModels(
+      SubCategoryApiModels subCategory = SubCategoryApiModels(
         subCategoryId: "",
         categoryId: categoryId,
         categoryName: categoryName,
         subCategoryImage: subCategoryImage,
         subCategoryName: subCategoryName,
+      );
+
+      http.Response response = await http.post(
+        Uri.parse("$webUri/api/subCategory"),
+        body: subCategory.subCategoryToJson(),
+        headers: <String, String>{
+          "Content-Type": "application/json; charset=UTF-8"
+        },
+      );
+
+      manageHttpResponse(
+        response: response,
+        context: context,
+        onSuccess: () {
+          showSnackBar(context, "SubCategories");
+        },
       );
     } catch (e) {
       print("Error uploading in cloudinary in category_controller : $e");
