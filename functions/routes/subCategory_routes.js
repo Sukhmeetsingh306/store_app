@@ -5,11 +5,11 @@ const subCategoryRouter = express.Router();
 
 subCategoryRouter.route("/api/subCategory").post(async (req, res) => {
   try {
-    const { categoryId, categoryName, image, subCategoryName } = req.body;
+    const { categoryId, categoryName, subCategoryImage, subCategoryName } = req.body;
     const newSubCategory = new SubCategory({
       categoryId,
       categoryName,
-      image,
+      subCategoryImage,
       subCategoryName,
     });
     await newSubCategory.save();
