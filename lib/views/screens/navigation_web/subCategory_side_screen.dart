@@ -1,7 +1,7 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:store_app/controllers/subCategory_controllers.dart';
-import 'package:store_app/views/screens/navigation_web/widget/subCategory_widget.dart';
+import 'package:store_app/views/screens/navigation_web/widget/dropDown_widget.dart/subCategory_dropDown_widget.dart';
 
 import '../../../components/code/button_code.dart';
 import '../../../components/code/divider_code.dart';
@@ -85,7 +85,7 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
                     ),
                   ),
                   divider(),
-                  SubCategoryWidget(
+                  SubCategoryDropDownWidget(
                     onCategorySelected: (category) {
                       setState(() {
                         selectedCategory = category;
