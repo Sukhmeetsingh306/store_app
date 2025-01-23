@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:store_app/views/screens/navigation_mobile/widgets/banner_widget.dart';
 
+import '../navigation_web/widget/category_widget.dart';
+import 'widgets/banner_widget_ios.dart';
 import 'widgets/header_widget_screen.dart';
 
 class HomeNavigationScreen extends StatelessWidget {
@@ -13,6 +14,7 @@ class HomeNavigationScreen extends StatelessWidget {
       children: [
         HeaderWidgetScreen(),
         BannerWidgetIOS(),
+        CategoryWidget(),
       ],
     ));
   }

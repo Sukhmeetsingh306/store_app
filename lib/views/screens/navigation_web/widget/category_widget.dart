@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:store_app/models/api/category_api_models.dart';
 
@@ -42,8 +43,13 @@ class _CategoryWidgetState extends State<CategoryWidget> {
           return GridView.builder(
             itemCount: categoryCount.length,
             shrinkWrap: true,
+            physics: defaultTargetPlatform == TargetPlatform.iOS
+                ? NeverScrollableScrollPhysics()
+                : null,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 6,
+              crossAxisCount: defaultTargetPlatform == TargetPlatform.iOS
+                  ? 4 // ios
+                  : 6, // web
               crossAxisSpacing: 15,
               mainAxisSpacing: 8,
             ),
@@ -62,9 +68,9 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                     ),
                   ),
                   Flexible(
-                    child: googleText(
+                    child: googleTextSands(
                       category.categoryName,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.bold,
                       fontSize: 19,
                     ),
                   ),
