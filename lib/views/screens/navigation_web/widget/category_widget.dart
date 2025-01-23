@@ -51,15 +51,23 @@ class _CategoryWidgetState extends State<CategoryWidget> {
               final category = categoryCount[index];
               return Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.network(
-                      width: 150,
-                      height: 100,
-                      category.categoryImage,
+                  Flexible(
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 3.0),
+                      child: Image.network(
+                        width: MediaQuery.of(context).size.width * 0.2,
+                        height: MediaQuery.of(context).size.height * 0.15,
+                        category.categoryImage,
+                      ),
                     ),
                   ),
-                  googleText(category.categoryName),
+                  Flexible(
+                    child: googleText(
+                      category.categoryName,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 19,
+                    ),
+                  ),
                 ],
               );
             },

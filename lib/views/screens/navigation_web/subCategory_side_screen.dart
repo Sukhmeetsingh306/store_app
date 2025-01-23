@@ -195,10 +195,14 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
                               context: context,
                             );
 
+                            dynamic newImage = await simulateImageUpload();
                             setState(() {
-                              _categoryImage = null;
+                              _formKey.currentState!.reset();
+                              _categoryImage = newImage;
                               _isLoading = false;
                             });
+
+                            reloadWidget(); // Only called when validation passes
                           } else {
                             setState(() {
                               _isLoading = false;

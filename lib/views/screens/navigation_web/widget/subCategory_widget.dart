@@ -51,15 +51,23 @@ class _SubCategoryWidgetState extends State<SubCategoryWidget> {
               final subCategory = subCategoryCount[index];
               return Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.network(
-                      width: 150,
-                      height: 100,
-                      subCategory.subCategoryImage,
+                  Flexible(
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 3.0),
+                      child: Image.network(
+                        width: MediaQuery.of(context).size.width * 0.2,
+                        height: MediaQuery.of(context).size.height * 0.15,
+                        subCategory.subCategoryImage,
+                      ),
                     ),
                   ),
-                  googleText(subCategory.subCategoryName),
+                  Flexible(
+                    child: googleText(
+                      subCategory.subCategoryName,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 19,
+                    ),
+                  ),
                 ],
               );
             },

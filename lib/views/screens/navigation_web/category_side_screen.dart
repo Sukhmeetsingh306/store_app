@@ -138,7 +138,7 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
                           });
                           if (_bannerImage == null || _categoryImage == null) {
                             if (!_isSnackBarVisible) {
-                              _isSnackBarVisible = true; 
+                              _isSnackBarVisible = true;
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(
                                     SnackBar(
@@ -148,14 +148,13 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
                                   )
                                   .closed
                                   .then((_) {
-                                _isSnackBarVisible =
-                                    false;
+                                _isSnackBarVisible = false;
                               });
                             }
                             setState(() {
                               _isLoading = false;
                             });
-                            return; 
+                            return;
                           }
                           if (_formKey.currentState!.validate()) {
                             print(categoryName);
