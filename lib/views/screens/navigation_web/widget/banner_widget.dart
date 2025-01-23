@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:store_app/components/code/text/googleFonts.dart';
 import 'package:store_app/controllers/upload_banner_controllers.dart';
@@ -39,26 +40,43 @@ class _BannerWidgetState extends State<BannerWidget> {
           );
         } else {
           final bannerCount = snapshot.data!;
-          return GridView.builder(
-            itemCount: bannerCount.length,
-            shrinkWrap: true,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 6,
-              crossAxisSpacing: 15,
-              mainAxisSpacing: 8,
-            ),
-            itemBuilder: (context, index) {
-              final banner = bannerCount[index];
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Image.network(
-                  width: 100,
-                  height: 10,
-                  banner.bannerImage,
-                ),
-              );
-            },
-          );
+          if (defaultTargetPlatform == TargetPlatform.iOS) {
+            return PageView.builder(
+              itemCount: bannerCount.length,
+              itemBuilder: (context, index) {
+                final banner = bannerCount[index];
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Image.network(
+                    banner.bannerImage,
+                    fit: BoxFit.cover,
+                  ),
+                );
+              },
+            );
+          } else if (kIsWeb) {
+            return GridView.builder(
+              itemCount: bannerCount.length,
+              shrinkWrap: true,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 6,
+                crossAxisSpacing: 15,
+                mainAxisSpacing: 8,
+              ),
+              itemBuilder: (context, index) {
+                final banner = bannerCount[index];
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Image.network(
+                    banner.bannerImage,
+                    width: 100,
+                    height: 10,
+                  ),
+                );
+              },
+            );
+          }
+          return Center();
         }
       },
     );
