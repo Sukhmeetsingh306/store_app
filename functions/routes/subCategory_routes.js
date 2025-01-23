@@ -1,6 +1,6 @@
 import express from "express";
 import { SubCategory } from "../models/subCategory_models.js";
-import Category from "../models/category_models.js"; // Ensure this is imported
+import Category from "../models/category_models.js"; 
 
 const subCategoryRouter = express.Router();
 
@@ -21,7 +21,6 @@ subCategoryRouter
 
       let resolvedCategoryId = categoryId;
 
-      // Lookup categoryId if not provided
       if (!categoryId) {
         const category = await Category.findOne({ categoryName });
         if (!category) {
