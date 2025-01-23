@@ -17,6 +17,24 @@ Text googleText(String text,
   );
 }
 
+Text googleTextSands(
+  String text, {
+  FontWeight? fontWeight,
+  double? fontSize,
+  double? letterSpacing,
+  Color? color,
+}) {
+  return Text(
+    text,
+    style: GoogleFonts.quicksand(
+      color: color ?? Colors.black,
+      fontWeight: fontWeight ?? FontWeight.bold,
+      letterSpacing: letterSpacing ?? 0.2,
+      fontSize: fontSize ?? 16, //
+    ),
+  );
+}
+
 TextStyle googleFonts({
   double? fontSize,
   FontWeight? fontWeight,
