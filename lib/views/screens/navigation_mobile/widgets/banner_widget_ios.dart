@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:store_app/components/color/color_theme.dart';
 
+import '../../navigation_web/widget/banner_widget.dart';
+
 class BannerWidgetIOS extends StatelessWidget {
   const BannerWidgetIOS({super.key});
 
@@ -14,9 +16,10 @@ class BannerWidgetIOS extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height * 0.17,
         decoration: BoxDecoration(
-          color: ColorTheme.color.lustRedColor,
+          color: ColorTheme.color.whiteColor,
           borderRadius: BorderRadius.circular(10),
         ),
+        child: BannerWidget(),
       ),
     );
   }
