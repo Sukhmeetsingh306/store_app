@@ -5,6 +5,7 @@ import 'package:store_app/views/screens/navigation_web/buyer_side_screen.dart';
 import 'package:store_app/views/screens/navigation_web/category_side_screen.dart';
 import 'package:store_app/views/screens/navigation_web/order_side_screen.dart';
 import 'package:store_app/views/screens/navigation_web/product_side_screen.dart';
+import 'package:store_app/views/screens/navigation_web/subCategory_side_screen.dart';
 import 'package:store_app/views/screens/navigation_web/upload_banner_side_screen.dart';
 
 import '../../components/color/color_theme.dart';
@@ -21,8 +22,7 @@ class WebDeviceView extends StatefulWidget {
 class _WebDeviceViewState extends State<WebDeviceView> {
   // MARK: when the code completed change it back
   //Widget _selectedScreen = VendorSideScreen();
-    Widget _selectedScreen = CategorySideScreen();
-
+  Widget _selectedScreen = SubCategorySideScreen();
 
   screenSelector(screen) {
     switch (screen.route) {
@@ -47,6 +47,12 @@ class _WebDeviceViewState extends State<WebDeviceView> {
       case CategorySideScreen.routeName:
         setState(() {
           _selectedScreen = CategorySideScreen();
+        });
+        break;
+
+      case SubCategorySideScreen.routeName:
+        setState(() {
+          _selectedScreen = SubCategorySideScreen();
         });
         break;
 
@@ -107,6 +113,11 @@ class _WebDeviceViewState extends State<WebDeviceView> {
           AdminMenuItem(
             title: 'Categories',
             route: CategorySideScreen.routeName,
+            icon: Icons.category_outlined,
+          ),
+          AdminMenuItem(
+            title: 'SubCategories',
+            route: SubCategorySideScreen.routeName,
             icon: Icons.category_outlined,
           ),
           AdminMenuItem(

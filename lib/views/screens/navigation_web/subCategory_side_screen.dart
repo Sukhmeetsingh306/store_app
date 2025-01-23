@@ -1,30 +1,34 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:store_app/components/code/text/googleFonts.dart';
-import 'package:store_app/components/code/webImageInput_code.dart';
-import 'package:store_app/views/screens/navigation_web/widget/category_widget.dart';
+import 'package:store_app/controllers/subCategory_controllers.dart';
+import 'package:store_app/views/screens/navigation_web/widget/dropDown_widget.dart/subCategory_dropDown_widget.dart';
+import 'package:store_app/views/screens/navigation_web/widget/subCategory_widget.dart';
 
 import '../../../components/code/button_code.dart';
 import '../../../components/code/divider_code.dart';
 import '../../../components/code/sized_space_code.dart';
-import '../../../controllers/category_controllers.dart';
+import '../../../components/code/text/googleFonts.dart';
+import '../../../components/code/webImageInput_code.dart';
+import '../../../models/api/category_api_models.dart';
 
-class CategorySideScreen extends StatefulWidget {
-  static const String routeName = '/categoryScreen';
-  const CategorySideScreen({super.key});
+class SubCategorySideScreen extends StatefulWidget {
+  static const String routeName = '/subCategoryScreen';
+
+  const SubCategorySideScreen({super.key});
 
   @override
-  State<CategorySideScreen> createState() => _CategorySideScreenState();
+  State<SubCategorySideScreen> createState() => _SubCategorySideScreenState();
 }
 
-class _CategorySideScreenState extends State<CategorySideScreen> {
+class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
+  final SubCategoryControllers subCategoryController = SubCategoryControllers();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final CategoryControllers _categoryController = CategoryControllers();
 
-  late String categoryName;
+  late String subCategoryName;
+
+  CategoryApiModels? selectedCategory;
 
   dynamic _categoryImage;
-  dynamic _bannerImage;
 
   bool _isLoading = false;
   bool _isSnackBarVisible = false;
@@ -46,15 +50,6 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
         print('Image uploaded');
       });
     }
-  }
-
-  Widget elevatedButtonCategory(ValueSetter<dynamic> image) {
-    return elevatedButton(
-      () {
-        uploadImage(image);
-      },
-      'Upload Image',
-    );
   }
 
   void reloadWidget() {
@@ -91,6 +86,18 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
                     ),
                   ),
                   divider(),
+                  SubCategoryDropDownWidget(
+                    onCategorySelected: (category) {
+                      setState(() {
+                        selectedCategory = category;
+                      });
+                    },
+                  ),
+                  sizedBoxMediaQuery(
+                    context,
+                    width: 0,
+                    height: 0.01,
+                  ),
                   Row(
                     children: [
                       webImageInput(
@@ -104,7 +111,7 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
                           width: mediaQueryWidth * 0.15,
                           child: TextFormField(
                             onChanged: (value) {
-                              categoryName = value;
+                              subCategoryName = value;
                             },
                             validator: (value) {
                               if (value == null ||
@@ -136,7 +143,8 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
                           setState(() {
                             _isLoading = true;
                           });
-                          if (_bannerImage == null || _categoryImage == null) {
+
+                          if (_categoryImage == null) {
                             if (!_isSnackBarVisible) {
                               _isSnackBarVisible = true;
                               ScaffoldMessenger.of(context)
@@ -156,27 +164,48 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
                             });
                             return;
                           }
+
+                          if (selectedCategory == null) {
+                            if (!_isSnackBarVisible) {
+                              _isSnackBarVisible = true;
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(
+                                    SnackBar(
+                                      content: Text('Please select a category'),
+                                      duration: Duration(seconds: 2),
+                                    ),
+                                  )
+                                  .closed
+                                  .then((_) {
+                                _isSnackBarVisible = false;
+                              });
+                            }
+                            setState(() {
+                              _isLoading = false;
+                            });
+                            return;
+                          }
+
                           if (_formKey.currentState!.validate()) {
-                            print(categoryName);
-                            _categoryController.uploadCategory(
-                              pickedImage: _categoryImage,
-                              pickedBanner: _bannerImage,
-                              categoryName: categoryName,
+                            await subCategoryController.uploadSubCategory(
+                              categoryId: selectedCategory!.categoryId,
+                              categoryName: selectedCategory!.categoryName,
+                              subCategoryName: subCategoryName,
+                              subCategoryPickedImage: _categoryImage,
                               context: context,
                             );
 
                             dynamic newImage = await simulateImageUpload();
                             setState(() {
+                              _formKey.currentState!.reset();
                               _categoryImage = newImage;
-                              _bannerImage = newImage;
                               _isLoading = false;
                             });
 
                             reloadWidget(); // Only called when validation passes
                           } else {
                             setState(() {
-                              _isLoading =
-                                  false; // Reset loading if validation fails
+                              _isLoading = false;
                             });
                           }
                         },
@@ -189,29 +218,20 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
                     width: 0,
                     height: 0.02,
                   ),
-                  elevatedButtonCategory(
-                    (image) {
-                      _categoryImage = image;
+                  elevatedButton(
+                    () {
+                      uploadImage(
+                        (img) {
+                          setState(() {
+                            _categoryImage = img;
+                          });
+                        },
+                      );
                     },
+                    "Upload Image",
                   ),
                   divider(),
-                  webImageInput(
-                    _bannerImage,
-                    'Banner Image',
-                    context,
-                  ),
-                  sizedBoxMediaQuery(
-                    context,
-                    width: 0,
-                    height: 0.02,
-                  ),
-                  elevatedButtonCategory(
-                    (image) {
-                      _bannerImage = image;
-                    },
-                  ),
-                  divider(),
-                  CategoryWidget(),
+                  SubCategoryWidget(),
                 ],
               ),
             ),
