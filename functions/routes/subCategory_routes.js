@@ -1,5 +1,6 @@
 import express from "express";
 import { SubCategory } from "../models/subCategory_models.js";
+import Category from "../models/category_models.js"; // Ensure this is imported
 
 const subCategoryRouter = express.Router();
 
@@ -9,20 +10,46 @@ subCategoryRouter
     try {
       const { categoryId, categoryName, subCategoryImage, subCategoryName } =
         req.body;
+
+      console.log("Request Body:", req.body);
+
+      if (!categoryName || !subCategoryName) {
+        return res.status(400).json({
+          error: "Missing required fields: categoryName or subCategoryName",
+        });
+      }
+
+      let resolvedCategoryId = categoryId;
+
+      // Lookup categoryId if not provided
+      if (!categoryId) {
+        const category = await Category.findOne({ categoryName });
+        if (!category) {
+          return res.status(404).json({
+            error: `Category with name "${categoryName}" not found`,
+          });
+        }
+        resolvedCategoryId = category._id;
+      }
+
       const newSubCategory = new SubCategory({
-        categoryId,
+        categoryId: resolvedCategoryId,
         categoryName,
         subCategoryImage,
         subCategoryName,
       });
+
+      console.log("Creating SubCategory...");
       await newSubCategory.save();
-      console.log("SubCategory", newSubCategory, "saved successfully");
+      console.log("SubCategory saved successfully:", newSubCategory);
+
       return res.status(201).json(newSubCategory);
     } catch (e) {
-      console.log("Error in creating SubCategory", e);
+      console.error("Error in creating SubCategory:", e.errors || e.message);
       return res.status(400).json({ error: e.message });
     }
   })
+
   .get(async (req, res) => {
     try {
       const subCategories = await SubCategory.find();
@@ -34,7 +61,6 @@ subCategoryRouter
     }
   });
 
-// Create a this get request here as this is working on the same category as the adding the category
 subCategoryRouter
   .route("/api/category/:categoryName/subCategories")
   .get(async (req, res) => {
@@ -42,7 +68,7 @@ subCategoryRouter
     try {
       const subCategories = await SubCategory.find({ categoryName });
 
-      if (!subCategories || subCategories.length == 0) {
+      if (!subCategories || subCategories.length === 0) {
         return res.status(404).json({
           message: `No subcategories found for category ${categoryName}`,
         });

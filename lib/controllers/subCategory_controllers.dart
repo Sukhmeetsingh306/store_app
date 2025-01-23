@@ -43,7 +43,7 @@ class SubCategoryControllers {
         Uri.parse("$webUri/api/subCategory"),
         body: subCategory.subCategoryToJson(),
         headers: <String, String>{
-          "Content-Type": "application/json; charset=UTF-8"
+          "content-Type": "application/json; charset=UTF-8"
         },
       );
 
