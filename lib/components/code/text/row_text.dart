@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../color/color_theme.dart';
 import 'googleFonts.dart';
 
 class RowTextSands extends StatelessWidget {
@@ -22,6 +23,7 @@ class RowTextSands extends StatelessWidget {
         googleTextSands(
           subTitle,
           fontWeight: FontWeight.w600,
+          color: ColorTheme.color.dodgerBlue,
         ),
       ],
     );
