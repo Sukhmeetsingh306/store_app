@@ -61,8 +61,12 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 3.0),
                       child: Image.network(
-                        width: MediaQuery.of(context).size.width * 0.2,
-                        height: MediaQuery.of(context).size.height * 0.15,
+                        width: defaultTargetPlatform == TargetPlatform.iOS
+                            ? MediaQuery.of(context).size.width * 1
+                            : MediaQuery.of(context).size.width * 0.2,
+                        height: defaultTargetPlatform == TargetPlatform.iOS
+                            ? MediaQuery.of(context).size.height * 1
+                            : MediaQuery.of(context).size.height * 0.18,
                         category.categoryImage,
                       ),
                     ),
@@ -71,7 +75,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                     child: googleTextSands(
                       category.categoryName,
                       fontWeight: FontWeight.bold,
-                      fontSize: 19,
+                      fontSize: 16,
                     ),
                   ),
                 ],
