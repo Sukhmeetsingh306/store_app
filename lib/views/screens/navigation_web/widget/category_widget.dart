@@ -7,7 +7,9 @@ import '../../../../components/code/text/row_text.dart';
 import '../../../../controllers/category_controllers.dart';
 
 class CategoryWidget extends StatefulWidget {
-  const CategoryWidget({super.key});
+  final bool listView;
+
+  const CategoryWidget({super.key, this.listView = false});
 
   @override
   State<CategoryWidget> createState() => _CategoryWidgetState();
@@ -28,7 +30,8 @@ class _CategoryWidgetState extends State<CategoryWidget> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (defaultTargetPlatform == TargetPlatform.iOS)
+        if (defaultTargetPlatform == TargetPlatform.iOS &&
+            widget.listView == false)
           RowTextSands(
             title: 'Categories:',
             subTitle: ' View All',
@@ -50,6 +53,11 @@ class _CategoryWidgetState extends State<CategoryWidget> {
               );
             } else {
               final categoryCount = snapshot.data!;
+              if (widget.listView == true) {
+                return Center(
+                  child: Text('Hello'),
+                );
+              }
               return GridView.builder(
                 padding: const EdgeInsets.only(top: 10),
                 itemCount: categoryCount.length,
