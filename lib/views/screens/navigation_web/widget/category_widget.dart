@@ -26,19 +26,12 @@ class _CategoryWidgetState extends State<CategoryWidget> {
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment:
-          CrossAxisAlignment.start, // Aligns content tightly to the start
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (defaultTargetPlatform == TargetPlatform.iOS)
-          Padding(
-            padding: const EdgeInsets.only(
-              bottom: 8.0,
-              left: 16,
-            ),
-            child: RowTextSands(
-              title: 'Categories:',
-              subTitle: ' View All',
-            ),
+          RowTextSands(
+            title: 'Categories:',
+            subTitle: ' View All',
           ),
         FutureBuilder(
           future: futureCategory,

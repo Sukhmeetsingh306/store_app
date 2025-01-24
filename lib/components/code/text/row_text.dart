@@ -13,19 +13,32 @@ class RowTextSands extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        googleTextSands(
-          title,
-          fontWeight: FontWeight.w600,
-        ),
-        googleTextSands(
-          subTitle,
-          fontWeight: FontWeight.w600,
-          color: ColorTheme.color.dodgerBlue,
-        ),
-      ],
+  Widget build(
+    BuildContext context, {
+    double? bottom,
+    double? left,
+    double? right,
+  }) {
+    return Padding(
+      padding: EdgeInsets.only(
+        bottom: bottom ?? 3.0,
+        left: left ?? 18,
+        right: right ?? 18,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          googleTextSands(
+            title,
+            fontWeight: FontWeight.bold,
+          ),
+          googleTextSands(
+            subTitle,
+            fontWeight: FontWeight.bold,
+            color: ColorTheme.color.dodgerBlue,
+          ),
+        ],
+      ),
     );
   }
 }
