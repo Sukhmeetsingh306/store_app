@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../controllers/category_controllers.dart';
+import '../../../models/api/category_api_models.dart';
 import 'widgets/header_widget_screen.dart';
 
 class CategoryNavigationScreen extends StatefulWidget {
@@ -10,6 +12,14 @@ class CategoryNavigationScreen extends StatefulWidget {
 }
 
 class _CategoryNavigationScreenState extends State<CategoryNavigationScreen> {
+  late Future<List<CategoryApiModels>> futureCategory;
+
+  @override
+  void initState() {
+    super.initState();
+    futureCategory = CategoryControllers().fetchCategory();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
