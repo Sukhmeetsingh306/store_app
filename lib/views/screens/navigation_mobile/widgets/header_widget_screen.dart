@@ -15,6 +15,7 @@ class HeaderWidgetScreen extends StatelessWidget {
       child: Stack(
         children: [
           Image.asset(
+            //'assets/images/arrow.png',
             'assets/images/arrow.png',
             width: mediaQueryWidth,
             //height: _mediaQueryHeight * 0.3,
@@ -62,14 +63,15 @@ class HeaderWidgetScreen extends StatelessWidget {
                   width: 35,
                   height: 35,
                   decoration: BoxDecoration(
-                  color: Colors.transparent, // Set a background color if needed
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  Icons.notifications_active_outlined,
-                  size: 28, // Adjust the size as needed
-                  color: ColorTheme.color.whiteColor,
-                ),
+                    color:
+                        Colors.transparent, // Set a background color if needed
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.notifications_active_outlined,
+                    size: 28, // Adjust the size as needed
+                    color: ColorTheme.color.whiteColor,
+                  ),
                 ),
               ),
             ),
@@ -85,14 +87,15 @@ class HeaderWidgetScreen extends StatelessWidget {
                   width: 35,
                   height: 35,
                   decoration: BoxDecoration(
-                  color: Colors.transparent, // Set a background color if needed
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  Icons.messenger_outline_outlined,
-                  size: 28, // Adjust the size as needed
-                  color: ColorTheme.color.whiteColor,
-                ),
+                    color:
+                        Colors.transparent, // Set a background color if needed
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.messenger_outline_outlined,
+                    size: 28, // Adjust the size as needed
+                    color: ColorTheme.color.whiteColor,
+                  ),
                 ),
               ),
             ),
