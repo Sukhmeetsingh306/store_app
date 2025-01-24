@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:store_app/models/api/category_api_models.dart';
 
 import '../../../../components/code/text/googleFonts.dart';
+import '../../../../components/code/text/row_text.dart';
 import '../../../../controllers/category_controllers.dart';
 
 class CategoryWidget extends StatefulWidget {
@@ -23,67 +24,85 @@ class _CategoryWidgetState extends State<CategoryWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: futureCategory,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
-        } else if (snapshot.hasError) {
-          return errormessage("Error: ${snapshot.error}");
-        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return Center(
-            child: googleText(
-              "No Category found",
-              fontWeight: FontWeight.normal,
-              fontSize: 18,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment:
+          CrossAxisAlignment.start, // Aligns content tightly to the start
+      children: [
+        if (defaultTargetPlatform == TargetPlatform.iOS)
+          Padding(
+            padding: const EdgeInsets.only(
+              bottom: 8.0,
+              left: 16,
             ),
-          );
-        } else {
-          final categoryCount = snapshot.data!;
-          return GridView.builder(
-            itemCount: categoryCount.length,
-            shrinkWrap: true,
-            physics: defaultTargetPlatform == TargetPlatform.iOS
-                ? NeverScrollableScrollPhysics()
-                : null,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: defaultTargetPlatform == TargetPlatform.iOS
-                  ? 4 // ios
-                  : 6, // web
-              crossAxisSpacing: 15,
-              mainAxisSpacing: 8,
+            child: RowTextSands(
+              title: 'Categories:',
+              subTitle: ' View All',
             ),
-            itemBuilder: (context, index) {
-              final category = categoryCount[index];
-              return Column(
-                children: [
-                  Flexible(
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 3.0),
-                      child: Image.network(
-                        width: defaultTargetPlatform == TargetPlatform.iOS
-                            ? MediaQuery.of(context).size.width * 1
-                            : MediaQuery.of(context).size.width * 0.2,
-                        height: defaultTargetPlatform == TargetPlatform.iOS
-                            ? MediaQuery.of(context).size.height * 1
-                            : MediaQuery.of(context).size.height * 0.18,
-                        category.categoryImage,
-                      ),
-                    ),
-                  ),
-                  Flexible(
-                    child: googleTextSands(
-                      category.categoryName,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                ],
+          ),
+        FutureBuilder(
+          future: futureCategory,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator();
+            } else if (snapshot.hasError) {
+              return errormessage("Error: ${snapshot.error}");
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return Center(
+                child: googleText(
+                  "No Category found",
+                  fontWeight: FontWeight.normal,
+                  fontSize: 18,
+                ),
               );
-            },
-          );
-        }
-      },
+            } else {
+              final categoryCount = snapshot.data!;
+              return GridView.builder(
+                padding: const EdgeInsets.only(top: 10),
+                itemCount: categoryCount.length,
+                shrinkWrap: true,
+                physics: defaultTargetPlatform == TargetPlatform.iOS
+                    ? NeverScrollableScrollPhysics()
+                    : null,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: defaultTargetPlatform == TargetPlatform.iOS
+                      ? 4 // ios
+                      : 6, // web
+                  crossAxisSpacing: 15,
+                  mainAxisSpacing: 8,
+                ),
+                itemBuilder: (context, index) {
+                  final category = categoryCount[index];
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Flexible(
+                        child: Image.network(
+                          width: defaultTargetPlatform == TargetPlatform.iOS
+                              ? MediaQuery.of(context).size.width * 0.15
+                              : MediaQuery.of(context).size.width * 0.2,
+                          height: defaultTargetPlatform == TargetPlatform.iOS
+                              ? MediaQuery.of(context).size.height * 0.15
+                              : MediaQuery.of(context).size.height * 0.10,
+                          category.categoryImage,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      Flexible(
+                        child: googleTextSands(
+                          category.categoryName,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              );
+            }
+          },
+        ),
+      ],
     );
   }
 }
