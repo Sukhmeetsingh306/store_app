@@ -30,6 +30,17 @@ class _CategoryWidgetState extends State<CategoryWidget> {
   void initState() {
     super.initState();
     futureCategory = CategoryControllers().fetchCategory();
+
+    futureCategory.then((categories){
+      for(var category in categories){
+        if(category.categoryName == "Fashion"){ // make the code that it pick the every first category
+          setState(() {
+            _selectedCategory= category;
+          });
+          _loadSubCategory(category.categoryName);
+        }
+      }
+    });
   }
 
   Future<void> _loadSubCategory(String categoryName) async {
