@@ -4,6 +4,7 @@ import 'package:store_app/models/api/category_api_models.dart';
 
 import '../../../../components/code/text/googleFonts.dart';
 import '../../../../components/code/text/row_text.dart';
+import '../../../../components/color/color_theme.dart';
 import '../../../../controllers/category_controllers.dart';
 
 class CategoryWidget extends StatefulWidget {
@@ -17,6 +18,7 @@ class CategoryWidget extends StatefulWidget {
 
 class _CategoryWidgetState extends State<CategoryWidget> {
   late Future<List<CategoryApiModels>> futureCategory;
+  CategoryApiModels? _selectedCategory;
 
   @override
   void initState() {
@@ -54,8 +56,28 @@ class _CategoryWidgetState extends State<CategoryWidget> {
             } else {
               final categoryCount = snapshot.data!;
               if (widget.listView == true) {
-                return Center(
-                  child: Text('Hello'),
+                return ListView.builder(
+                  shrinkWrap: true, // Add this
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: categoryCount.length,
+                  itemBuilder: (context, index) {
+                    final category = categoryCount[index];
+                    return ListTile(
+                      onTap: () {
+                        setState(() {
+                          _selectedCategory = category;
+                        });
+                      },
+                      title: googleTextSands(
+                        category.categoryName,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: _selectedCategory == category
+                            ? ColorTheme.color.dodgerBlue
+                            : ColorTheme.color.blackColor,
+                      ),
+                    );
+                  },
                 );
               }
               return GridView.builder(
