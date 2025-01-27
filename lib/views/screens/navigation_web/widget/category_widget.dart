@@ -56,28 +56,39 @@ class _CategoryWidgetState extends State<CategoryWidget> {
             } else {
               final categoryCount = snapshot.data!;
               if (widget.listView == true) {
-                return ListView.builder(
-                  shrinkWrap: true, // Add this
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: categoryCount.length,
-                  itemBuilder: (context, index) {
-                    final category = categoryCount[index];
-                    return ListTile(
-                      onTap: () {
-                        setState(() {
-                          _selectedCategory = category;
-                        });
-                      },
-                      title: googleTextSands(
-                        category.categoryName,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: _selectedCategory == category
-                            ? ColorTheme.color.dodgerBlue
-                            : ColorTheme.color.blackColor,
+                return SingleChildScrollView(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.7,
+                          child: ListView.builder(
+                            itemCount: categoryCount.length,
+                            itemBuilder: (context, index) {
+                              final category = categoryCount[index];
+                              return ListTile(
+                                onTap: () {
+                                  setState(() {
+                                    _selectedCategory = category;
+                                  });
+                                },
+                                title: googleTextSands(
+                                  category.categoryName,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: _selectedCategory == category
+                                      ? ColorTheme.color.dodgerBlue
+                                      : ColorTheme.color.blackColor,
+                                ),
+                              );
+                            },
+                          ),
+                        ),
                       ),
-                    );
-                  },
+                      
+                    ],
+                  ),
                 );
               }
               return GridView.builder(
