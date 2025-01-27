@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:store_app/controllers/subCategory_controllers.dart';
 import 'package:store_app/models/api/category_api_models.dart';
+import 'package:store_app/models/api/subCategory_api_models.dart';
 
 import '../../../../components/code/text/googleFonts.dart';
 import '../../../../components/code/text/row_text.dart';
@@ -20,10 +22,22 @@ class _CategoryWidgetState extends State<CategoryWidget> {
   late Future<List<CategoryApiModels>> futureCategory;
   CategoryApiModels? _selectedCategory;
 
+  List<SubCategoryApiModels> _subCategory = [];
+  final SubCategoryControllers _subCategoryControllers =
+      SubCategoryControllers();
+
   @override
   void initState() {
     super.initState();
     futureCategory = CategoryControllers().fetchCategory();
+  }
+
+  Future<void> _loadSubCategory(String categoryName) async {
+    final subCategory = await _subCategoryControllers
+        .getSubCategoryByCategoryName(categoryName);
+    setState(() {
+      _subCategory = subCategory;
+    });
   }
 
   @override
@@ -77,6 +91,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                                   setState(() {
                                     _selectedCategory = category;
                                   });
+                                  _loadSubCategory(category.categoryName);
                                 },
                                 title: googleTextSands(
                                   category.categoryName,
@@ -118,6 +133,56 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                                       ),
                                     ),
                                   ),
+                                  _subCategory.isNotEmpty
+                                      ? GridView.builder(
+                                          padding: const EdgeInsets.all(4),
+                                          shrinkWrap: true,
+                                          itemCount: _subCategory.length,
+                                          gridDelegate:
+                                              SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: 3,
+                                            mainAxisSpacing: 4,
+                                            crossAxisSpacing: 8,
+                                          ),
+                                          itemBuilder: (context, index) {
+                                            final subCategory =
+                                                _subCategory[index];
+
+                                            return Column(
+                                              children: [
+                                                Container(
+                                                  width: 50,
+                                                  height: 50,
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.grey[200],
+                                                  ),
+                                                  child: Center(
+                                                    child: Image.network(
+                                                      subCategory
+                                                          .subCategoryImage,
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Center(
+                                                  child: googleTextSands(
+                                                    subCategory.subCategoryName,
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        )
+                                      : Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Center(
+                                            child: googleTextSands(
+                                              'No Sub-Category',
+                                              fontSize: 18,
+                                              letterSpacing: 1.5,
+                                            ),
+                                          ),
+                                        ),
                                 ],
                               )
                             : Container(
