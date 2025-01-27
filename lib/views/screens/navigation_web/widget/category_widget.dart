@@ -55,14 +55,19 @@ class _CategoryWidgetState extends State<CategoryWidget> {
               );
             } else {
               final categoryCount = snapshot.data!;
+//MARK: Code for mobile category screen
               if (widget.listView == true) {
                 return SingleChildScrollView(
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Expanded(
-                        flex: 2,
-                        child: SizedBox(
+                        flex: 1,
+                        child: Container(
+                          color: Colors.grey.shade300,
                           height: MediaQuery.of(context).size.height * 0.7,
+                          width: MediaQuery.of(context).size.width * 0.02,
                           child: ListView.builder(
                             itemCount: categoryCount.length,
                             itemBuilder: (context, index) {
@@ -86,11 +91,47 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                           ),
                         ),
                       ),
-                      
+                      Expanded(
+                        flex: 2,
+                        child: _selectedCategory != null
+                            ? Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: googleTextSands(
+                                      _selectedCategory!.categoryName,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                      letterSpacing: 1.7,
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 150,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: NetworkImage(
+                                          _selectedCategory!.categoryBanner,
+                                        ),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : Container(
+                                color: Colors.grey.shade300,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.7,
+                                width: MediaQuery.of(context).size.width * 0.02,
+                              ),
+                      ),
                     ],
                   ),
                 );
               }
+//MARK: Code for Web View
               return GridView.builder(
                 padding: const EdgeInsets.only(top: 10),
                 itemCount: categoryCount.length,
