@@ -19,11 +19,8 @@ class CategoryNavigationScreen extends StatelessWidget {
         children: [
           Expanded(
             flex: 2,
-            child: Container(
-              color: Colors.grey.shade300,
-              child: CategoryWidget(
-                listView: true,
-              ),
+            child: CategoryWidget(
+              listView: true,
             ),
           ),
         ],
