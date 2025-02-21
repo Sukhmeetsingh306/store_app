@@ -7,7 +7,15 @@ import '../../../../components/code/text/googleFonts.dart';
 import '../../../../models/api/subCategory_api_models.dart';
 
 class SubCategoryWidget extends StatefulWidget {
-  const SubCategoryWidget({super.key});
+  final Future<List<SubCategoryApiModels>>? future;
+  final int? crossAxisCount;
+  final double? crossAxisSpacing;
+  const SubCategoryWidget({
+    super.key,
+    this.future,
+    this.crossAxisCount,
+    this.crossAxisSpacing,
+  });
 
   @override
   State<SubCategoryWidget> createState() => _SubCategoryWidgetState();
@@ -23,9 +31,11 @@ class _SubCategoryWidgetState extends State<SubCategoryWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(
+    BuildContext context,
+  ) {
     return FutureBuilder(
-      future: futureSubCategory,
+      future: widget.future ?? futureSubCategory,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator();
@@ -45,8 +55,8 @@ class _SubCategoryWidgetState extends State<SubCategoryWidget> {
             itemCount: subCategoryCount.length,
             shrinkWrap: true,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 6,
-              crossAxisSpacing: 15,
+              crossAxisCount: widget.crossAxisCount ?? 6,
+              crossAxisSpacing: widget.crossAxisSpacing ?? 15,
               mainAxisSpacing: 8,
             ),
             itemBuilder: (context, index) {
