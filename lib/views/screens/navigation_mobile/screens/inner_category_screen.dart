@@ -37,6 +37,7 @@ class _InnerCategoryScreenState extends State<InnerCategoryScreen> {
         backOnPressed: () => pop(context),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           bannerImageMobileWidget(context, widget.category.categoryBanner),
           Center(
@@ -50,8 +51,6 @@ class _InnerCategoryScreenState extends State<InnerCategoryScreen> {
             padding: const EdgeInsets.all(10.0),
             child: SubCategoryWidget(
               future: subCategoryModel,
-              crossAxisCount: 4,
-              crossAxisSpacing: 4,
             ),
           ),
         ],

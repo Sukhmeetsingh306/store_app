@@ -35,6 +35,25 @@ Text googleTextSands(
   );
 }
 
+Text googleTextRob(
+  String text, {
+  FontWeight? fontWeight,
+  double? fontSize,
+  double? letterSpacing,
+  Color? color,
+}) {
+  return Text(
+    text,
+    overflow: TextOverflow.ellipsis,
+    style: GoogleFonts.roboto(
+      color: color ?? Colors.black,
+      fontWeight: fontWeight ?? FontWeight.w600,
+      letterSpacing: letterSpacing ?? 0.2,
+      fontSize: fontSize ?? 12, //
+    ),
+  );
+}
+
 TextStyle googleFonts({
   double? fontSize,
   FontWeight? fontWeight,
