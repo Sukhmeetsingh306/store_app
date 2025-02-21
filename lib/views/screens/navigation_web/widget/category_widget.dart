@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:store_app/controllers/subCategory_controllers.dart';
 import 'package:store_app/models/api/category_api_models.dart';
 import 'package:store_app/models/api/subCategory_api_models.dart';
+import 'package:store_app/models/navigate_models.dart';
+import 'package:store_app/views/screens/navigation_mobile/screens/inner_category_screen.dart';
 
 import '../../../../components/code/text/googleFonts.dart';
 import '../../../../components/code/text/row_text.dart';
@@ -31,11 +33,12 @@ class _CategoryWidgetState extends State<CategoryWidget> {
     super.initState();
     futureCategory = CategoryControllers().fetchCategory();
 
-    futureCategory.then((categories){
-      for(var category in categories){
-        if(category.categoryName == "Fashion"){ // make the code that it pick the every first category
+    futureCategory.then((categories) {
+      for (var category in categories) {
+        if (category.categoryName == "Fashion") {
+          // make the code that it pick the every first category
           setState(() {
-            _selectedCategory= category;
+            _selectedCategory = category;
           });
           _loadSubCategory(category.categoryName);
         }
@@ -224,29 +227,37 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                 ),
                 itemBuilder: (context, index) {
                   final category = categoryCount[index];
-                  return Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Flexible(
-                        child: Image.network(
-                          width: defaultTargetPlatform == TargetPlatform.iOS
-                              ? MediaQuery.of(context).size.width * 0.15
-                              : MediaQuery.of(context).size.width * 0.2,
-                          height: defaultTargetPlatform == TargetPlatform.iOS
-                              ? MediaQuery.of(context).size.height * 0.15
-                              : MediaQuery.of(context).size.height * 0.10,
-                          category.categoryImage,
-                          fit: BoxFit.cover,
-                        ),
+                  return InkWell(
+                    onTap: () => materialRouteNavigator(
+                      context,
+                      InnerCategoryScreen(
+                        category: category,
                       ),
-                      Flexible(
-                        child: googleTextSands(
-                          category.categoryName,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Flexible(
+                          child: Image.network(
+                            width: defaultTargetPlatform == TargetPlatform.iOS
+                                ? MediaQuery.of(context).size.width * 0.15
+                                : MediaQuery.of(context).size.width * 0.2,
+                            height: defaultTargetPlatform == TargetPlatform.iOS
+                                ? MediaQuery.of(context).size.height * 0.15
+                                : MediaQuery.of(context).size.height * 0.10,
+                            category.categoryImage,
+                            fit: BoxFit.cover,
+                          ),
                         ),
-                      ),
-                    ],
+                        Flexible(
+                          child: googleTextSands(
+                            category.categoryName,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    ),
                   );
                 },
               );
