@@ -21,9 +21,9 @@ class InnerCategoryScreen extends StatefulWidget {
 }
 
 class _InnerCategoryScreenState extends State<InnerCategoryScreen> {
+  int mobilePagesIndex = 0;
   @override
   Widget build(BuildContext context) {
-    int mobilePagesIndex = 0;
     final List<Widget> mobilePages = [
       InnerCategoryContentWidget(
         category: widget.category,

@@ -39,11 +39,15 @@ class _SubCategoryWidgetState extends State<SubCategoryWidget> {
         } else if (snapshot.hasError) {
           return errormessage("Error: ${snapshot.error}");
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return Center(
-            child: googleText(
-              "No Sub Category found",
-              fontWeight: FontWeight.normal,
-              fontSize: 18,
+          return Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Center(
+              child: googleTextRob(
+                "No Sub Category ",
+                fontWeight: FontWeight.normal,
+                fontSize: 16,
+                letterSpacing: 1.4,
+              ),
             ),
           );
         } else {

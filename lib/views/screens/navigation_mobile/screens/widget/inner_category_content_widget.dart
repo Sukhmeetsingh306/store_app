@@ -39,7 +39,7 @@ class _InnerCategoryContentWidgetState
           bannerImageMobileWidget(context, widget.category.categoryBanner),
           Center(
             child: googleTextSands(
-              'Shop by SubCategory',
+              'Shop by Category',
               fontSize: 19,
               letterSpacing: 1.4,
             ),
