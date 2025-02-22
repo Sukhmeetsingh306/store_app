@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:store_app/components/code/text/googleFonts.dart';
-import 'package:store_app/controllers/subCategory_controllers.dart';
 import 'package:store_app/models/api/category_api_models.dart';
-import 'package:store_app/models/api/subCategory_api_models.dart';
-import 'package:store_app/models/navigate_models.dart';
-import 'package:store_app/views/screens/navigation_web/widget/subCategory_widget.dart';
 
+import '../../../../components/color/color_theme.dart';
+import '../../../../models/image_model.dart';
+import '../../../../models/navigate_models.dart';
+import '../account__navigation_screen.dart';
+import '../cart_navigation_screen.dart';
+import '../category_navigation_screen.dart';
+import '../fav_navigation_screen.dart';
+import '../store_navigation_screen.dart';
 import '../widgets/header_widget_screen.dart';
-import 'widget/banner_mobile_widget.dart';
+import 'widget/inner_category_content_widget.dart';
 
 class InnerCategoryScreen extends StatefulWidget {
   final CategoryApiModels category;
@@ -18,43 +21,65 @@ class InnerCategoryScreen extends StatefulWidget {
 }
 
 class _InnerCategoryScreenState extends State<InnerCategoryScreen> {
-  late Future<List<SubCategoryApiModels>> subCategoryModel;
-  final SubCategoryControllers subCategoryControllers =
-      SubCategoryControllers();
-
-  @override
-  void initState() {
-    super.initState();
-    subCategoryModel = subCategoryControllers
-        .getSubCategoryByCategoryName(widget.category.categoryName);
-  }
-
   @override
   Widget build(BuildContext context) {
+    int mobilePagesIndex = 0;
+    final List<Widget> mobilePages = [
+      InnerCategoryContentWidget(
+        category: widget.category,
+      ),
+      FavNavigationScreen(),
+      CategoryNavigationScreen(),
+      StoreNavigationScreen(),
+      CartNavigationScreen(),
+      AccountNavigationScreen(),
+    ];
     return Scaffold(
       appBar: detailHeaderWidget(
         context,
         backOnPressed: () => pop(context),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          bannerImageMobileWidget(context, widget.category.categoryBanner),
-          Center(
-            child: googleTextSands(
-              'Shop by SubCategory',
-              fontSize: 19,
-              letterSpacing: 1.4,
-            ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        currentIndex: mobilePagesIndex,
+        selectedItemColor: ColorTheme.color.deepPuceColor,
+        selectedFontSize: 14,
+        unselectedFontSize: 12,
+        unselectedItemColor: ColorTheme.color.grayColor,
+        onTap: (value) => setState(
+          () {
+            mobilePagesIndex = value;
+          },
+        ),
+        items: [
+          bottomBarItem(
+            Icon(Icons.home_outlined),
+            'Home',
           ),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: SubCategoryWidget(
-              future: subCategoryModel,
-            ),
+          bottomBarItem(
+            Icon(Icons.favorite_border_outlined),
+            'Favorite',
+          ),
+          bottomBarItem(
+            Icon(Icons.category_outlined),
+            'Categories',
+          ),
+          bottomBarItem(
+            Icon(Icons.shopping_bag_outlined),
+            'Stores',
+          ),
+          bottomBarItem(
+            Icon(Icons.shopping_cart_outlined),
+            'Cart',
+          ),
+          bottomBarItem(
+            Icon(Icons.account_circle_outlined),
+            'Account',
           ),
         ],
+        elevation: 5,
       ),
+      body: mobilePages[mobilePagesIndex],
     );
   }
 }
