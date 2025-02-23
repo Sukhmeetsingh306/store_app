@@ -123,81 +123,87 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                       Expanded(
                         flex: 2,
                         child: _selectedCategory != null
-                            ? Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: googleTextSands(
-                                      _selectedCategory!.categoryName,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                      letterSpacing: 1.7,
-                                    ),
-                                  ),
-                                  Container(
-                                    height: 150,
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: NetworkImage(
-                                          _selectedCategory!.categoryBanner,
-                                        ),
-                                        fit: BoxFit.cover,
+                            ? SingleChildScrollView(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: googleTextSands(
+                                        _selectedCategory!.categoryName,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                        letterSpacing: 1.7,
                                       ),
                                     ),
-                                  ),
-                                  _subCategory.isNotEmpty
-                                      ? GridView.builder(
-                                          padding: const EdgeInsets.all(4),
-                                          shrinkWrap: true,
-                                          itemCount: _subCategory.length,
-                                          gridDelegate:
-                                              SliverGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisCount: 3,
-                                            mainAxisSpacing: 4,
-                                            crossAxisSpacing: 8,
+                                    Container(
+                                      height: 150,
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: NetworkImage(
+                                            _selectedCategory!.categoryBanner,
                                           ),
-                                          itemBuilder: (context, index) {
-                                            final subCategory =
-                                                _subCategory[index];
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+                                    _subCategory.isNotEmpty
+                                        ? GridView.builder(
+                                            physics:
+                                                NeverScrollableScrollPhysics(),
+                                            padding: const EdgeInsets.all(4),
+                                            shrinkWrap: true,
+                                            itemCount: _subCategory.length,
+                                            gridDelegate:
+                                                SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount: 3,
+                                              mainAxisSpacing: 4,
+                                              crossAxisSpacing: 8,
+                                              childAspectRatio: 2 / 3,
+                                            ),
+                                            itemBuilder: (context, index) {
+                                              final subCategory =
+                                                  _subCategory[index];
 
-                                            return Column(
-                                              children: [
-                                                Container(
-                                                  width: 50,
-                                                  height: 50,
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.grey[200],
-                                                  ),
-                                                  child: Center(
-                                                    child: Image.network(
-                                                      subCategory
-                                                          .subCategoryImage,
-                                                      fit: BoxFit.cover,
+                                              return Column(
+                                                children: [
+                                                  Container(
+                                                    width: 50,
+                                                    height: 50,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.grey[200],
+                                                    ),
+                                                    child: Center(
+                                                      child: Image.network(
+                                                        subCategory
+                                                            .subCategoryImage,
+                                                        fit: BoxFit.cover,
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                                Center(
-                                                  child: googleTextSands(
-                                                    subCategory.subCategoryName,
+                                                  Center(
+                                                    child: googleTextSands(
+                                                      subCategory
+                                                          .subCategoryName,
+                                                    ),
                                                   ),
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        )
-                                      : Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Center(
-                                            child: googleTextSands(
-                                              'No Sub-Category',
-                                              fontSize: 18,
-                                              letterSpacing: 1.5,
+                                                ],
+                                              );
+                                            },
+                                          )
+                                        : Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Center(
+                                              child: googleTextSands(
+                                                'No Sub-Category',
+                                                fontSize: 18,
+                                                letterSpacing: 1.5,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                ],
+                                  ],
+                                ),
                               )
                             : Container(
                                 color: Colors.grey.shade300,
@@ -268,3 +274,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
     );
   }
 }
+
+/*
+
+ */

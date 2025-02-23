@@ -29,7 +29,9 @@ class _InnerCategoryScreenState extends State<InnerCategoryScreen> {
         category: widget.category,
       ),
       FavNavigationScreen(),
-      CategoryNavigationScreen(),
+      CategoryNavigationScreen(
+        hasAppBar: false,
+      ),
       StoreNavigationScreen(),
       CartNavigationScreen(),
       AccountNavigationScreen(),
