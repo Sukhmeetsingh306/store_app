@@ -4,6 +4,7 @@ import 'package:store_app/components/color/color_theme.dart';
 
 import '../screens/navigation_mobile/account__navigation_screen.dart';
 import '../screens/navigation_mobile/cart_navigation_screen.dart';
+import '../screens/navigation_mobile/category_navigation_screen.dart';
 import '../screens/navigation_mobile/fav_navigation_screen.dart';
 import '../screens/navigation_mobile/home_navigation_screen.dart';
 import '../screens/navigation_mobile/store_navigation_screen.dart';
@@ -20,6 +21,7 @@ class _MobileDeviceState extends State<MobileDevice> {
   final List<Widget> _mobilePages = [
     HomeNavigationScreen(),
     FavNavigationScreen(),
+    CategoryNavigationScreen(),
     StoreNavigationScreen(),
     CartNavigationScreen(),
     AccountNavigationScreen(),
@@ -55,6 +57,10 @@ class _MobileDeviceState extends State<MobileDevice> {
           bottomBarItem(
             Icon(Icons.favorite_border_outlined),
             'Favorite',
+          ),
+          bottomBarItem(
+            Icon(Icons.category_outlined),
+            'Categories',
           ),
           bottomBarItem(
             Icon(Icons.shopping_bag_outlined),

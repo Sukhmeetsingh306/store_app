@@ -86,4 +86,39 @@ class SubCategoryControllers {
       return [];
     }
   }
+
+  // Fetching the specific subCategory for the ios device
+  Future<List<SubCategoryApiModels>> getSubCategoryByCategoryName(
+      String categoryName) async {
+    try {
+      http.Response response = await http.get(
+        Uri.parse("$webUri/api/category/$categoryName/subCategories"),
+        headers: <String, String>{
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+
+        if (data.isNotEmpty) {
+          return data
+              .map((subCategory) =>
+                  SubCategoryApiModels.subCategoryFromMap(subCategory))
+              .toList();
+        } else {
+          print('Sub Category not found ');
+          return [];
+        }
+      } else if (response.statusCode == 404) {
+        print('Sub Category not found');
+      } else {
+        print("failed to fetch Subcategory");
+      }
+      return [];
+    } catch (e) {
+      print("Error fetching subcategory by category name : $e");
+      return [];
+    }
+  }
 }
