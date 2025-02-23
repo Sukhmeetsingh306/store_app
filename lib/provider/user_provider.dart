@@ -28,8 +28,8 @@ class UserProvider extends StateNotifier<User> {
   void setUser(String userJson) {
     state = User.fromJson(userJson);
   }
-
-  // make the data assailable within the app
-  final userProvider =
-      StateNotifierProvider<UserProvider, User?>((ref) => UserProvider());
 }
+
+// make the data assailable within the app
+final userProvider =
+    StateNotifierProvider<UserProvider, User?>((ref) => UserProvider());

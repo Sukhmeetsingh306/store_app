@@ -25,6 +25,7 @@ dependencies:
   cloudinary_public: ^0.23.1
   riverpod: ^2.6.1
   shared_preferences: ^2.5.2
+  flutter_riverpod: ^2.6.1
 
 dev_dependencies:
   flutter_test:

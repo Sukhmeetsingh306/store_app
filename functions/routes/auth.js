@@ -64,7 +64,7 @@ appAuthSign.route("/api/signin").post(async (req, res) => {
         //remove sensitive information
         const { password, ...userWithoutPassword } = findUser._doc;
 
-        res.json({ token, ...userWithoutPassword });
+        res.json({ token, user: userWithoutPassword }); // sending the user detail with the token as when the user will login that the user detail can be checked by with the tokens
       }
     }
   } catch (err) {

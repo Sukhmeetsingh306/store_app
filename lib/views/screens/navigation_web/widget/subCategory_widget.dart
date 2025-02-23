@@ -35,7 +35,7 @@ class _SubCategoryWidgetState extends State<SubCategoryWidget> {
       future: widget.future ?? futureSubCategory,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return errormessage("Error: ${snapshot.error}");
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
