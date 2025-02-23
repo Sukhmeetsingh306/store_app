@@ -4,17 +4,22 @@ import 'package:store_app/views/screens/navigation_web/widget/category_widget.da
 import 'widgets/header_widget_screen.dart';
 
 class CategoryNavigationScreen extends StatelessWidget {
-  const CategoryNavigationScreen({super.key});
+  final bool hasAppBar;
+
+  const CategoryNavigationScreen({super.key, bool? hasAppBar})
+      : hasAppBar = hasAppBar ?? true; // Ensures hasAppBar is never null
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(
-          MediaQuery.of(context).size.height * 20,
-        ),
-        child: HeaderWidgetScreen(),
-      ),
+      appBar: hasAppBar
+          ? PreferredSize(
+              preferredSize: Size.fromHeight(
+                MediaQuery.of(context).size.height * 0.2,
+              ),
+              child: HeaderWidgetScreen(),
+            )
+          : null,
       body: Row(
         children: [
           Expanded(
