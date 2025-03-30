@@ -1,5 +1,6 @@
 {
   "name": "multi_vendor",
+  "type": "module",
   "version": "1.0.0",
   "description": "backend for multi_vendor",
   "main": "server.js",
