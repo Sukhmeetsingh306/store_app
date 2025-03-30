@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cors from "cors";
+import { appAuthSignAndSignUp } from "./routes/auth.js";
 
 dotenv.config(); // Load .env variables
 
@@ -12,6 +13,7 @@ const uri = process.env.MONGODB_URI;
 
 app.use(express.json());
 app.use(cors()); // enable CORS for all routes
+app.use(appAuthSignAndSignUp);
 
 if (!uri) {
   console.error("MongoDB URI is not defined. Please check your .env file.");

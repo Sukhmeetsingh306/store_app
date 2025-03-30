@@ -60,7 +60,7 @@ const userSchema = new mongoose.Schema(
       },
     },
 
-    isSellers: {
+    isSeller: {
       type: Boolean,
       default: false,
     },
