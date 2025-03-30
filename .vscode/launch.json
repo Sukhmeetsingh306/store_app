@@ -1,0 +1,50 @@
+{
+     // Use IntelliSense to learn about possible attributes.
+     // Hover to view descriptions of existing attributes.
+     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+     "version": "0.2.0",
+     "configurations": [
+          // This JSON snippet defines configurations for launching a Dart application in different
+          // modes within a project directory named "multi_vendor".
+          {
+               "name": "multi_vendor",
+               "cwd": "multi_vendor",
+               "request": "launch",
+               "type": "dart"
+          },
+          {
+               "name": "multi_vendor (profile mode)",
+               "cwd": "multi_vendor",
+               "request": "launch",
+               "type": "dart",
+               "flutterMode": "profile"
+          },
+          {
+               "name": "multi_vendor (release mode)",
+               "cwd": "multi_vendor",
+               "request": "launch",
+               "type": "dart",
+               "flutterMode": "release"
+          },
+          // {
+          //      "name": "old_code",
+          //      "cwd": "old_code",
+          //      "request": "launch",
+          //      "type": "dart"
+          // },
+          // {
+          //      "name": "old_code (profile mode)",
+          //      "cwd": "old_code",
+          //      "request": "launch",
+          //      "type": "dart",
+          //      "flutterMode": "profile"
+          // },
+          // {
+          //      "name": "old_code (release mode)",
+          //      "cwd": "old_code",
+          //      "request": "launch",
+          //      "type": "dart",
+          //      "flutterMode": "release"
+          // }
+     ]
+}
