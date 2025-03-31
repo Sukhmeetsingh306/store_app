@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../controllers/login_user_controllers.dart';
 import '../../utils/fonts/google_fonts_utils.dart';
 import '../../utils/fonts/text_fonts_utils.dart';
 import '../../utils/validation/password_validations.dart';
@@ -22,7 +23,12 @@ class _LoginAuthScreenState extends State<LoginAuthScreen> {
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final LoginUserControllers _loginUserControllers = LoginUserControllers();
 
+  String email = '';
+  String password = "";
+
+  bool isLoading = false;
   bool _obscureText = true;
   bool hasMinLength = false;
 
@@ -207,21 +213,22 @@ class _LoginAuthScreenState extends State<LoginAuthScreen> {
                       AppTextButton(
                         buttonText: "Login",
                         onPressed: () async {
-                          // if (_formKey.currentState!.validate()) {
-                          //   bool isAuthenticated =
-                          //       await _loginController.loginUser(
-                          //     context: context,
-                          //     email: _emailController.text,
-                          //     password: _passwordController.text,
-                          //   );
+                          if (_formKey.currentState!.validate()) {
+                            bool isAuthenticated =
+                                await _loginUserControllers.signInUsers(
+                              context: context,
+                              email: _emailController.text,
+                              password: _passwordController.text,
+                            );
 
-                          //   if (isAuthenticated) {
-                          //     pushAndRemoveUntil(
-                          //       context,
-                          //       DashboardAccount(),
-                          //     );
-                          //   }
-                          // }
+                            if (isAuthenticated) {
+                              print('User is validated');
+                              print(email);
+                              print(password);
+                            } else {
+                              print("There is error");
+                            }
+                          }
                         },
                       ),
                     ],
