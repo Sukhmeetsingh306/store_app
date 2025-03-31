@@ -26,7 +26,7 @@ class PasswordValidations extends StatelessWidget {
       children: [
         const CircleAvatar(
           radius: 2.5,
-          backgroundColor: Color.fromRGBO(255, 255, 255, 1),
+          backgroundColor: Color.fromRGBO(117, 117, 117, 1),
         ),
         SizedBox(
           width: 6,
@@ -36,14 +36,14 @@ class PasswordValidations extends StatelessWidget {
           style: GoogleFonts.getFont('Inter',
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
-                  color: const Color.fromARGB(255, 255, 255, 255))
+                  color: const Color(0xFF757575))
               .copyWith(
                   decoration: hasValidated ? TextDecoration.lineThrough : null,
                   decorationColor: Colors.green,
                   decorationThickness: 2,
                   color: hasValidated
-                      ? const Color.fromARGB(255, 252, 252, 252)
-                      : const Color.fromARGB(255, 255, 255, 255)),
+                      ? const Color(0xFF757575)
+                      : const Color(0xFF242424)),
         )
       ],
     );

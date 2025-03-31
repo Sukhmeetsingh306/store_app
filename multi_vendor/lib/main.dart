@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       routes: AppRoutes.getRoutes(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white30),
         useMaterial3: true,
       ),
       home: const LoginAuthScreen(),

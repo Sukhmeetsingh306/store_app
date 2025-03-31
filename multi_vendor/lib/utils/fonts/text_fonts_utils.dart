@@ -13,7 +13,7 @@ TextSpan textSpan(
     text: text,
     style: GoogleFonts.getFont(
       'Inter',
-      color: color ?? ColorTheme.color.textWhiteColor,
+      color: color ?? ColorTheme.color.backgroundBlack,
       fontWeight: fontWeight ?? FontWeight.w600,
       letterSpacing: 0.1,
       fontSize: fontSize ?? 23,
