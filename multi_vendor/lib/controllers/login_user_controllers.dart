@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 import 'package:multi_vendor/globals_variables.dart';
 import 'package:multi_vendor/models/login_user_models.dart';
 import 'package:multi_vendor/services/http_services.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginUserControllers {
   Future<void> signUpUsers({

@@ -16,7 +16,7 @@ TextSpan textSpan(
       color: color ?? ColorTheme.color.backgroundBlack,
       fontWeight: fontWeight ?? FontWeight.w600,
       letterSpacing: 0.1,
-      fontSize: fontSize ?? 23,
+      fontSize: fontSize ?? 10,
     ),
   );
 }

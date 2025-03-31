@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:multi_vendor/utils/routes/navigation_routes.dart';
 
 import '../../controllers/login_user_controllers.dart';
 import '../../utils/fonts/google_fonts_utils.dart';
@@ -241,10 +242,7 @@ class _LoginAuthScreenState extends State<LoginAuthScreen> {
                     Center(
                       child: GestureDetector(
                         onTap: () {
-                          // materialRouteNavigator(
-                          //   context,
-                          //   SignUpScreen(),
-                          // );
+                          materialNamedRouteNavigator(context, '/registerPage');
                         },
                         child: RichText(
                           textAlign: TextAlign.center,

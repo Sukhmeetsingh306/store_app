@@ -12,16 +12,7 @@ class TermsAndConditionsText extends StatelessWidget {
       text: TextSpan(
         children: [
           textSpan(
-            'By logging, you agree to our',
-          ),
-          textSpan(
-            ' Terms & Conditions',
-          ),
-          textSpan(
-            ' and',
-          ),
-          textSpan(
-            ' PrivacyPolicy.',
+            'By logging, you agree to our \n Terms & Conditions and PrivacyPolicy',
           ),
         ],
       ),
