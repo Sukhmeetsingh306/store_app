@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:multi_vendor/screen/authentication/register_detail_auth_screen.dart';
 import 'package:multi_vendor/utils/routes/navigation_routes.dart';
 
 import '../../utils/fonts/google_fonts_utils.dart';
@@ -266,6 +267,10 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
                       // if (_formKey.currentState!.validate()) {
                       //   print("Account Created Successfully!");
                       // }
+                      materialRouteNavigator(
+                        context,
+                        RegisterDetailAuthScreen(),
+                      );
                     },
                   ),
                   sizedBoxH8(),
