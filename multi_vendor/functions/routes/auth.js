@@ -15,7 +15,8 @@ appAuthSignAndSignUp.post("/signup", async (req, res) => {
 
     if (!name || !email || !password) {
       return res.status(400).json({
-        message: `All fields are required: ${name}, ${email}, ${password}, ${isSeller}`,
+        message:
+          " All fields are required: ${name}, ${email}, ${password}, ${isSeller},",
       });
     }
 

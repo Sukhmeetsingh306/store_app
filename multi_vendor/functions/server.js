@@ -3,6 +3,11 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cors from "cors";
 import { appAuthSignAndSignUp } from "./routes/auth.js";
+import { bannerRouter } from "./routes/banner_routes.js";
+import { categoryRouter } from "./routes/category_router.js";
+import { subCategoryRouter } from "./routes/subCategory_routes.js";
+import { productRouter } from "./routes/product_routes.js";
+import { productRatingReviewRouter } from "./routes/rating_review_routes.js";
 
 dotenv.config(); // Load .env variables
 
@@ -14,6 +19,11 @@ const uri = process.env.MONGODB_URI;
 app.use(express.json());
 app.use(cors()); // enable CORS for all routes
 app.use(appAuthSignAndSignUp);
+app.use(bannerRouter);
+app.use(categoryRouter);
+app.use(subCategoryRouter);
+app.use(productRouter);
+app.use(productRatingReviewRouter);
 
 if (!uri) {
   console.error("MongoDB URI is not defined. Please check your .env file.");
