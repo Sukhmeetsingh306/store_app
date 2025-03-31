@@ -38,18 +38,12 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen> {
     final ImagePicker picker = ImagePicker();
 
     if (!kIsWeb) {
-      if (Platform.isAndroid) {
-        var status = await Permission.storage.request(); // Storage for Android
+      if (Platform.isAndroid || Platform.isIOS) {
+        var status = await Permission.photos.request(); // Request permission
+
         if (status.isDenied || status.isPermanentlyDenied) {
-          print('Android Permission Denied');
-          openAppSettings(); // Open settings if denied
-          return;
-        }
-      } else if (Platform.isIOS) {
-        var status = await Permission.photos.request(); // Photos for iOS
-        if (status.isDenied || status.isPermanentlyDenied) {
-          print('iOS Permission Denied');
-          openAppSettings(); // Open settings if denied
+          print('Permission denied');
+          openAppSettings(); // Open app settings if denied
           return;
         }
       }
@@ -57,9 +51,9 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen> {
 
     final XFile? pickedFile =
         await picker.pickImage(source: ImageSource.gallery);
-
     if (pickedFile != null) {
       if (kIsWeb) {
+        // Convert to Uint8List for web
         final bytes = await pickedFile.readAsBytes();
         setState(() {
           _webImage = bytes;
