@@ -30,7 +30,6 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
-  final TextEditingController _referenceController = TextEditingController();
 
   File? _imageFile;
   Uint8List? _webImage;
@@ -39,12 +38,18 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen> {
     final ImagePicker picker = ImagePicker();
 
     if (!kIsWeb) {
-      if (Platform.isAndroid || Platform.isIOS) {
-        var status = await Permission.photos.request(); // Request permission
-
+      if (Platform.isAndroid) {
+        var status = await Permission.storage.request(); // Storage for Android
         if (status.isDenied || status.isPermanentlyDenied) {
-          print('Permission denied');
-          openAppSettings(); // Open app settings if denied
+          print('Android Permission Denied');
+          openAppSettings(); // Open settings if denied
+          return;
+        }
+      } else if (Platform.isIOS) {
+        var status = await Permission.photos.request(); // Photos for iOS
+        if (status.isDenied || status.isPermanentlyDenied) {
+          print('iOS Permission Denied');
+          openAppSettings(); // Open settings if denied
           return;
         }
       }
@@ -52,9 +57,9 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen> {
 
     final XFile? pickedFile =
         await picker.pickImage(source: ImageSource.gallery);
+
     if (pickedFile != null) {
       if (kIsWeb) {
-        // Convert to Uint8List for web
         final bytes = await pickedFile.readAsBytes();
         setState(() {
           _webImage = bytes;
@@ -86,7 +91,6 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen> {
     _nameController.dispose();
     _phoneController.dispose();
     _ageController.dispose();
-    _referenceController.dispose();
   }
 
   void reloadWidget() {
@@ -98,281 +102,234 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(15, 25, 0, 0),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    googleInterText(
-                      'Create Account',
-                      fontWeight: FontWeight.w700,
-                      fontSize: 24,
-                    ),
-                    sizedBoxH8(),
-                    googleInterText(
-                      'Sign up now and start exploring all that our\napp has to offer. We\'re excited to welcome\nyou to our community!',
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14,
-                    ),
-                    sizedBoxH8(),
-                    Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(0, 18, 20, 0),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          children: [
-                            Center(
-                              child: CircleAvatar(
-                                backgroundColor:
-                                    ColorTheme.color.backgroundBlack,
-                                radius: 45,
-                                backgroundImage: kIsWeb
-                                    ? (_webImage != null
-                                        ? MemoryImage(_webImage!)
-                                        : null)
-                                    : (_imageFile != null
-                                        ? FileImage(_imageFile!)
-                                        : null),
-                                child: GestureDetector(
-                                  onTap: _pickImage,
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black26,
-                                          blurRadius: 10,
-                                          spreadRadius: 2,
-                                          offset: Offset(4, 4),
-                                        ),
-                                      ],
+      body: SafeArea(
+        child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        googleInterText(
+                          'Create Account',
+                          fontWeight: FontWeight.w700,
+                          fontSize: 24,
+                        ),
+                        sizedBoxH8(),
+                        googleInterText(
+                          'Sign up now and start exploring all that our\napp has to offer. We\'re excited to welcome\nyou to our community!',
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14,
+                        ),
+                        sizedBoxH10(),
+                        Form(
+                          key: _formKey,
+                          child: Column(
+                            children: [
+                              // Profile Image Upload Section
+                              Center(
+                                child: CircleAvatar(
+                                  backgroundColor: ColorTheme.color.whiteColor,
+                                  radius: 45,
+                                  backgroundImage: kIsWeb
+                                      ? (_webImage != null
+                                          ? MemoryImage(_webImage!)
+                                          : null)
+                                      : (_imageFile != null
+                                          ? FileImage(_imageFile!)
+                                          : null),
+                                  child: GestureDetector(
+                                    onTap: _pickImage,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.white24,
+                                            blurRadius: 10,
+                                            spreadRadius: 2,
+                                            offset: Offset(4, 4),
+                                          ),
+                                        ],
+                                      ),
+                                      child: (_imageFile == null &&
+                                              _webImage == null)
+                                          ? const Icon(
+                                              Icons.person_add_alt_1_outlined,
+                                              size: 50,
+                                              color: Colors.grey,
+                                            )
+                                          : null,
                                     ),
-                                    child: (_imageFile == null &&
-                                            _webImage == null)
-                                        ? const Icon(
-                                            Icons.person_add_alt_1_outlined,
-                                            size: 50,
-                                            color: Colors.grey,
-                                          )
-                                        : null,
                                   ),
                                 ),
                               ),
-                            ),
-                            sizedBoxH8(),
-                            googleInterText(
-                              'Upload a photo for us to easily identify you.',
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                            ),
-                            sizedBoxH15(),
-                            textFormField(
-                              _nameController,
-                              'Your Name',
-                              (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your name';
-                                }
-                                return null;
-                              },
-                            ),
-                            sizedBoxH15(),
-                            textFormField(
-                              _ageController,
-                              'Your Age',
-                              keyboardType: TextInputType.number,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly
-                              ],
-                              (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your age';
-                                }
-                                return null;
-                              },
-                            ),
-                            sizedBoxH15(),
-                            IntlPhoneField(
-                              controller: _phoneController,
-                              decoration: InputDecoration(
-                                labelText: 'Phone Number',
-                                labelStyle: GoogleFonts.getFont(
+                              sizedBoxH8(),
+                              googleInterText(
+                                'Upload a photo for us to easily identify you.',
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              sizedBoxH15(),
+                              textFormField(
+                                _nameController,
+                                'Your Name',
+                                (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter your name';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              sizedBoxH15(),
+                              textFormField(
+                                _ageController,
+                                'Your Age',
+                                keyboardType: TextInputType.number,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
+                                (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter your age';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              sizedBoxH15(),
+                              IntlPhoneField(
+                                controller: _phoneController,
+                                decoration: InputDecoration(
+                                  labelText: 'Phone Number',
+                                  labelStyle: GoogleFonts.getFont(
+                                    'Inter',
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 16,
+                                  ),
+                                  hintText: 'Your Number',
+                                  hintStyle: GoogleFonts.getFont(
+                                    'Inter',
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 16,
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.grey),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.grey),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.grey),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.transparent,
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 20, horizontal: 16),
+                                ),
+                                keyboardType: TextInputType.phone,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
+                                initialCountryCode: 'US',
+                                dropdownTextStyle: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                ),
+                                dropdownIcon: Icon(
+                                  Icons.arrow_drop_down,
+                                  color: Colors.black,
+                                ),
+                                onChanged: (phone) {},
+                                validator: (phone) {
+                                  if (phone == null || phone.number.isEmpty) {
+                                    return 'Please enter your phone number';
+                                  }
+                                  return null;
+                                },
+                                style: GoogleFonts.getFont(
                                   'Inter',
-                                  color: ColorTheme.color.textWhiteColor,
+                                  color: Colors.black,
                                   fontWeight: FontWeight.w400,
                                   fontSize: 16,
                                 ),
-                                hintText: 'Your Number',
-                                hintStyle: GoogleFonts.getFont(
-                                  'Inter',
-                                  color: ColorTheme.color.textWhiteColor,
+                              ),
+                              sizedBoxH15(),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                // Place the button at the bottom
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                  child: Column(
+                    children: [
+                      AppTextButton(
+                        buttonText: 'Create Account',
+                        onPressed: () async {
+                          // Handle create account logic
+                        },
+                      ),
+                      sizedBoxH10(),
+                      InkWell(
+                        onTap: () async {
+                          if (Navigator.of(context).canPop()) {
+                            pop(context);
+                          } else {
+                            pushNamedAndRemoveUntil(context, '/registerPage');
+                          }
+                        },
+                        child: Container(
+                          width: MediaQuery.sizeOf(context).width * 0.7,
+                          height: 44,
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.arrow_back_rounded,
+                                color: const Color.fromRGBO(36, 124, 255, 1),
+                                size: 24,
+                              ),
+                              Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(4, 0, 24, 0),
+                                child: googleInterText(
+                                  'Preview',
+                                  color: const Color.fromRGBO(36, 124, 255, 1),
+                                  fontSize: 14,
                                   fontWeight: FontWeight.w400,
-                                  fontSize: 16,
                                 ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.transparent,
-                                    width: 1.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.transparent,
-                                    width: 1.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                filled: true,
-                                fillColor: Colors
-                                    .black, // Background color of the input field
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 20, horizontal: 16),
                               ),
-                              keyboardType: TextInputType.phone,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly
-                              ],
-                              initialCountryCode: 'US',
-
-                              dropdownDecoration: BoxDecoration(
-                                color:
-                                    Colors.black, // Dropdown background color
-                                borderRadius: BorderRadius.circular(8),
+                              googleInterText(
+                                'Preview email detail!',
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
                               ),
-
-                              dropdownTextStyle: TextStyle(
-                                color: Colors.white, // Dropdown text color
-                                fontSize: 16,
-                              ),
-
-                              dropdownIcon: Icon(
-                                Icons.arrow_drop_down,
-                                color: Colors.white, // Dropdown icon color
-                              ),
-
-                              onChanged: (phone) {
-                                // print(phone.completeNumber);
-                              },
-
-                              validator: (phone) {
-                                if (phone == null || phone.number.isEmpty) {
-                                  return 'Please enter your phone number';
-                                }
-                                return null;
-                              },
-
-                              // Customize the popup menu using theme
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            sizedBoxH15(),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    sizedBoxH15(),
-                    Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(0, 5, 20, 0),
-                      child: Column(
-                        children: [
-                          Container(
-                            width: double.infinity,
-                            padding: EdgeInsets.symmetric(horizontal: 40),
-                            child: AppTextButton(
-                              buttonText: 'Create Account',
-                              onPressed: () async {
-                                // if (_formKey.currentState!.validate()) {
-                                //   await _registerController.registerUser(
-                                //     context: context,
-                                //     name: _nameController.text,
-                                //     password: widget.password,
-                                //     email: widget.email,
-                                //   );
-                                //   setState(() {
-                                //     _formKey.currentState!.reset();
-                                //   });
-
-                                //   reloadWidget();
-                                //   materialNamedRouteNavigator(
-                                //     context,
-                                //     '/loginPage',
-                                //   );
-                                // }
-                              },
-                            ),
-                          ),
-                          sizedBoxH10(),
-                          Opacity(
-                            opacity: 0.9,
-                            child: InkWell(
-                              onTap: () async {},
-                              child: Container(
-                                width: MediaQuery.sizeOf(context).width * 0.7,
-                                height: 44,
-                                decoration: BoxDecoration(
-                                  color: Colors.black.withValues(alpha: 0.7),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.arrow_back_rounded,
-                                      color: ColorTheme
-                                          .color.buttonBackgroundColor,
-                                      size: 24,
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          4, 0, 24, 0),
-                                      child: InkWell(
-                                        onTap: () async {
-                                          if (Navigator.of(context).canPop()) {
-                                            pop(context);
-                                          } else {
-                                            pushNamedAndRemoveUntil(
-                                              context,
-                                              '/registerPage',
-                                            );
-                                          }
-                                        },
-                                        child: googleInterText(
-                                          'Preview',
-                                          color: ColorTheme
-                                              .color.buttonBackgroundColor,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ),
-                                    googleInterText(
-                                      'Preview email detail!',
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                      sizedBoxH10(),
+                      Divider(),
+                    ],
+                  ),
                 ),
-              ),
-            ),
-          ),
-        ],
+              ],
+            )),
       ),
     );
   }
