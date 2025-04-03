@@ -75,219 +75,215 @@ class _LoginAuthScreenState extends State<LoginAuthScreen> {
               )
             : null,
         child: SingleChildScrollView(
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                googleInterText(
-                  'Login',
-                  fontWeight: FontWeight.w700,
-                  fontSize: 24,
-                ),
-                sizedBoxH8(),
-                googleInterText(
-                  'Login To Continue Using The App',
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14,
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.05,
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Form(
-                      key: _formKey,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Image.asset(
-                            'assets/icons/mobile.png',
-                            height: 220,
-                          ),
-                          sizedBoxH15(),
-                          textFormField(
-                            _emailController,
-                            'Email',
-                            (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your email';
-                              } else if (!RegExp(
-                                      r"^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$")
-                                  .hasMatch(value)) {
-                                return 'Please enter a valid email';
-                              }
-                              return null;
-                            },
-                            suffixIcon: DropdownButtonHideUnderline(
-                              child: DropdownButton<String>(
-                                value: selectedDomain,
-                                alignment: Alignment.centerRight,
-                                onChanged: (String? newValue) {
-                                  if (newValue != null) {
-                                    setState(() {
-                                      selectedDomain = newValue;
-                                      _updateEmail();
-                                    });
-                                  }
-                                },
-                                items: emailDomains
-                                    .map<DropdownMenuItem<String>>(
-                                        (String domain) {
-                                  return DropdownMenuItem<String>(
-                                    value: domain,
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text(
-                                          "@$domain",
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                          ),
-                                        ), // Smaller dropdown icon
-                                      ],
-                                    ),
-                                  );
-                                }).toList(),
-                              ),
-                            ),
-                            keyboardType: TextInputType.emailAddress,
-                            autofillHints: [AutofillHints.email],
-                            onChanged: (value) {
-                              _updateEmail();
-                            },
-                          ),
-                          sizedBoxH15(),
-                          textFormField(
-                            _passwordController,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            'Password',
-                            (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter a password';
-                              }
-                              if (value.length < 8) {
-                                return 'Password must be at least 8 characters long';
-                              }
-                              RegExp regex = RegExp(
-                                  r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$');
-                              if (!regex.hasMatch(value)) {
-                                return 'Password must contain at least one uppercase letter, one number, and one special character';
-                              }
-                              return null;
-                            },
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                _obscureText
-                                    ? Icons.visibility_off
-                                    : Icons.visibility,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  _obscureText = !_obscureText;
-                                });
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              googleInterText(
+                'Login',
+                fontWeight: FontWeight.w700,
+                fontSize: 24,
+              ),
+              sizedBoxH8(),
+              googleInterText(
+                'Login To Continue Using The App',
+                fontWeight: FontWeight.w400,
+                fontSize: 14,
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.05,
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Image.asset(
+                          'assets/icons/mobile.png',
+                          height: 220,
+                        ),
+                        sizedBoxH15(),
+                        textFormField(
+                          _emailController,
+                          'Email',
+                          (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your email';
+                            } else if (!RegExp(
+                                    r"^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$")
+                                .hasMatch(value)) {
+                              return 'Please enter a valid email';
+                            }
+                            return null;
+                          },
+                          suffixIcon: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              value: selectedDomain,
+                              alignment: Alignment.centerRight,
+                              onChanged: (String? newValue) {
+                                if (newValue != null) {
+                                  setState(() {
+                                    selectedDomain = newValue;
+                                    _updateEmail();
+                                  });
+                                }
                               },
+                              items: emailDomains.map<DropdownMenuItem<String>>(
+                                  (String domain) {
+                                return DropdownMenuItem<String>(
+                                  value: domain,
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        "@$domain",
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                        ),
+                                      ), // Smaller dropdown icon
+                                    ],
+                                  ),
+                                );
+                              }).toList(),
                             ),
-                            obscureText: _obscureText,
                           ),
-                        ],
-                      ),
+                          keyboardType: TextInputType.emailAddress,
+                          autofillHints: [AutofillHints.email],
+                          onChanged: (value) {
+                            _updateEmail();
+                          },
+                        ),
+                        sizedBoxH15(),
+                        textFormField(
+                          _passwordController,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          'Password',
+                          (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter a password';
+                            }
+                            if (value.length < 8) {
+                              return 'Password must be at least 8 characters long';
+                            }
+                            RegExp regex = RegExp(
+                                r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$');
+                            if (!regex.hasMatch(value)) {
+                              return 'Password must contain at least one uppercase letter, one number, and one special character';
+                            }
+                            return null;
+                          },
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscureText
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscureText = !_obscureText;
+                              });
+                            },
+                          ),
+                          obscureText: _obscureText,
+                        ),
+                      ],
                     ),
-                    sizedBoxH8(),
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: GestureDetector(
-                        onTap: () {
-                          // materialRouteNavigator(
-                          //   context,
-                          //   ForgetPasswordScreen(),
-                          // );
-                        },
-                        child: RichText(
-                          textAlign: TextAlign.center,
-                          text: TextSpan(
-                            children: [
-                              textSpan(
-                                'Forget Password?',
-                                fontSize: 14,
-                              ),
-                            ],
-                          ),
+                  ),
+                  sizedBoxH8(),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: GestureDetector(
+                      onTap: () {
+                        // materialRouteNavigator(
+                        //   context,
+                        //   ForgetPasswordScreen(),
+                        // );
+                      },
+                      child: RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          children: [
+                            textSpan(
+                              'Forget Password?',
+                              fontSize: 14,
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                    sizedBoxH8(),
-                    PasswordValidations(hasMinLength: hasMinLength),
-                    SizedBox(
-                      height: hasError
-                          ? MediaQuery.of(context).size.height * .022
-                          : MediaQuery.of(context).size.height * .06,
-                    ),
-                    AppTextButton(
-                      buttonText: "Login",
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          bool isAuthenticated =
-                              await _loginUserControllers.signInUsers(
-                            context: context,
-                            email: _emailController.text,
-                            password: _passwordController.text,
-                          );
+                  ),
+                  sizedBoxH8(),
+                  PasswordValidations(hasMinLength: hasMinLength),
+                  SizedBox(
+                    height: hasError
+                        ? MediaQuery.of(context).size.height * .022
+                        : MediaQuery.of(context).size.height * .06,
+                  ),
+                  AppTextButton(
+                    buttonText: "Login",
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        bool isAuthenticated =
+                            await _loginUserControllers.signInUsers(
+                          context: context,
+                          email: _emailController.text,
+                          password: _passwordController.text,
+                        );
 
-                          if (isAuthenticated) {
-                            setState(() {
-                              hasError = false; // No error, normal spacing
-                            });
-                            print('User is validated');
-                          } else {
-                            setState(() {
-                              hasError = true; // Error, increase spacing
-                            });
-                            print("There is an error");
-                          }
+                        if (isAuthenticated) {
+                          setState(() {
+                            hasError = false; // No error, normal spacing
+                          });
+                          print('User is validated');
                         } else {
                           setState(() {
-                            hasError = true; // Error from form validation
+                            hasError = true; // Error, increase spacing
                           });
+                          print("There is an error");
                         }
+                      } else {
+                        setState(() {
+                          hasError = true; // Error from form validation
+                        });
+                      }
+                    },
+                  ),
+                ],
+              ),
+              sizedBoxH8(),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Center(
+                    child: GestureDetector(
+                      onTap: () {
+                        materialNamedRouteNavigator(context, '/registerPage');
                       },
-                    ),
-                  ],
-                ),
-                sizedBoxH8(),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Center(
-                      child: GestureDetector(
-                        onTap: () {
-                          materialNamedRouteNavigator(context, '/registerPage');
-                        },
-                        child: RichText(
-                          textAlign: TextAlign.center,
-                          text: TextSpan(
-                            children: [
-                              textSpan(
-                                'Don\'t Have An Account?',
-                                fontSize: 14,
-                              ),
-                              textSpan(
-                                ' Create Account',
-                                fontSize: 14,
-                                color: const Color.fromRGBO(36, 124, 255, 1),
-                              ),
-                            ],
-                          ),
+                      child: RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          children: [
+                            textSpan(
+                              'Don\'t Have An Account?',
+                              fontSize: 14,
+                            ),
+                            textSpan(
+                              ' Create Account',
+                              fontSize: 14,
+                              color: const Color.fromRGBO(36, 124, 255, 1),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                    Divider(),
-                  ],
-                ),
-              ],
-            ),
+                  ),
+                  Divider(),
+                ],
+              ),
+            ],
           ),
         ),
       ),
