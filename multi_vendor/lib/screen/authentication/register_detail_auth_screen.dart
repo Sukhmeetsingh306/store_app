@@ -10,8 +10,10 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../utils/fonts/google_fonts_utils.dart';
+import '../../utils/fonts/text_fonts_utils.dart';
 import '../../utils/routes/navigation_routes.dart';
 import '../../utils/theme/color/color_theme.dart';
+import '../../utils/validation/termsAndConditions_core.dart';
 import '../../utils/widget/form/appTextButton_form.dart';
 import '../../utils/widget/form/textForm_form.dart';
 import '../../utils/widget/space_widget_utils.dart';
@@ -264,63 +266,47 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen> {
                   ),
                 ),
                 // Place the button at the bottom
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-                  child: Column(
-                    children: [
-                      AppTextButton(
-                        buttonText: 'Create Account',
-                        onPressed: () async {
-                          // Handle create account logic
-                        },
-                      ),
-                      sizedBoxH10(),
-                      InkWell(
-                        onTap: () async {
-                          if (Navigator.of(context).canPop()) {
-                            pop(context);
-                          } else {
-                            pushNamedAndRemoveUntil(context, '/registerPage');
-                          }
-                        },
-                        child: Container(
-                          width: MediaQuery.sizeOf(context).width * 0.7,
-                          height: 44,
-                          decoration: BoxDecoration(
-                            color: Colors.transparent,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                Column(
+                  children: [
+                    Center(child: TermsAndConditionsText()),
+                    sizedBoxH15(),
+                    AppTextButton(
+                      buttonText: 'Create Account',
+                      onPressed: () async {
+                        // Handle create account logic
+                      },
+                    ),
+                    sizedBoxH10(),
+                    InkWell(
+                      onTap: () async {
+                        if (Navigator.of(context).canPop()) {
+                          pop(context);
+                        } else {
+                          pushNamedAndRemoveUntil(context, '/registerPage');
+                        }
+                      },
+                      child: Center(
+                        child: RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
                             children: [
-                              Icon(
-                                Icons.arrow_back_rounded,
-                                color: const Color.fromRGBO(36, 124, 255, 1),
-                                size: 24,
-                              ),
-                              Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(4, 0, 24, 0),
-                                child: googleInterText(
-                                  'Preview',
-                                  color: const Color.fromRGBO(36, 124, 255, 1),
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                              googleInterText(
-                                'Preview email detail!',
+                              textSpan(
+                                'Preview Details?',
                                 fontSize: 14,
-                                fontWeight: FontWeight.w400,
+                              ),
+                              textSpan(
+                                ' Preview',
+                                fontSize: 14,
+                                color: const Color.fromRGBO(36, 124, 255, 1),
                               ),
                             ],
                           ),
                         ),
                       ),
-                      sizedBoxH10(),
-                      Divider(),
-                    ],
-                  ),
+                    ),
+                    sizedBoxH5(),
+                    Divider(),
+                  ],
                 ),
               ],
             )),
