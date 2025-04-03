@@ -70,6 +70,7 @@ class _LoginAuthScreenState extends State<LoginAuthScreen> {
         ),
         decoration: isLargeScreen
             ? BoxDecoration(
+                color: Colors.white,
                 border: Border.all(color: Colors.grey, width: 2),
                 borderRadius: BorderRadius.circular(20), // Rounded edges
               )
@@ -296,7 +297,9 @@ class _LoginAuthScreenState extends State<LoginAuthScreen> {
       body: LayoutBuilder(builder: (context, constraints) {
         bool isLargeScreen = constraints.maxWidth > 900;
         return isLargeScreen
-            ? Center(child: pageCode(isLargeScreen))
+            ? Container(
+                color: Colors.grey[200],
+                child: Center(child: pageCode(isLargeScreen)))
             : SafeArea(
                 child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
