@@ -297,9 +297,23 @@ class _LoginAuthScreenState extends State<LoginAuthScreen> {
       body: LayoutBuilder(builder: (context, constraints) {
         bool isLargeScreen = constraints.maxWidth > 900;
         return isLargeScreen
-            ? Container(
-                color: Colors.grey[200],
-                child: Center(child: pageCode(isLargeScreen)))
+            ? Stack(
+                children: [
+                  Image.asset(
+                    'assets/images/img.png',
+                    fit: BoxFit.cover,
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(color: Colors.grey); // fallback color
+                    },
+                  ),
+                  Container(
+                    color: Colors.grey[200],
+                    child: Center(child: pageCode(isLargeScreen)),
+                  ),
+                ],
+              )
             : SafeArea(
                 child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
