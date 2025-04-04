@@ -34,6 +34,7 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
   bool hasMinLength = false;
   bool otpSent = false;
   bool otpEmailSent = false;
+  bool hasError = false;
 
   final passwordFocusNode = FocusNode();
   final passwordConfirmationFocusNode = FocusNode();
@@ -88,189 +89,236 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+      body: LayoutBuilder(builder: (context, constraints) {
+        bool isLargeScreen = constraints.maxWidth > 900;
+        return isLargeScreen
+            ? Stack(
+                children: [
+                  Image.asset(
+                    'assets/images/img.png',
+                    fit: BoxFit.cover,
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(color: Colors.grey); // fallback color
+                    },
+                  ),
+                  Container(
+                    color: Colors.grey[200],
+                    child: Center(child: pageCode(isLargeScreen)),
+                  ),
+                ],
+              )
+            : SafeArea(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                  child: pageCode(isLargeScreen),
+                ),
+              );
+      }),
+    );
+  }
+
+  Widget pageCode(bool isLargeScreen) {
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        maxWidth: isLargeScreen ? 500 : double.infinity,
+      ),
+      child: Container(
+        height: isLargeScreen ? MediaQuery.of(context).size.height * 0.8 : null,
+        padding: EdgeInsets.symmetric(
+          horizontal: isLargeScreen ? 50 : 0,
+          vertical: isLargeScreen ? 50 : 0,
+        ),
+        decoration: isLargeScreen
+            ? BoxDecoration(
+                color: Colors.white,
+                border: Border.all(color: Colors.grey, width: 2),
+                borderRadius: BorderRadius.circular(20), // Rounded edges
+              )
+            : null,
+        child: SingleChildScrollView(
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment:
-                        MainAxisAlignment.center, // Center the form
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      googleInterText(
-                        'Create Account',
-                        fontWeight: FontWeight.w700,
-                        fontSize: 24,
-                      ),
-                      sizedBoxH8(),
-                      googleInterText(
-                        'Sign up now and start exploring all that our\napp has to offer. We\'re excited to welcome\nyou to our community!',
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14,
-                      ),
-                      sizedBoxH8(),
-                      Form(
-                        key: _formKey,
-                        child: Column(
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center, // Center the form
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  googleInterText(
+                    'Create Account',
+                    fontWeight: FontWeight.w700,
+                    fontSize: 24,
+                  ),
+                  sizedBoxH8(),
+                  googleInterText(
+                    'Sign up now and start exploring all that our\napp has to offer. We\'re excited to welcome\nyou to our community!',
+                    fontWeight: FontWeight.w400,
+                    fontSize: 14,
+                  ),
+                  sizedBoxH8(),
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        sizedBoxH10(),
+                        textFormField(
+                          _emailController,
+                          'Email',
+                          (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your email';
+                            } else if (!RegExp(
+                                    r"^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$")
+                                .hasMatch(value)) {
+                              return 'Please enter a valid email';
+                            }
+                            return null;
+                          },
+                          keyboardType: TextInputType.emailAddress,
+                          autofillHints: [AutofillHints.email],
+                          onChanged: (value) {
+                            _updateEmail();
+                          },
+                        ),
+                        sizedBoxH15(),
+                        textFormField(
+                          _passwordController,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          'Password',
+                          (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter a password';
+                            }
+                            if (value.length < 8) {
+                              return 'Password must be at least 8 characters long';
+                            }
+                            RegExp regex = RegExp(
+                                r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$');
+                            if (!regex.hasMatch(value)) {
+                              return 'Password must contain at least one uppercase letter, one number, and one special character';
+                            }
+                            return null;
+                          },
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscureText
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscureText = !_obscureText;
+                              });
+                            },
+                          ),
+                          obscureText: _obscureText,
+                        ),
+                        sizedBoxH15(),
+                        textFormField(
+                          _confirmPasswordController,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          'Confirm Password',
+                          (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter a password';
+                            }
+                            if (value.length < 8) {
+                              return 'Password must be at least 8 characters long';
+                            }
+                            RegExp regex = RegExp(
+                                r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$');
+                            if (!regex.hasMatch(value)) {
+                              return 'Password must contain at least one uppercase letter, one number, and one special character';
+                            }
+                            if (value != _passwordController.text) {
+                              return 'Passwords do not match';
+                            }
+                            return null;
+                          },
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _confirmObscureText
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _confirmObscureText = !_confirmObscureText;
+                              });
+                            },
+                          ),
+                          obscureText: _confirmObscureText,
+                        ),
+                        sizedBoxH15(),
+                        Row(
                           children: [
-                            sizedBoxH10(),
-                            textFormField(
-                              _emailController,
-                              'Email',
-                              (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your email';
-                                } else if (!RegExp(
-                                        r"^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$")
-                                    .hasMatch(value)) {
-                                  return 'Please enter a valid email';
-                                }
-                                return null;
-                              },
-                              keyboardType: TextInputType.emailAddress,
-                              autofillHints: [AutofillHints.email],
-                              onChanged: (value) {
-                                _updateEmail();
-                              },
-                            ),
-                            sizedBoxH15(),
-                            textFormField(
-                              _passwordController,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              'Password',
-                              (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter a password';
-                                }
-                                if (value.length < 8) {
-                                  return 'Password must be at least 8 characters long';
-                                }
-                                RegExp regex = RegExp(
-                                    r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$');
-                                if (!regex.hasMatch(value)) {
-                                  return 'Password must contain at least one uppercase letter, one number, and one special character';
-                                }
-                                return null;
-                              },
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  _obscureText
-                                      ? Icons.visibility_off
-                                      : Icons.visibility,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    _obscureText = !_obscureText;
-                                  });
+                            Expanded(
+                              child: textFormField(
+                                _otpEmailController,
+                                'Email OTP',
+                                keyboardType: TextInputType.number,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
+                                (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter a valid OTP';
+                                  }
+                                  return null;
                                 },
                               ),
-                              obscureText: _obscureText,
                             ),
-                            sizedBoxH15(),
-                            textFormField(
-                              _confirmPasswordController,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              'Confirm Password',
-                              (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter a password';
-                                }
-                                if (value.length < 8) {
-                                  return 'Password must be at least 8 characters long';
-                                }
-                                RegExp regex = RegExp(
-                                    r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$');
-                                if (!regex.hasMatch(value)) {
-                                  return 'Password must contain at least one uppercase letter, one number, and one special character';
-                                }
-                                if (value != _passwordController.text) {
-                                  return 'Passwords do not match';
-                                }
-                                return null;
+                            SizedBox(width: 10),
+                            AppTextButton(
+                              onPressed: () {
+                                _sendEmailOTP();
                               },
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  _confirmObscureText
-                                      ? Icons.visibility_off
-                                      : Icons.visibility,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    _confirmObscureText = !_confirmObscureText;
-                                  });
-                                },
-                              ),
-                              obscureText: _confirmObscureText,
+                              buttonText: 'OTP',
+                              buttonWidth: 75,
+                              buttonHeight: 45,
+                              horizontalPadding: 0,
+                              verticalPadding: 0,
                             ),
-                            sizedBoxH15(),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: textFormField(
-                                    _otpEmailController,
-                                    'Email OTP',
-                                    keyboardType: TextInputType.number,
-                                    inputFormatters: [
-                                      FilteringTextInputFormatter.digitsOnly
-                                    ],
-                                    (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Please enter a valid OTP';
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                ),
-                                SizedBox(width: 10),
-                                AppTextButton(
-                                  onPressed: () {
-                                    _sendEmailOTP();
-                                  },
-                                  buttonText: 'OTP',
-                                  buttonWidth: 75,
-                                  buttonHeight: 45,
-                                  horizontalPadding: 0,
-                                  verticalPadding: 0,
-                                ),
-                              ],
-                            ),
-                            if (otpEmailSent)
-                              Padding(
-                                padding: const EdgeInsets.only(top: 4.0),
-                                child: googleInterText(
-                                  'OTP has been sent to your Email',
-                                  fontSize: 10,
-                                ),
-                              ),
-                            sizedBoxH15(),
-                            PasswordValidations(hasMinLength: hasMinLength),
-                            sizedBoxH15(),
                           ],
                         ),
-                      ),
-                    ],
+                        if (otpEmailSent)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 4.0),
+                            child: googleInterText(
+                              'OTP has been sent to your Email',
+                              fontSize: 10,
+                            ),
+                          ),
+                        sizedBoxH15(),
+                        PasswordValidations(hasMinLength: hasMinLength),
+                      ],
+                    ),
                   ),
-                ),
+                ],
               ),
               Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
+                  SizedBox(
+                    height: hasError
+                        ? 20
+                        : MediaQuery.of(context).size.height * .11,
+                  ),
                   Center(child: TermsAndConditionsText()),
                   sizedBoxH15(),
                   AppTextButton(
                     buttonText: "Create Account",
                     onPressed: () async {
-                      // if (_formKey.currentState!.validate()) {
-                      //   print("Account Created Successfully!");
-                      // }
-                      materialRouteNavigator(
-                        context,
-                        RegisterDetailAuthScreen(),
-                      );
+                      if (_formKey.currentState!.validate()) {
+                        print("Account Created Successfully!");
+
+                        materialRouteNavigator(
+                          context,
+                          RegisterDetailAuthScreen(),
+                        );
+                      }
                     },
                   ),
                   sizedBoxH8(),
