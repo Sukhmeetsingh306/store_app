@@ -8,6 +8,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 import '../../utils/fonts/google_fonts_utils.dart';
 import '../../utils/theme/color/color_theme.dart';
+import '../../utils/widget/form/textForm_form.dart';
 import '../../utils/widget/space_widget_utils.dart';
 
 class SellerAuthScreen extends StatefulWidget {
@@ -22,6 +23,11 @@ class SellerAuthScreen extends StatefulWidget {
 
 class _SellerAuthScreenState extends State<SellerAuthScreen> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  final TextEditingController _companyController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+
+  int descriptionCharCount = 0;
 
   File? _imageFile;
   Uint8List? _webImage;
@@ -132,6 +138,43 @@ class _SellerAuthScreenState extends State<SellerAuthScreen> {
                             'Upload a logo for your business.',
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
+                          ),
+                          sizedBoxH15(),
+                          textFormField(
+                            _companyController,
+                            'Company Name',
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your name';
+                              }
+                              return null;
+                            },
+                          ),
+                          sizedBoxH15(),
+                          textFormField(
+                            _descriptionController,
+                            'Description',
+                            (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return 'Description is required';
+                              } else if (value.length < 50) {
+                                return 'Minimum 50 characters required';
+                              } else if (value.length > 200) {
+                                return 'Maximum 200 characters allowed';
+                              }
+                              return null;
+                            },
+                            minLines: 3,
+                            maxLines: 10,
+                            maxLength: 200,
+                            keyboardType: TextInputType.multiline,
+                            onChanged: (value) {
+                              setState(() {
+                                descriptionCharCount = value.length;
+                              });
+                            },
                           ),
                         ],
                       ),

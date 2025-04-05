@@ -105,6 +105,7 @@ Widget textFormField(
         borderSide: BorderSide(color: Colors.grey),
         borderRadius: BorderRadius.circular(10.0),
       ),
+      alignLabelWithHint: true,
     ),
     style: GoogleFonts.getFont(
       'Inter',
@@ -122,5 +123,6 @@ Widget textFormField(
     maxLength: maxLength,
     minLines: safeMinLines,
     maxLines: safeMaxLines,
+    textAlignVertical: TextAlignVertical.top,
   );
 }
