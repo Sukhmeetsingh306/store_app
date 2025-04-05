@@ -189,6 +189,7 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
               sizedBoxH10(),
               textFormField(
                 _emailController,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 'Email',
                 (value) {
                   if (value == null || value.isEmpty) {
@@ -199,6 +200,37 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
                   }
                   return null;
                 },
+                suffixIcon: DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    value: selectedDomain,
+                    alignment: Alignment.centerRight,
+                    onChanged: (String? newValue) {
+                      if (newValue != null) {
+                        setState(() {
+                          selectedDomain = newValue;
+                          _updateEmail();
+                        });
+                      }
+                    },
+                    items: emailDomains
+                        .map<DropdownMenuItem<String>>((String domain) {
+                      return DropdownMenuItem<String>(
+                        value: domain,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              "@$domain",
+                              style: TextStyle(
+                                fontSize: 14,
+                              ),
+                            ), // Smaller dropdown icon
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
                 keyboardType: TextInputType.emailAddress,
                 autofillHints: [AutofillHints.email],
                 onChanged: (value) {
@@ -281,6 +313,7 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
                       children: [
                         textFormField(
                           _otpEmailController,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           'Email OTP',
                           keyboardType: TextInputType.number,
                           inputFormatters: [
@@ -345,14 +378,14 @@ Widget buttonBottomCode(GlobalKey<FormState> formKey, BuildContext context) {
       AppTextButton(
         buttonText: "Create Account",
         onPressed: () async {
-          // if (formKey.currentState!.validate()) {
-          //   print("Account Created Successfully!");
+          if (formKey.currentState!.validate()) {
+            print("Account Created Successfully!");
 
-          materialRouteNavigator(
-            context,
-            RegisterDetailAuthScreen(),
-          );
-          // }
+            materialRouteNavigator(
+              context,
+              RegisterDetailAuthScreen(),
+            );
+          }
         },
       ),
       sizedBoxH8(),

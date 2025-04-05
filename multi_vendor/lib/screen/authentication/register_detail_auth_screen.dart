@@ -210,6 +210,7 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen> {
               textFormField(
                 _nameController,
                 'Your Name',
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your name';
@@ -221,6 +222,7 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen> {
               textFormField(
                 _ageController,
                 'Your Age',
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 (value) {
@@ -232,6 +234,7 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen> {
               ),
               sizedBoxH15(),
               FormField<PhoneNumber>(
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 validator: (phone) {
                   if (_phoneController.text.isEmpty) {
                     return 'Please enter your phone number';
@@ -311,6 +314,7 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen> {
                     child: Column(
                       children: [
                         textFormField(
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           _otpPhoneController,
                           'Number OTP',
                           keyboardType: TextInputType.number,
@@ -479,13 +483,13 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen> {
         AppTextButton(
           buttonText: 'Create Account',
           onPressed: () async {
-            if (_formKey.currentState!.validate()) {
-              if (isSeller) {
-                Navigator.pushNamed(context, '/sellerDetailsPage');
-              } else {
-                Navigator.pushReplacementNamed(context, '/loginPage');
-              }
+            //if (_formKey.currentState!.validate()) {
+            if (isSeller) {
+              Navigator.pushNamed(context, '/sellerDetailsPage');
+            } else {
+              Navigator.pushReplacementNamed(context, '/loginPage');
             }
+            //}
           },
         ),
         sizedBoxH10(),

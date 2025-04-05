@@ -109,6 +109,7 @@ class _LoginAuthScreenState extends State<LoginAuthScreen> {
                         sizedBoxH15(),
                         textFormField(
                           _emailController,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           'Email',
                           (value) {
                             if (value == null || value.isEmpty) {
