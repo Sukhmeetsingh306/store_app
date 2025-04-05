@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl_phone_field/phone_number.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../utils/fonts/google_fonts_utils.dart';
@@ -29,7 +30,9 @@ class _SellerAuthScreenState extends State<SellerAuthScreen> {
   final TextEditingController _companyController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _mailController = TextEditingController();
-  final TextEditingController _otpmailController = TextEditingController();
+  final TextEditingController _otpMailController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _otpPhoneController = TextEditingController();
 
   int descriptionCharCount = 0;
 
@@ -37,8 +40,9 @@ class _SellerAuthScreenState extends State<SellerAuthScreen> {
 
   bool isLargeScreen = false;
   bool hasError = false;
-  bool otpmailSent = false;
+  bool otpMailSent = false;
   bool isLoading = false;
+  bool otpPhoneSent = false;
 
   File? _imageFile;
   Uint8List? _webImage;
@@ -83,7 +87,7 @@ class _SellerAuthScreenState extends State<SellerAuthScreen> {
   ];
   String selectedDomain = 'gmail.com';
 
-  void _updatemail() {
+  void _updateEmail() {
     String mail = _mailController.text.split('@')[0];
     _mailController.text = '$mail@$selectedDomain';
     _mailController.selection = TextSelection.fromPosition(
@@ -100,7 +104,20 @@ class _SellerAuthScreenState extends State<SellerAuthScreen> {
     }
 
     setState(() {
-      otpmailSent = true;
+      otpMailSent = true;
+    });
+  }
+
+  void _sendPhoneOTP() {
+    if (_phoneController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please enter a valid Number')),
+      );
+      return;
+    }
+
+    setState(() {
+      otpPhoneSent = true;
     });
   }
 
@@ -246,7 +263,7 @@ class _SellerAuthScreenState extends State<SellerAuthScreen> {
                                   if (newValue != null) {
                                     setState(() {
                                       selectedDomain = newValue;
-                                      _updatemail();
+                                      _updateEmail();
                                     });
                                   }
                                 },
@@ -273,7 +290,7 @@ class _SellerAuthScreenState extends State<SellerAuthScreen> {
                             keyboardType: TextInputType.emailAddress,
                             autofillHints: [AutofillHints.email],
                             onChanged: (value) {
-                              _updatemail();
+                              _updateEmail();
                             },
                           ),
                           sizedBoxH15(),
@@ -285,7 +302,7 @@ class _SellerAuthScreenState extends State<SellerAuthScreen> {
                                 child: Column(
                                   children: [
                                     textFormField(
-                                      _otpmailController,
+                                      _otpMailController,
                                       autovalidateMode:
                                           AutovalidateMode.onUserInteraction,
                                       'Company mail OTP',
@@ -321,7 +338,7 @@ class _SellerAuthScreenState extends State<SellerAuthScreen> {
                               ),
                             ],
                           ),
-                          if (otpmailSent)
+                          if (otpMailSent)
                             Padding(
                               padding: const EdgeInsets.only(top: 4.0),
                               child: googleInterText(
@@ -329,6 +346,81 @@ class _SellerAuthScreenState extends State<SellerAuthScreen> {
                                 fontSize: 10,
                               ),
                             ),
+                          sizedBoxH15(),
+                          FormField<PhoneNumber>(
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: (phone) {
+                              if (_phoneController.text.isEmpty) {
+                                return 'Please enter your phone number';
+                              }
+                              return null;
+                            },
+                            builder: (state) {
+                              return phoneNumber(
+                                _phoneController,
+                                'Business Number',
+                                'Business Number',
+                                errorText: state.errorText,
+                                onChanged: (phone) {
+                                  state.didChange(phone);
+                                },
+                              );
+                            },
+                          ),
+                          Row(
+                            crossAxisAlignment:
+                                CrossAxisAlignment.start, // important!
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  children: [
+                                    textFormField(
+                                      autovalidateMode:
+                                          AutovalidateMode.onUserInteraction,
+                                      _otpPhoneController,
+                                      'Number OTP',
+                                      keyboardType: TextInputType.number,
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.digitsOnly
+                                      ],
+                                      (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter a valid OTP';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              Column(
+                                children: [
+                                  isLargeScreen
+                                      ? SizedBox(height: hasError ? 8 : 2)
+                                      : SizedBox(height: hasError ? 14 : 8),
+                                  AppTextButton(
+                                    onPressed: _sendPhoneOTP,
+                                    buttonText: 'OTP',
+                                    buttonWidth: 75,
+                                    buttonHeight: 45,
+                                    horizontalPadding: 0,
+                                    verticalPadding: 0,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          if (otpPhoneSent)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 4.0),
+                              child: googleInterText(
+                                'OTP has been sent to your mail',
+                                fontSize: 10,
+                              ),
+                            ),
+                          sizedBoxH5(),
                         ],
                       ),
                     ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:intl_phone_field/phone_number.dart';
 
 // Widget textFormField(
 //   TextEditingController controller,
@@ -124,5 +126,67 @@ Widget textFormField(
     minLines: safeMinLines,
     maxLines: safeMaxLines,
     textAlignVertical: TextAlignVertical.top,
+  );
+}
+
+Widget phoneNumber(
+  TextEditingController controller,
+  String labelText,
+  String hintText, {
+  ValueChanged<PhoneNumber>? onChanged,
+  String? errorText,
+}) {
+  return IntlPhoneField(
+    controller: controller,
+    decoration: InputDecoration(
+      labelText: labelText,
+      labelStyle: GoogleFonts.getFont(
+        'Inter',
+        color: Colors.black,
+        fontWeight: FontWeight.w400,
+        fontSize: 16,
+      ),
+      hintText: hintText,
+      hintStyle: GoogleFonts.getFont(
+        'Inter',
+        color: Colors.black,
+        fontWeight: FontWeight.w400,
+        fontSize: 16,
+      ),
+      border: OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.grey),
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.grey),
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.grey),
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      filled: true,
+      fillColor: Colors.transparent,
+      contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+      errorText: errorText,
+    ),
+    keyboardType: TextInputType.phone,
+    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+    initialCountryCode: 'US',
+    dropdownTextStyle: TextStyle(
+      color: Colors.black,
+      fontSize: 16,
+    ),
+    dropdownIcon: Icon(
+      Icons.arrow_drop_down,
+      color: Colors.black,
+    ),
+    onChanged: onChanged, // This now matches the expected type
+    style: GoogleFonts.getFont(
+      'Inter',
+      color: Colors.black,
+      fontWeight: FontWeight.w400,
+      fontSize: 16,
+    ),
   );
 }
