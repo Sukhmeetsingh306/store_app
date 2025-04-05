@@ -141,7 +141,7 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
             ? SingleChildScrollView(
                 child: Column(
                   children: [
-                    pageInnerCode(),
+                    pageInnerCode(isLargeScreen),
                     SizedBox(height: 25),
                     buttonBottomCode(formKey: _formKey, context: context),
                     Divider(),
@@ -153,7 +153,7 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
                 children: [
                   Expanded(
                     child: SingleChildScrollView(
-                      child: pageInnerCode(),
+                      child: pageInnerCode(isLargeScreen),
                     ),
                   ),
                   buttonBottomCode(formKey: _formKey, context: context),
@@ -164,7 +164,7 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
     );
   }
 
-  Column pageInnerCode() {
+  Column pageInnerCode(bool isLargeScreen) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center, // Center the form
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -274,31 +274,43 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
               ),
               sizedBoxH15(),
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start, // important!
                 children: [
                   Expanded(
-                    child: textFormField(
-                      _otpEmailController,
-                      'Email OTP',
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter a valid OTP';
-                        }
-                        return null;
-                      },
+                    child: Column(
+                      children: [
+                        textFormField(
+                          _otpEmailController,
+                          'Email OTP',
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter a valid OTP';
+                            }
+                            return null;
+                          },
+                        ),
+                      ],
                     ),
                   ),
                   SizedBox(width: 10),
-                  AppTextButton(
-                    onPressed: () {
-                      _sendEmailOTP();
-                    },
-                    buttonText: 'OTP',
-                    buttonWidth: 75,
-                    buttonHeight: 45,
-                    horizontalPadding: 0,
-                    verticalPadding: 0,
+                  Column(
+                    children: [
+                      isLargeScreen
+                          ? SizedBox(height: hasError ? 8 : 2)
+                          : SizedBox(height: hasError ? 14 : 8),
+                      AppTextButton(
+                        onPressed: _sendEmailOTP,
+                        buttonText: 'OTP',
+                        buttonWidth: 75,
+                        buttonHeight: 45,
+                        horizontalPadding: 0,
+                        verticalPadding: 0,
+                      ),
+                    ],
                   ),
                 ],
               ),
