@@ -242,68 +242,14 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen> {
                   return null;
                 },
                 builder: (state) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      IntlPhoneField(
-                        controller: _phoneController,
-                        decoration: InputDecoration(
-                          labelText: 'Phone Number',
-                          labelStyle: GoogleFonts.getFont(
-                            'Inter',
-                            color: Colors.black,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16,
-                          ),
-                          hintText: 'Your Number',
-                          hintStyle: GoogleFonts.getFont(
-                            'Inter',
-                            color: Colors.black,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16,
-                          ),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          filled: true,
-                          fillColor: Colors.transparent,
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: 20, horizontal: 16),
-                          errorText: state.errorText,
-                        ),
-                        keyboardType: TextInputType.phone,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        initialCountryCode: 'US',
-                        dropdownTextStyle: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                        ),
-                        dropdownIcon: Icon(
-                          Icons.arrow_drop_down,
-                          color: Colors.black,
-                        ),
-                        onChanged: (phone) {
-                          state.didChange(phone);
-                        },
-                        style: GoogleFonts.getFont(
-                          'Inter',
-                          color: Colors.black,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ],
+                  return phoneNumber(
+                    _phoneController,
+                    'Business Number',
+                    'Business Number',
+                    errorText: state.errorText,
+                    onChanged: (phone) {
+                      state.didChange(phone);
+                    },
                   );
                 },
               ),
