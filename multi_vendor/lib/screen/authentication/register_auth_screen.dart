@@ -143,7 +143,7 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
                   children: [
                     pageInnerCode(isLargeScreen),
                     SizedBox(height: 25),
-                    buttonBottomCode(formKey: _formKey, context: context),
+                    buttonBottomCode(_formKey, context),
                     Divider(),
                   ],
                 ),
@@ -156,7 +156,7 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
                       child: pageInnerCode(isLargeScreen),
                     ),
                   ),
-                  buttonBottomCode(formKey: _formKey, context: context),
+                  buttonBottomCode(_formKey, context),
                   Divider(),
                 ],
               ),
@@ -332,66 +332,54 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
   }
 }
 
-class buttonBottomCode extends StatelessWidget {
-  const buttonBottomCode({
-    super.key,
-    required GlobalKey<FormState> formKey,
-    required this.context,
-  }) : _formKey = formKey;
+Widget buttonBottomCode(GlobalKey<FormState> formKey, BuildContext context) {
+  return Column(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      SizedBox(
+        height: 20,
+        // hasError ? 20 : MediaQuery.of(context).size.height * .11,
+      ),
+      Center(child: TermsAndConditionsText()),
+      sizedBoxH15(),
+      AppTextButton(
+        buttonText: "Create Account",
+        onPressed: () async {
+          // if (formKey.currentState!.validate()) {
+          //   print("Account Created Successfully!");
 
-  final GlobalKey<FormState> _formKey;
-  final BuildContext context;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        SizedBox(
-          height: 20,
-          // hasError ? 20 : MediaQuery.of(context).size.height * .11,
-        ),
-        Center(child: TermsAndConditionsText()),
-        sizedBoxH15(),
-        AppTextButton(
-          buttonText: "Create Account",
-          onPressed: () async {
-            if (_formKey.currentState!.validate()) {
-              print("Account Created Successfully!");
-
-              materialRouteNavigator(
-                context,
-                RegisterDetailAuthScreen(),
-              );
-            }
+          materialRouteNavigator(
+            context,
+            RegisterDetailAuthScreen(),
+          );
+          // }
+        },
+      ),
+      sizedBoxH8(),
+      Center(
+        child: GestureDetector(
+          onTap: () {
+            pushNamedAndRemoveUntil(context, '/loginPage');
           },
-        ),
-        sizedBoxH8(),
-        Center(
-          child: GestureDetector(
-            onTap: () {
-              pushNamedAndRemoveUntil(context, '/loginPage');
-            },
-            child: RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(
-                children: [
-                  textSpan(
-                    'Already have an account?',
-                    fontSize: 14,
-                  ),
-                  textSpan(
-                    ' Login',
-                    fontSize: 14,
-                    color: const Color.fromRGBO(36, 124, 255, 1),
-                  ),
-                ],
-              ),
+          child: RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              children: [
+                textSpan(
+                  'Already have an account?',
+                  fontSize: 14,
+                ),
+                textSpan(
+                  ' Login',
+                  fontSize: 14,
+                  color: const Color.fromRGBO(36, 124, 255, 1),
+                ),
+              ],
             ),
           ),
         ),
-        sizedBoxH5(),
-      ],
-    );
-  }
+      ),
+      sizedBoxH5(),
+    ],
+  );
 }
