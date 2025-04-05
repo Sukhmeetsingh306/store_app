@@ -78,34 +78,37 @@ Widget textFormField(
   bool? obscureText,
   AutovalidateMode? autovalidateMode,
   List<TextInputFormatter>? inputFormatters,
+  int? maxLines,
+  int? maxLength,
+  int? minLines,
 }) {
+  final bool isObscured = obscureText ?? false;
+
+  // Rule: Obscured text fields MUST be single-line
+  final int safeMaxLines = isObscured ? 1 : (maxLines ?? 1);
+  final int? safeMinLines = isObscured ? 1 : minLines;
+
   return TextFormField(
     controller: controller,
     decoration: InputDecoration(
       labelText: labelText,
       suffixIcon: suffixIcon,
       border: OutlineInputBorder(
-        borderSide: BorderSide(
-          color: Colors.grey,
-        ),
+        borderSide: BorderSide(color: Colors.grey),
         borderRadius: BorderRadius.circular(10.0),
       ),
       enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(
-          color: Colors.grey,
-        ),
+        borderSide: BorderSide(color: Colors.grey),
         borderRadius: BorderRadius.circular(10.0),
       ),
       focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(
-          color: Colors.grey,
-        ),
+        borderSide: BorderSide(color: Colors.grey),
         borderRadius: BorderRadius.circular(10.0),
       ),
     ),
     style: GoogleFonts.getFont(
       'Inter',
-      color: Colors.black, // Ensure text color is visible
+      color: Colors.black,
       fontWeight: FontWeight.w400,
       fontSize: 16,
     ),
@@ -113,8 +116,11 @@ Widget textFormField(
     autofillHints: autofillHints,
     validator: validator,
     onChanged: onChanged,
-    obscureText: obscureText ?? false,
+    obscureText: isObscured,
     autovalidateMode: autovalidateMode,
     inputFormatters: inputFormatters,
+    maxLength: maxLength,
+    minLines: safeMinLines,
+    maxLines: safeMaxLines,
   );
 }
