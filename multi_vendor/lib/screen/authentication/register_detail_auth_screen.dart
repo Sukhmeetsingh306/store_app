@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:intl_phone_field/phone_number.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../utils/fonts/google_fonts_utils.dart';
@@ -213,65 +214,80 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen> {
                 },
               ),
               sizedBoxH15(),
-              IntlPhoneField(
-                controller: _phoneController,
-                decoration: InputDecoration(
-                  labelText: 'Phone Number',
-                  labelStyle: GoogleFonts.getFont(
-                    'Inter',
-                    color: Colors.black,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16,
-                  ),
-                  hintText: 'Your Number',
-                  hintStyle: GoogleFonts.getFont(
-                    'Inter',
-                    color: Colors.black,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16,
-                  ),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  filled: true,
-                  fillColor: Colors.transparent,
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-                ),
-                keyboardType: TextInputType.phone,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                initialCountryCode: 'US',
-                dropdownTextStyle: TextStyle(
-                  color: Colors.black,
-                  fontSize: 16,
-                ),
-                dropdownIcon: Icon(
-                  Icons.arrow_drop_down,
-                  color: Colors.black,
-                ),
-                onChanged: (phone) {},
+              FormField<PhoneNumber>(
                 validator: (phone) {
-                  if (phone == null || phone.number.isEmpty) {
+                  if (_phoneController.text.isEmpty) {
                     return 'Please enter your phone number';
                   }
                   return null;
                 },
-                style: GoogleFonts.getFont(
-                  'Inter',
-                  color: Colors.black,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 16,
-                ),
+                builder: (state) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      IntlPhoneField(
+                        controller: _phoneController,
+                        decoration: InputDecoration(
+                          labelText: 'Phone Number',
+                          labelStyle: GoogleFonts.getFont(
+                            'Inter',
+                            color: Colors.black,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16,
+                          ),
+                          hintText: 'Your Number',
+                          hintStyle: GoogleFonts.getFont(
+                            'Inter',
+                            color: Colors.black,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16,
+                          ),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          filled: true,
+                          fillColor: Colors.transparent,
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 20, horizontal: 16),
+                          errorText: state.errorText,
+                        ),
+                        keyboardType: TextInputType.phone,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
+                        initialCountryCode: 'US',
+                        dropdownTextStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                        ),
+                        dropdownIcon: Icon(
+                          Icons.arrow_drop_down,
+                          color: Colors.black,
+                        ),
+                        onChanged: (phone) {
+                          state.didChange(phone);
+                        },
+                        style: GoogleFonts.getFont(
+                          'Inter',
+                          color: Colors.black,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  );
+                },
               ),
+
               sizedBoxH15(),
               sellerToggle(),
             ],
@@ -298,8 +314,7 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen> {
           padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
           margin: EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
-            color:
-                isSeller ? Colors.blue.withOpacity(0.08) : Colors.transparent,
+            color: isSeller ? Colors.blue.withAlpha(8) : Colors.transparent,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
               color: isSeller ? Colors.blue : Colors.grey,
@@ -330,9 +345,13 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen> {
                   color: isSeller ? Colors.blue : Colors.black,
                   fontSize: 16,
                   fontWeight: isSeller ? FontWeight.w600 : FontWeight.w500,
-                  // ✅ No shadow added to avoid blurRadius issues
                 ),
-                child: Text("I am a seller"),
+                child: googleInterText(
+                  'Seller Account',
+                  color: isSeller ? Colors.blue : Colors.black,
+                  fontSize: 16,
+                  fontWeight: isSeller ? FontWeight.w600 : FontWeight.w500,
+                ),
               ),
             ],
           ),
@@ -395,7 +414,13 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen> {
         AppTextButton(
           buttonText: 'Create Account',
           onPressed: () async {
-            // Handle create account logic
+            if (_formKey.currentState!.validate()) {
+              if (isSeller) {
+                Navigator.pushNamed(context, '/sellerDetailsPage');
+              } else {
+                Navigator.pushReplacementNamed(context, '/loginPage');
+              }
+            }
           },
         ),
         sizedBoxH10(),
