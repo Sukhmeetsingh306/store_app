@@ -3,11 +3,13 @@ import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../utils/fonts/google_fonts_utils.dart';
 import '../../utils/theme/color/color_theme.dart';
+import '../../utils/widget/form/appTextButton_form.dart';
 import '../../utils/widget/form/textForm_form.dart';
 import '../../utils/widget/space_widget_utils.dart';
 
@@ -26,8 +28,17 @@ class _SellerAuthScreenState extends State<SellerAuthScreen> {
 
   final TextEditingController _companyController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _mailController = TextEditingController();
+  final TextEditingController _otpmailController = TextEditingController();
 
   int descriptionCharCount = 0;
+
+  String mail = '';
+
+  bool isLargeScreen = false;
+  bool hasError = false;
+  bool otpmailSent = false;
+  bool isLoading = false;
 
   File? _imageFile;
   Uint8List? _webImage;
@@ -62,6 +73,41 @@ class _SellerAuthScreenState extends State<SellerAuthScreen> {
         });
       }
     }
+  }
+
+  final List<String> mailDomains = [
+    'gmail.com',
+    'yahoo.com',
+    'icloud.com',
+    'outlook.com',
+  ];
+  String selectedDomain = 'gmail.com';
+
+  void _updatemail() {
+    String mail = _mailController.text.split('@')[0];
+    _mailController.text = '$mail@$selectedDomain';
+    _mailController.selection = TextSelection.fromPosition(
+      TextPosition(offset: mail.length),
+    );
+  }
+
+  void _sendmailOTP() {
+    if (_mailController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please enter a valid mail')),
+      );
+      return;
+    }
+
+    setState(() {
+      otpmailSent = true;
+    });
+  }
+
+  void reloadWidget() {
+    setState(() {
+      _formKey = GlobalKey<FormState>();
+    });
   }
 
   @override
@@ -166,7 +212,7 @@ class _SellerAuthScreenState extends State<SellerAuthScreen> {
                               }
                               return null;
                             },
-                            minLines: 3,
+                            minLines: 2,
                             maxLines: 10,
                             maxLength: 200,
                             keyboardType: TextInputType.multiline,
@@ -176,6 +222,113 @@ class _SellerAuthScreenState extends State<SellerAuthScreen> {
                               });
                             },
                           ),
+                          sizedBoxH10(),
+                          textFormField(
+                            _mailController,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            'Company mail',
+                            (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your mail';
+                              } else if (!RegExp(
+                                      r"^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$")
+                                  .hasMatch(value)) {
+                                return 'Please enter a valid mail';
+                              }
+                              return null;
+                            },
+                            suffixIcon: DropdownButtonHideUnderline(
+                              child: DropdownButton<String>(
+                                value: selectedDomain,
+                                alignment: Alignment.centerRight,
+                                onChanged: (String? newValue) {
+                                  if (newValue != null) {
+                                    setState(() {
+                                      selectedDomain = newValue;
+                                      _updatemail();
+                                    });
+                                  }
+                                },
+                                items: mailDomains
+                                    .map<DropdownMenuItem<String>>(
+                                        (String domain) {
+                                  return DropdownMenuItem<String>(
+                                    value: domain,
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          "@$domain",
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                          ),
+                                        ), // Smaller dropdown icon
+                                      ],
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                            keyboardType: TextInputType.emailAddress,
+                            autofillHints: [AutofillHints.email],
+                            onChanged: (value) {
+                              _updatemail();
+                            },
+                          ),
+                          sizedBoxH15(),
+                          Row(
+                            crossAxisAlignment:
+                                CrossAxisAlignment.start, // important!
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  children: [
+                                    textFormField(
+                                      _otpmailController,
+                                      autovalidateMode:
+                                          AutovalidateMode.onUserInteraction,
+                                      'Company mail OTP',
+                                      keyboardType: TextInputType.number,
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.digitsOnly
+                                      ],
+                                      (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter a valid OTP';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              Column(
+                                children: [
+                                  isLargeScreen
+                                      ? SizedBox(height: hasError ? 8 : 2)
+                                      : SizedBox(height: hasError ? 14 : 8),
+                                  AppTextButton(
+                                    onPressed: _sendmailOTP,
+                                    buttonText: 'OTP',
+                                    buttonWidth: 75,
+                                    buttonHeight: 45,
+                                    horizontalPadding: 0,
+                                    verticalPadding: 0,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          if (otpmailSent)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 4.0),
+                              child: googleInterText(
+                                'OTP has been sent to your mail',
+                                fontSize: 10,
+                              ),
+                            ),
                         ],
                       ),
                     ),
@@ -196,7 +349,7 @@ Store Name
 
 Store Description
 
-Business Email
+Business mail
 
 Business Phone
 

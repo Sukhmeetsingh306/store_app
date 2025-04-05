@@ -23,17 +23,17 @@ class RegisterAuthScreen extends StatefulWidget {
 
 class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _mailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
-  final TextEditingController _otpEmailController = TextEditingController();
+  final TextEditingController _otpmailController = TextEditingController();
 
   bool _obscureText = true;
   bool _confirmObscureText = true;
   bool hasMinLength = false;
   bool otpSent = false;
-  bool otpEmailSent = false;
+  bool otpmailSent = false;
   bool hasError = false;
 
   final passwordFocusNode = FocusNode();
@@ -41,7 +41,7 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
 
   String? fullPhoneNumber;
 
-  final List<String> emailDomains = [
+  final List<String> mailDomains = [
     'gmail.com',
     'yahoo.com',
     'icloud.com',
@@ -49,34 +49,34 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
   ];
   String selectedDomain = 'gmail.com'; // Default domain
 
-  void _updateEmail() {
-    String email =
-        _emailController.text.split('@')[0]; // Keep only the username part
-    _emailController.text = '$email@$selectedDomain';
-    _emailController.selection = TextSelection.fromPosition(
-      TextPosition(offset: email.length), // Keep cursor before the '@'
+  void _updatemail() {
+    String mail =
+        _mailController.text.split('@')[0]; // Keep only the username part
+    _mailController.text = '$mail@$selectedDomain';
+    _mailController.selection = TextSelection.fromPosition(
+      TextPosition(offset: mail.length), // Keep cursor before the '@'
     );
   }
 
   @override
   void dispose() {
     super.dispose();
-    _emailController.dispose();
+    _mailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
-    _otpEmailController.dispose();
+    _otpmailController.dispose();
   }
 
-  void _sendEmailOTP() {
-    if (_emailController.text.isEmpty) {
+  void _sendmailOTP() {
+    if (_mailController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please enter a valid Email')),
+        SnackBar(content: Text('Please enter a valid mail')),
       );
       return;
     }
 
     setState(() {
-      otpEmailSent = true;
+      otpmailSent = true;
     });
   }
 
@@ -188,15 +188,15 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
             children: [
               sizedBoxH10(),
               textFormField(
-                _emailController,
+                _mailController,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                'Email',
+                'mail',
                 (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter your email';
+                    return 'Please enter your mail';
                   } else if (!RegExp(r"^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$")
                       .hasMatch(value)) {
-                    return 'Please enter a valid email';
+                    return 'Please enter a valid mail';
                   }
                   return null;
                 },
@@ -208,11 +208,11 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
                       if (newValue != null) {
                         setState(() {
                           selectedDomain = newValue;
-                          _updateEmail();
+                          _updatemail();
                         });
                       }
                     },
-                    items: emailDomains
+                    items: mailDomains
                         .map<DropdownMenuItem<String>>((String domain) {
                       return DropdownMenuItem<String>(
                         value: domain,
@@ -234,7 +234,7 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
                 keyboardType: TextInputType.emailAddress,
                 autofillHints: [AutofillHints.email],
                 onChanged: (value) {
-                  _updateEmail();
+                  _updatemail();
                 },
               ),
               sizedBoxH15(),
@@ -312,9 +312,9 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
                     child: Column(
                       children: [
                         textFormField(
-                          _otpEmailController,
+                          _otpmailController,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
-                          'Email OTP',
+                          'mail OTP',
                           keyboardType: TextInputType.number,
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly
@@ -336,7 +336,7 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
                           ? SizedBox(height: hasError ? 8 : 2)
                           : SizedBox(height: hasError ? 14 : 8),
                       AppTextButton(
-                        onPressed: _sendEmailOTP,
+                        onPressed: _sendmailOTP,
                         buttonText: 'OTP',
                         buttonWidth: 75,
                         buttonHeight: 45,
@@ -347,11 +347,11 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
                   ),
                 ],
               ),
-              if (otpEmailSent)
+              if (otpmailSent)
                 Padding(
                   padding: const EdgeInsets.only(top: 4.0),
                   child: googleInterText(
-                    'OTP has been sent to your Email',
+                    'OTP has been sent to your mail',
                     fontSize: 10,
                   ),
                 ),

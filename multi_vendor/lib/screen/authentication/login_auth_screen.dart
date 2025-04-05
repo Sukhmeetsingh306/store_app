@@ -22,11 +22,11 @@ class LoginAuthScreen extends StatefulWidget {
 class _LoginAuthScreenState extends State<LoginAuthScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _mailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final LoginUserControllers _loginUserControllers = LoginUserControllers();
 
-  String email = '';
+  String mail = '';
   String password = "";
 
   bool isLoading = false;
@@ -37,11 +37,11 @@ class _LoginAuthScreenState extends State<LoginAuthScreen> {
   @override
   void dispose() {
     super.dispose();
-    _emailController.dispose();
+    _mailController.dispose();
     _passwordController.dispose();
   }
 
-  final List<String> emailDomains = [
+  final List<String> mailDomains = [
     'gmail.com',
     'yahoo.com',
     'icloud.com',
@@ -49,11 +49,11 @@ class _LoginAuthScreenState extends State<LoginAuthScreen> {
   ];
   String selectedDomain = 'gmail.com';
 
-  void _updateEmail() {
-    String email = _emailController.text.split('@')[0];
-    _emailController.text = '$email@$selectedDomain';
-    _emailController.selection = TextSelection.fromPosition(
-      TextPosition(offset: email.length),
+  void _updatemail() {
+    String mail = _mailController.text.split('@')[0];
+    _mailController.text = '$mail@$selectedDomain';
+    _mailController.selection = TextSelection.fromPosition(
+      TextPosition(offset: mail.length),
     );
   }
 
@@ -108,16 +108,16 @@ class _LoginAuthScreenState extends State<LoginAuthScreen> {
                         ),
                         sizedBoxH15(),
                         textFormField(
-                          _emailController,
+                          _mailController,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
-                          'Email',
+                          'mail',
                           (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter your email';
+                              return 'Please enter your mail';
                             } else if (!RegExp(
                                     r"^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$")
                                 .hasMatch(value)) {
-                              return 'Please enter a valid email';
+                              return 'Please enter a valid mail';
                             }
                             return null;
                           },
@@ -129,11 +129,11 @@ class _LoginAuthScreenState extends State<LoginAuthScreen> {
                                 if (newValue != null) {
                                   setState(() {
                                     selectedDomain = newValue;
-                                    _updateEmail();
+                                    _updatemail();
                                   });
                                 }
                               },
-                              items: emailDomains.map<DropdownMenuItem<String>>(
+                              items: mailDomains.map<DropdownMenuItem<String>>(
                                   (String domain) {
                                 return DropdownMenuItem<String>(
                                   value: domain,
@@ -155,7 +155,7 @@ class _LoginAuthScreenState extends State<LoginAuthScreen> {
                           keyboardType: TextInputType.emailAddress,
                           autofillHints: [AutofillHints.email],
                           onChanged: (value) {
-                            _updateEmail();
+                            _updatemail();
                           },
                         ),
                         sizedBoxH15(),
@@ -231,7 +231,7 @@ class _LoginAuthScreenState extends State<LoginAuthScreen> {
                         bool isAuthenticated =
                             await _loginUserControllers.signInUsers(
                           context: context,
-                          email: _emailController.text,
+                          email: _mailController.text,
                           password: _passwordController.text,
                         );
 

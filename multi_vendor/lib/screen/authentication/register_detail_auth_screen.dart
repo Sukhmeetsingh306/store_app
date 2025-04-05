@@ -96,7 +96,7 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen> {
       // Extract arguments from ModalRoute safely here
       data = ModalRoute.of(context)?.settings.arguments as Map<String, String>?;
       print(
-          "Email: ${data?['email']}"); // Debug to confirm data is passed correctly
+          "mail: ${data?['mail']}"); // Debug to confirm data is passed correctly
     }
   }
 
@@ -353,7 +353,7 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen> {
                 Padding(
                   padding: const EdgeInsets.only(top: 4.0),
                   child: googleInterText(
-                    'OTP has been sent to your Email',
+                    'OTP has been sent to your mail',
                     fontSize: 10,
                   ),
                 ),
