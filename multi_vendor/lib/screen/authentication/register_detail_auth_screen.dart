@@ -36,6 +36,8 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen> {
   File? _imageFile;
   Uint8List? _webImage;
 
+  bool isSeller = false;
+
   Future<void> _pickImage() async {
     final ImagePicker picker = ImagePicker();
 
@@ -271,10 +273,71 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen> {
                 ),
               ),
               sizedBoxH15(),
+              sellerToggle(),
             ],
           ),
         ),
       ],
+    );
+  }
+
+  Widget sellerToggle() {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          isSeller = !isSeller;
+        });
+      },
+      child: AnimatedScale(
+        scale: isSeller ? 1.03 : 1.0,
+        duration: Duration(milliseconds: 400),
+        curve: Curves.easeInOut,
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 450),
+          curve: Curves.easeInOutBack,
+          padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+          margin: EdgeInsets.symmetric(vertical: 10),
+          decoration: BoxDecoration(
+            color:
+                isSeller ? Colors.blue.withOpacity(0.08) : Colors.transparent,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: isSeller ? Colors.blue : Colors.grey,
+              width: 1.4,
+            ),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              AnimatedSwitcher(
+                duration: Duration(milliseconds: 300),
+                transitionBuilder: (child, animation) => ScaleTransition(
+                  scale: animation,
+                  child: child,
+                ),
+                child: Icon(
+                  Icons.storefront,
+                  key: ValueKey<bool>(isSeller),
+                  color: isSeller ? Colors.blue : Colors.grey,
+                  size: isSeller ? 26 : 24,
+                ),
+              ),
+              SizedBox(width: 12),
+              AnimatedDefaultTextStyle(
+                duration: Duration(milliseconds: 400),
+                curve: Curves.easeInOut,
+                style: TextStyle(
+                  color: isSeller ? Colors.blue : Colors.black,
+                  fontSize: 16,
+                  fontWeight: isSeller ? FontWeight.w600 : FontWeight.w500,
+                  // ✅ No shadow added to avoid blurRadius issues
+                ),
+                child: Text("I am a seller"),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
