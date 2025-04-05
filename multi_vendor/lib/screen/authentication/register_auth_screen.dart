@@ -311,14 +311,14 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
                   AppTextButton(
                     buttonText: "Create Account",
                     onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        print("Account Created Successfully!");
+                      //if (_formKey.currentState!.validate()) {
+                      //print("Account Created Successfully!");
 
-                        materialRouteNavigator(
-                          context,
-                          RegisterDetailAuthScreen(),
-                        );
-                      }
+                      materialRouteNavigator(
+                        context,
+                        RegisterDetailAuthScreen(),
+                      );
+                      //}
                     },
                   ),
                   sizedBoxH8(),
