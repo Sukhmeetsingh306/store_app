@@ -296,18 +296,29 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen> {
                 borderRadius: BorderRadius.circular(20), // Rounded edges
               )
             : null,
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                  child: pageInnerCode(context, isLargeScreen)),
-            ),
-            // Place the button at the bottom
-            buttonBottomCodeDetail(_formKey, context),
-            Divider(),
-          ],
-        ),
+        child: isLargeScreen
+            ? SingleChildScrollView(
+                child: Column(
+                  children: [
+                    pageInnerCode(context, isLargeScreen),
+                    SizedBox(height: 25),
+                    buttonBottomCodeDetail(_formKey, context),
+                    Divider(),
+                  ],
+                ),
+              )
+            : Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: pageInnerCode(context, isLargeScreen),
+                    ),
+                  ),
+                  buttonBottomCodeDetail(_formKey, context),
+                  Divider(),
+                ],
+              ),
       ),
     );
   }
