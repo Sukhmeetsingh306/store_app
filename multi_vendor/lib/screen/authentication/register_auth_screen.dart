@@ -137,222 +137,249 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
                 borderRadius: BorderRadius.circular(20), // Rounded edges
               )
             : null,
-        child: SingleChildScrollView(
+        child: isLargeScreen
+            ? SingleChildScrollView(
+                child: Column(
+                  children: [
+                    pageInnerCode(),
+                    SizedBox(height: 25),
+                    buttonBottomCode(formKey: _formKey, context: context),
+                    Divider(),
+                  ],
+                ),
+              )
+            : Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: pageInnerCode(),
+                    ),
+                  ),
+                  buttonBottomCode(formKey: _formKey, context: context),
+                  Divider(),
+                ],
+              ),
+      ),
+    );
+  }
+
+  Column pageInnerCode() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center, // Center the form
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        googleInterText(
+          'Create Account',
+          fontWeight: FontWeight.w700,
+          fontSize: 24,
+        ),
+        sizedBoxH8(),
+        googleInterText(
+          'Sign up now and start exploring all that our\napp has to offer. We\'re excited to welcome\nyou to our community!',
+          fontWeight: FontWeight.w400,
+          fontSize: 14,
+        ),
+        sizedBoxH8(),
+        Form(
+          key: _formKey,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center, // Center the form
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  googleInterText(
-                    'Create Account',
-                    fontWeight: FontWeight.w700,
-                    fontSize: 24,
-                  ),
-                  sizedBoxH8(),
-                  googleInterText(
-                    'Sign up now and start exploring all that our\napp has to offer. We\'re excited to welcome\nyou to our community!',
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                  ),
-                  sizedBoxH8(),
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        sizedBoxH10(),
-                        textFormField(
-                          _emailController,
-                          'Email',
-                          (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your email';
-                            } else if (!RegExp(
-                                    r"^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$")
-                                .hasMatch(value)) {
-                              return 'Please enter a valid email';
-                            }
-                            return null;
-                          },
-                          keyboardType: TextInputType.emailAddress,
-                          autofillHints: [AutofillHints.email],
-                          onChanged: (value) {
-                            _updateEmail();
-                          },
-                        ),
-                        sizedBoxH15(),
-                        textFormField(
-                          _passwordController,
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          'Password',
-                          (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter a password';
-                            }
-                            if (value.length < 8) {
-                              return 'Password must be at least 8 characters long';
-                            }
-                            RegExp regex = RegExp(
-                                r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$');
-                            if (!regex.hasMatch(value)) {
-                              return 'Password must contain at least one uppercase letter, one number, and one special character';
-                            }
-                            return null;
-                          },
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscureText
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _obscureText = !_obscureText;
-                              });
-                            },
-                          ),
-                          obscureText: _obscureText,
-                        ),
-                        sizedBoxH15(),
-                        textFormField(
-                          _confirmPasswordController,
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          'Confirm Password',
-                          (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter a password';
-                            }
-                            if (value.length < 8) {
-                              return 'Password must be at least 8 characters long';
-                            }
-                            RegExp regex = RegExp(
-                                r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$');
-                            if (!regex.hasMatch(value)) {
-                              return 'Password must contain at least one uppercase letter, one number, and one special character';
-                            }
-                            if (value != _passwordController.text) {
-                              return 'Passwords do not match';
-                            }
-                            return null;
-                          },
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _confirmObscureText
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _confirmObscureText = !_confirmObscureText;
-                              });
-                            },
-                          ),
-                          obscureText: _confirmObscureText,
-                        ),
-                        sizedBoxH15(),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: textFormField(
-                                _otpEmailController,
-                                'Email OTP',
-                                keyboardType: TextInputType.number,
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.digitsOnly
-                                ],
-                                (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter a valid OTP';
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            AppTextButton(
-                              onPressed: () {
-                                _sendEmailOTP();
-                              },
-                              buttonText: 'OTP',
-                              buttonWidth: 75,
-                              buttonHeight: 45,
-                              horizontalPadding: 0,
-                              verticalPadding: 0,
-                            ),
-                          ],
-                        ),
-                        if (otpEmailSent)
-                          Padding(
-                            padding: const EdgeInsets.only(top: 4.0),
-                            child: googleInterText(
-                              'OTP has been sent to your Email',
-                              fontSize: 10,
-                            ),
-                          ),
-                        sizedBoxH15(),
-                        PasswordValidations(hasMinLength: hasMinLength),
-                      ],
-                    ),
-                  ),
-                ],
+              sizedBoxH10(),
+              textFormField(
+                _emailController,
+                'Email',
+                (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your email';
+                  } else if (!RegExp(r"^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$")
+                      .hasMatch(value)) {
+                    return 'Please enter a valid email';
+                  }
+                  return null;
+                },
+                keyboardType: TextInputType.emailAddress,
+                autofillHints: [AutofillHints.email],
+                onChanged: (value) {
+                  _updateEmail();
+                },
               ),
-              Column(
-                mainAxisSize: MainAxisSize.min,
+              sizedBoxH15(),
+              textFormField(
+                _passwordController,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                'Password',
+                (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a password';
+                  }
+                  if (value.length < 8) {
+                    return 'Password must be at least 8 characters long';
+                  }
+                  RegExp regex = RegExp(
+                      r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$');
+                  if (!regex.hasMatch(value)) {
+                    return 'Password must contain at least one uppercase letter, one number, and one special character';
+                  }
+                  return null;
+                },
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _obscureText ? Icons.visibility_off : Icons.visibility,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _obscureText = !_obscureText;
+                    });
+                  },
+                ),
+                obscureText: _obscureText,
+              ),
+              sizedBoxH15(),
+              textFormField(
+                _confirmPasswordController,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                'Confirm Password',
+                (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a password';
+                  }
+                  if (value.length < 8) {
+                    return 'Password must be at least 8 characters long';
+                  }
+                  RegExp regex = RegExp(
+                      r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$');
+                  if (!regex.hasMatch(value)) {
+                    return 'Password must contain at least one uppercase letter, one number, and one special character';
+                  }
+                  if (value != _passwordController.text) {
+                    return 'Passwords do not match';
+                  }
+                  return null;
+                },
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _confirmObscureText
+                        ? Icons.visibility_off
+                        : Icons.visibility,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _confirmObscureText = !_confirmObscureText;
+                    });
+                  },
+                ),
+                obscureText: _confirmObscureText,
+              ),
+              sizedBoxH15(),
+              Row(
                 children: [
-                  SizedBox(
-                    height: hasError
-                        ? 20
-                        : MediaQuery.of(context).size.height * .11,
-                  ),
-                  Center(child: TermsAndConditionsText()),
-                  sizedBoxH15(),
-                  AppTextButton(
-                    buttonText: "Create Account",
-                    onPressed: () async {
-                      //if (_formKey.currentState!.validate()) {
-                      //print("Account Created Successfully!");
-
-                      materialRouteNavigator(
-                        context,
-                        RegisterDetailAuthScreen(),
-                      );
-                      //}
-                    },
-                  ),
-                  sizedBoxH8(),
-                  Center(
-                    child: GestureDetector(
-                      onTap: () {
-                        pushNamedAndRemoveUntil(context, '/loginPage');
+                  Expanded(
+                    child: textFormField(
+                      _otpEmailController,
+                      'Email OTP',
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a valid OTP';
+                        }
+                        return null;
                       },
-                      child: RichText(
-                        textAlign: TextAlign.center,
-                        text: TextSpan(
-                          children: [
-                            textSpan(
-                              'Already have an account?',
-                              fontSize: 14,
-                            ),
-                            textSpan(
-                              ' Login',
-                              fontSize: 14,
-                              color: const Color.fromRGBO(36, 124, 255, 1),
-                            ),
-                          ],
-                        ),
-                      ),
                     ),
                   ),
-                  sizedBoxH5(),
+                  SizedBox(width: 10),
+                  AppTextButton(
+                    onPressed: () {
+                      _sendEmailOTP();
+                    },
+                    buttonText: 'OTP',
+                    buttonWidth: 75,
+                    buttonHeight: 45,
+                    horizontalPadding: 0,
+                    verticalPadding: 0,
+                  ),
                 ],
               ),
-              Divider(),
+              if (otpEmailSent)
+                Padding(
+                  padding: const EdgeInsets.only(top: 4.0),
+                  child: googleInterText(
+                    'OTP has been sent to your Email',
+                    fontSize: 10,
+                  ),
+                ),
+              sizedBoxH15(),
+              PasswordValidations(hasMinLength: hasMinLength),
             ],
           ),
         ),
-      ),
+      ],
+    );
+  }
+}
+
+class buttonBottomCode extends StatelessWidget {
+  const buttonBottomCode({
+    super.key,
+    required GlobalKey<FormState> formKey,
+    required this.context,
+  }) : _formKey = formKey;
+
+  final GlobalKey<FormState> _formKey;
+  final BuildContext context;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SizedBox(
+          height: 20,
+          // hasError ? 20 : MediaQuery.of(context).size.height * .11,
+        ),
+        Center(child: TermsAndConditionsText()),
+        sizedBoxH15(),
+        AppTextButton(
+          buttonText: "Create Account",
+          onPressed: () async {
+            if (_formKey.currentState!.validate()) {
+              print("Account Created Successfully!");
+
+              materialRouteNavigator(
+                context,
+                RegisterDetailAuthScreen(),
+              );
+            }
+          },
+        ),
+        sizedBoxH8(),
+        Center(
+          child: GestureDetector(
+            onTap: () {
+              pushNamedAndRemoveUntil(context, '/loginPage');
+            },
+            child: RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                children: [
+                  textSpan(
+                    'Already have an account?',
+                    fontSize: 14,
+                  ),
+                  textSpan(
+                    ' Login',
+                    fontSize: 14,
+                    color: const Color.fromRGBO(36, 124, 255, 1),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        sizedBoxH5(),
+      ],
     );
   }
 }
