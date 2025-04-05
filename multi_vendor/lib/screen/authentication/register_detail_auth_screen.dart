@@ -33,11 +33,14 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
+  final TextEditingController _otpPhoneController = TextEditingController();
 
   File? _imageFile;
   Uint8List? _webImage;
 
   bool isSeller = false;
+  bool hasError = false;
+  bool otpPhoneSent = false;
 
   Future<void> _pickImage() async {
     final ImagePicker picker = ImagePicker();
@@ -71,6 +74,19 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen> {
     }
   }
 
+  void _sendPhoneOTP() {
+    if (_phoneController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please enter a valid Number')),
+      );
+      return;
+    }
+
+    setState(() {
+      otpPhoneSent = true;
+    });
+  }
+
   Map<String, String>? data;
   @override
   void didChangeDependencies() {
@@ -90,6 +106,7 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen> {
     _nameController.dispose();
     _phoneController.dispose();
     _ageController.dispose();
+    _otpPhoneController.dispose();
   }
 
   void reloadWidget() {
@@ -287,8 +304,56 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen> {
                   );
                 },
               ),
-
-              sizedBoxH15(),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start, // important!
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: [
+                        textFormField(
+                          _otpPhoneController,
+                          'Number OTP',
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter a valid OTP';
+                            }
+                            return null;
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  Column(
+                    children: [
+                      isLargeScreen
+                          ? SizedBox(height: hasError ? 8 : 2)
+                          : SizedBox(height: hasError ? 14 : 8),
+                      AppTextButton(
+                        onPressed: _sendPhoneOTP,
+                        buttonText: 'OTP',
+                        buttonWidth: 75,
+                        buttonHeight: 45,
+                        horizontalPadding: 0,
+                        verticalPadding: 0,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              if (otpPhoneSent)
+                Padding(
+                  padding: const EdgeInsets.only(top: 4.0),
+                  child: googleInterText(
+                    'OTP has been sent to your Email',
+                    fontSize: 10,
+                  ),
+                ),
+              sizedBoxH5(),
               sellerToggle(),
             ],
           ),
