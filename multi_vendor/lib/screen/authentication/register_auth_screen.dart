@@ -378,14 +378,14 @@ Widget buttonBottomCode(GlobalKey<FormState> formKey, BuildContext context) {
       AppTextButton(
         buttonText: "Create Account",
         onPressed: () async {
-          if (formKey.currentState!.validate()) {
-            print("Account Created Successfully!");
+          // if (formKey.currentState!.validate()) {
+          //   print("Account Created Successfully!");
 
-            materialRouteNavigator(
-              context,
-              RegisterDetailAuthScreen(),
-            );
-          }
+          materialRouteNavigator(
+            context,
+            RegisterDetailAuthScreen(),
+          );
+          //}
         },
       ),
       sizedBoxH8(),

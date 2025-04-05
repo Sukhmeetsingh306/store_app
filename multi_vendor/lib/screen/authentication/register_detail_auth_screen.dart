@@ -485,7 +485,7 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen> {
           onPressed: () async {
             //if (_formKey.currentState!.validate()) {
             if (isSeller) {
-              Navigator.pushNamed(context, '/sellerDetailsPage');
+              Navigator.pushNamed(context, '/sellerPage');
             } else {
               Navigator.pushReplacementNamed(context, '/loginPage');
             }
