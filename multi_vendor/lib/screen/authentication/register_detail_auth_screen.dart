@@ -4,9 +4,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:intl_phone_field/phone_number.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -244,8 +242,8 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen> {
                 builder: (state) {
                   return phoneNumber(
                     _phoneController,
-                    'Business Number',
-                    'Business Number',
+                    'Number',
+                    'Number',
                     errorText: state.errorText,
                     onChanged: (phone) {
                       state.didChange(phone);
