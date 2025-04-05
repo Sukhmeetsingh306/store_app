@@ -73,6 +73,7 @@ Widget textFormField(
   TextEditingController controller,
   String labelText,
   FormFieldValidator<String> validator, {
+  String? hintText,
   Widget? suffixIcon,
   TextInputType? keyboardType,
   Iterable<String>? autofillHints,
@@ -93,6 +94,13 @@ Widget textFormField(
   return TextFormField(
     controller: controller,
     decoration: InputDecoration(
+      hintText: hintText,
+      hintStyle: GoogleFonts.getFont(
+        'Inter',
+        color: Colors.grey,
+        fontWeight: FontWeight.w400,
+        fontSize: 16,
+      ),
       labelText: labelText,
       suffixIcon: suffixIcon,
       border: OutlineInputBorder(

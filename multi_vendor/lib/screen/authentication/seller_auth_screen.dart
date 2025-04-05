@@ -33,6 +33,7 @@ class _SellerAuthScreenState extends State<SellerAuthScreen> {
   final TextEditingController _otpMailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _otpPhoneController = TextEditingController();
+  final TextEditingController _gstController = TextEditingController();
 
   int descriptionCharCount = 0;
 
@@ -206,6 +207,7 @@ class _SellerAuthScreenState extends State<SellerAuthScreen> {
                           textFormField(
                             _companyController,
                             'Company Name',
+                            hintText: 'Eg: ABC Pvt Ltd',
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             (value) {
@@ -245,6 +247,7 @@ class _SellerAuthScreenState extends State<SellerAuthScreen> {
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             'Company mail',
+                            hintText: 'Eg: abc@gmail.com',
                             (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter your mail';
@@ -303,6 +306,7 @@ class _SellerAuthScreenState extends State<SellerAuthScreen> {
                                   children: [
                                     textFormField(
                                       _otpMailController,
+                                      hintText: 'Eg: 12345',
                                       autovalidateMode:
                                           AutovalidateMode.onUserInteraction,
                                       'Company mail OTP',
@@ -360,7 +364,7 @@ class _SellerAuthScreenState extends State<SellerAuthScreen> {
                               return phoneNumber(
                                 _phoneController,
                                 'Business Number',
-                                'Business Number',
+                                '1234567890',
                                 errorText: state.errorText,
                                 onChanged: (phone) {
                                   state.didChange(phone);
@@ -379,7 +383,8 @@ class _SellerAuthScreenState extends State<SellerAuthScreen> {
                                       autovalidateMode:
                                           AutovalidateMode.onUserInteraction,
                                       _otpPhoneController,
-                                      'Number OTP',
+                                      'Business Number OTP',
+                                      hintText: 'Eg: 12345',
                                       keyboardType: TextInputType.number,
                                       inputFormatters: [
                                         FilteringTextInputFormatter.digitsOnly
@@ -416,11 +421,28 @@ class _SellerAuthScreenState extends State<SellerAuthScreen> {
                             Padding(
                               padding: const EdgeInsets.only(top: 4.0),
                               child: googleInterText(
-                                'OTP has been sent to your mail',
+                                'OTP has been sent to your Business Number',
                                 fontSize: 10,
                               ),
                             ),
                           sizedBoxH5(),
+                          textFormField(
+                            _gstController,
+                            'GST Number (Optional)',
+                            hintText: 'Eg: 22AAAAA0000A1Z5',
+                            (value) {
+                              if (value != null && value.isNotEmpty) {
+                                final gstRegex = RegExp(
+                                    r'^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$');
+                                if (!gstRegex.hasMatch(value)) {
+                                  return 'Please enter a valid GST number';
+                                }
+                              }
+                              return null;
+                            },
+                            keyboardType: TextInputType.text,
+                            maxLength: 15,
+                          ),
                         ],
                       ),
                     ),
