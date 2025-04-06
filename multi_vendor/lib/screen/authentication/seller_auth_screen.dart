@@ -9,7 +9,10 @@ import 'package:intl_phone_field/phone_number.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../utils/fonts/google_fonts_utils.dart';
+import '../../utils/fonts/text_fonts_utils.dart';
+import '../../utils/routes/navigation_routes.dart';
 import '../../utils/theme/color/color_theme.dart';
+import '../../utils/validation/termsAndConditions_core.dart';
 import '../../utils/widget/form/appTextButton_form.dart';
 import '../../utils/widget/form/textForm_form.dart';
 import '../../utils/widget/space_widget_utils.dart';
@@ -439,6 +442,55 @@ class _SellerAuthScreenState extends State<SellerAuthScreen> {
                     ],
                   ),
                 ),
+                sizedBoxH20(),
+                Column(
+                  children: [
+                    Center(child: TermsAndConditionsText()),
+                    sizedBoxH15(),
+                    AppTextButton(
+                      buttonText: 'Create Account',
+                      onPressed: () async {
+                        //if (_formKey.currentState!.validate()) {
+                        // if (isSeller) {
+                        //   Navigator.pushNamed(context, '/sellerPage');
+                        // } else {
+                        //   Navigator.pushReplacementNamed(context, '/loginPage');
+                        // }
+                        //}
+                      },
+                    ),
+                    sizedBoxH10(),
+                    InkWell(
+                      onTap: () async {
+                        if (Navigator.of(context).canPop()) {
+                          pop(context);
+                        } else {
+                          pushNamedAndRemoveUntil(context, '/registerPage');
+                        }
+                      },
+                      child: Center(
+                        child: RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                            children: [
+                              textSpan(
+                                'Preview Details?',
+                                fontSize: 14,
+                              ),
+                              textSpan(
+                                ' Preview',
+                                fontSize: 14,
+                                color: const Color.fromRGBO(36, 124, 255, 1),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    sizedBoxH5(),
+                  ],
+                ),
+                Divider(),
               ],
             ),
           ),
