@@ -49,7 +49,7 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
   ];
   String selectedDomain = 'gmail.com'; // Default domain
 
-  void _updatemail() {
+  void _updateMail() {
     String mail =
         _mailController.text.split('@')[0]; // Keep only the username part
     _mailController.text = '$mail@$selectedDomain';
@@ -208,7 +208,7 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
                       if (newValue != null) {
                         setState(() {
                           selectedDomain = newValue;
-                          _updatemail();
+                          _updateMail();
                         });
                       }
                     },
@@ -234,7 +234,7 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
                 keyboardType: TextInputType.emailAddress,
                 autofillHints: [AutofillHints.email],
                 onChanged: (value) {
-                  _updatemail();
+                  _updateMail();
                 },
               ),
               sizedBoxH15(),
