@@ -27,13 +27,13 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
-  final TextEditingController _otpmailController = TextEditingController();
+  final TextEditingController _otpMailController = TextEditingController();
 
   bool _obscureText = true;
   bool _confirmObscureText = true;
   bool hasMinLength = false;
   bool otpSent = false;
-  bool otpmailSent = false;
+  bool otpMailSent = false;
   bool hasError = false;
 
   final passwordFocusNode = FocusNode();
@@ -49,7 +49,7 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
   ];
   String selectedDomain = 'gmail.com'; // Default domain
 
-  void _updatemail() {
+  void _updateMail() {
     String mail =
         _mailController.text.split('@')[0]; // Keep only the username part
     _mailController.text = '$mail@$selectedDomain';
@@ -64,7 +64,7 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
     _mailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
-    _otpmailController.dispose();
+    _otpMailController.dispose();
   }
 
   void _sendmailOTP() {
@@ -76,7 +76,7 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
     }
 
     setState(() {
-      otpmailSent = true;
+      otpMailSent = true;
     });
   }
 
@@ -208,7 +208,7 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
                       if (newValue != null) {
                         setState(() {
                           selectedDomain = newValue;
-                          _updatemail();
+                          _updateMail();
                         });
                       }
                     },
@@ -234,7 +234,7 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
                 keyboardType: TextInputType.emailAddress,
                 autofillHints: [AutofillHints.email],
                 onChanged: (value) {
-                  _updatemail();
+                  _updateMail();
                 },
               ),
               sizedBoxH15(),
@@ -312,7 +312,7 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
                     child: Column(
                       children: [
                         textFormField(
-                          _otpmailController,
+                          _otpMailController,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           'mail OTP',
                           keyboardType: TextInputType.number,
@@ -347,7 +347,7 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
                   ),
                 ],
               ),
-              if (otpmailSent)
+              if (otpMailSent)
                 Padding(
                   padding: const EdgeInsets.only(top: 4.0),
                   child: googleInterText(
