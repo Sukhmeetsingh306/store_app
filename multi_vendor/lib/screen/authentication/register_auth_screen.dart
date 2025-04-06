@@ -27,13 +27,13 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
-  final TextEditingController _otpmailController = TextEditingController();
+  final TextEditingController _otpMailController = TextEditingController();
 
   bool _obscureText = true;
   bool _confirmObscureText = true;
   bool hasMinLength = false;
   bool otpSent = false;
-  bool otpmailSent = false;
+  bool otpMailSent = false;
   bool hasError = false;
 
   final passwordFocusNode = FocusNode();
@@ -64,7 +64,7 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
     _mailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
-    _otpmailController.dispose();
+    _otpMailController.dispose();
   }
 
   void _sendmailOTP() {
@@ -76,7 +76,7 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
     }
 
     setState(() {
-      otpmailSent = true;
+      otpMailSent = true;
     });
   }
 
@@ -312,7 +312,7 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
                     child: Column(
                       children: [
                         textFormField(
-                          _otpmailController,
+                          _otpMailController,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           'mail OTP',
                           keyboardType: TextInputType.number,
@@ -347,7 +347,7 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen> {
                   ),
                 ],
               ),
-              if (otpmailSent)
+              if (otpMailSent)
                 Padding(
                   padding: const EdgeInsets.only(top: 4.0),
                   child: googleInterText(
