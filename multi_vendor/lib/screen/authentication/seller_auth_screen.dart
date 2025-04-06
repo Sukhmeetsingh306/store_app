@@ -515,4 +515,6 @@ Business Address
 GST / Tax ID (Optional)
 
 Upload Logo (Optional)
+
+create a new screen for address for the company
 */
