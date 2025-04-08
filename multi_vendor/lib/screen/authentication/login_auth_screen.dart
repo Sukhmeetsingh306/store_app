@@ -32,6 +32,10 @@ class _LoginAuthScreenState extends State<LoginAuthScreen>
   late Animation<Offset> _slideAnimation;
   late Animation<double> _scaleAnimation;
 
+  late AnimationController _textAnimationController1;
+  late Animation<Offset> _slideAnimation1;
+  late Animation<double> _fadeAnimation1;
+
   late AnimationController _controller2;
   late Animation<double> _fadeAnimation2;
   late Animation<Offset> _slideAnimation2;
@@ -73,6 +77,33 @@ class _LoginAuthScreenState extends State<LoginAuthScreen>
     );
 
     _controller.forward();
+
+    _textAnimationController1 = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+    );
+
+    _slideAnimation1 = Tween<Offset>(
+      begin: const Offset(0, 0.3),
+      end: Offset.zero,
+    ).animate(
+      CurvedAnimation(
+        parent: _textAnimationController1,
+        curve: Curves.easeOut,
+      ),
+    );
+
+    _fadeAnimation1 = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(
+      CurvedAnimation(
+        parent: _textAnimationController1,
+        curve: Curves.easeIn,
+      ),
+    );
+
+    _textAnimationController1.forward();
 
     _controller2 = AnimationController(
       duration: const Duration(milliseconds: 1000),
@@ -172,22 +203,28 @@ class _LoginAuthScreenState extends State<LoginAuthScreen>
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  googleInterText(
-                    'Login',
-                    fontWeight: FontWeight.w700,
-                    fontSize: 24,
+              SlideTransition(
+                position: _slideAnimation1,
+                child: FadeTransition(
+                  opacity: _fadeAnimation1,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      googleInterText(
+                        'Login',
+                        fontWeight: FontWeight.w700,
+                        fontSize: 24,
+                      ),
+                      sizedBoxH8(),
+                      googleInterText(
+                        'Login To Continue Using The App',
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14,
+                      ),
+                    ],
                   ),
-                  sizedBoxH8(),
-                  googleInterText(
-                    'Login To Continue Using The App',
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                  ),
-                ],
+                ),
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.05,
