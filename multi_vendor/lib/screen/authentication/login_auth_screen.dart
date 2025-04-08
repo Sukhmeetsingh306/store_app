@@ -156,12 +156,13 @@ class _LoginAuthScreenState extends State<LoginAuthScreen>
 
   @override
   void dispose() {
-    super.dispose();
     _mailController.dispose();
     _passwordController.dispose();
     _controller.dispose();
     _controller2.dispose();
     _controller3.dispose();
+    _textAnimationController1.dispose();
+    super.dispose();
   }
 
   final List<String> mailDomains = [
