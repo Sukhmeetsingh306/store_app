@@ -52,19 +52,12 @@ class _LoginAuthScreenState extends State<LoginAuthScreen>
   bool _obscureText = true;
   bool hasMinLength = false;
   bool hasError = false;
-  bool _animationsInitialized = false;
 
-  void _initializeAnimations(bool isLargeScreen) {
-    if (_animationsInitialized) return; // prevent re-initialization
-
-    _animationsInitialized = true;
-
-    final baseDuration = isLargeScreen ? 1000 : 1000;
-    final fastDuration = isLargeScreen ? 1000 : 900;
-    final textDuration = isLargeScreen ? 1000 : 800;
-
+  @override
+  void initState() {
+    super.initState();
     _controller = AnimationController(
-      duration: Duration(milliseconds: baseDuration),
+      duration: const Duration(milliseconds: 1000),
       vsync: this,
     );
 
@@ -87,27 +80,33 @@ class _LoginAuthScreenState extends State<LoginAuthScreen>
 
     _textAnimationController1 = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: textDuration),
+      duration: const Duration(milliseconds: 800),
     );
 
     _slideAnimation1 = Tween<Offset>(
       begin: const Offset(0, 0.3),
       end: Offset.zero,
     ).animate(
-      CurvedAnimation(parent: _textAnimationController1, curve: Curves.easeOut),
+      CurvedAnimation(
+        parent: _textAnimationController1,
+        curve: Curves.easeOut,
+      ),
     );
 
     _fadeAnimation1 = Tween<double>(
       begin: 0.0,
       end: 1.0,
     ).animate(
-      CurvedAnimation(parent: _textAnimationController1, curve: Curves.easeIn),
+      CurvedAnimation(
+        parent: _textAnimationController1,
+        curve: Curves.easeIn,
+      ),
     );
 
     _textAnimationController1.forward();
 
     _controller2 = AnimationController(
-      duration: Duration(milliseconds: baseDuration),
+      duration: const Duration(milliseconds: 1000),
       vsync: this,
     );
 
@@ -126,28 +125,32 @@ class _LoginAuthScreenState extends State<LoginAuthScreen>
       CurvedAnimation(parent: _controller2, curve: Curves.easeInOut),
     );
 
+    Future.delayed(const Duration(milliseconds: 50), () {
+      _controller2.forward();
+    });
+
     _controller3 = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: fastDuration),
+      duration: Duration(milliseconds: 500),
     );
 
     _fadeAnimation3 = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _controller3, curve: Curves.easeInOut),
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
 
-    _moveAnimation3 = Tween<Offset>(
-      begin: Offset(0, 0.1),
-      end: Offset(0, 0),
-    ).animate(
-      CurvedAnimation(parent: _controller3, curve: Curves.easeInOut),
+    _moveAnimation3 =
+        Tween<Offset>(begin: Offset(0, 0.1), end: Offset(0, 0)).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
 
-    _controller3.forward();
+    Future.delayed(const Duration(milliseconds: 50), () {
+      _controller3.forward();
 
-    _controller3.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        _controller2.forward();
-      }
+      _controller3.addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          _controller2.forward();
+        }
+      });
     });
   }
 
@@ -406,8 +409,13 @@ class _LoginAuthScreenState extends State<LoginAuthScreen>
                 ),
               ),
               sizedBoxH8(),
-              isLargeScreen
-                  ? Column(
+              FadeTransition(
+                opacity: _fadeAnimation2,
+                child: SlideTransition(
+                  position: _slideAnimation2,
+                  child: ScaleTransition(
+                    scale: _scaleAnimation2,
+                    child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Center(
@@ -437,47 +445,10 @@ class _LoginAuthScreenState extends State<LoginAuthScreen>
                         ),
                         Divider(),
                       ],
-                    )
-                  : FadeTransition(
-                      opacity: _fadeAnimation2,
-                      child: SlideTransition(
-                        position: _slideAnimation2,
-                        child: ScaleTransition(
-                          scale: _scaleAnimation2,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Center(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    materialNamedRouteNavigator(
-                                        context, '/registerPage');
-                                  },
-                                  child: RichText(
-                                    textAlign: TextAlign.center,
-                                    text: TextSpan(
-                                      children: [
-                                        textSpan(
-                                          'Don\'t Have An Account?',
-                                          fontSize: 14,
-                                        ),
-                                        textSpan(
-                                          ' Create Account',
-                                          fontSize: 14,
-                                          color: const Color.fromRGBO(
-                                              36, 124, 255, 1),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Divider(),
-                            ],
-                          ),
-                        ),
-                      ),
                     ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -490,7 +461,6 @@ class _LoginAuthScreenState extends State<LoginAuthScreen>
     return Scaffold(
       body: LayoutBuilder(builder: (context, constraints) {
         bool isLargeScreen = constraints.maxWidth > 900;
-        _initializeAnimations(isLargeScreen);
         return isLargeScreen
             ? Stack(
                 children: [
