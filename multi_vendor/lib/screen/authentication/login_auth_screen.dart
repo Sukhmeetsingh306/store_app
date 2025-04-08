@@ -32,6 +32,11 @@ class _LoginAuthScreenState extends State<LoginAuthScreen>
   late Animation<Offset> _slideAnimation;
   late Animation<double> _scaleAnimation;
 
+  late AnimationController _controller2;
+  late Animation<double> _fadeAnimation2;
+  late Animation<Offset> _slideAnimation2;
+  late Animation<double> _scaleAnimation2;
+
   late AnimationController _controller3;
   late Animation<double> _fadeAnimation3;
   late Animation<Offset> _moveAnimation3;
@@ -48,7 +53,7 @@ class _LoginAuthScreenState extends State<LoginAuthScreen>
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 600),
+      duration: const Duration(milliseconds: 1000),
       vsync: this,
     );
 
@@ -69,9 +74,33 @@ class _LoginAuthScreenState extends State<LoginAuthScreen>
 
     _controller.forward();
 
+    _controller2 = AnimationController(
+      duration: const Duration(milliseconds: 1000),
+      vsync: this,
+    );
+
+    _fadeAnimation2 = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _controller2, curve: Curves.easeInOut),
+    );
+
+    _slideAnimation2 = Tween<Offset>(
+      begin: const Offset(0.0, 1.0),
+      end: Offset.zero,
+    ).animate(
+      CurvedAnimation(parent: _controller2, curve: Curves.easeInOut),
+    );
+
+    _scaleAnimation2 = Tween<double>(begin: 1.0, end: 1.0).animate(
+      CurvedAnimation(parent: _controller2, curve: Curves.easeInOut),
+    );
+
+    Future.delayed(const Duration(milliseconds: 50), () {
+      _controller2.forward();
+    });
+
     _controller3 = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 900),
+      duration: Duration(milliseconds: 500),
     );
 
     _fadeAnimation3 = Tween<double>(begin: 0.0, end: 1.0).animate(
@@ -85,6 +114,12 @@ class _LoginAuthScreenState extends State<LoginAuthScreen>
 
     Future.delayed(const Duration(milliseconds: 50), () {
       _controller3.forward();
+
+      _controller3.addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          _controller2.forward();
+        }
+      });
     });
   }
 
@@ -94,6 +129,7 @@ class _LoginAuthScreenState extends State<LoginAuthScreen>
     _mailController.dispose();
     _passwordController.dispose();
     _controller.dispose();
+    _controller2.dispose();
     _controller3.dispose();
   }
 
@@ -336,34 +372,45 @@ class _LoginAuthScreenState extends State<LoginAuthScreen>
                 ),
               ),
               sizedBoxH8(),
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Center(
-                    child: GestureDetector(
-                      onTap: () {
-                        materialNamedRouteNavigator(context, '/registerPage');
-                      },
-                      child: RichText(
-                        textAlign: TextAlign.center,
-                        text: TextSpan(
-                          children: [
-                            textSpan(
-                              'Don\'t Have An Account?',
-                              fontSize: 14,
+              FadeTransition(
+                opacity: _fadeAnimation2,
+                child: SlideTransition(
+                  position: _slideAnimation2,
+                  child: ScaleTransition(
+                    scale: _scaleAnimation2,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Center(
+                          child: GestureDetector(
+                            onTap: () {
+                              materialNamedRouteNavigator(
+                                  context, '/registerPage');
+                            },
+                            child: RichText(
+                              textAlign: TextAlign.center,
+                              text: TextSpan(
+                                children: [
+                                  textSpan(
+                                    'Don\'t Have An Account?',
+                                    fontSize: 14,
+                                  ),
+                                  textSpan(
+                                    ' Create Account',
+                                    fontSize: 14,
+                                    color:
+                                        const Color.fromRGBO(36, 124, 255, 1),
+                                  ),
+                                ],
+                              ),
                             ),
-                            textSpan(
-                              ' Create Account',
-                              fontSize: 14,
-                              color: const Color.fromRGBO(36, 124, 255, 1),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
+                        Divider(),
+                      ],
                     ),
                   ),
-                  Divider(),
-                ],
+                ),
               ),
             ],
           ),
