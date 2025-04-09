@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:multi_vendor/screen/user/widget/header_widget_user.dart';
 
 class HomeUserScreen extends StatelessWidget {
   const HomeUserScreen({super.key});
@@ -10,7 +11,9 @@ class HomeUserScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
-        children: [],
+        children: [
+          HeaderWidgetUser(),
+        ],
       ),
     );
   }
