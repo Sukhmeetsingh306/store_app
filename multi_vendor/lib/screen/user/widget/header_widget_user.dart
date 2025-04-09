@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
+import '../../../utils/fonts/google_fonts_utils.dart';
 import '../../../utils/theme/color/color_theme.dart';
 
 class HeaderWidgetUser extends StatelessWidget {
@@ -9,6 +11,8 @@ class HeaderWidgetUser extends StatelessWidget {
   Widget build(BuildContext context) {
     double mediaQueryWidth = MediaQuery.of(context).size.width;
     double mediaQueryHeight = MediaQuery.of(context).size.height;
+
+    bool isWebMobile = kIsWeb && mediaQueryWidth > 900;
 
     return SizedBox(
       width: mediaQueryWidth,
@@ -22,10 +26,45 @@ class HeaderWidgetUser extends StatelessWidget {
             //height: _mediaQueryHeight * 0.3,
             fit: BoxFit.cover,
           ),
+          if (isWebMobile)
+            Positioned(
+              left: mediaQueryWidth * 0.02,
+              top: mediaQueryHeight * 0.1,
+              child: GestureDetector(
+                onTap: () {
+                  print('Enter the navigation for address page');
+                },
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.location_on_outlined,
+                      color: ColorTheme.color.blackColor,
+                    ),
+                    const SizedBox(width: 4),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        googleInterText(
+                          'Delivery To: User Address',
+                          fontSize: 15,
+                          color: ColorTheme.color.blackColor,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        googleInterTextWeight4Font14(
+                          "Update Address",
+                          color: ColorTheme.color.blackColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
           Positioned(
             bottom: mediaQueryHeight * 0.013,
-            left: mediaQueryWidth * 0.08,
-            right: mediaQueryWidth * 0.23,
+            left: mediaQueryWidth * (isWebMobile ? 0.2 : 0.08),
+            right: mediaQueryWidth * (isWebMobile ? 0.35 : 0.23),
             child: SizedBox(
               width: 250,
               height: 50,
@@ -71,7 +110,7 @@ class HeaderWidgetUser extends StatelessWidget {
                   child: Icon(
                     Icons.notifications_active_outlined,
                     size: 28, // Adjust the size as needed
-                    color: ColorTheme.color.whiteColor,
+                    color: ColorTheme.color.blackColor,
                   ),
                 ),
               ),
@@ -95,7 +134,7 @@ class HeaderWidgetUser extends StatelessWidget {
                   child: Icon(
                     Icons.messenger_outline_outlined,
                     size: 28, // Adjust the size as needed
-                    color: ColorTheme.color.whiteColor,
+                    color: ColorTheme.color.blackColor,
                   ),
                 ),
               ),
