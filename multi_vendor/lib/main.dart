@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:multi_vendor/screen/authentication/login_auth_screen.dart';
 import 'package:multi_vendor/utils/routes/app_route.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 void main() {
+  usePathUrlStrategy(); // this is to remove the # from the url as removed the code in the html for this
   runApp(const MyApp());
 }
 
