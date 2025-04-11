@@ -10,10 +10,13 @@ class HomeUserScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          HeaderWidgetUser(),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: const [
+            HeaderWidgetUser(),
+            // Add more widgets here as needed
+          ],
+        ),
       ),
     );
   }

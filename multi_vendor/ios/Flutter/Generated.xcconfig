@@ -2,7 +2,7 @@
 FLUTTER_ROOT=/Users/sukhmeetsingh/Documents/flutter
 FLUTTER_APPLICATION_PATH=/Volumes/Sukhmeet_HD/SUKHMEET_SINGH/Course/flutter/flutter_project/flutter_node_poject/store_app/multi_vendor
 COCOAPODS_PARALLEL_CODE_SIGN=true
-FLUTTER_TARGET=/Volumes/Sukhmeet_HD/SUKHMEET_SINGH/Course/flutter/flutter_project/flutter_node_poject/store_app/multi_vendor/lib/main.dart
+FLUTTER_TARGET=lib/main.dart
 FLUTTER_BUILD_DIR=build
 FLUTTER_BUILD_NAME=1.0.0
 FLUTTER_BUILD_NUMBER=1
@@ -11,4 +11,4 @@ EXCLUDED_ARCHS[sdk=iphoneos*]=armv7
 DART_OBFUSCATION=false
 TRACK_WIDGET_CREATION=true
 TREE_SHAKE_ICONS=false
-PACKAGE_CONFIG=/Volumes/Sukhmeet_HD/SUKHMEET_SINGH/Course/flutter/flutter_project/flutter_node_poject/store_app/multi_vendor/.dart_tool/package_config.json
+PACKAGE_CONFIG=.dart_tool/package_config.json

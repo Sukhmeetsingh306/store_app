@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
+import './hover_widget_user.dart';
 import '../../../utils/fonts/google_fonts_utils.dart';
 import '../../../utils/theme/color/color_theme.dart';
 
@@ -12,20 +13,22 @@ class HeaderWidgetUser extends StatelessWidget {
     double mediaQueryWidth = MediaQuery.of(context).size.width;
     double mediaQueryHeight = MediaQuery.of(context).size.height;
 
-    bool isWebMobile = kIsWeb && mediaQueryWidth > 900;
+    bool isWebMobile = kIsWeb && mediaQueryWidth > 1026;
 
     return SizedBox(
       width: mediaQueryWidth,
       height: mediaQueryHeight * 0.17,
       child: Stack(
+        clipBehavior: Clip.none,
         children: [
-          Image.asset(
-            //'assets/images/arrow.png',
-            'assets/images/background_image.jpg',
-            width: mediaQueryWidth,
-            //height: _mediaQueryHeight * 0.3,
-            fit: BoxFit.cover,
-          ),
+          // Image.asset(
+          //   //'assets/images/arrow.png',
+          //   'assets/images/background_image.jpg',
+          //   width: mediaQueryWidth,
+          //   //height: _mediaQueryHeight * 0.3,
+          //   fit: BoxFit.cover,
+          // ),
+          Container(color: ColorTheme.color.mediumBlue),
           if (isWebMobile)
             Positioned(
               left: mediaQueryWidth * 0.02,
@@ -38,7 +41,7 @@ class HeaderWidgetUser extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.location_on_outlined,
-                      color: ColorTheme.color.blackColor,
+                      color: ColorTheme.color.textWhiteColor,
                     ),
                     const SizedBox(width: 4),
                     Column(
@@ -47,23 +50,24 @@ class HeaderWidgetUser extends StatelessWidget {
                         googleInterText(
                           'Delivery To: User Address',
                           fontSize: 15,
-                          color: ColorTheme.color.blackColor,
+                          color: ColorTheme.color.textWhiteColor,
                           fontWeight: FontWeight.w600,
                         ),
                         googleInterTextWeight4Font14(
                           "Update Address",
-                          color: ColorTheme.color.blackColor,
+                          color: ColorTheme.color.textWhiteColor,
                           fontWeight: FontWeight.bold,
                         ),
                       ],
                     ),
+                    SizedBox(width: 4),
                   ],
                 ),
               ),
             ),
           Positioned(
             bottom: mediaQueryHeight * 0.013,
-            left: mediaQueryWidth * (isWebMobile ? 0.2 : 0.08),
+            left: mediaQueryWidth * (isWebMobile ? 0.22 : 0.08),
             right: mediaQueryWidth * (isWebMobile ? 0.35 : 0.23),
             child: SizedBox(
               width: 250,
@@ -88,10 +92,19 @@ class HeaderWidgetUser extends StatelessWidget {
                   fillColor: Colors.grey.shade200,
                   filled: true,
                   focusColor: ColorTheme.color.blackColor,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    borderSide: BorderSide.none,
+                  ),
                 ),
               ),
             ),
           ),
+          if (isWebMobile)
+            Positioned(
+                left: mediaQueryWidth * 0.75,
+                top: mediaQueryHeight * 0.1,
+                child: HoverWidgetUser()),
           Positioned(
             bottom: mediaQueryHeight * 0.022,
             right: mediaQueryWidth * 0.12,

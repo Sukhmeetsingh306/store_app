@@ -741,5 +741,7 @@ GST / Tax ID (Optional)
 
 Upload Logo (Optional)
 
-create a new screen for address for the compa
+create a new screen for address for the company
+
+MARK: Add Pan Number as compulsory field
 */
