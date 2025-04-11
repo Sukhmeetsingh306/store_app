@@ -67,8 +67,8 @@ class HeaderWidgetUser extends StatelessWidget {
             ),
           Positioned(
             bottom: mediaQueryHeight * 0.013,
-            left: mediaQueryWidth * (isWebMobile ? 0.22 : 0.08),
-            right: mediaQueryWidth * (isWebMobile ? 0.35 : 0.23),
+            left: mediaQueryWidth * (isWebMobile ? 0.20 : 0.08),
+            right: mediaQueryWidth * (isWebMobile ? 0.30 : 0.23),
             child: SizedBox(
               width: 250,
               height: 50,
