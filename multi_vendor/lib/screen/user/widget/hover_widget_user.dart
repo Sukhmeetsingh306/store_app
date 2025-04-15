@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:multi_vendor/utils/fonts/google_fonts_utils.dart';
 import 'package:multi_vendor/utils/widget/button_widget_utils.dart';
+import '../../../utils/routes/navigation_routes.dart';
 import '../../../utils/theme/color/color_theme.dart';
 
 class HoverWidgetUser extends StatefulWidget {
@@ -72,8 +73,10 @@ class _HoverWidgetUserState extends State<HoverWidgetUser> {
                   textButton(
                     'Sign In',
                     () {
-                      print("Sign In clicked");
-                      _hideDropdown();
+                      materialRouteNavigatorRepNamed(
+                        context,
+                        '/loginPage',
+                      );
                     },
                     fontWeight: FontWeight.w400,
                   ),

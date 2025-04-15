@@ -403,7 +403,7 @@ class _LoginAuthScreenState extends State<LoginAuthScreen>
                           //     hasError = true; // Error from form validation
                           //   });
                           // }
-                          materialRouteNavigatorRepNamed(context, '/homePage');
+                          pushNamedAndRemoveUntil(context, '/homePage');
                         },
                       ),
                     ],
