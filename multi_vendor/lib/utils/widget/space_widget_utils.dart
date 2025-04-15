@@ -29,3 +29,7 @@ Widget sizedBoxH20() {
     height: 20,
   );
 }
+
+Widget sizedBoxW16() {
+  return SizedBox(width: 16);
+}
