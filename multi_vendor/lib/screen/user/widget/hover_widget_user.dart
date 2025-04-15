@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:multi_vendor/utils/fonts/google_fonts_utils.dart';
+import 'package:multi_vendor/utils/widget/button_widget_utils.dart';
 import '../../../utils/theme/color/color_theme.dart';
 
 class HoverWidgetUser extends StatefulWidget {
@@ -56,26 +57,46 @@ class _HoverWidgetUserState extends State<HoverWidgetUser> {
               width: 180,
               padding: EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.grey[200],
-                border: Border.all(color: Colors.grey),
+                color: ColorTheme.color.whiteColor,
+                border: Border.all(color: ColorTheme.color.whiteColor),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TextButton(
-                    onPressed: () {
-                      print("Item 1 clicked");
-                      _hideDropdown();
-                    },
-                    child: Text("Dropdown Item 1"),
+                  googleInterText(
+                    "Hello User",
+                    fontWeight: FontWeight.w500,
                   ),
-                  TextButton(
-                    onPressed: () {
-                      print("Item 2 clicked");
+                  Divider(),
+                  textButton(
+                    'Sign In',
+                    () {
+                      print("Sign In clicked");
                       _hideDropdown();
                     },
-                    child: Text("Dropdown Item 2"),
+                    fontWeight: FontWeight.w400,
+                  ),
+                  Divider(),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.shopping_bag_outlined,
+                      ),
+                      textButton("My Order", fontWeight: FontWeight.w400, () {
+                        print("My Order clicked");
+                        _hideDropdown();
+                      }),
+                    ],
+                  ),
+                  Divider(),
+                  textButton(
+                    'Delete Account',
+                    () {
+                      print("Sign In clicked");
+                      _hideDropdown();
+                    },
+                    fontWeight: FontWeight.w400,
                   ),
                 ],
               ),

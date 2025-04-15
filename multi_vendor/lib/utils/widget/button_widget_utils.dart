@@ -29,8 +29,9 @@ ElevatedButton elevatedButton(
 
 TextButton textButton(
   String buttonText,
-  VoidCallback onPressed,
-) {
+  VoidCallback onPressed, {
+  FontWeight? fontWeight,
+}) {
   return TextButton(
     style: ButtonStyle(
       foregroundColor: WidgetStateProperty.all<Color>(
@@ -46,7 +47,7 @@ TextButton textButton(
     child: googleInterText(
       buttonText,
       fontSize: 13,
-      fontWeight: FontWeight.w400,
+      fontWeight: fontWeight ?? FontWeight.w400,
     ),
   );
 }
