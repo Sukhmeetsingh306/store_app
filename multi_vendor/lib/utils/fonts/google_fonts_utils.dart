@@ -110,3 +110,15 @@ Text googleReadexProText(String text,
     ),
   );
 }
+
+Center errormessage(
+  String text,
+) {
+  return Center(
+    child: googleInterText(
+      text,
+      fontWeight: FontWeight.normal,
+      fontSize: 18,
+    ),
+  );
+}
