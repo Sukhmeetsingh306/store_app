@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
-import './hover_widget_user.dart';
+import 'support/hover_widget_support_user.dart';
 import '../../../utils/fonts/google_fonts_utils.dart';
 import '../../../utils/theme/color/color_theme.dart';
 
@@ -127,7 +127,7 @@ class HeaderWidgetUser extends StatelessWidget {
                       runSpacing: 8,
                       children: [
                         verticalDividerIcon(),
-                        HoverWidgetUser(),
+                        HoverWidgetSupportUser(),
                         verticalDividerIcon(),
                         GestureDetector(
                           onTap: () {
