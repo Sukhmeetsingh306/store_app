@@ -65,6 +65,12 @@ class _CategoryWidgetSupportUserState extends State<CategoryWidgetSupportUser> {
             title: 'Categories:',
             subTitle: ' View All',
           ),
+        if (kIsWeb)
+          RowTextSands(
+            title: 'Categories:',
+            subTitle: ' View All',
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          ),
         FutureBuilder(
           future: futureCategory,
           builder: (context, snapshot) {
