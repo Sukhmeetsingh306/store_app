@@ -3,11 +3,16 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../theme/color/color_theme.dart';
 
-Text googleInterText(String text,
-    {double? fontSize,
-    FontWeight? fontWeight,
-    Color? color,
-    TextAlign? textAlign}) {
+Text googleInterText(
+  String text, {
+  double? fontSize,
+  FontWeight? fontWeight,
+  Color? color,
+  TextAlign? textAlign,
+  double? letterSpacing,
+  int? maxLines,
+  TextOverflow? overflow,
+}) {
   return Text(
     text,
     textAlign: textAlign,
@@ -15,9 +20,11 @@ Text googleInterText(String text,
       'Inter',
       color: color ?? ColorTheme.color.blackColor,
       fontWeight: fontWeight ?? FontWeight.w600,
-      letterSpacing: 0.1,
+      letterSpacing: letterSpacing ?? 0.1,
       fontSize: fontSize ?? 23,
     ),
+    maxLines: maxLines,
+    overflow: overflow,
   );
 }
 
@@ -25,7 +32,8 @@ Text googleInterTextWeight4Font16(String text,
     {double? fontSize,
     FontWeight? fontWeight,
     Color? color,
-    TextAlign? textAlign}) {
+    TextAlign? textAlign,
+    double? letterSpacing}) {
   return Text(
     text,
     textAlign: textAlign,
@@ -33,7 +41,7 @@ Text googleInterTextWeight4Font16(String text,
       'Inter',
       color: color ?? ColorTheme.color.blackColor,
       fontWeight: fontWeight ?? FontWeight.w400,
-      letterSpacing: 0.1,
+      letterSpacing: letterSpacing ?? 0.1,
       fontSize: fontSize ?? 16,
     ),
   );
@@ -119,6 +127,24 @@ Center errormessage(
       text,
       fontWeight: FontWeight.normal,
       fontSize: 18,
+    ),
+  );
+}
+
+Text googleTextSands(
+  String text, {
+  FontWeight? fontWeight,
+  double? fontSize,
+  double? letterSpacing,
+  Color? color,
+}) {
+  return Text(
+    text,
+    style: GoogleFonts.quicksand(
+      color: color ?? Colors.black,
+      fontWeight: fontWeight ?? FontWeight.bold,
+      letterSpacing: letterSpacing ?? 0.2,
+      fontSize: fontSize ?? 16, //
     ),
   );
 }
