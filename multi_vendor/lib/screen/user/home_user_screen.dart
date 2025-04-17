@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:multi_vendor/screen/user/widget/header_widget_user.dart';
 
 import 'widget/banner_widget_user.dart';
+import 'widget/support/category_widget_support_user.dart';
 
 class HomeUserScreen extends StatelessWidget {
   const HomeUserScreen({super.key});
@@ -17,6 +18,7 @@ class HomeUserScreen extends StatelessWidget {
           children: const [
             HeaderWidgetUser(),
             BannerWidgetIOS(),
+            CategoryWidgetSupportUser(),
           ],
         ),
       ),
