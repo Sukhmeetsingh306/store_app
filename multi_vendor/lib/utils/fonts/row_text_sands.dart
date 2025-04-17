@@ -6,12 +6,14 @@ import 'google_fonts_utils.dart';
 class RowTextSands extends StatelessWidget {
   final String title;
   final String subTitle;
+  final MainAxisAlignment? mainAxisAlignment;
+
   const RowTextSands({
     super.key,
     required this.title,
     required this.subTitle,
+    this.mainAxisAlignment,
   });
-
   @override
   Widget build(
     BuildContext context, {
@@ -26,16 +28,18 @@ class RowTextSands extends StatelessWidget {
         right: right ?? 18,
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.spaceBetween,
         children: [
-          googleTextSands(
+          googleInterText(
             title,
             fontWeight: FontWeight.bold,
+            fontSize: 15,
           ),
-          googleTextSands(
+          googleInterText(
             subTitle,
             fontWeight: FontWeight.bold,
-            color: ColorTheme.color.dodgerBlue,
+            color: ColorTheme.color.mediumBlue,
+            fontSize: 15,
           ),
         ],
       ),
