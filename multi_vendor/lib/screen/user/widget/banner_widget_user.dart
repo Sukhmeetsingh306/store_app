@@ -14,7 +14,7 @@ class BannerWidgetIOS extends StatelessWidget {
       padding: const EdgeInsets.all(5.0),
       child: Container(
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height * 0.17,
+        height: MediaQuery.of(context).size.height * 0.25,
         decoration: BoxDecoration(
           color: ColorTheme.color.whiteColor,
           borderRadius: BorderRadius.circular(10),

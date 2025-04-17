@@ -56,30 +56,76 @@ class _BannerWidgetSupportUserState extends State<BannerWidgetSupportUser> {
               },
             );
           } else if (kIsWeb) {
-            return GridView.builder(
-              itemCount: bannerCount.length,
-              shrinkWrap: true,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 6,
-                crossAxisSpacing: 15,
-                mainAxisSpacing: 8,
-              ),
-              itemBuilder: (context, index) {
-                final banner = bannerCount[index];
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Image.network(
-                    banner.bannerImage,
-                    width: 100,
-                    height: 10,
-                  ),
-                );
-              },
-            );
+            double screenWidth = MediaQuery.of(context).size.width;
+            bool isSmallWebScreen = screenWidth < 600;
+
+            if (isSmallWebScreen) {
+              // Small screen web: PageView
+              return PageView.builder(
+                itemCount: bannerCount.length,
+                itemBuilder: (context, index) {
+                  final banner = bannerCount[index];
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.network(
+                      banner.bannerImage,
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                },
+              );
+            } else {
+              // Large screen web: scrollable GridView
+              return SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: bannerCount.map((banner) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Image.network(
+                        banner.bannerImage,
+                        width: 300,
+                        height: 170,
+                        fit: BoxFit.cover,
+                      ),
+                    );
+                  }).toList(),
+                ),
+              );
+            }
           }
-          return Center();
+
+          return const Center();
         }
       },
     );
   }
 }
+
+/*
+/save this code later as this will require in the seller screen
+
+return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: GridView.builder(
+          itemCount: bannerCount.length,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(), // disables GridView scroll
+          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+            crossAxisSpacing: 15,
+            mainAxisSpacing: 8,
+            childAspectRatio: 16 / 9,
+            maxCrossAxisExtent: 350,
+          ),
+          itemBuilder: (context, index) {
+            final banner = bannerCount[index];
+            return Image.network(
+              banner.bannerImage,
+              fit: BoxFit.cover,
+            );
+          },
+        ),
+      ),
+    );
+ */
