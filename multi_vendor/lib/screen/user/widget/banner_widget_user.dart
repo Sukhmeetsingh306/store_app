@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../utils/theme/color/color_theme.dart';
-import 'support/banner_widget_support_user.dart';
+import '../../../utils/widget/banner_widget_support_user.dart';
 
 class BannerWidgetIOS extends StatelessWidget {
   const BannerWidgetIOS({super.key});
