@@ -37,7 +37,7 @@ class _InnerCategoryContentSupportWidgetUserState
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          bannerImageMobileWidget(context, widget.category.categoryBanner),
+          bannerImageResponsiveWidget(context, widget.category.categoryBanner),
           Center(
             child: googleInterText(
               'Shop by Category',
