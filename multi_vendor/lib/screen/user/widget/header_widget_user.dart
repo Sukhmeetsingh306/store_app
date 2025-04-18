@@ -128,6 +128,14 @@ Widget sizedBoxHeaderData(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 // Address Section
+                if (arrowPresent)
+                  IconButton(
+                    onPressed: backOnPressed,
+                    icon: Icon(
+                      Icons.arrow_back_ios_new,
+                      color: Colors.white,
+                    ),
+                  ),
                 Flexible(
                   flex: 4,
                   child: GestureDetector(
@@ -163,18 +171,6 @@ Widget sizedBoxHeaderData(
                     ),
                   ),
                 ),
-                if (arrowPresent)
-                  Positioned(
-                    left: mediaQueryWidth * 0.02,
-                    top: mediaQueryHeight * 0.1,
-                    child: IconButton(
-                      onPressed: backOnPressed,
-                      icon: Icon(
-                        Icons.arrow_back_ios_new,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
                 Flexible(
                   flex: getResponsiveFlex(mediaQueryWidth),
                   child: Padding(
