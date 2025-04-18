@@ -7,7 +7,7 @@ import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:http/http.dart' as http;
 
 import '../globals_variables.dart';
-import '../models/api/subcategory_api_mpdels.dart';
+import '../models/api/subcategory_api_models.dart';
 import '../services/http_services.dart';
 
 class SubCategoryControllers {
