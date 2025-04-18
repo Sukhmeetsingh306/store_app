@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../controllers/upload_banner_controllers.dart';
-import '../../../../models/api/upload_banner_api_model.dart';
-import '../../../../utils/fonts/google_fonts_utils.dart';
+import '../../controllers/upload_banner_controllers.dart';
+import '../../models/api/upload_banner_api_model.dart';
+import '../fonts/google_fonts_utils.dart';
 
 class BannerWidgetSupportUser extends StatefulWidget {
   const BannerWidgetSupportUser({super.key});
