@@ -231,13 +231,9 @@ class _CategoryWidgetSupportUserState extends State<CategoryWidgetSupportUser> {
                   padding: const EdgeInsets.only(top: 10),
                   itemCount: categoryCount.length,
                   shrinkWrap: true,
-                  physics: defaultTargetPlatform == TargetPlatform.iOS
-                      ? NeverScrollableScrollPhysics()
-                      : null,
+                  physics: NeverScrollableScrollPhysics(),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: defaultTargetPlatform == TargetPlatform.iOS
-                        ? 4 // ios
-                        : 6, // web
+                    crossAxisCount: 4,
                     crossAxisSpacing: 15,
                     mainAxisSpacing: 8,
                   ),
@@ -246,23 +242,16 @@ class _CategoryWidgetSupportUserState extends State<CategoryWidgetSupportUser> {
                     return InkWell(
                       onTap: () => materialRouteNavigator(
                         context,
-                        InnerCategoryScreen(
-                          category: category,
-                        ),
+                        InnerCategoryScreen(category: category),
                       ),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Flexible(
                             child: Image.network(
-                              width: defaultTargetPlatform == TargetPlatform.iOS
-                                  ? MediaQuery.of(context).size.width * 0.15
-                                  : MediaQuery.of(context).size.width * 0.2,
-                              height: defaultTargetPlatform ==
-                                      TargetPlatform.iOS
-                                  ? MediaQuery.of(context).size.height * 0.15
-                                  : MediaQuery.of(context).size.height * 0.10,
                               category.categoryImage,
+                              width: MediaQuery.of(context).size.width * 0.15,
+                              height: MediaQuery.of(context).size.height * 0.15,
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -278,17 +267,23 @@ class _CategoryWidgetSupportUserState extends State<CategoryWidgetSupportUser> {
                     );
                   },
                 );
-              } else {
-                // MARK: Code for Web View
-                if (kIsWeb) {
-                  return Align(
-                    alignment: Alignment.topLeft,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: categoryCount.map((category) {
-                          return Container(
+              } else if (kIsWeb) {
+                return Align(
+                  alignment: Alignment.topLeft,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: categoryCount.map((category) {
+                        return InkWell(
+                          onTap: () => materialRouteNavigator(
+                            context,
+                            InnerCategoryScreen(
+                              category: category,
+                              showBottomNav: false,
+                            ),
+                          ),
+                          child: Container(
                             width: 100,
                             margin: const EdgeInsets.symmetric(horizontal: 8.0),
                             child: Column(
@@ -318,12 +313,12 @@ class _CategoryWidgetSupportUserState extends State<CategoryWidgetSupportUser> {
                                 ),
                               ],
                             ),
-                          );
-                        }).toList(),
-                      ),
+                          ),
+                        );
+                      }).toList(),
                     ),
-                  );
-                }
+                  ),
+                );
               }
               return Center(
                 child: googleInterTextWeight4Font16('No Category Found'),

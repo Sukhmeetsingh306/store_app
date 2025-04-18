@@ -14,7 +14,14 @@ import 'support/inner_category_content_support_widget_user.dart';
 
 class InnerCategoryScreen extends StatefulWidget {
   final CategoryApiModels category;
-  const InnerCategoryScreen({super.key, required this.category});
+
+  final bool showBottomNav;
+
+  const InnerCategoryScreen({
+    super.key,
+    required this.category,
+    this.showBottomNav = true,
+  });
 
   @override
   State<InnerCategoryScreen> createState() => _InnerCategoryScreenState();
@@ -22,6 +29,7 @@ class InnerCategoryScreen extends StatefulWidget {
 
 class _InnerCategoryScreenState extends State<InnerCategoryScreen> {
   int mobilePagesIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     final List<Widget> mobilePages = [
@@ -36,51 +44,54 @@ class _InnerCategoryScreenState extends State<InnerCategoryScreen> {
       CartNavigationScreen(),
       AccountNavigationScreen(),
     ];
+
     return Scaffold(
       appBar: detailHeaderWidget(
         context,
         backOnPressed: () => pop(context),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        currentIndex: mobilePagesIndex,
-        selectedItemColor: ColorTheme.color.deepPuceColor,
-        selectedFontSize: 14,
-        unselectedFontSize: 12,
-        unselectedItemColor: ColorTheme.color.grayColor,
-        onTap: (value) => setState(
-          () {
-            mobilePagesIndex = value;
-          },
-        ),
-        items: [
-          bottomBarItem(
-            Icon(Icons.home_outlined),
-            'Home',
-          ),
-          bottomBarItem(
-            Icon(Icons.favorite_border_outlined),
-            'Favorite',
-          ),
-          bottomBarItem(
-            Icon(Icons.category_outlined),
-            'Categories',
-          ),
-          bottomBarItem(
-            Icon(Icons.shopping_bag_outlined),
-            'Stores',
-          ),
-          bottomBarItem(
-            Icon(Icons.shopping_cart_outlined),
-            'Cart',
-          ),
-          bottomBarItem(
-            Icon(Icons.account_circle_outlined),
-            'Account',
-          ),
-        ],
-        elevation: 5,
-      ),
+      bottomNavigationBar: widget.showBottomNav
+          ? BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
+              currentIndex: mobilePagesIndex,
+              selectedItemColor: ColorTheme.color.deepPuceColor,
+              selectedFontSize: 14,
+              unselectedFontSize: 12,
+              unselectedItemColor: ColorTheme.color.grayColor,
+              onTap: (value) {
+                setState(() {
+                  mobilePagesIndex = value;
+                });
+              },
+              items: [
+                bottomBarItem(
+                  Icon(Icons.home_outlined),
+                  'Home',
+                ),
+                bottomBarItem(
+                  Icon(Icons.favorite_border_outlined),
+                  'Favorite',
+                ),
+                bottomBarItem(
+                  Icon(Icons.category_outlined),
+                  'Categories',
+                ),
+                bottomBarItem(
+                  Icon(Icons.shopping_bag_outlined),
+                  'Stores',
+                ),
+                bottomBarItem(
+                  Icon(Icons.shopping_cart_outlined),
+                  'Cart',
+                ),
+                bottomBarItem(
+                  Icon(Icons.account_circle_outlined),
+                  'Account',
+                ),
+              ],
+              elevation: 5,
+            )
+          : null, // 👈 If false, hide the BottomNavigationBar
       body: mobilePages[mobilePagesIndex],
     );
   }
