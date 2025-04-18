@@ -21,6 +21,7 @@ class ColorThemeData {
   final alternativeColor = const Color(0xFF1c262e);
   final mediumBlue = const Color.fromRGBO(36, 124, 255, 1);
   final dodgerBlue = const Color(0xFF2196F3);
+  final grayColor = const Color(0xff9A9A9A);
 
   const ColorThemeData();
 }

@@ -51,3 +51,13 @@ TextButton textButton(
     ),
   );
 }
+
+BottomNavigationBarItem bottomBarItem(
+  Widget icon,
+  String name,
+) {
+  return BottomNavigationBarItem(
+    icon: icon,
+    label: name,
+  );
+}
