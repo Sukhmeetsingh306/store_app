@@ -248,44 +248,45 @@ Widget sizedBoxHeaderData(
                 ),
               ),
             ),
-        Positioned(
-          bottom: mediaQueryHeight * 0.013,
-          left: mediaQueryWidth *
-              (isWebMobile
-                  ? (arrowPresent ? 0.25 : 0.20)
-                  : (arrowPresent ? 0.12 : 0.08)),
-          right: mediaQueryWidth * (isWebMobile ? 0.30 : 0.23),
-          child: SizedBox(
-            width: 250,
-            height: 50,
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: "Enter",
-                hintStyle: TextStyle(
-                  fontSize: 14,
-                  color: Color(0xFF7F7F7F),
-                ),
-                contentPadding: const EdgeInsets.symmetric(
-                  vertical: 16,
-                  horizontal: 12,
-                ),
-                prefixIcon: Icon(
-                  Icons.search_rounded,
-                ),
-                suffixIcon: Icon(
-                  Icons.camera_alt_outlined,
-                ),
-                fillColor: Colors.grey.shade200,
-                filled: true,
-                focusColor: ColorTheme.color.blackColor,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide.none,
+        if (!isWebMobile)
+          Positioned(
+            bottom: mediaQueryHeight * 0.013,
+            left: mediaQueryWidth *
+                (isWebMobile
+                    ? (arrowPresent ? 0.25 : 0.20)
+                    : (arrowPresent ? 0.12 : 0.08)),
+            right: mediaQueryWidth * (isWebMobile ? 0.30 : 0.23),
+            child: SizedBox(
+              width: 250,
+              height: 50,
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: "Enter",
+                  hintStyle: TextStyle(
+                    fontSize: 14,
+                    color: Color(0xFF7F7F7F),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(
+                    vertical: 16,
+                    horizontal: 12,
+                  ),
+                  prefixIcon: Icon(
+                    Icons.search_rounded,
+                  ),
+                  suffixIcon: Icon(
+                    Icons.camera_alt_outlined,
+                  ),
+                  fillColor: Colors.grey.shade200,
+                  filled: true,
+                  focusColor: ColorTheme.color.blackColor,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    borderSide: BorderSide.none,
+                  ),
                 ),
               ),
             ),
           ),
-        ),
         if (!isWebMobile)
           Positioned(
             bottom: mediaQueryHeight * 0.022,
