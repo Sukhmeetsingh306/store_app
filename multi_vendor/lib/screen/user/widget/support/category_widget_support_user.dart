@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import '../../../../controllers/category_api_controllers.dart';
 import '../../../../controllers/subCategory_controllers.dart';
 import '../../../../models/api/category_api_models.dart';
-import '../../../../models/api/subcategory_api_mpdels.dart';
+import '../../../../models/api/subcategory_api_models.dart';
 import '../../../../utils/fonts/google_fonts_utils.dart';
 import '../../../../utils/fonts/row_text_sands.dart';
 import '../../../../utils/routes/navigation_routes.dart';
 import '../../../../utils/theme/color/color_theme.dart';
+import '../inner_category_widget_user.dart';
 
 class CategoryWidgetSupportUser extends StatefulWidget {
   final bool listView;
@@ -243,12 +244,12 @@ class _CategoryWidgetSupportUserState extends State<CategoryWidgetSupportUser> {
                   itemBuilder: (context, index) {
                     final category = categoryCount[index];
                     return InkWell(
-                      // onTap: () => materialRouteNavigator(
-                      //   context,
-                      //   InnerCategoryScreen(
-                      //     category: category,
-                      //   ),
-                      // ),
+                      onTap: () => materialRouteNavigator(
+                        context,
+                        InnerCategoryScreen(
+                          category: category,
+                        ),
+                      ),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
