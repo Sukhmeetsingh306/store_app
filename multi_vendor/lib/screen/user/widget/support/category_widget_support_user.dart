@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import '../../../../controllers/category_api_controllers.dart';
+import '../../../../controllers/category_controllers.dart';
 import '../../../../controllers/subCategory_controllers.dart';
 import '../../../../models/api/category_api_models.dart';
 import '../../../../models/api/subcategory_api_models.dart';
