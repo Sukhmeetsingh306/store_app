@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:go_router/go_router.dart';
 
 import 'support/hover_widget_support_user.dart';
 import '../../../utils/fonts/google_fonts_utils.dart';
@@ -214,7 +215,7 @@ Widget sizedBoxHeaderData(
                       verticalDividerIcon(),
                       GestureDetector(
                         onTap: () {
-                          print('Enter the navigation for address page');
+                          context.go('/addingProduct');
                         },
                         child: googleInterTextWeight4Font16(
                           "Become a Seller",
