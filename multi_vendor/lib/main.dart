@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:multi_vendor/screen/authentication/login_auth_screen.dart';
 import 'package:multi_vendor/utils/routes/app_route.dart';
 
 void main() {
@@ -9,19 +8,22 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Multi Vendor',
-      initialRoute: '/loginPage',
-      routes: AppRoutes.getRoutes(),
+      routerConfig: AppRoutes.router,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.white30),
         useMaterial3: true,
       ),
-      home: const LoginAuthScreen(),
     );
   }
 }
+
+
+/**
+
+
+ */
