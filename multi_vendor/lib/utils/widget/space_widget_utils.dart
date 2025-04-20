@@ -33,3 +33,14 @@ Widget sizedBoxH20() {
 Widget sizedBoxW16() {
   return SizedBox(width: 16);
 }
+
+Widget sizedBoxMediaQuery(
+  BuildContext context, {
+  double? width,
+  double? height,
+}) {
+  return SizedBox(
+    width: MediaQuery.of(context).size.width * width!,
+    height: MediaQuery.of(context).size.height * height!,
+  );
+}

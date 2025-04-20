@@ -167,3 +167,24 @@ Text googleTextRob(
     ),
   );
 }
+
+Text webButtonGoogleText(
+  String text, {
+  double? fontSize,
+  FontWeight? fontWeight,
+  Color? color,
+}) {
+  return googleInterText(
+    text,
+    fontSize: fontSize ?? 16,
+    fontWeight: fontWeight ?? FontWeight.w600,
+    color: color ?? Colors.black,
+  );
+}
+
+Widget divider() {
+  return Padding(
+    padding: const EdgeInsets.all(4.0),
+    child: const Divider(),
+  );
+}
