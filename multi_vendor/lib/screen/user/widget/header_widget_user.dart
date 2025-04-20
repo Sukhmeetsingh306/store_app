@@ -227,11 +227,10 @@ Widget sizedBoxHeaderData(
                       verticalDividerIcon(),
                       GestureDetector(
                         onTap: () async {
-                          // Show the loading dialog
+                          // Show loading dialog
                           showDialog(
                             context: context,
-                            barrierDismissible:
-                                false, // Prevents dismissal by tapping outside
+                            barrierDismissible: false,
                             builder: (BuildContext context) {
                               return const Center(
                                 child: CircularProgressIndicator(),
@@ -240,6 +239,8 @@ Widget sizedBoxHeaderData(
                           );
 
                           await Future.delayed(const Duration(seconds: 3));
+
+                          if (!context.mounted) return;
 
                           Navigator.of(context, rootNavigator: true).pop();
 
