@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:multi_vendor/utils/routes/navigation_routes.dart';
 
 import '../../controllers/login_user_controllers.dart';
@@ -403,7 +404,8 @@ class _LoginAuthScreenState extends State<LoginAuthScreen>
                           //     hasError = true; // Error from form validation
                           //   });
                           // }
-                          pushNamedAndRemoveUntil(context, '/homePage');
+                          // pushNamedAndRemoveUntil(context, '/homePage');
+                          context.go('/homePage');
                         },
                       ),
                     ],
