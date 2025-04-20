@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multi_vendor/utils/routes/navigation_routes.dart';
 
-import '../../controllers/login_user_controllers.dart';
+// import '../../controllers/login_user_controllers.dart';
 import '../../utils/fonts/google_fonts_utils.dart';
 import '../../utils/fonts/text_fonts_utils.dart';
 import '../../utils/validation/password_validations.dart';
@@ -26,7 +26,7 @@ class _LoginAuthScreenState extends State<LoginAuthScreen>
 
   final TextEditingController _mailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final LoginUserControllers _loginUserControllers = LoginUserControllers();
+  //final LoginUserControllers _loginUserControllers = LoginUserControllers();
 
   late AnimationController _controller;
   late Animation<double> _fadeAnimation;
