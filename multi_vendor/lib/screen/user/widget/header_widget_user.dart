@@ -66,6 +66,18 @@ Widget messageIcon() {
   );
 }
 
+void showLoadingDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierDismissible: false, // Prevents dismissal by tapping outside
+    builder: (BuildContext context) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    },
+  );
+}
+
 PreferredSizeWidget detailHeaderWidget(
   BuildContext context, {
   VoidCallback? backOnPressed,
@@ -214,7 +226,23 @@ Widget sizedBoxHeaderData(
                       HoverWidgetSupportUser(),
                       verticalDividerIcon(),
                       GestureDetector(
-                        onTap: () {
+                        onTap: () async {
+                          // Show the loading dialog
+                          showDialog(
+                            context: context,
+                            barrierDismissible:
+                                false, // Prevents dismissal by tapping outside
+                            builder: (BuildContext context) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            },
+                          );
+
+                          await Future.delayed(const Duration(seconds: 3));
+
+                          Navigator.of(context, rootNavigator: true).pop();
+
                           context.go('/addingProduct');
                         },
                         child: googleInterTextWeight4Font16(
