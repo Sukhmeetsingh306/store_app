@@ -15,8 +15,8 @@ import 'sideScreen/upload_banner_side_screen.dart';
 import 'sideScreen/vendor_side_screen.dart';
 
 class WebDeviceView extends StatefulWidget {
-  static String routeName = '/addingProduct';
-  static String routePath = '/addingProduct';
+  static String routeName = '/management';
+  static String routePath = '/management';
 
   const WebDeviceView({super.key});
 

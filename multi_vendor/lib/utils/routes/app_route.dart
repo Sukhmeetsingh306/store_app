@@ -42,7 +42,7 @@ class AppRoutes {
         },
       ),
       GoRoute(
-        path: '/addingProduct',
+        path: '/management',
         builder: (context, state) => const WebDeviceView(),
       ),
     ],

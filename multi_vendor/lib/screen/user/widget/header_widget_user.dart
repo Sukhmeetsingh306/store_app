@@ -244,7 +244,7 @@ Widget sizedBoxHeaderData(
 
                           Navigator.of(context, rootNavigator: true).pop();
 
-                          context.go('/addingProduct');
+                          context.go('/management');
                         },
                         child: googleInterTextWeight4Font16(
                           "Become a Seller",
