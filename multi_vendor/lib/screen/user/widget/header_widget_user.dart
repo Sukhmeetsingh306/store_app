@@ -286,7 +286,7 @@ Widget sizedBoxHeaderData(
               children: [
                 // Drawer Button
                 Material(
-                  color: Colors.white,
+                  color: ColorTheme.color.mediumBlue,
                   borderRadius: BorderRadius.circular(16),
                   child: InkWell(
                     onTap: () {
@@ -297,7 +297,7 @@ Widget sizedBoxHeaderData(
                       width: 50,
                       height: 50,
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: ColorTheme.color.mediumBlue,
                         borderRadius: BorderRadius.circular(16),
                         boxShadow: [
                           BoxShadow(
@@ -307,7 +307,7 @@ Widget sizedBoxHeaderData(
                           ),
                         ],
                       ),
-                      child: Icon(Icons.menu, color: Colors.black),
+                      child: Icon(Icons.menu, color: Colors.white),
                     ),
                   ),
                 ),
