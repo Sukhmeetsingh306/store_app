@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../utils/fonts/google_fonts_utils.dart';
 import '../../utils/theme/color/color_theme.dart';
@@ -28,6 +29,7 @@ class _WebDeviceViewState extends State<WebDeviceView> {
   // MARK: when the code completed change it back
   //Widget _selectedScreen = VendorSideScreen();
   Widget _selectedScreen = SubCategorySideScreen();
+  bool _isLoading = false;
 
   screenSelector(screen) {
     switch (screen.route) {
@@ -70,6 +72,29 @@ class _WebDeviceViewState extends State<WebDeviceView> {
       case UploadBannerSideScreen.routeName:
         setState(() {
           _selectedScreen = UploadBannerSideScreen();
+        });
+        break;
+
+      case 'return':
+        setState(() {
+          _isLoading = true;
+        });
+
+        Future.delayed(const Duration(seconds: 3)).then((_) {
+          if (!mounted) return;
+
+          // Safe to use context now
+          if (Navigator.of(context).canPop()) {
+            Navigator.of(context).pop();
+          } else {
+            context.go('/homePage');
+          }
+
+          if (mounted) {
+            setState(() {
+              _isLoading = false;
+            });
+          }
         });
         break;
     }
@@ -135,6 +160,11 @@ class _WebDeviceViewState extends State<WebDeviceView> {
             route: ProductSideScreen.routeName,
             icon: Icons.shopping_cart_outlined,
           ),
+          AdminMenuItem(
+            title: 'Return',
+            route: 'return',
+            icon: Icons.arrow_back_sharp,
+          ),
         ],
         textStyle: TextStyle(
           color: Colors.black,
@@ -149,6 +179,19 @@ class _WebDeviceViewState extends State<WebDeviceView> {
 
   @override
   Widget build(BuildContext context) {
-    return web();
+    return Stack(
+      children: [
+        web(),
+        if (_isLoading)
+          Positioned.fill(
+            child: Container(
+              color: Colors.white.withAlpha(4),
+              child: const Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
+          ),
+      ],
+    );
   }
 }
