@@ -262,10 +262,12 @@ Widget sizedBoxHeaderData(
               ],
             ),
           ),
-        if (!isWebMobile)
+        if (!isWebMobile) ...[
+          // Arrow Back Button - Only shown if arrowPresent is true
           if (arrowPresent)
             Positioned(
-              top: mediaQueryHeight * 0.1,
+              bottom: mediaQueryHeight * 0.013,
+              left: mediaQueryWidth * 0.0001,
               child: IconButton(
                 onPressed: backOnPressed,
                 icon: Icon(
@@ -274,57 +276,90 @@ Widget sizedBoxHeaderData(
                 ),
               ),
             ),
-        if (!isWebMobile)
+
+          // Drawer + Search Field - Takes more space if arrow is absent
           Positioned(
             bottom: mediaQueryHeight * 0.013,
-            left: mediaQueryWidth *
-                (isWebMobile
-                    ? (arrowPresent ? 0.25 : 0.20)
-                    : (arrowPresent ? 0.12 : 0.08)),
-            right: mediaQueryWidth * (isWebMobile ? 0.30 : 0.23),
-            child: SizedBox(
-              width: 250,
-              height: 50,
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: "Enter",
-                  hintStyle: TextStyle(
-                    fontSize: 14,
-                    color: Color(0xFF7F7F7F),
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(
-                    vertical: 16,
-                    horizontal: 12,
-                  ),
-                  prefixIcon: Icon(
-                    Icons.search_rounded,
-                  ),
-                  suffixIcon: Icon(
-                    Icons.camera_alt_outlined,
-                  ),
-                  fillColor: Colors.grey.shade200,
-                  filled: true,
-                  focusColor: ColorTheme.color.blackColor,
-                  border: OutlineInputBorder(
+            left: arrowPresent ? mediaQueryWidth * 0.1 : mediaQueryWidth * 0.02,
+            right: mediaQueryWidth * 0.23,
+            child: Row(
+              children: [
+                // Drawer Button
+                Material(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  child: InkWell(
+                    onTap: () {
+                      // Handle drawer action
+                    },
                     borderRadius: BorderRadius.circular(16),
-                    borderSide: BorderSide.none,
+                    child: Ink(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 4,
+                            offset: Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Icon(Icons.menu, color: Colors.black),
+                    ),
                   ),
                 ),
-              ),
+
+                const SizedBox(width: 12),
+
+                // Search Field
+                Expanded(
+                  child: SizedBox(
+                    height: 50,
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: "Enter",
+                        hintStyle: TextStyle(
+                          fontSize: 14,
+                          color: Color(0xFF7F7F7F),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                          vertical: 16,
+                          horizontal: 12,
+                        ),
+                        prefixIcon: Icon(Icons.search_rounded),
+                        suffixIcon: Icon(Icons.camera_alt_outlined),
+                        fillColor: Colors.grey.shade200,
+                        filled: true,
+                        focusColor: ColorTheme.color.blackColor,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-        if (!isWebMobile)
+
+          // Notification Icon
           Positioned(
             bottom: mediaQueryHeight * 0.022,
             right: mediaQueryWidth * 0.12,
             child: bellIcon(),
           ),
-        if (!isWebMobile)
+
+          // Message Icon
           Positioned(
             bottom: mediaQueryHeight * 0.022,
             right: mediaQueryWidth * 0.02,
             child: messageIcon(),
           ),
+        ]
       ],
     ),
   );
