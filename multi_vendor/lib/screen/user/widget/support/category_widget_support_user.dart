@@ -102,28 +102,44 @@ class _CategoryWidgetSupportUserState extends State<CategoryWidgetSupportUser> {
                           color: Colors.grey.shade300,
                           height: MediaQuery.of(context).size.height * 0.7,
                           width: MediaQuery.of(context).size.width * 0.02,
-                          child: ListView.builder(
-                            padding: EdgeInsets.zero,
-                            itemCount: categoryCount.length,
-                            itemBuilder: (context, index) {
-                              final category = categoryCount[index];
-                              return ListTile(
-                                onTap: () {
-                                  setState(() {
-                                    _selectedCategory = category;
-                                  });
-                                  _loadSubCategory(category.categoryName);
-                                },
-                                title: googleInterText(
-                                  category.categoryName,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: googleInterText(
+                                  "Category",
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: _selectedCategory == category
-                                      ? ColorTheme.color.dodgerBlue
-                                      : ColorTheme.color.blackColor,
+                                  fontSize: 18,
+                                  color: ColorTheme.color.dodgerBlue,
                                 ),
-                              );
-                            },
+                              ),
+                              Expanded(
+                                child: ListView.builder(
+                                  padding: EdgeInsets.zero,
+                                  itemCount: categoryCount.length,
+                                  itemBuilder: (context, index) {
+                                    final category = categoryCount[index];
+                                    return ListTile(
+                                      onTap: () {
+                                        setState(() {
+                                          _selectedCategory = category;
+                                        });
+                                        _loadSubCategory(category.categoryName);
+                                      },
+                                      title: googleInterText(
+                                        category.categoryName,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 16,
+                                        color: _selectedCategory == category
+                                            ? ColorTheme.color.dodgerBlue
+                                            : ColorTheme.color.blackColor,
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
