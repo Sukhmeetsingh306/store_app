@@ -32,6 +32,8 @@ class _InnerCategoryScreenState extends State<InnerCategoryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
     final List<Widget> mobilePages = [
       InnerCategoryContentSupportWidgetUser(
         category: widget.category,
@@ -45,8 +47,12 @@ class _InnerCategoryScreenState extends State<InnerCategoryScreen> {
       AccountNavigationScreen(),
     ];
 
+    final headerWidgetUser = HeaderWidgetUser(
+      scaffoldKey: scaffoldKey,
+    );
+
     return Scaffold(
-      appBar: detailHeaderWidget(
+      appBar: headerWidgetUser.detailHeaderWidget(
         context,
         backOnPressed: () => pop(context),
       ),
