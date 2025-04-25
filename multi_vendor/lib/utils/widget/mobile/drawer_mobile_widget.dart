@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
 import '../../fonts/google_fonts_utils.dart';
 
 class DrawerWidget extends StatelessWidget {
@@ -34,7 +36,11 @@ class DrawerWidget extends StatelessWidget {
               ),
             ),
           ),
-          listTile("Home", Icon(Icons.home_outlined)),
+          listTile("Home", Icon(Icons.home_outlined), onTap: () {
+            Navigator.pop(context);
+            Navigator.of(context).popUntil((route) => route.isFirst);
+            context.pushReplacement('/homePage');
+          }),
           listTile("Categories", Icon(Icons.category_outlined),
               onTap: () => Navigator.pushNamed(context, '/categoryPage')),
           listTile("Favorites", Icon(Icons.favorite_border),
