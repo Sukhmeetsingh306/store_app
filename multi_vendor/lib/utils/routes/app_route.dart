@@ -27,12 +27,11 @@ class AppRoutes {
       ),
       GoRoute(
         path: '/homePage',
-        builder: (context, state) => const HomeUserScreen(),
+        builder: (context, state) => HomeUserScreen(),
       ),
       GoRoute(
         path: '/categoryPage',
-        builder: (context, state) =>
-            const CategoryNavigationScreen(hasAppBar: true),
+        builder: (context, state) => CategoryNavigationScreen(hasAppBar: true),
       ),
       GoRoute(
         path: '/innerCategoryPage',
