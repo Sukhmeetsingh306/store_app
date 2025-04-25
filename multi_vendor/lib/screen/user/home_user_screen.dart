@@ -29,18 +29,21 @@ class HomeUserScreen extends StatelessWidget {
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      Color.fromRGBO(36, 124, 255, 1),
-                      Color.fromRGBO(38, 124, 254, 1),
-                      Color.fromRGBO(41, 127, 255, 1),
-                      Color.fromRGBO(46, 127, 248, 1),
-                      Color.fromRGBO(50, 130, 255, 1),
+                      Color(0xFF247CFF), // Same strong base blue
+                      Color(0xFF2680F8), // Slightly more balanced
+                      Color(0xFF2B86FF), // Richer mid-blue
+                      Color(0xFF3490FE), // Bright and lively
+                      Color(0xFF3D9CFF), // Soft blue to finish
                     ],
                   ),
                 ),
-                child: googleInterText(
-                  "Menu",
-                  color: Colors.white,
-                  fontSize: 24,
+                child: Align(
+                  alignment: Alignment.bottomLeft,
+                  child: googleInterText(
+                    "Menu",
+                    color: Colors.white,
+                    fontSize: 28,
+                  ),
                 ),
               ),
             ),
