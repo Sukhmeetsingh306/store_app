@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:multi_vendor/screen/user/widget/header_widget_user.dart';
 
 import '../../utils/fonts/google_fonts_utils.dart';
 import '../../utils/theme/color/color_theme.dart';
+import '../../utils/widget/mobile/user_screen_wrapper_mobile.dart';
 import 'widget/banner_widget_user.dart';
 import 'widget/navigation/account_navigation_screen.dart';
 import 'widget/navigation/cart_navigation_screen.dart';
@@ -37,18 +37,35 @@ class _HomeUserScreenState extends State<HomeUserScreen> {
   void initState() {
     super.initState();
     mobilePages = [
-      Column(
-        children: [
-          HeaderWidgetUser(scaffoldKey: _scaffoldKey),
-          const BannerWidgetIOS(),
-          const CategoryWidgetSupportUser(),
-        ],
+      UserScreenWrapper(
+        scaffoldKey: _scaffoldKey,
+        child: Column(
+          children: const [
+            BannerWidgetIOS(),
+            CategoryWidgetSupportUser(),
+          ],
+        ),
       ),
-      const FavNavigationScreen(),
-      CategoryNavigationScreen(hasAppBar: false),
-      const StoreNavigationScreen(),
-      const CartNavigationScreen(),
-      const AccountNavigationScreen(),
+      UserScreenWrapper(
+        scaffoldKey: _scaffoldKey,
+        child: const FavNavigationScreen(),
+      ),
+      UserScreenWrapper(
+        scaffoldKey: _scaffoldKey,
+        child: CategoryNavigationScreen(hasAppBar: false),
+      ),
+      UserScreenWrapper(
+        scaffoldKey: _scaffoldKey,
+        child: const StoreNavigationScreen(),
+      ),
+      UserScreenWrapper(
+        scaffoldKey: _scaffoldKey,
+        child: const CartNavigationScreen(),
+      ),
+      UserScreenWrapper(
+        scaffoldKey: _scaffoldKey,
+        child: const AccountNavigationScreen(),
+      ),
     ];
   }
 
