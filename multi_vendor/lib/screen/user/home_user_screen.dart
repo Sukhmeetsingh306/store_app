@@ -48,8 +48,15 @@ class HomeUserScreen extends StatelessWidget {
               ),
             ),
             listTile("Home", Icon(Icons.home_outlined)),
-            listTile("Profile", Icon(Icons.account_circle_outlined),
-                onTap: () {}),
+            listTile(
+              "Profile",
+              Icon(Icons.account_circle_outlined),
+              onTap: () {},
+            ),
+            listTile(
+              "Seller",
+              Icon(Icons.store_outlined),
+            ),
             listTile(
               "Categories",
               Icon(Icons.category_outlined),
@@ -85,8 +92,15 @@ class HomeUserScreen extends StatelessWidget {
                 Navigator.pushNamed(context, '/supportPage');
               },
             ),
-            listTile("Settings", Icon(Icons.settings_outlined)),
-            listTile("Logout", Icon(Icons.logout_outlined), onTap: () {}),
+            listTile(
+              "Settings",
+              Icon(Icons.settings_outlined),
+            ),
+            listTile(
+              "Logout",
+              Icon(Icons.logout_outlined),
+              onTap: () {},
+            ),
           ],
         ),
       ),
