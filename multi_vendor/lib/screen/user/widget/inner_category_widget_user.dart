@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../../../models/api/category_api_models.dart';
-import '../../../utils/routes/navigation_routes.dart';
+
 import '../../../utils/theme/color/color_theme.dart';
 import '../../../utils/widget/button_widget_utils.dart';
+import '../../../utils/widget/mobile/drawer_mobile_widget.dart';
 import 'header_widget_user.dart';
 import 'navigation/account_navigation_screen.dart';
 import 'navigation/cart_navigation_screen.dart';
@@ -52,10 +53,13 @@ class _InnerCategoryScreenState extends State<InnerCategoryScreen> {
     );
 
     return Scaffold(
+      key: scaffoldKey, // Make sure the scaffold has the correct key
       appBar: headerWidgetUser.detailHeaderWidget(
         context,
-        backOnPressed: () => pop(context),
+        backOnPressed: () => Navigator.pop(context),
+        scaffoldKey: scaffoldKey, // Pass the scaffold key here
       ),
+      drawer: DrawerWidget(scaffoldKey: scaffoldKey),
       bottomNavigationBar: widget.showBottomNav
           ? BottomNavigationBar(
               type: BottomNavigationBarType.fixed,
