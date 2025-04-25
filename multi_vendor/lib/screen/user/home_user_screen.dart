@@ -19,7 +19,7 @@ class HomeUserScreen extends StatelessWidget {
     return Scaffold(
       key: _scaffoldKey, // <-- STEP 2
       drawer: Drawer(
-        width: MediaQuery.of(context).size.width * .5,
+        width: MediaQuery.of(context).size.width * .55,
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
@@ -47,8 +47,46 @@ class HomeUserScreen extends StatelessWidget {
                 ),
               ),
             ),
-            ListTile(title: Text("Item 1")),
-            ListTile(title: Text("Item 2")),
+            listTile("Home", Icon(Icons.home_outlined)),
+            listTile("Profile", Icon(Icons.account_circle_outlined),
+                onTap: () {}),
+            listTile(
+              "Categories",
+              Icon(Icons.category_outlined),
+              onTap: () {
+                Navigator.pushNamed(context, '/categoryPage');
+              },
+            ),
+            listTile(
+              "Favorites",
+              Icon(Icons.favorite_border),
+              onTap: () {
+                Navigator.pushNamed(context, '/favPage');
+              },
+            ),
+            listTile(
+              "Cart",
+              Icon(Icons.shopping_cart_outlined),
+              onTap: () {
+                Navigator.pushNamed(context, '/cartPage');
+              },
+            ),
+            listTile(
+              "Orders",
+              Icon(Icons.receipt_long_outlined),
+              onTap: () {
+                Navigator.pushNamed(context, '/orderPage');
+              },
+            ),
+            listTile(
+              "Support",
+              Icon(Icons.support_agent_outlined),
+              onTap: () {
+                Navigator.pushNamed(context, '/supportPage');
+              },
+            ),
+            listTile("Settings", Icon(Icons.settings_outlined)),
+            listTile("Logout", Icon(Icons.logout_outlined), onTap: () {}),
           ],
         ),
       ),
@@ -65,10 +103,19 @@ class HomeUserScreen extends StatelessWidget {
   }
 }
 
-ListTile listTile(String text, Widget leading, {GestureTapCallback? onTap}) {
-  return ListTile(
-    leading: leading,
-    title: googleInterText(text, fontSize: 16, fontWeight: FontWeight.normal),
-    onTap: onTap ?? () {},
+Widget listTile(String text, Widget leading, {GestureTapCallback? onTap}) {
+  return Column(
+    children: [
+      ListTile(
+        leading: leading,
+        title: googleInterText(
+          text,
+          fontSize: 16,
+          fontWeight: FontWeight.normal,
+        ),
+        onTap: onTap ?? () {},
+      ),
+      Divider(),
+    ],
   );
 }
