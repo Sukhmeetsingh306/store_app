@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 
-import '../../utils/fonts/google_fonts_utils.dart';
 import '../../utils/theme/color/color_theme.dart';
+import '../../utils/widget/mobile/drawer_mobile_widget.dart';
 import '../../utils/widget/mobile/user_screen_wrapper_mobile.dart';
 import 'widget/banner_widget_user.dart';
 import 'widget/navigation/account_navigation_screen.dart';
@@ -79,50 +79,7 @@ class _HomeUserScreenState extends State<HomeUserScreen> {
 
     return Scaffold(
       key: _scaffoldKey,
-      drawer: Drawer(
-        width: MediaQuery.of(context).size.width * .55,
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height * .18,
-              child: DrawerHeader(
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Color(0xFF247CFF),
-                      Color(0xFF2680F8),
-                      Color(0xFF2B86FF),
-                      Color(0xFF3490FE),
-                      Color(0xFF3D9CFF),
-                    ],
-                  ),
-                ),
-                child: Align(
-                  alignment: Alignment.bottomLeft,
-                  child: googleInterText("Menu",
-                      color: Colors.white, fontSize: 28),
-                ),
-              ),
-            ),
-            listTile("Home", Icon(Icons.home_outlined)),
-            listTile("Profile", Icon(Icons.account_circle_outlined)),
-            listTile("Seller", Icon(Icons.store_outlined)),
-            listTile("Categories", Icon(Icons.category_outlined),
-                onTap: () => Navigator.pushNamed(context, '/categoryPage')),
-            listTile("Favorites", Icon(Icons.favorite_border),
-                onTap: () => Navigator.pushNamed(context, '/favPage')),
-            listTile("Cart", Icon(Icons.shopping_cart_outlined),
-                onTap: () => Navigator.pushNamed(context, '/cartPage')),
-            listTile("Orders", Icon(Icons.receipt_long_outlined),
-                onTap: () => Navigator.pushNamed(context, '/orderPage')),
-            listTile("Support", Icon(Icons.support_agent_outlined),
-                onTap: () => Navigator.pushNamed(context, '/supportPage')),
-            listTile("Settings", Icon(Icons.settings_outlined)),
-            listTile("Logout", Icon(Icons.logout_outlined), onTap: () {}),
-          ],
-        ),
-      ),
+      drawer: DrawerWidget(scaffoldKey: _scaffoldKey),
       body: mobilePages[mobilePagesIndex],
       bottomNavigationBar: showBottomBar
           ? BottomNavigationBar(
@@ -150,21 +107,4 @@ class _HomeUserScreenState extends State<HomeUserScreen> {
           : null,
     );
   }
-}
-
-Widget listTile(String text, Widget leading, {GestureTapCallback? onTap}) {
-  return Column(
-    children: [
-      ListTile(
-        leading: leading,
-        title: googleInterText(
-          text,
-          fontSize: 16,
-          fontWeight: FontWeight.normal,
-        ),
-        onTap: onTap ?? () {},
-      ),
-      Divider(),
-    ],
-  );
 }
