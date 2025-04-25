@@ -103,6 +103,7 @@ class _CategoryWidgetSupportUserState extends State<CategoryWidgetSupportUser> {
                           height: MediaQuery.of(context).size.height * 0.7,
                           width: MediaQuery.of(context).size.width * 0.02,
                           child: ListView.builder(
+                            padding: EdgeInsets.zero,
                             itemCount: categoryCount.length,
                             itemBuilder: (context, index) {
                               final category = categoryCount[index];
