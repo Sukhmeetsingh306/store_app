@@ -20,6 +20,7 @@ class HeaderWidgetUser extends StatelessWidget {
     BuildContext context, {
     bool arrowPresent = false,
     VoidCallback? backOnPressed,
+    Widget? drawerMenuButton,
   }) {
     double mediaQueryWidth = MediaQuery.of(context).size.width;
     double mediaQueryHeight = MediaQuery.of(context).size.height;
@@ -47,13 +48,6 @@ class HeaderWidgetUser extends StatelessWidget {
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          // Image.asset(
-          //   //'assets/images/arrow.png',
-          //   'assets/images/background_image.jpg',
-          //   width: mediaQueryWidth,
-          //   //height: _mediaQueryHeight * 0.3,
-          //   fit: BoxFit.cover,
-          // ),
           Container(color: ColorTheme.color.mediumBlue),
           if (isWebMobile)
             Positioned(
@@ -63,7 +57,6 @@ class HeaderWidgetUser extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // Address Section
                   if (arrowPresent)
                     IconButton(
                       onPressed: backOnPressed,
@@ -150,7 +143,6 @@ class HeaderWidgetUser extends StatelessWidget {
                         verticalDividerIcon(),
                         GestureDetector(
                           onTap: () async {
-                            // Show loading dialog
                             showDialog(
                               context: context,
                               barrierDismissible: false,
@@ -186,7 +178,6 @@ class HeaderWidgetUser extends StatelessWidget {
               ),
             ),
           if (!isWebMobile) ...[
-            // Arrow Back Button - Only shown if arrowPresent is true
             if (arrowPresent)
               Positioned(
                 bottom: mediaQueryHeight * 0.013,
@@ -199,8 +190,6 @@ class HeaderWidgetUser extends StatelessWidget {
                   ),
                 ),
               ),
-
-            // Drawer + Search Field - Takes more space if arrow is absent
             Positioned(
               bottom: mediaQueryHeight * 0.013,
               left:
@@ -208,38 +197,8 @@ class HeaderWidgetUser extends StatelessWidget {
               right: mediaQueryWidth * 0.23,
               child: Row(
                 children: [
-                  // Drawer Button
-                  Builder(
-                    builder: (context) {
-                      return InkWell(
-                        onTap: () {
-                          print("Drawer Button Clicked!");
-                          scaffoldKey.currentState?.openDrawer();
-                        },
-                        borderRadius: BorderRadius.circular(16),
-                        child: Ink(
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: ColorTheme.color.mediumBlue,
-                            borderRadius: BorderRadius.circular(16),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 4,
-                                offset: Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                          child: Icon(Icons.menu, color: Colors.white),
-                        ),
-                      );
-                    },
-                  ),
-
+                  drawerMenuButton ?? drawerMenuButtonPresent(scaffoldKey),
                   const SizedBox(width: 12),
-
-                  // Search Field
                   Expanded(
                     child: SizedBox(
                       height: 50,
@@ -270,15 +229,11 @@ class HeaderWidgetUser extends StatelessWidget {
                 ],
               ),
             ),
-
-            // Notification Icon
             Positioned(
               bottom: mediaQueryHeight * 0.022,
               right: mediaQueryWidth * 0.12,
               child: bellIcon(),
             ),
-
-            // Message Icon
             Positioned(
               bottom: mediaQueryHeight * 0.022,
               right: mediaQueryWidth * 0.02,
@@ -311,7 +266,7 @@ class HeaderWidgetUser extends StatelessWidget {
           ),
           child: Icon(
             Icons.notifications_active_outlined,
-            size: 25, // Adjust the size as needed
+            size: 25,
             color: ColorTheme.color.whiteColor,
           ),
         ),
@@ -328,12 +283,12 @@ class HeaderWidgetUser extends StatelessWidget {
           width: 35,
           height: 35,
           decoration: BoxDecoration(
-            color: Colors.transparent, // Set a background color if needed
+            color: Colors.transparent,
             shape: BoxShape.circle,
           ),
           child: Icon(
             Icons.messenger_outline_outlined,
-            size: 25, // Adjust the size as needed
+            size: 25,
             color: ColorTheme.color.whiteColor,
           ),
         ),
@@ -344,7 +299,7 @@ class HeaderWidgetUser extends StatelessWidget {
   void showLoadingDialog(BuildContext context) {
     showDialog(
       context: context,
-      barrierDismissible: false, // Prevents dismissal by tapping outside
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return const Center(
           child: CircularProgressIndicator(),
@@ -356,6 +311,7 @@ class HeaderWidgetUser extends StatelessWidget {
   PreferredSizeWidget detailHeaderWidget(
     BuildContext context, {
     VoidCallback? backOnPressed,
+    required GlobalKey<ScaffoldState> scaffoldKey,
   }) {
     double mediaQueryHeight = MediaQuery.of(context).size.height;
 
@@ -366,6 +322,38 @@ class HeaderWidgetUser extends StatelessWidget {
         arrowPresent: true,
         backOnPressed: backOnPressed,
       ),
+    );
+  }
+
+  Widget drawerMenuButtonPresent(GlobalKey<ScaffoldState> scaffoldKey) {
+    return Builder(
+      builder: (context) {
+        return InkWell(
+          onTap: () {
+            print("Drawer Button Clicked!");
+            ScaffoldState? scaffoldState =
+                context.findAncestorStateOfType<ScaffoldState>();
+            scaffoldState?.openDrawer();
+          },
+          borderRadius: BorderRadius.circular(16),
+          child: Ink(
+            width: 50,
+            height: 50,
+            decoration: BoxDecoration(
+              color: ColorTheme.color.mediumBlue,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 4,
+                  offset: Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Icon(Icons.menu, color: Colors.white),
+          ),
+        );
+      },
     );
   }
 }
