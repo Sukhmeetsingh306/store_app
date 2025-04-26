@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:multi_vendor/screen/authentication/register_detail_auth_screen.dart';
 import 'package:multi_vendor/utils/routes/navigation_routes.dart';
 
@@ -537,7 +538,7 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen>
                   Center(
                     child: GestureDetector(
                       onTap: () {
-                        pushNamedAndRemoveUntil(context, '/loginPage');
+                        context.go('/loginPage');
                       },
                       child: RichText(
                         textAlign: TextAlign.center,

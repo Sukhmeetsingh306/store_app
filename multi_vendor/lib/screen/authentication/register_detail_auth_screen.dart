@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/phone_number.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -571,9 +572,9 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen>
                 onPressed: () async {
                   //if (_formKey.currentState!.validate()) {
                   if (isSeller) {
-                    Navigator.pushNamed(context, '/sellerPage');
+                    context.go('/sellerPage');
                   } else {
-                    Navigator.pushReplacementNamed(context, '/loginPage');
+                    context.go('/loginPage');
                   }
                   //}
                 },
@@ -595,7 +596,7 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen>
                       if (Navigator.of(context).canPop()) {
                         pop(context);
                       } else {
-                        pushNamedAndRemoveUntil(context, '/registerPage');
+                        context.go('/registerPage');
                       }
                     },
                     child: Center(
