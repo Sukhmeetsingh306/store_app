@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../models/api/category_api_models.dart';
-
 import '../../../utils/theme/color/color_theme.dart';
 import '../../../utils/widget/button_widget_utils.dart';
 import '../../../utils/widget/mobile/drawer_mobile_widget.dart';
@@ -15,7 +14,6 @@ import 'support/inner_category_content_support_widget_user.dart';
 
 class InnerCategoryScreen extends StatefulWidget {
   final CategoryApiModels category;
-
   final bool showBottomNav;
 
   const InnerCategoryScreen({
@@ -29,12 +27,12 @@ class InnerCategoryScreen extends StatefulWidget {
 }
 
 class _InnerCategoryScreenState extends State<InnerCategoryScreen> {
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
   int mobilePagesIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-
     final List<Widget> mobilePages = [
       InnerCategoryContentSupportWidgetUser(
         category: widget.category,
@@ -53,11 +51,11 @@ class _InnerCategoryScreenState extends State<InnerCategoryScreen> {
     );
 
     return Scaffold(
-      key: scaffoldKey, // Make sure the scaffold has the correct key
+      key: scaffoldKey,
       appBar: headerWidgetUser.detailHeaderWidget(
         context,
         backOnPressed: () => Navigator.pop(context),
-        scaffoldKey: scaffoldKey, // Pass the scaffold key here
+        scaffoldKey: scaffoldKey,
       ),
       drawer: DrawerWidget(scaffoldKey: scaffoldKey),
       bottomNavigationBar: widget.showBottomNav
@@ -101,7 +99,7 @@ class _InnerCategoryScreenState extends State<InnerCategoryScreen> {
               ],
               elevation: 5,
             )
-          : null, // 👈 If false, hide the BottomNavigationBar
+          : null,
       body: mobilePages[mobilePagesIndex],
     );
   }
