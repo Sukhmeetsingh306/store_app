@@ -81,6 +81,11 @@ class _HomeUserScreenState extends State<HomeUserScreen> {
       key: _scaffoldKey,
       drawer: DrawerWidget(
         scaffoldKey: _scaffoldKey,
+        onHomeTap: () {
+          setState(() {
+            mobilePagesIndex = 0;
+          });
+        },
         onCategoryTap: () {
           setState(() {
             mobilePagesIndex = 2;
