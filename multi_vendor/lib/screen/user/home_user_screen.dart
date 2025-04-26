@@ -79,7 +79,15 @@ class _HomeUserScreenState extends State<HomeUserScreen> {
 
     return Scaffold(
       key: _scaffoldKey,
-      drawer: DrawerWidget(scaffoldKey: _scaffoldKey),
+      drawer: DrawerWidget(
+        scaffoldKey: _scaffoldKey,
+        onCategoryTap: () {
+          setState(() {
+            mobilePagesIndex = 2;
+          });
+          Navigator.pop(context);
+        },
+      ),
       body: mobilePages[mobilePagesIndex],
       bottomNavigationBar: showBottomBar
           ? BottomNavigationBar(
