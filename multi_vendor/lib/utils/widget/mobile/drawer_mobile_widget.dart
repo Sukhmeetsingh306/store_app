@@ -5,10 +5,15 @@ import '../../fonts/google_fonts_utils.dart';
 
 class DrawerWidget extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
+  final VoidCallback? onHomeTap;
   final VoidCallback? onCategoryTap;
 
-  const DrawerWidget(
-      {super.key, required this.scaffoldKey, this.onCategoryTap});
+  const DrawerWidget({
+    super.key,
+    required this.scaffoldKey,
+    this.onCategoryTap,
+    this.onHomeTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -38,11 +43,23 @@ class DrawerWidget extends StatelessWidget {
               ),
             ),
           ),
-          listTile("Home", Icon(Icons.home_outlined), onTap: () {
-            Navigator.pop(context);
-            Navigator.of(context).popUntil((route) => route.isFirst);
-            context.pushReplacement('/homePage');
-          }),
+          listTile(
+            "Home",
+            Icon(Icons.home_outlined),
+            onTap: () {
+              Navigator.pop(context);
+              if (onHomeTap != null) {
+                onHomeTap!();
+              } else {
+                if (Navigator.of(context).canPop()) {
+                  Navigator.of(context).popUntil((route) => route.isFirst);
+                  context.pushReplacement('/homePage');
+                } else {
+                  context.go('/homePage');
+                }
+              }
+            },
+          ),
           listTile(
             "Categories",
             Icon(Icons.category_outlined),
