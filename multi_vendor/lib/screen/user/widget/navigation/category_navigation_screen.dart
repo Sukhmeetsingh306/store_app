@@ -7,6 +7,9 @@ class CategoryNavigationScreen extends StatelessWidget {
   final bool hasAppBar;
   final GlobalKey<ScaffoldState> scaffoldKey;
 
+  static String routeName = '/categoryPage';
+  static String routePath = '/categoryPage';
+
   CategoryNavigationScreen({
     super.key,
     bool? hasAppBar,
