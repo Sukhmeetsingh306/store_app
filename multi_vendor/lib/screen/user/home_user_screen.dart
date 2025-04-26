@@ -87,10 +87,10 @@ class _HomeUserScreenState extends State<HomeUserScreen> {
           });
         },
         onCategoryTap: () {
+          print("worked in inner screen"); // now should print ✅
           setState(() {
             mobilePagesIndex = 2;
           });
-          Navigator.pop(context);
         },
       ),
       body: mobilePages[mobilePagesIndex],
