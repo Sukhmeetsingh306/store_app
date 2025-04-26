@@ -64,6 +64,8 @@ class DrawerWidget extends StatelessWidget {
             "Categories",
             Icon(Icons.category_outlined),
             onTap: () {
+              Navigator.pop(context); // Close drawer first
+
               if (onCategoryTap != null) {
                 onCategoryTap!();
               }
