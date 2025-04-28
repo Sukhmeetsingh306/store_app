@@ -65,6 +65,7 @@ class HeaderWidgetUser extends StatelessWidget {
                         color: Colors.white,
                       ),
                     ),
+                  drawerMenuButtonPresent(scaffoldKey),
                   Flexible(
                     flex: 4,
                     child: GestureDetector(
