@@ -98,11 +98,14 @@ class DrawerWidget extends StatelessWidget {
               onCartTap!();
             }
           }),
-          listTile("Support", Icon(Icons.support_agent_outlined),
-              onTap: () => {
-                    showSnackBar(context, 'Support is not available yet'),
-                  }),
+          listTile("Support", Icon(Icons.support_agent_outlined), onTap: () {
+            pop(context);
+
+            showSnackBar(context, 'Support is not available yet');
+          }),
           listTile("Seller", Icon(Icons.store_outlined), onTap: () {
+            pop(context);
+
             showSnackBar(context, 'Seller is not available yet');
           }),
           listTile(
@@ -116,6 +119,8 @@ class DrawerWidget extends StatelessWidget {
             },
           ),
           listTile("Settings", Icon(Icons.settings_outlined), onTap: () {
+            pop(context);
+
             showSnackBar(context, 'Settings is not available yet');
           }),
           listTile("Logout", Icon(Icons.logout_outlined), onTap: () {
