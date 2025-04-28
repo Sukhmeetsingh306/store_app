@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:multi_vendor/services/http_services.dart';
 
 import '../../fonts/google_fonts_utils.dart';
 import '../../routes/navigation_routes.dart';
@@ -85,18 +86,38 @@ class DrawerWidget extends StatelessWidget {
               onFavTap!();
             }
           }),
-          listTile("Store", Icon(Icons.shopping_bag_outlined),
-              onTap: () => Navigator.pushNamed(context, '/ordersPage')),
-          listTile("Cart", Icon(Icons.shopping_cart_outlined),
-              onTap: () => Navigator.pushNamed(context, '/cartPage')),
+          listTile("Store", Icon(Icons.shopping_bag_outlined), onTap: () {
+            pop(context);
+            if (onStoreTap != null) {
+              onStoreTap!();
+            }
+          }),
+          listTile("Cart", Icon(Icons.shopping_cart_outlined), onTap: () {
+            pop(context);
+            if (onCartTap != null) {
+              onCartTap!();
+            }
+          }),
           listTile("Support", Icon(Icons.support_agent_outlined),
-              onTap: () => Navigator.pushNamed(context, '/supportPage')),
-          listTile("Seller", Icon(Icons.store_outlined)),
+              onTap: () => {
+                    showSnackBar(context, 'Support is not available yet'),
+                  }),
+          listTile("Seller", Icon(Icons.store_outlined), onTap: () {
+            showSnackBar(context, 'Seller is not available yet');
+          }),
           listTile(
             "Account",
             Icon(Icons.account_circle_outlined),
+            onTap: () {
+              pop(context);
+              if (onAccountTap != null) {
+                onAccountTap!();
+              }
+            },
           ),
-          listTile("Settings", Icon(Icons.settings_outlined)),
+          listTile("Settings", Icon(Icons.settings_outlined), onTap: () {
+            showSnackBar(context, 'Settings is not available yet');
+          }),
           listTile("Logout", Icon(Icons.logout_outlined), onTap: () {
             pop(context);
             Navigator.of(context).popUntil((route) => route.isFirst);
