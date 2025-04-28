@@ -165,6 +165,9 @@ class _CategoryWidgetSupportUserState extends State<CategoryWidgetSupportUser> {
                           ),
                         ),
                       ),
+                      SizedBox(
+                        width: 2,
+                      ),
                       Flexible(
                         child: _selectedCategory != null
                             ? SingleChildScrollView(
@@ -194,7 +197,6 @@ class _CategoryWidgetSupportUserState extends State<CategoryWidgetSupportUser> {
                                     ),
                                     _subCategory.isNotEmpty
                                         ? GridView.builder(
-                                            shrinkWrap: true,
                                             physics:
                                                 NeverScrollableScrollPhysics(),
                                             padding: const EdgeInsets.all(4),
@@ -210,21 +212,31 @@ class _CategoryWidgetSupportUserState extends State<CategoryWidgetSupportUser> {
                                               final subCategory =
                                                   _subCategory[index];
                                               return Column(
+                                                mainAxisSize: MainAxisSize.min,
                                                 children: [
-                                                  Container(
-                                                    width: 50,
-                                                    height: 50,
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.grey[200],
-                                                    ),
-                                                    child: Center(
-                                                      child: Image.network(
-                                                        subCategory
-                                                            .subCategoryImage,
-                                                        fit: BoxFit.cover,
+                                                  Center(
+                                                    child: Container(
+                                                      width: 50,
+                                                      height: 50,
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.grey[200],
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(8),
+                                                      ),
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(8),
+                                                        child: Image.network(
+                                                          subCategory
+                                                              .subCategoryImage,
+                                                          fit: BoxFit.cover,
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
+                                                  const SizedBox(height: 8),
                                                   Center(
                                                     child: googleInterText(
                                                       subCategory
