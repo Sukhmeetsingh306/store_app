@@ -124,20 +124,34 @@ class _CategoryWidgetSupportUserState extends State<CategoryWidgetSupportUser> {
                                   itemCount: categoryCount.length,
                                   itemBuilder: (context, index) {
                                     final category = categoryCount[index];
-                                    return ListTile(
-                                      onTap: () {
-                                        setState(() {
-                                          _selectedCategory = category;
-                                        });
-                                        _loadSubCategory(category.categoryName);
-                                      },
-                                      title: googleInterText(
-                                        category.categoryName,
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 16,
-                                        color: _selectedCategory == category
+                                    final bool isSelected =
+                                        _selectedCategory == category;
+                                    return Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 4, horizontal: 8),
+                                      decoration: BoxDecoration(
+                                        color: isSelected
                                             ? ColorTheme.color.dodgerBlue
-                                            : ColorTheme.color.blackColor,
+                                                .withAlpha(2)
+                                            : Colors.transparent,
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: ListTile(
+                                        onTap: () {
+                                          setState(() {
+                                            _selectedCategory = category;
+                                          });
+                                          _loadSubCategory(
+                                              category.categoryName);
+                                        },
+                                        title: googleInterText(
+                                          category.categoryName,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16,
+                                          color: isSelected
+                                              ? ColorTheme.color.dodgerBlue
+                                              : ColorTheme.color.blackColor,
+                                        ),
                                       ),
                                     );
                                   },
