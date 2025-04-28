@@ -97,6 +97,21 @@ class _HomeUserScreenState extends State<HomeUserScreen> {
             mobilePagesIndex = 2;
           });
         },
+        onStoreTap: () {
+          setState(() {
+            mobilePagesIndex = 3;
+          });
+        },
+        onCartTap: () {
+          setState(() {
+            mobilePagesIndex = 4;
+          });
+        },
+        onAccountTap: () {
+          setState(() {
+            mobilePagesIndex = 5;
+          });
+        },
       ),
       body: mobilePages[mobilePagesIndex],
       bottomNavigationBar: showBottomBar

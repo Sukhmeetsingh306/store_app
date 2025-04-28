@@ -70,6 +70,21 @@ class _InnerCategoryScreenState extends State<InnerCategoryScreen> {
             mobilePagesIndex = 2;
           });
         },
+        onStoreTap: () {
+          setState(() {
+            mobilePagesIndex = 3;
+          });
+        },
+        onCartTap: () {
+          setState(() {
+            mobilePagesIndex = 4;
+          });
+        },
+        onAccountTap: () {
+          setState(() {
+            mobilePagesIndex = 5;
+          });
+        },
       ),
       bottomNavigationBar: widget.showBottomNav
           ? BottomNavigationBar(
