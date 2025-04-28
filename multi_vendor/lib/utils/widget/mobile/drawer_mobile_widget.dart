@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multi_vendor/services/http_services.dart';
@@ -27,8 +28,12 @@ class DrawerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isWebMobile = kIsWeb && MediaQuery.of(context).size.width > 1026;
+
     return Drawer(
-      width: MediaQuery.of(context).size.width * .55,
+      width: isWebMobile
+          ? MediaQuery.of(context).size.width * 0.15
+          : MediaQuery.of(context).size.width * 0.5,
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
