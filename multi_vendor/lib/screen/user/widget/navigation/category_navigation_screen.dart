@@ -37,6 +37,7 @@ class CategoryNavigationScreen extends StatelessWidget {
             flex: 2,
             child: CategoryWidgetSupportUser(
               listView: true,
+              showHeadingRow: false,
             ),
           ),
         ],

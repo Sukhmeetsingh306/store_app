@@ -12,8 +12,10 @@ import '../inner_category_widget_user.dart';
 
 class CategoryWidgetSupportUser extends StatefulWidget {
   final bool listView;
+  final bool? showHeadingRow;
 
-  const CategoryWidgetSupportUser({super.key, this.listView = false});
+  const CategoryWidgetSupportUser(
+      {super.key, this.listView = false, this.showHeadingRow = true});
 
   @override
   State<CategoryWidgetSupportUser> createState() =>
@@ -60,18 +62,20 @@ class _CategoryWidgetSupportUserState extends State<CategoryWidgetSupportUser> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (defaultTargetPlatform == TargetPlatform.iOS &&
-            widget.listView == false)
-          RowTextSands(
-            title: 'Categories:',
-            subTitle: ' View All',
-          ),
-        if (kIsWeb)
-          RowTextSands(
-            title: 'Categories:',
-            subTitle: ' View All',
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          ),
+        if (widget.showHeadingRow!) ...[
+          if (defaultTargetPlatform == TargetPlatform.iOS &&
+              widget.listView == false)
+            RowTextSands(
+              title: 'Categories:',
+              subTitle: ' View All',
+            ),
+          if (kIsWeb)
+            RowTextSands(
+              title: 'Categories:',
+              subTitle: ' View All',
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            ),
+        ],
         FutureBuilder(
           future: futureCategory,
           builder: (context, snapshot) {
