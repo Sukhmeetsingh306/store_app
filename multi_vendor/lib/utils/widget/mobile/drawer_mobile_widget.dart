@@ -9,6 +9,9 @@ class DrawerWidget extends StatelessWidget {
   final VoidCallback? onHomeTap;
   final VoidCallback? onCategoryTap;
   final VoidCallback? onFavTap;
+  final VoidCallback? onCartTap;
+  final VoidCallback? onStoreTap;
+  final VoidCallback? onAccountTap;
 
   const DrawerWidget({
     super.key,
@@ -16,6 +19,9 @@ class DrawerWidget extends StatelessWidget {
     this.onCategoryTap,
     this.onFavTap,
     this.onHomeTap,
+    this.onCartTap,
+    this.onStoreTap,
+    this.onAccountTap,
   });
 
   @override
