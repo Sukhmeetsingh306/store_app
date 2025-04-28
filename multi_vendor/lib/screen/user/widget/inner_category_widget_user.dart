@@ -59,6 +59,11 @@ class _InnerCategoryScreenState extends State<InnerCategoryScreen> {
       ),
       drawer: DrawerWidget(
         scaffoldKey: scaffoldKey,
+        onFavTap: () {
+          setState(() {
+            mobilePagesIndex = 1;
+          });
+        },
         onCategoryTap: () {
           print("worked in inner category screen"); // now should print ✅
           setState(() {

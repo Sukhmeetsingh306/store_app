@@ -86,6 +86,11 @@ class _HomeUserScreenState extends State<HomeUserScreen> {
             mobilePagesIndex = 0;
           });
         },
+        onFavTap: () {
+          setState(() {
+            mobilePagesIndex = 1;
+          });
+        },
         onCategoryTap: () {
           print("worked in inner screen"); // now should print ✅
           setState(() {

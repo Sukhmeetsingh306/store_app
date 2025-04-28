@@ -8,11 +8,13 @@ class DrawerWidget extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
   final VoidCallback? onHomeTap;
   final VoidCallback? onCategoryTap;
+  final VoidCallback? onFavTap;
 
   const DrawerWidget({
     super.key,
     required this.scaffoldKey,
     this.onCategoryTap,
+    this.onFavTap,
     this.onHomeTap,
   });
 
@@ -71,13 +73,23 @@ class DrawerWidget extends StatelessWidget {
               }
             },
           ),
-          listTile("Favorites", Icon(Icons.favorite_border),
-              onTap: () => Navigator.pushNamed(context, '/favPage')),
+          listTile("Favorites", Icon(Icons.favorite_border), onTap: () {
+            pop(context);
+            if (onFavTap != null) {
+              onFavTap!();
+            }
+          }),
+          listTile("Store", Icon(Icons.shopping_bag_outlined),
+              onTap: () => Navigator.pushNamed(context, '/ordersPage')),
           listTile("Cart", Icon(Icons.shopping_cart_outlined),
               onTap: () => Navigator.pushNamed(context, '/cartPage')),
           listTile("Support", Icon(Icons.support_agent_outlined),
               onTap: () => Navigator.pushNamed(context, '/supportPage')),
           listTile("Seller", Icon(Icons.store_outlined)),
+          listTile(
+            "Account",
+            Icon(Icons.account_circle_outlined),
+          ),
           listTile("Settings", Icon(Icons.settings_outlined)),
           listTile("Logout", Icon(Icons.logout_outlined), onTap: () {
             pop(context);
