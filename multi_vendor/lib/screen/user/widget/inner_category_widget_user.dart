@@ -57,7 +57,15 @@ class _InnerCategoryScreenState extends State<InnerCategoryScreen> {
         backOnPressed: () => Navigator.pop(context),
         scaffoldKey: scaffoldKey,
       ),
-      drawer: DrawerWidget(scaffoldKey: scaffoldKey),
+      drawer: DrawerWidget(
+        scaffoldKey: scaffoldKey,
+        onCategoryTap: () {
+          print("worked in inner category screen"); // now should print ✅
+          setState(() {
+            mobilePagesIndex = 2;
+          });
+        },
+      ),
       bottomNavigationBar: widget.showBottomNav
           ? BottomNavigationBar(
               type: BottomNavigationBarType.fixed,
