@@ -58,6 +58,8 @@ class _CategoryWidgetSupportUserState extends State<CategoryWidgetSupportUser> {
 
   @override
   Widget build(BuildContext context) {
+    bool isWebMobile = kIsWeb && MediaQuery.of(context).size.width > 1026;
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -93,19 +95,21 @@ class _CategoryWidgetSupportUserState extends State<CategoryWidgetSupportUser> {
               );
             } else {
               final categoryCount = snapshot.data!;
-//MARK: Code for mobile category screen
+              //MARK: Code for mobile category screen
               if (widget.listView == true) {
                 return SingleChildScrollView(
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Expanded(
+                      Flexible(
                         flex: 1,
                         child: Container(
                           color: Colors.grey.shade300,
-                          height: MediaQuery.of(context).size.height * 0.7,
-                          width: MediaQuery.of(context).size.width * 0.02,
+                          height: MediaQuery.of(context).size.height *
+                              (kIsWeb ? 0.82 : 0.7),
+                          width: MediaQuery.of(context).size.width *
+                              (isWebMobile ? 0.2 : (kIsWeb ? 0.3 : 0.34)),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -118,7 +122,7 @@ class _CategoryWidgetSupportUserState extends State<CategoryWidgetSupportUser> {
                                   color: ColorTheme.color.dodgerBlue,
                                 ),
                               ),
-                              Expanded(
+                              Flexible(
                                 child: ListView.builder(
                                   padding: EdgeInsets.zero,
                                   itemCount: categoryCount.length,
@@ -161,8 +165,7 @@ class _CategoryWidgetSupportUserState extends State<CategoryWidgetSupportUser> {
                           ),
                         ),
                       ),
-                      Expanded(
-                        flex: 2,
+                      Flexible(
                         child: _selectedCategory != null
                             ? SingleChildScrollView(
                                 child: Column(
@@ -191,10 +194,10 @@ class _CategoryWidgetSupportUserState extends State<CategoryWidgetSupportUser> {
                                     ),
                                     _subCategory.isNotEmpty
                                         ? GridView.builder(
+                                            shrinkWrap: true,
                                             physics:
                                                 NeverScrollableScrollPhysics(),
                                             padding: const EdgeInsets.all(4),
-                                            shrinkWrap: true,
                                             itemCount: _subCategory.length,
                                             gridDelegate:
                                                 SliverGridDelegateWithFixedCrossAxisCount(
@@ -206,7 +209,6 @@ class _CategoryWidgetSupportUserState extends State<CategoryWidgetSupportUser> {
                                             itemBuilder: (context, index) {
                                               final subCategory =
                                                   _subCategory[index];
-
                                               return Column(
                                                 children: [
                                                   Container(
@@ -260,7 +262,7 @@ class _CategoryWidgetSupportUserState extends State<CategoryWidgetSupportUser> {
                   ),
                 );
               }
-//MARK: Code for Web View
+              //MARK: Code for Web View
               if (defaultTargetPlatform == TargetPlatform.iOS) {
                 return GridView.builder(
                   padding: const EdgeInsets.only(top: 10),
@@ -365,7 +367,3 @@ class _CategoryWidgetSupportUserState extends State<CategoryWidgetSupportUser> {
     );
   }
 }
-
-/*
-
- */
