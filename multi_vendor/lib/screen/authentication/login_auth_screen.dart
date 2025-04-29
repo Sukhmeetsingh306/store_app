@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:multi_vendor/utils/routes/navigation_routes.dart';
+import 'package:go_router/go_router.dart';
 
-import '../../controllers/login_user_controllers.dart';
+// import '../../controllers/login_user_controllers.dart';
 import '../../utils/fonts/google_fonts_utils.dart';
 import '../../utils/fonts/text_fonts_utils.dart';
 import '../../utils/validation/password_validations.dart';
@@ -25,7 +25,7 @@ class _LoginAuthScreenState extends State<LoginAuthScreen>
 
   final TextEditingController _mailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final LoginUserControllers _loginUserControllers = LoginUserControllers();
+  //final LoginUserControllers _loginUserControllers = LoginUserControllers();
 
   late AnimationController _controller;
   late Animation<double> _fadeAnimation;
@@ -379,30 +379,32 @@ class _LoginAuthScreenState extends State<LoginAuthScreen>
                       AppTextButton(
                         buttonText: "Login",
                         onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            bool isAuthenticated =
-                                await _loginUserControllers.signInUsers(
-                              context: context,
-                              email: _mailController.text,
-                              password: _passwordController.text,
-                            );
+                          // if (_formKey.currentState!.validate()) {
+                          //   bool isAuthenticated =
+                          //       await _loginUserControllers.signInUsers(
+                          //     context: context,
+                          //     email: _mailController.text,
+                          //     password: _passwordController.text,
+                          //   );
 
-                            if (isAuthenticated) {
-                              setState(() {
-                                hasError = false; // No error, normal spacing
-                              });
-                              print('User is validated');
-                            } else {
-                              setState(() {
-                                hasError = true; // Error, increase spacing
-                              });
-                              print("There is an error");
-                            }
-                          } else {
-                            setState(() {
-                              hasError = true; // Error from form validation
-                            });
-                          }
+                          //   if (isAuthenticated) {
+                          //     setState(() {
+                          //       hasError = false; // No error, normal spacing
+                          //     });
+                          //     print('User is validated');
+                          //   } else {
+                          //     setState(() {
+                          //       hasError = true; // Error, increase spacing
+                          //     });
+                          //     print("There is an error");
+                          //   }
+                          // } else {
+                          //   setState(() {
+                          //     hasError = true; // Error from form validation
+                          //   });
+                          // }
+                          // pushNamedAndRemoveUntil(context, '/homePage');
+                          context.go('/homePage');
                         },
                       ),
                     ],
@@ -422,8 +424,7 @@ class _LoginAuthScreenState extends State<LoginAuthScreen>
                         Center(
                           child: GestureDetector(
                             onTap: () {
-                              materialNamedRouteNavigator(
-                                  context, '/registerPage');
+                              context.go('/registerPage');
                             },
                             child: RichText(
                               textAlign: TextAlign.center,
