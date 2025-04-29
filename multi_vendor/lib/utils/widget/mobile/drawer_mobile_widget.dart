@@ -5,6 +5,7 @@ import 'package:multi_vendor/services/http_services.dart';
 
 import '../../fonts/google_fonts_utils.dart';
 import '../../routes/navigation_routes.dart';
+import '../../theme/color/color_theme.dart';
 
 class DrawerWidget extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
@@ -40,15 +41,9 @@ class DrawerWidget extends StatelessWidget {
           SizedBox(
             height: MediaQuery.of(context).size.height * .18,
             child: DrawerHeader(
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [
-                    Color(0xFF247CFF),
-                    Color(0xFF2680F8),
-                    Color(0xFF2B86FF),
-                    Color(0xFF3490FE),
-                    Color(0xFF3D9CFF),
-                  ],
+                  colors: gradientColors(),
                 ),
               ),
               child: Align(
