@@ -7,7 +7,7 @@ import 'side_bar_item.dart';
 
 class SideBar extends StatefulWidget {
   const SideBar({
-    Key? key,
+    super.key,
     required this.items,
     required this.selectedRoute,
     this.onSelected,
@@ -28,7 +28,7 @@ class SideBar extends StatefulWidget {
     this.scrollController,
     this.header,
     this.footer,
-  }) : super(key: key);
+  });
 
   final List<AdminMenuItem> items;
   final String selectedRoute;
@@ -99,7 +99,7 @@ class _SideBarState extends State<SideBar> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: _sideBarWidth,
       child: _child,
     );
