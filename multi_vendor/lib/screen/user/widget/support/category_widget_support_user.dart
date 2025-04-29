@@ -165,9 +165,6 @@ class _CategoryWidgetSupportUserState extends State<CategoryWidgetSupportUser> {
                           ),
                         ),
                       ),
-                      SizedBox(
-                        width: 2,
-                      ),
                       Flexible(
                         child: _selectedCategory != null
                             ? SingleChildScrollView(
@@ -185,6 +182,7 @@ class _CategoryWidgetSupportUserState extends State<CategoryWidgetSupportUser> {
                                       ),
                                     ),
                                     Container(
+                                      width: MediaQuery.of(context).size.width,
                                       height: 150,
                                       decoration: BoxDecoration(
                                         image: DecorationImage(
@@ -197,6 +195,7 @@ class _CategoryWidgetSupportUserState extends State<CategoryWidgetSupportUser> {
                                     ),
                                     _subCategory.isNotEmpty
                                         ? GridView.builder(
+                                            shrinkWrap: true,
                                             physics:
                                                 NeverScrollableScrollPhysics(),
                                             padding: const EdgeInsets.all(4),
@@ -215,9 +214,10 @@ class _CategoryWidgetSupportUserState extends State<CategoryWidgetSupportUser> {
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
                                                   Center(
+                                                      child: AspectRatio(
+                                                    aspectRatio:
+                                                        isWebMobile ? 7 / 4 : 1,
                                                     child: Container(
-                                                      width: 50,
-                                                      height: 50,
                                                       decoration: BoxDecoration(
                                                         color: Colors.grey[200],
                                                         borderRadius:
@@ -235,7 +235,7 @@ class _CategoryWidgetSupportUserState extends State<CategoryWidgetSupportUser> {
                                                         ),
                                                       ),
                                                     ),
-                                                  ),
+                                                  )),
                                                   const SizedBox(height: 8),
                                                   Center(
                                                     child: googleInterText(
@@ -243,6 +243,8 @@ class _CategoryWidgetSupportUserState extends State<CategoryWidgetSupportUser> {
                                                           .subCategoryName,
                                                       fontWeight:
                                                           FontWeight.w400,
+                                                      fontSize:
+                                                          isWebMobile ? 18 : 12,
                                                     ),
                                                   ),
                                                 ],
