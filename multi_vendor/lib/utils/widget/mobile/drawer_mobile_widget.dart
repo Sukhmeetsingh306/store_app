@@ -108,11 +108,29 @@ class DrawerWidget extends StatelessWidget {
 
             showSnackBar(context, 'Support is not available yet');
           }),
-          listTile("Seller", Icon(Icons.store_outlined), onTap: () {
-            pop(context);
+          listTile(
+            "Seller",
+            Icon(Icons.store_outlined),
+            onTap: () {
+              WidgetsBinding.instance.addPostFrameCallback((_) async {
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (BuildContext context) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  },
+                );
+                await Future.delayed(const Duration(seconds: 3));
 
-            showSnackBar(context, 'Seller is not available yet');
-          }),
+                if (!context.mounted) return;
+
+                Navigator.of(context, rootNavigator: true).pop();
+                context.go('/management');
+              });
+            },
+          ),
           listTile(
             "Account",
             Icon(Icons.account_circle_outlined),
