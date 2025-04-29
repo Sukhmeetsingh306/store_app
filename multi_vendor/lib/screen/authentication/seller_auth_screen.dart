@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/phone_number.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -653,7 +654,7 @@ class _SellerAuthScreenState extends State<SellerAuthScreen>
                       if (Navigator.of(context).canPop()) {
                         pop(context);
                       } else {
-                        pushNamedAndRemoveUntil(context, '/registerPage');
+                        context.go('/registerPage');
                       }
                     },
                     child: Center(
@@ -741,5 +742,7 @@ GST / Tax ID (Optional)
 
 Upload Logo (Optional)
 
-create a new screen for address for the compa
+create a new screen for address for the company
+
+MARK: Add Pan Number as compulsory field
 */

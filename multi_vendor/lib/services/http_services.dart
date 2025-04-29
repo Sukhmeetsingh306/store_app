@@ -31,10 +31,21 @@ void manageHttpResponse({
   }
 }
 
-void showSnackBar(BuildContext context, String text) {
+void showSnackBar(
+  BuildContext context,
+  String text, {
+  Color? color,
+  double? fontSize,
+  FontWeight? fontWeight,
+}) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      content: googleInterText(text),
+      content: googleInterText(
+        text,
+        color: color ?? Colors.white,
+        fontSize: fontSize ?? 16,
+        fontWeight: fontWeight ?? FontWeight.w500,
+      ),
     ),
   );
 }

@@ -52,6 +52,11 @@ Future<void> materialRouteNavigatorRep(BuildContext context, Widget classname) {
   );
 }
 
+Future<void> materialRouteNavigatorRepNamed(
+    BuildContext context, String routeName) {
+  return Navigator.pushReplacementNamed(context, routeName);
+}
+
 Future<void> pushAndRemoveUntil(BuildContext context, Widget classname) {
   return Navigator.pushAndRemoveUntil(
     context,
