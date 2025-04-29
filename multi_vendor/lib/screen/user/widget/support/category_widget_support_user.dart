@@ -165,113 +165,16 @@ class _CategoryWidgetSupportUserState extends State<CategoryWidgetSupportUser> {
                           ),
                         ),
                       ),
-                      Flexible(
-                        child: _selectedCategory != null
-                            ? SingleChildScrollView(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: googleInterText(
-                                        _selectedCategory!.categoryName,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16,
-                                        letterSpacing: 1.7,
-                                      ),
-                                    ),
-                                    Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      height: 150,
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: NetworkImage(
-                                            _selectedCategory!.categoryBanner,
-                                          ),
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                    _subCategory.isNotEmpty
-                                        ? GridView.builder(
-                                            shrinkWrap: true,
-                                            physics:
-                                                NeverScrollableScrollPhysics(),
-                                            padding: const EdgeInsets.all(4),
-                                            itemCount: _subCategory.length,
-                                            gridDelegate:
-                                                SliverGridDelegateWithFixedCrossAxisCount(
-                                              crossAxisCount: 3,
-                                              mainAxisSpacing: 4,
-                                              crossAxisSpacing: 8,
-                                              childAspectRatio: 2 / 3,
-                                            ),
-                                            itemBuilder: (context, index) {
-                                              final subCategory =
-                                                  _subCategory[index];
-                                              return Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  Center(
-                                                      child: AspectRatio(
-                                                    aspectRatio:
-                                                        isWebMobile ? 7 / 4 : 1,
-                                                    child: Container(
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.grey[200],
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(8),
-                                                      ),
-                                                      child: ClipRRect(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(8),
-                                                        child: Image.network(
-                                                          subCategory
-                                                              .subCategoryImage,
-                                                          fit: BoxFit.cover,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  )),
-                                                  const SizedBox(height: 8),
-                                                  Center(
-                                                    child: googleInterText(
-                                                      subCategory
-                                                          .subCategoryName,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontSize:
-                                                          isWebMobile ? 18 : 12,
-                                                    ),
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          )
-                                        : Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Center(
-                                              child: googleInterText(
-                                                'No Sub-Category',
-                                                fontSize: 18,
-                                                letterSpacing: 1.5,
-                                                fontWeight: FontWeight.w400,
-                                              ),
-                                            ),
-                                          ),
-                                  ],
-                                ),
-                              )
-                            : Container(
-                                color: Colors.grey.shade300,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.7,
-                                width: MediaQuery.of(context).size.width * 0.02,
-                              ),
-                      ),
+                      _selectedCategory != null
+                          ? isWebMobile
+                              ? Flexible(
+                                  flex: 1, child: singleChildCategoryInner())
+                              : singleChildCategoryInner()
+                          : Container(
+                              color: Colors.grey.shade300,
+                              height: MediaQuery.of(context).size.height * 0.7,
+                              width: MediaQuery.of(context).size.width * 0.02,
+                            ),
                     ],
                   ),
                 );
@@ -378,6 +281,107 @@ class _CategoryWidgetSupportUserState extends State<CategoryWidgetSupportUser> {
           },
         ),
       ],
+    );
+  }
+
+  Widget singleChildCategoryInner() {
+    bool isWebMobile = kIsWeb && MediaQuery.of(context).size.width > 1026;
+
+    return SingleChildScrollView(
+      child: Center(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width *
+                (isWebMobile ? 0.9 : (kIsWeb ? 0.7 : 0.66)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: googleInterText(
+                    _selectedCategory!.categoryName,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    letterSpacing: 1.7,
+                  ),
+                ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: 150,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(
+                      _selectedCategory!.categoryBanner,
+                    ),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              _subCategory.isNotEmpty
+                  ? GridView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      padding: const EdgeInsets.all(4),
+                      itemCount: _subCategory.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        mainAxisSpacing: 4,
+                        crossAxisSpacing: 8,
+                        childAspectRatio: 2 / 3,
+                      ),
+                      itemBuilder: (context, index) {
+                        final subCategory = _subCategory[index];
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Center(
+                                child: AspectRatio(
+                              aspectRatio: isWebMobile ? 7 / 4 : 1,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[200],
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Image.network(
+                                    subCategory.subCategoryImage,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                            )),
+                            const SizedBox(height: 8),
+                            Center(
+                              child: googleInterText(
+                                subCategory.subCategoryName,
+                                fontWeight: FontWeight.w400,
+                                fontSize: isWebMobile ? 18 : 12,
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                        child: googleInterText(
+                          'No Sub-Category',
+                          fontSize: 18,
+                          letterSpacing: 1.5,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
