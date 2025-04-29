@@ -82,6 +82,7 @@ class _HomeUserScreenState extends State<HomeUserScreen> {
       drawer: DrawerWidget(
         scaffoldKey: _scaffoldKey,
         onHomeTap: () {
+          print("worked in home screen");
           setState(() {
             mobilePagesIndex = 0;
           });
