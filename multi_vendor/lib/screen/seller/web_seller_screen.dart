@@ -104,8 +104,11 @@ class _WebDeviceViewState extends State<WebDeviceView> {
     return AdminScaffold(
       backgroundColor: ColorTheme.color.transparentBack,
       appBar: AppBar(
-        backgroundColor: ColorTheme.color.dodgerBlue,
-        title: googleInterText("Management"),
+        backgroundColor: ColorTheme.color.mediumBlue,
+        title: googleInterText(
+          "Management",
+          color: Colors.white,
+        ),
         centerTitle: false,
       ),
       body: _selectedScreen,
