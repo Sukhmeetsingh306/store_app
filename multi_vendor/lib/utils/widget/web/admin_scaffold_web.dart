@@ -136,7 +136,7 @@ class _AdminScaffoldState extends State<AdminScaffold>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: widget.backgroundColor,
+      backgroundColor: Colors.white,
       appBar: _appBar,
       body: AnimatedBuilder(
         animation: _animation,
