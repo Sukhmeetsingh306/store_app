@@ -76,24 +76,25 @@ class _WebDeviceViewState extends State<WebDeviceView> {
         break;
 
       case 'return':
-        setState(() {
-          _isLoading = true;
-        });
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          },
+        );
 
         Future.delayed(const Duration(seconds: 3)).then((_) {
           if (!mounted) return;
 
-          // Safe to use context now
+          Navigator.of(context, rootNavigator: true).pop();
+
           if (Navigator.of(context).canPop()) {
             Navigator.of(context).pop();
           } else {
             context.go('/homePage');
-          }
-
-          if (mounted) {
-            setState(() {
-              _isLoading = false;
-            });
           }
         });
         break;
