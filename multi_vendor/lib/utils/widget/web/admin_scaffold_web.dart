@@ -4,14 +4,14 @@ import 'side_bar_web.dart';
 
 class AdminScaffold extends StatefulWidget {
   const AdminScaffold({
-    Key? key,
+    super.key,
     this.appBar,
     this.sideBar,
     this.leadingIcon,
     required this.body,
     this.backgroundColor,
     this.mobileThreshold = 768.0,
-  }) : super(key: key);
+  });
 
   final AppBar? appBar;
   final SideBar? sideBar;
@@ -20,7 +20,7 @@ class AdminScaffold extends StatefulWidget {
   final Color? backgroundColor;
   final double mobileThreshold;
   @override
-  _AdminScaffoldState createState() => _AdminScaffoldState();
+  State<AdminScaffold> createState() => _AdminScaffoldState();
 }
 
 class _AdminScaffoldState extends State<AdminScaffold>
@@ -72,10 +72,11 @@ class _AdminScaffoldState extends State<AdminScaffold>
   void _toggleSidebar() {
     setState(() {
       _isOpenSidebar = !_isOpenSidebar;
-      if (_isOpenSidebar)
+      if (_isOpenSidebar) {
         _animationController.forward();
-      else
+      } else {
         _animationController.reverse();
+      }
     });
   }
 
