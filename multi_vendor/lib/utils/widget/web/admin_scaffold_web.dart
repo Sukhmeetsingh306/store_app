@@ -10,6 +10,7 @@ class AdminScaffold extends StatefulWidget {
     this.leadingIcon,
     required this.body,
     this.backgroundColor,
+    this.drawer,
     this.mobileThreshold = 768.0,
   });
 
@@ -19,6 +20,7 @@ class AdminScaffold extends StatefulWidget {
   final Widget body;
   final Color? backgroundColor;
   final double mobileThreshold;
+  final Widget? drawer;
   @override
   State<AdminScaffold> createState() => _AdminScaffoldState();
 }
@@ -138,6 +140,7 @@ class _AdminScaffoldState extends State<AdminScaffold>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      drawer: widget.drawer,
       appBar: _appBar,
       body: AnimatedBuilder(
         animation: _animation,
