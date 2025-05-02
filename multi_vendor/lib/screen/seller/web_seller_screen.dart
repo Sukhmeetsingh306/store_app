@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:multi_vendor/utils/widget/space_widget_utils.dart';
 
 import '../../utils/fonts/google_fonts_utils.dart';
 import '../../utils/theme/color/color_theme.dart';
 import '../../utils/widget/web/admin_menu_item.dart';
 import '../../utils/widget/web/admin_scaffold_web.dart';
+import '../../utils/widget/web/side_bar_item.dart';
 import '../../utils/widget/web/side_bar_web.dart';
 import 'sideScreen/buyer_side_screen.dart';
 import 'sideScreen/category_side_screen.dart';
@@ -25,9 +27,9 @@ class WebDeviceView extends StatefulWidget {
   State<WebDeviceView> createState() => _WebDeviceViewState();
 }
 
+// MARK: when the code completed change it back
+//Widget _selectedScreen = VendorSideScreen();
 class _WebDeviceViewState extends State<WebDeviceView> {
-  // MARK: when the code completed change it back
-  //Widget _selectedScreen = VendorSideScreen();
   Widget _selectedScreen = SubCategorySideScreen();
   bool isLoading = false;
 
@@ -104,6 +106,71 @@ class _WebDeviceViewState extends State<WebDeviceView> {
   Widget web() {
     return AdminScaffold(
       backgroundColor: ColorTheme.color.transparentBack,
+      drawer: !isWebMobile(context)
+          ? Drawer(
+              width: isWebMobile(context)
+                  ? MediaQuery.of(context).size.width * 0.5
+                  : MediaQuery.of(context).size.width * 0.6,
+              backgroundColor: ColorTheme.color.whiteColor,
+              child: MediaQuery.removePadding(
+                context: context,
+                removeTop: true,
+                child: SafeArea(
+                  top: false,
+                  child: Column(
+                    children: [
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.18,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: gradientColors(),
+                          ),
+                        ),
+                        alignment: Alignment.bottomLeft,
+                        padding: const EdgeInsets.only(left: 16, bottom: 16),
+                        child: googleInterText(
+                          "Multi Vendor Admin",
+                          color: Colors.white,
+                          fontSize: 24,
+                        ),
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: _menuItems.length,
+                          itemBuilder: (context, index) {
+                            return SideBarItem(
+                              items: _menuItems,
+                              index: index,
+                              onSelected: (selectedIndex) {
+                                Navigator.pop(context);
+                                screenSelector(selectedIndex);
+                              },
+                              selectedRoute: '',
+                              textStyle: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 16,
+                              ),
+                              iconColor: Colors.black,
+                              activeTextStyle: const TextStyle(
+                                color: Colors.blue,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              activeIconColor: Colors.blue,
+                              backgroundColor: Colors.transparent,
+                              activeBackgroundColor: const Color(0xFFE0E0E0),
+                              borderColor: Colors.grey.shade300,
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            )
+          : null,
       appBar: AppBar(
         backgroundColor: ColorTheme.color.mediumBlue,
         title: googleInterText(
@@ -113,73 +180,35 @@ class _WebDeviceViewState extends State<WebDeviceView> {
         centerTitle: false,
       ),
       body: _selectedScreen,
-      sideBar: SideBar(
-        header: Container(
-          height: MediaQuery.of(context).size.height * 0.07,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(1)),
-            gradient: LinearGradient(
-              colors: gradientColors(),
-            ),
-          ),
-          child: Center(
-            child: googleInterText(
-              'Multi Vendor Admin',
-              color: ColorTheme.color.whiteColor,
-            ),
-          ),
-        ),
-        items: const [
-          AdminMenuItem(
-            title: 'Vendors',
-            route: VendorSideScreen.routeName,
-            icon: CupertinoIcons.person_3,
-          ),
-          AdminMenuItem(
-            title: 'Buyers',
-            route: BuyerSideScreen.routeName,
-            icon: CupertinoIcons.person,
-          ),
-          AdminMenuItem(
-            title: 'Orders',
-            route: OrderSideScreen.routeName,
-            icon: Icons.shopping_cart_outlined,
-          ),
-          AdminMenuItem(
-            title: 'Categories',
-            route: CategorySideScreen.routeName,
-            icon: Icons.category_outlined,
-          ),
-          AdminMenuItem(
-            title: 'SubCategories',
-            route: SubCategorySideScreen.routeName,
-            icon: Icons.category_outlined,
-          ),
-          AdminMenuItem(
-            title: 'Upload Banners',
-            route: UploadBannerSideScreen.routeName,
-            icon: Icons.upload_sharp,
-          ),
-          AdminMenuItem(
-            title: 'Products',
-            route: ProductSideScreen.routeName,
-            icon: Icons.shopping_cart_outlined,
-          ),
-          AdminMenuItem(
-            title: 'Return',
-            route: 'return',
-            icon: Icons.arrow_back_sharp,
-          ),
-        ],
-        textStyle: TextStyle(
-          color: Colors.black,
-          fontWeight: FontWeight.w400,
-        ),
-        iconColor: Colors.black,
-        selectedRoute: '',
-        onSelected: (route) => screenSelector(route),
-      ),
+      sideBar: isWebMobile(context)
+          ? SideBar(
+              header: Container(
+                height: MediaQuery.of(context).size.height * 0.07,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(1)),
+                  gradient: LinearGradient(
+                    colors: gradientColors(),
+                  ),
+                ),
+                child: Center(
+                  child: googleInterText(
+                    'Multi Vendor Admin',
+                    color: ColorTheme.color.whiteColor,
+                  ),
+                ),
+              ),
+              items: _menuItems,
+              textStyle: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.w400,
+                fontSize: 16,
+              ),
+              iconColor: Colors.black,
+              selectedRoute: '',
+              onSelected: (route) => screenSelector(route),
+            )
+          : null,
     );
   }
 
@@ -200,4 +229,47 @@ class _WebDeviceViewState extends State<WebDeviceView> {
       ],
     );
   }
+
+  List<AdminMenuItem> get _menuItems => const [
+        AdminMenuItem(
+          title: 'Vendors',
+          route: VendorSideScreen.routeName,
+          icon: CupertinoIcons.person_3,
+        ),
+        AdminMenuItem(
+          title: 'Buyers',
+          route: BuyerSideScreen.routeName,
+          icon: CupertinoIcons.person,
+        ),
+        AdminMenuItem(
+          title: 'Orders',
+          route: OrderSideScreen.routeName,
+          icon: Icons.shopping_cart_outlined,
+        ),
+        AdminMenuItem(
+          title: 'Categories',
+          route: CategorySideScreen.routeName,
+          icon: Icons.category_outlined,
+        ),
+        AdminMenuItem(
+          title: 'SubCategories',
+          route: SubCategorySideScreen.routeName,
+          icon: Icons.category_outlined,
+        ),
+        AdminMenuItem(
+          title: 'Upload Banners',
+          route: UploadBannerSideScreen.routeName,
+          icon: Icons.upload_sharp,
+        ),
+        AdminMenuItem(
+          title: 'Products',
+          route: ProductSideScreen.routeName,
+          icon: Icons.shopping_cart_outlined,
+        ),
+        AdminMenuItem(
+          title: 'Return',
+          route: 'return',
+          icon: Icons.arrow_back_sharp,
+        ),
+      ];
 }
