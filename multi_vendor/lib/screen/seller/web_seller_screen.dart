@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../utils/fonts/google_fonts_utils.dart';
 import '../../utils/theme/color/color_theme.dart';
-import '../../utils/widget/space_widget_utils.dart';
 import '../../utils/widget/web/admin_menu_item.dart';
 import '../../utils/widget/web/admin_scaffold_web.dart';
 import '../../utils/widget/web/side_bar_web.dart';
@@ -114,75 +113,73 @@ class _WebDeviceViewState extends State<WebDeviceView> {
         centerTitle: false,
       ),
       body: _selectedScreen,
-      sideBar: isWebMobile(context)
-          ? SideBar(
-              header: Container(
-                height: MediaQuery.of(context).size.height * 0.07,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(1)),
-                  gradient: LinearGradient(
-                    colors: gradientColors(),
-                  ),
-                ),
-                child: Center(
-                  child: googleInterText(
-                    'Multi Vendor Admin',
-                    color: ColorTheme.color.whiteColor,
-                  ),
-                ),
-              ),
-              items: const [
-                AdminMenuItem(
-                  title: 'Vendors',
-                  route: VendorSideScreen.routeName,
-                  icon: CupertinoIcons.person_3,
-                ),
-                AdminMenuItem(
-                  title: 'Buyers',
-                  route: BuyerSideScreen.routeName,
-                  icon: CupertinoIcons.person,
-                ),
-                AdminMenuItem(
-                  title: 'Orders',
-                  route: OrderSideScreen.routeName,
-                  icon: Icons.shopping_cart_outlined,
-                ),
-                AdminMenuItem(
-                  title: 'Categories',
-                  route: CategorySideScreen.routeName,
-                  icon: Icons.category_outlined,
-                ),
-                AdminMenuItem(
-                  title: 'SubCategories',
-                  route: SubCategorySideScreen.routeName,
-                  icon: Icons.category_outlined,
-                ),
-                AdminMenuItem(
-                  title: 'Upload Banners',
-                  route: UploadBannerSideScreen.routeName,
-                  icon: Icons.upload_sharp,
-                ),
-                AdminMenuItem(
-                  title: 'Products',
-                  route: ProductSideScreen.routeName,
-                  icon: Icons.shopping_cart_outlined,
-                ),
-                AdminMenuItem(
-                  title: 'Return',
-                  route: 'return',
-                  icon: Icons.arrow_back_sharp,
-                ),
-              ],
-              textStyle: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.w400,
-              ),
-              iconColor: Colors.black,
-              selectedRoute: '',
-              onSelected: (route) => screenSelector(route),
-            )
-          : null,
+      sideBar: SideBar(
+        header: Container(
+          height: MediaQuery.of(context).size.height * 0.07,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(1)),
+            gradient: LinearGradient(
+              colors: gradientColors(),
+            ),
+          ),
+          child: Center(
+            child: googleInterText(
+              'Multi Vendor Admin',
+              color: ColorTheme.color.whiteColor,
+            ),
+          ),
+        ),
+        items: const [
+          AdminMenuItem(
+            title: 'Vendors',
+            route: VendorSideScreen.routeName,
+            icon: CupertinoIcons.person_3,
+          ),
+          AdminMenuItem(
+            title: 'Buyers',
+            route: BuyerSideScreen.routeName,
+            icon: CupertinoIcons.person,
+          ),
+          AdminMenuItem(
+            title: 'Orders',
+            route: OrderSideScreen.routeName,
+            icon: Icons.shopping_cart_outlined,
+          ),
+          AdminMenuItem(
+            title: 'Categories',
+            route: CategorySideScreen.routeName,
+            icon: Icons.category_outlined,
+          ),
+          AdminMenuItem(
+            title: 'SubCategories',
+            route: SubCategorySideScreen.routeName,
+            icon: Icons.category_outlined,
+          ),
+          AdminMenuItem(
+            title: 'Upload Banners',
+            route: UploadBannerSideScreen.routeName,
+            icon: Icons.upload_sharp,
+          ),
+          AdminMenuItem(
+            title: 'Products',
+            route: ProductSideScreen.routeName,
+            icon: Icons.shopping_cart_outlined,
+          ),
+          AdminMenuItem(
+            title: 'Return',
+            route: 'return',
+            icon: Icons.arrow_back_sharp,
+          ),
+        ],
+        textStyle: TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.w400,
+        ),
+        iconColor: Colors.black,
+        selectedRoute: '',
+        onSelected: (route) => screenSelector(route),
+      ),
     );
   }
 
