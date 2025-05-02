@@ -4,6 +4,7 @@ import 'admin_menu_item.dart';
 
 class SideBarItem extends StatelessWidget {
   const SideBarItem({
+    super.key,
     required this.items,
     required this.index,
     this.onSelected,

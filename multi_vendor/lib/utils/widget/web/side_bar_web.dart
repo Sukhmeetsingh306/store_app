@@ -11,6 +11,7 @@ class SideBar extends StatefulWidget {
     required this.items,
     required this.selectedRoute,
     this.onSelected,
+    this.onItemTap,
     this.width = 240.0,
     this.iconColor,
     this.activeIconColor,
@@ -33,6 +34,7 @@ class SideBar extends StatefulWidget {
   final List<AdminMenuItem> items;
   final String selectedRoute;
   final void Function(AdminMenuItem item)? onSelected;
+  final VoidCallback? onItemTap; // 🔄 To notify parent to close sidebar
   final double width;
   final Color? iconColor;
   final Color? activeIconColor;
@@ -51,43 +53,11 @@ class SideBar extends StatefulWidget {
 
 class _SideBarState extends State<SideBar> with SingleTickerProviderStateMixin {
   late double _sideBarWidth;
-  late Widget _child;
 
   @override
   void initState() {
     super.initState();
     _sideBarWidth = widget.width;
-    _child = Column(
-      children: [
-        if (widget.header != null) widget.header!,
-        Expanded(
-          child: Material(
-            color: widget.backgroundColor,
-            child: ListView.builder(
-              itemBuilder: (BuildContext context, int index) {
-                return SideBarItem(
-                  items: widget.items,
-                  index: index,
-                  onSelected: widget.onSelected,
-                  selectedRoute: widget.selectedRoute,
-                  depth: 0,
-                  iconColor: widget.iconColor,
-                  activeIconColor: widget.activeIconColor,
-                  textStyle: widget.textStyle,
-                  activeTextStyle: widget.activeTextStyle,
-                  backgroundColor: widget.backgroundColor,
-                  activeBackgroundColor: widget.activeBackgroundColor,
-                  borderColor: widget.borderColor,
-                );
-              },
-              itemCount: widget.items.length,
-              controller: widget.scrollController ?? ScrollController(),
-            ),
-          ),
-        ),
-        if (widget.footer != null) widget.footer!,
-      ],
-    );
   }
 
   @override
@@ -101,7 +71,44 @@ class _SideBarState extends State<SideBar> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return SizedBox(
       width: _sideBarWidth,
-      child: _child,
+      child: Column(
+        children: [
+          if (widget.header != null) widget.header!,
+          Expanded(
+            child: Material(
+              color: widget.backgroundColor,
+              child: ListView.builder(
+                itemCount: widget.items.length,
+                controller: widget.scrollController ?? ScrollController(),
+                itemBuilder: (context, index) {
+                  return SideBarItem(
+                    items: widget.items,
+                    index: index,
+                    onSelected: (item) {
+                      if (widget.onSelected != null) {
+                        widget.onSelected!(item);
+                      }
+                      if (widget.onItemTap != null) {
+                        widget.onItemTap!(); // 🔄 Notify to close sidebar
+                      }
+                    },
+                    selectedRoute: widget.selectedRoute,
+                    depth: 0,
+                    iconColor: widget.iconColor,
+                    activeIconColor: widget.activeIconColor,
+                    textStyle: widget.textStyle,
+                    activeTextStyle: widget.activeTextStyle,
+                    backgroundColor: widget.backgroundColor,
+                    activeBackgroundColor: widget.activeBackgroundColor,
+                    borderColor: widget.borderColor,
+                  );
+                },
+              ),
+            ),
+          ),
+          if (widget.footer != null) widget.footer!,
+        ],
+      ),
     );
   }
 }
