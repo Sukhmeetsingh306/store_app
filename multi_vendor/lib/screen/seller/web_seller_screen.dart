@@ -173,6 +173,9 @@ class _WebDeviceViewState extends State<WebDeviceView> {
           : null,
       appBar: AppBar(
         backgroundColor: ColorTheme.color.mediumBlue,
+        iconTheme: const IconThemeData(
+          color: Colors.white,
+        ),
         title: googleInterText(
           "Management",
           color: Colors.white,
