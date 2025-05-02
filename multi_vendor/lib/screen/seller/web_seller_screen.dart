@@ -29,7 +29,7 @@ class _WebDeviceViewState extends State<WebDeviceView> {
   // MARK: when the code completed change it back
   //Widget _selectedScreen = VendorSideScreen();
   Widget _selectedScreen = SubCategorySideScreen();
-  bool _isLoading = false;
+  bool isLoading = false;
 
   screenSelector(screen) {
     switch (screen.route) {
@@ -188,7 +188,7 @@ class _WebDeviceViewState extends State<WebDeviceView> {
     return Stack(
       children: [
         web(),
-        if (_isLoading)
+        if (isLoading)
           Positioned.fill(
             child: Container(
               color: Colors.white.withAlpha(4),
