@@ -8,7 +8,6 @@ import '../../utils/theme/color/color_theme.dart';
 import '../../utils/widget/web/admin_menu_item.dart';
 import '../../utils/widget/web/admin_scaffold_web.dart';
 import '../../utils/widget/web/side_bar_item.dart';
-import '../../utils/widget/web/side_bar_web.dart';
 import 'sideScreen/buyer_side_screen.dart';
 import 'sideScreen/category_side_screen.dart';
 import 'sideScreen/order_side_screen.dart';
@@ -104,115 +103,44 @@ class _WebDeviceViewState extends State<WebDeviceView> {
   }
 
   Widget web() {
-    return AdminScaffold(
-      backgroundColor: ColorTheme.color.transparentBack,
-      drawer: !isWebMobile(context)
-          ? Drawer(
-              width: isWebMobile(context)
-                  ? MediaQuery.of(context).size.width * 0.5
-                  : MediaQuery.of(context).size.width * 0.6,
-              backgroundColor: ColorTheme.color.whiteColor,
-              child: MediaQuery.removePadding(
-                context: context,
-                removeTop: true,
-                child: SafeArea(
-                  top: false,
-                  child: Column(
-                    children: [
-                      Container(
-                        height: MediaQuery.of(context).size.height * 0.18,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: gradientColors(),
-                          ),
-                        ),
-                        alignment: Alignment.bottomLeft,
-                        padding: const EdgeInsets.only(left: 16, bottom: 16),
-                        child: googleInterText(
-                          "Multi Vendor Admin",
-                          color: Colors.white,
-                          fontSize: 24,
-                        ),
-                      ),
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: _menuItems.length,
-                          itemBuilder: (context, index) {
-                            return SideBarItem(
-                              items: _menuItems,
-                              index: index,
-                              onSelected: (selectedIndex) {
-                                Navigator.pop(context);
-                                screenSelector(selectedIndex);
-                              },
-                              selectedRoute: '',
-                              textStyle: const TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 16,
-                              ),
-                              iconColor: Colors.black,
-                              activeTextStyle: const TextStyle(
-                                color: Colors.blue,
-                                fontWeight: FontWeight.w600,
-                              ),
-                              activeIconColor: Colors.blue,
-                              backgroundColor: Colors.transparent,
-                              activeBackgroundColor: const Color(0xFFE0E0E0),
-                              borderColor: Colors.grey.shade300,
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            )
-          : null,
-      appBar: AppBar(
-        backgroundColor: ColorTheme.color.mediumBlue,
-        iconTheme: const IconThemeData(
-          color: Colors.white,
+    return LayoutBuilder(builder: (context, constraints) {
+      return AdminScaffold(
+        backgroundColor: ColorTheme.color.transparentBack,
+        drawer: Drawer(
+          width: isWebMobile(context)
+              ? MediaQuery.of(context).size.width * 0.2
+              : MediaQuery.of(context).size.width * 0.6,
+          backgroundColor: ColorTheme.color.whiteColor,
+          child: MediaQuery.removePadding(
+            context: context,
+            removeTop: true,
+            child: SafeArea(
+              top: false,
+              child: buildSideBarContent(isInsideDrawer: true),
+            ),
+          ),
         ),
-        title: googleInterText(
-          "Management",
-          color: Colors.white,
+        appBar: AppBar(
+          backgroundColor: ColorTheme.color.mediumBlue,
+          iconTheme: const IconThemeData(color: Colors.white),
+          title: googleInterText("Management", color: Colors.white),
+          centerTitle: false,
         ),
-        centerTitle: false,
-      ),
-      body: _selectedScreen,
-      sideBar: isWebMobile(context)
-          ? SideBar(
-              header: Container(
-                height: MediaQuery.of(context).size.height * 0.07,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(1)),
-                  gradient: LinearGradient(
-                    colors: gradientColors(),
-                  ),
-                ),
-                child: Center(
-                  child: googleInterText(
-                    'Multi Vendor Admin',
-                    color: ColorTheme.color.whiteColor,
-                  ),
-                ),
-              ),
-              items: _menuItems,
-              textStyle: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.w400,
-                fontSize: 16,
-              ),
-              iconColor: Colors.black,
-              selectedRoute: '',
-              onSelected: (route) => screenSelector(route),
-            )
-          : null,
-    );
+        body: _selectedScreen,
+        //  MARK: removed this as per unable to solve the error unable to get the code to be fixed for alternative side bar and drawer
+        // sideBar: isMobile
+        //     ? SideBar(
+        //         header: const SizedBox
+        //             .shrink(), // We're handling header inside the body now
+        //         items: const [],
+        //         textStyle: const TextStyle(), // Empty dummy setup
+        //         onSelected: (_) {}, // Dummy
+        //         selectedRoute: '',
+        //         child: buildSideBarContent(),
+        //       )
+        //     : null,
+      );
+    });
   }
 
   @override
@@ -275,4 +203,57 @@ class _WebDeviceViewState extends State<WebDeviceView> {
           icon: Icons.arrow_back_sharp,
         ),
       ];
+
+  Widget buildSideBarContent({bool isInsideDrawer = false}) {
+    final isMobile = isWebMobile(context);
+
+    return Column(
+      children: [
+        Container(
+          height: MediaQuery.of(context).size.height * 0.18,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(colors: gradientColors()),
+          ),
+          alignment: Alignment.bottomLeft,
+          padding: const EdgeInsets.only(left: 16, bottom: 16),
+          child: googleInterText(
+            'Multi Vendor Admin',
+            color: ColorTheme.color.whiteColor,
+            fontSize: isMobile ? null : 24,
+          ),
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: _menuItems.length,
+            itemBuilder: (context, index) {
+              return SideBarItem(
+                items: _menuItems,
+                index: index,
+                onSelected: (selectedIndex) {
+                  if (isInsideDrawer) Navigator.pop(context);
+                  screenSelector(selectedIndex);
+                },
+                selectedRoute: '',
+                textStyle: const TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16,
+                ),
+                iconColor: Colors.black,
+                activeTextStyle: const TextStyle(
+                  color: Colors.blue,
+                  fontWeight: FontWeight.w600,
+                ),
+                activeIconColor: Colors.blue,
+                backgroundColor: Colors.transparent,
+                activeBackgroundColor: const Color(0xFFE0E0E0),
+                borderColor: Colors.grey.shade300,
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
 }
