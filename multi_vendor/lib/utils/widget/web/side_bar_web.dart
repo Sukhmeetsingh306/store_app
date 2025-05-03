@@ -29,6 +29,7 @@ class SideBar extends StatefulWidget {
     this.scrollController,
     this.header,
     this.footer,
+    this.child,
   });
 
   final List<AdminMenuItem> items;
@@ -46,9 +47,10 @@ class SideBar extends StatefulWidget {
   final ScrollController? scrollController;
   final Widget? header;
   final Widget? footer;
+  final Widget? child;
 
   @override
-  _SideBarState createState() => _SideBarState();
+  State<SideBar> createState() => _SideBarState();
 }
 
 class _SideBarState extends State<SideBar> with SingleTickerProviderStateMixin {
@@ -71,44 +73,45 @@ class _SideBarState extends State<SideBar> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return SizedBox(
       width: _sideBarWidth,
-      child: Column(
-        children: [
-          if (widget.header != null) widget.header!,
-          Expanded(
-            child: Material(
-              color: widget.backgroundColor,
-              child: ListView.builder(
-                itemCount: widget.items.length,
-                controller: widget.scrollController ?? ScrollController(),
-                itemBuilder: (context, index) {
-                  return SideBarItem(
-                    items: widget.items,
-                    index: index,
-                    onSelected: (item) {
-                      if (widget.onSelected != null) {
-                        widget.onSelected!(item);
-                      }
-                      if (widget.onItemTap != null) {
-                        widget.onItemTap!(); // 🔄 Notify to close sidebar
-                      }
+      child: widget.child ??
+          Column(
+            children: [
+              if (widget.header != null) widget.header!,
+              Expanded(
+                child: Material(
+                  color: widget.backgroundColor,
+                  child: ListView.builder(
+                    itemCount: widget.items.length,
+                    controller: widget.scrollController ?? ScrollController(),
+                    itemBuilder: (context, index) {
+                      return SideBarItem(
+                        items: widget.items,
+                        index: index,
+                        onSelected: (item) {
+                          if (widget.onSelected != null) {
+                            widget.onSelected!(item);
+                          }
+                          if (widget.onItemTap != null) {
+                            widget.onItemTap!(); // 🔄 Notify to close sidebar
+                          }
+                        },
+                        selectedRoute: widget.selectedRoute,
+                        depth: 0,
+                        iconColor: widget.iconColor,
+                        activeIconColor: widget.activeIconColor,
+                        textStyle: widget.textStyle,
+                        activeTextStyle: widget.activeTextStyle,
+                        backgroundColor: widget.backgroundColor,
+                        activeBackgroundColor: widget.activeBackgroundColor,
+                        borderColor: widget.borderColor,
+                      );
                     },
-                    selectedRoute: widget.selectedRoute,
-                    depth: 0,
-                    iconColor: widget.iconColor,
-                    activeIconColor: widget.activeIconColor,
-                    textStyle: widget.textStyle,
-                    activeTextStyle: widget.activeTextStyle,
-                    backgroundColor: widget.backgroundColor,
-                    activeBackgroundColor: widget.activeBackgroundColor,
-                    borderColor: widget.borderColor,
-                  );
-                },
+                  ),
+                ),
               ),
-            ),
+              if (widget.footer != null) widget.footer!,
+            ],
           ),
-          if (widget.footer != null) widget.footer!,
-        ],
-      ),
     );
   }
 }

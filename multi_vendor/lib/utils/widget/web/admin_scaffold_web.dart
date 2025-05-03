@@ -21,6 +21,7 @@ class AdminScaffold extends StatefulWidget {
   final Color? backgroundColor;
   final double mobileThreshold;
   final Widget? drawer;
+
   @override
   State<AdminScaffold> createState() => _AdminScaffoldState();
 }
@@ -139,6 +140,7 @@ class _AdminScaffoldState extends State<AdminScaffold>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: widget.key,
       backgroundColor: Colors.white,
       drawer: widget.drawer,
       appBar: _appBar,
