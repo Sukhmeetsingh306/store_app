@@ -230,28 +230,31 @@ class _WebDeviceViewState extends State<WebDeviceView> {
           child: ListView.builder(
             itemCount: _menuItems.length,
             itemBuilder: (context, index) {
-              return SideBarItem(
-                items: _menuItems,
-                index: index,
-                onSelected: (selectedIndex) {
-                  if (isInsideDrawer) Navigator.pop(context);
-                  screenSelector(selectedIndex);
-                },
-                selectedRoute: '',
-                textStyle: const TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 16,
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: SideBarItem(
+                  items: _menuItems,
+                  index: index,
+                  onSelected: (selectedIndex) {
+                    if (isInsideDrawer) Navigator.pop(context);
+                    screenSelector(selectedIndex);
+                  },
+                  selectedRoute: '',
+                  textStyle: const TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16,
+                  ),
+                  iconColor: Colors.black,
+                  activeTextStyle: const TextStyle(
+                    color: Colors.blue,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  activeIconColor: Colors.blue,
+                  backgroundColor: Colors.transparent,
+                  activeBackgroundColor: const Color(0xFFE0E0E0),
+                  borderColor: Colors.grey.shade300,
                 ),
-                iconColor: Colors.black,
-                activeTextStyle: const TextStyle(
-                  color: Colors.blue,
-                  fontWeight: FontWeight.w600,
-                ),
-                activeIconColor: Colors.blue,
-                backgroundColor: Colors.transparent,
-                activeBackgroundColor: const Color(0xFFE0E0E0),
-                borderColor: Colors.grey.shade300,
               );
             },
           ),
