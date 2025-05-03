@@ -55,12 +55,9 @@ class _UploadBannerSideScreenState extends State<UploadBannerSideScreen> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Padding(
-          key: _widgetKey, // Use the key here
-          padding: EdgeInsets.symmetric(
-            horizontal: 15,
-            vertical: 4,
-          ),
+        SingleChildScrollView(
+          key: _widgetKey,
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
