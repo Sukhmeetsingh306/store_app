@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multi_vendor/utils/widget/space_widget_utils.dart';
@@ -109,7 +110,9 @@ class _WebDeviceViewState extends State<WebDeviceView> {
         drawer: Drawer(
           width: isWebMobile(context)
               ? MediaQuery.of(context).size.width * 0.2
-              : MediaQuery.of(context).size.width * 0.6,
+              : (kIsWeb
+                  ? MediaQuery.of(context).size.width * 0.4
+                  : MediaQuery.of(context).size.width * 0.6),
           backgroundColor: ColorTheme.color.whiteColor,
           child: MediaQuery.removePadding(
             context: context,
