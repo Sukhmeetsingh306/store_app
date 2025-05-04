@@ -183,7 +183,8 @@ class _CategoryWidgetSupportUserState extends State<CategoryWidgetSupportUser> {
                 );
               }
               //MARK: Code for Web View
-              if (defaultTargetPlatform == TargetPlatform.iOS) {
+              if (defaultTargetPlatform == TargetPlatform.iOS ||
+                  isWebMobileWeb()) {
                 return GridView.builder(
                   padding: const EdgeInsets.only(top: 10),
                   itemCount: categoryCount.length,
