@@ -53,7 +53,9 @@ class _SubCategorySupportUserState extends State<SubCategorySupportUser> {
           );
         } else {
           final subCategoryCount = snapshot.data!;
-          if (defaultTargetPlatform == TargetPlatform.iOS || isWebMobileWeb()) {
+          if (defaultTargetPlatform == TargetPlatform.iOS ||
+              defaultTargetPlatform == TargetPlatform.android ||
+              isWebMobileWeb()) {
             return SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Column(

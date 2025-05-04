@@ -66,7 +66,8 @@ class _CategoryWidgetSupportUserState extends State<CategoryWidgetSupportUser> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (widget.showHeadingRow!) ...[
-          if (defaultTargetPlatform == TargetPlatform.iOS &&
+          if ((defaultTargetPlatform == TargetPlatform.iOS ||
+                  defaultTargetPlatform == TargetPlatform.android) &&
               widget.listView == false)
             RowTextSands(
               title: 'Categories:',
@@ -184,6 +185,7 @@ class _CategoryWidgetSupportUserState extends State<CategoryWidgetSupportUser> {
               }
               //MARK: Code for Web View
               if (defaultTargetPlatform == TargetPlatform.iOS ||
+                  defaultTargetPlatform == TargetPlatform.android ||
                   isWebMobileWeb()) {
                 return GridView.builder(
                   padding: const EdgeInsets.only(top: 10),

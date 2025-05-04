@@ -41,7 +41,8 @@ class _BannerWidgetWebState extends State<BannerWidgetWeb> {
           );
         } else {
           final bannerCount = snapshot.data!;
-          if (defaultTargetPlatform == TargetPlatform.iOS) {
+          if (defaultTargetPlatform == TargetPlatform.iOS ||
+              defaultTargetPlatform == TargetPlatform.android) {
             return SizedBox(
               height: 600,
               child: ListView.builder(
