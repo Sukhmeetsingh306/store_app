@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import '../../../../controllers/subCategory_controllers.dart';
 import '../../../../models/api/subcategory_api_models.dart';
 import '../../../../utils/fonts/google_fonts_utils.dart';
-import '../../../../utils/widget/platform/platform.dart';
+import '../../../../utils/widget/platform/platform_check_web.dart';
 
 class SubCategorySupportUser extends StatefulWidget {
   final Future<List<SubCategoryApiModels>>? future;

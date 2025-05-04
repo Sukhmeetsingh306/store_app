@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multi_vendor/utils/widget/space_widget_utils.dart';
 
 import '../../utils/fonts/google_fonts_utils.dart';
 import '../../utils/theme/color/color_theme.dart';
-import '../../utils/widget/platform/platform.dart';
 import '../../utils/widget/web/admin_menu_item.dart';
 import '../../utils/widget/web/admin_scaffold_web.dart';
 import '../../utils/widget/web/side_bar_item.dart';
@@ -108,12 +108,13 @@ class _WebDeviceViewState extends State<WebDeviceView> {
       return AdminScaffold(
         backgroundColor: ColorTheme.color.transparentBack,
         drawer: Drawer(
-          width: isWebMobile(context)
-              ? MediaQuery.of(context).size.width * 0.2
-              : (isWebMobileWeb()
-                  ? MediaQuery.of(context).size.width * 0.6 // mobile web
-                  : MediaQuery.of(context).size.width * 0.3) // desktop web
-          ,
+          width: (isWebMobile(context)) ||
+                  defaultTargetPlatform == TargetPlatform.iOS ||
+                  defaultTargetPlatform == TargetPlatform.android
+              ? kIsWeb
+                  ? MediaQuery.of(context).size.width * 0.2
+                  : MediaQuery.of(context).size.width * 0.6
+              : MediaQuery.of(context).size.width * 0.34,
           backgroundColor: ColorTheme.color.whiteColor,
           child: MediaQuery.removePadding(
             context: context,
