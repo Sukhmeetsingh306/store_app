@@ -2,6 +2,7 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:multi_vendor/utils/widget/platform/platform_check_web.dart';
 
 import '../../../../controllers/subCategory_controllers.dart';
 import '../../../../models/api/subcategory_api_models.dart';
@@ -52,7 +53,7 @@ class _SubCategorySupportUserState extends State<SubCategorySupportUser> {
           );
         } else {
           final subCategoryCount = snapshot.data!;
-          if (defaultTargetPlatform == TargetPlatform.iOS) {
+          if (defaultTargetPlatform == TargetPlatform.iOS || isWebMobileWeb()) {
             return SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Column(
