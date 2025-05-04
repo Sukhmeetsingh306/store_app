@@ -111,8 +111,10 @@ class _WebDeviceViewState extends State<WebDeviceView> {
           width: isWebMobile(context)
               ? MediaQuery.of(context).size.width * 0.2
               : (kIsWeb
-                  ? MediaQuery.of(context).size.width * 0.4
-                  : MediaQuery.of(context).size.width * 0.6),
+                  ? (isIOSWeb()
+                      ? MediaQuery.of(context).size.width * 0.5
+                      : MediaQuery.of(context).size.width * 0.4)
+                  : MediaQuery.of(context).size.width * 0.2),
           backgroundColor: ColorTheme.color.whiteColor,
           child: MediaQuery.removePadding(
             context: context,
