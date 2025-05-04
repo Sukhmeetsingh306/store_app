@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:multi_vendor/utils/widget/platform/platform_check_web.dart';
+
 import '../../../../controllers/category_controllers.dart';
 import '../../../../controllers/subCategory_controllers.dart';
 import '../../../../models/api/category_api_models.dart';
@@ -9,6 +9,7 @@ import '../../../../utils/fonts/google_fonts_utils.dart';
 import '../../../../utils/fonts/row_text_sands.dart';
 import '../../../../utils/routes/navigation_routes.dart';
 import '../../../../utils/theme/color/color_theme.dart';
+import '../../../../utils/widget/platform/platform.dart';
 import '../inner_category_widget_user.dart';
 
 class CategoryWidgetSupportUser extends StatefulWidget {

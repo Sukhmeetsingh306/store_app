@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:multi_vendor/utils/widget/platform/platform_check_web.dart';
 
 import '../../controllers/upload_banner_controllers.dart';
 import '../../models/api/upload_banner_api_model.dart';
 import '../../utils/fonts/google_fonts_utils.dart';
+import '../../utils/widget/platform/platform.dart';
 import '../../utils/widget/space_widget_utils.dart';
 
 class BannerWidgetWeb extends StatefulWidget {

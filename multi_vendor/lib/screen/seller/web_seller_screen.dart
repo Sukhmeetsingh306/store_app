@@ -5,7 +5,7 @@ import 'package:multi_vendor/utils/widget/space_widget_utils.dart';
 
 import '../../utils/fonts/google_fonts_utils.dart';
 import '../../utils/theme/color/color_theme.dart';
-import '../../utils/widget/platform/platform_check_web.dart';
+import '../../utils/widget/platform/platform.dart';
 import '../../utils/widget/web/admin_menu_item.dart';
 import '../../utils/widget/web/admin_scaffold_web.dart';
 import '../../utils/widget/web/side_bar_item.dart';
