@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:multi_vendor/utils/widget/platform/platform_check_web.dart';
 
 import '../../controllers/upload_banner_controllers.dart';
 import '../../models/api/upload_banner_api_model.dart';
@@ -42,7 +43,8 @@ class _BannerWidgetWebState extends State<BannerWidgetWeb> {
         } else {
           final bannerCount = snapshot.data!;
           if (defaultTargetPlatform == TargetPlatform.iOS ||
-              defaultTargetPlatform == TargetPlatform.android) {
+              defaultTargetPlatform == TargetPlatform.android ||
+              isWebMobileWeb()) {
             return SizedBox(
               height: 600,
               child: ListView.builder(
