@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:multi_vendor/utils/widget/platform/platform_check_web.dart';
 import '../../../../controllers/category_controllers.dart';
 import '../../../../controllers/subCategory_controllers.dart';
 import '../../../../models/api/category_api_models.dart';
@@ -75,7 +76,9 @@ class _CategoryWidgetSupportUserState extends State<CategoryWidgetSupportUser> {
             RowTextSands(
               title: 'Categories:',
               subTitle: ' View All',
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: isWebMobileWeb()
+                  ? MainAxisAlignment.spaceBetween
+                  : MainAxisAlignment.spaceEvenly,
             ),
         ],
         FutureBuilder(
