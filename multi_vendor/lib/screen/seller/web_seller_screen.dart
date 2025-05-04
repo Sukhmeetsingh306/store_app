@@ -1,12 +1,11 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multi_vendor/utils/widget/space_widget_utils.dart';
 
 import '../../utils/fonts/google_fonts_utils.dart';
 import '../../utils/theme/color/color_theme.dart';
-import '../../utils/widget/platform/platform_check_stub.dart';
+import '../../utils/widget/platform/platform_check_web.dart';
 import '../../utils/widget/web/admin_menu_item.dart';
 import '../../utils/widget/web/admin_scaffold_web.dart';
 import '../../utils/widget/web/side_bar_item.dart';
@@ -111,11 +110,9 @@ class _WebDeviceViewState extends State<WebDeviceView> {
         drawer: Drawer(
           width: isWebMobile(context)
               ? MediaQuery.of(context).size.width * 0.2
-              : (kIsWeb
-                  ? (isIOSWeb() || isAndroidWeb()
-                      ? MediaQuery.of(context).size.width * 0.5 // mobile web
-                      : MediaQuery.of(context).size.width * 0.4) // desktop web
-                  : MediaQuery.of(context).size.width * 0.6) // mobile app
+              : (isWebMobileWeb()
+                  ? MediaQuery.of(context).size.width * 0.6 // mobile web
+                  : MediaQuery.of(context).size.width * 0.3) // desktop web
           ,
           backgroundColor: ColorTheme.color.whiteColor,
           child: MediaQuery.removePadding(
