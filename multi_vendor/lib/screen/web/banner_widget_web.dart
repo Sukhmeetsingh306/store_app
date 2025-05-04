@@ -43,24 +43,27 @@ class _BannerWidgetWebState extends State<BannerWidgetWeb> {
           final bannerCount = snapshot.data!;
           if (defaultTargetPlatform == TargetPlatform.iOS) {
             return SizedBox(
-              height: 200,
-              child: PageView.builder(
+              height: 600,
+              child: ListView.builder(
                 itemCount: bannerCount.length,
                 itemBuilder: (context, index) {
                   final banner = bannerCount[index];
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Image.network(
-                      banner.bannerImage,
-                      fit: BoxFit.cover,
+                    child: SizedBox(
+                      height: 200, // fixed image height
+                      child: Image.network(
+                        banner.bannerImage,
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                      ),
                     ),
                   );
                 },
               ),
             );
           } else if (kIsWeb) {
-            final isMobile =
-                isWebMobile(context); // Store the result in a variable
+            final isMobile = isWebMobile(context);
 
             return SizedBox(
               height: 400,
