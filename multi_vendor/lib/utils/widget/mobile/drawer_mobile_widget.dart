@@ -6,6 +6,7 @@ import 'package:multi_vendor/services/http_services.dart';
 import '../../fonts/google_fonts_utils.dart';
 import '../../routes/navigation_routes.dart';
 import '../../theme/color/color_theme.dart';
+import '../platform/platform_check_web.dart';
 
 class DrawerWidget extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
@@ -33,8 +34,11 @@ class DrawerWidget extends StatelessWidget {
 
     return Drawer(
       width: isWebMobile
-          ? MediaQuery.of(context).size.width * 0.15
-          : MediaQuery.of(context).size.width * 0.5,
+          ? MediaQuery.of(context).size.width * 0.2
+          : (isWebMobileWeb()
+              ? MediaQuery.of(context).size.width * 0.7 // Mobile web
+              : MediaQuery.of(context).size.width * 0.5), // Desktop web
+
       child: ListView(
         padding: EdgeInsets.zero,
         children: [

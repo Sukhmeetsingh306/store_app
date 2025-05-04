@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'dart:html' as html;
 
 Widget sizedBoxH5() {
   return SizedBox(
@@ -49,22 +48,4 @@ Widget sizedBoxMediaQuery(
 
 bool isWebMobile(BuildContext context) {
   return kIsWeb && MediaQuery.of(context).size.width > 1026;
-}
-
-bool isIOSWeb() {
-  if (kIsWeb) {
-    final userAgent = html.window.navigator.userAgent.toLowerCase();
-    return userAgent.contains('iphone') ||
-        userAgent.contains('ipad') ||
-        userAgent.contains('ipod');
-  }
-  return false;
-}
-
-bool isAndroidWeb() {
-  if (kIsWeb) {
-    final userAgent = html.window.navigator.userAgent.toLowerCase();
-    return userAgent.contains('android');
-  }
-  return false;
 }
