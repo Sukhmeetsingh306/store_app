@@ -1,5 +1,7 @@
 import 'dart:html' as html;
 
+import 'package:flutter/foundation.dart';
+
 bool isIOSWeb() {
   final userAgent = html.window.navigator.userAgent.toLowerCase();
   return userAgent.contains('iphone') ||
@@ -11,3 +13,5 @@ bool isAndroidWeb() {
   final userAgent = html.window.navigator.userAgent.toLowerCase();
   return userAgent.contains('android');
 }
+
+bool isWebMobileWeb() => kIsWeb && (isIOSWeb() || isAndroidWeb());
