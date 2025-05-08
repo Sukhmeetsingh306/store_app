@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../../../controllers/subCategory_controllers.dart';
 import '../../../models/api/category_api_models.dart';
-import '../../../utils/widget/platform/platform_check_web.dart';
+import '../../../utils/widget/platform/platform_check.dart';
 import '../../web/sub_category_drop_down.dart';
 import '../../../utils/fonts/google_fonts_utils.dart';
 import '../../../utils/widget/button_widget_utils.dart';

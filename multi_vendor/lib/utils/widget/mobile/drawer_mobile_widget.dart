@@ -6,7 +6,7 @@ import 'package:multi_vendor/services/http_services.dart';
 import '../../fonts/google_fonts_utils.dart';
 import '../../routes/navigation_routes.dart';
 import '../../theme/color/color_theme.dart';
-import '../platform/platform_check_web.dart';
+import '../platform/platform_check.dart';
 
 class DrawerWidget extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
