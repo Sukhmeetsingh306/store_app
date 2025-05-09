@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 
 import '../../../controllers/subCategory_controllers.dart';
 import '../../../models/api/category_api_models.dart';
-import '../../../utils/widget/platform/platform_check.dart';
 import '../../web/sub_category_drop_down.dart';
 import '../../../utils/fonts/google_fonts_utils.dart';
 import '../../../utils/widget/button_widget_utils.dart';
@@ -48,8 +47,7 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
 
     if (fileImage != null) {
       setState(() {
-        updateImage(fileImage
-            .files.first.bytes); // Use the callback to update the image
+        updateImage(fileImage.files.first.bytes);
         print('Image uploaded');
       });
     }
@@ -64,6 +62,7 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
   @override
   Widget build(BuildContext context) {
     double mediaQueryWidth = MediaQuery.of(context).size.width;
+    bool isWebMobile = kIsWeb && mediaQueryWidth > 1026;
 
     return Stack(
       children: [
@@ -71,10 +70,7 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
           key: _formKey,
           child: SingleChildScrollView(
             child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 15,
-                vertical: 4,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -82,10 +78,7 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
                     alignment: Alignment.topLeft,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: googleInterText(
-                        'Category',
-                        fontSize: 36,
-                      ),
+                      child: googleInterText('Category', fontSize: 36),
                     ),
                   ),
                   divider(),
@@ -96,15 +89,10 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
                       });
                     },
                   ),
-                  sizedBoxMediaQuery(
-                    context,
-                    width: 0,
-                    height: 0.01,
-                  ),
+                  sizedBoxMediaQuery(context, width: 0, height: 0.01),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Common row shown on all platforms
                       Row(
                         children: [
                           webImageInput(
@@ -115,11 +103,9 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: SizedBox(
-                              width:
-                                  defaultTargetPlatform != TargetPlatform.iOS &&
-                                          !isWebMobileWeb()
-                                      ? mediaQueryWidth * 0.15
-                                      : mediaQueryWidth * 0.6,
+                              width: !isWebMobile
+                                  ? mediaQueryWidth * 0.6
+                                  : mediaQueryWidth * 0.15,
                               child: TextFormField(
                                 onChanged: (value) {
                                   subCategoryName = value;
@@ -138,10 +124,7 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
                               ),
                             ),
                           ),
-                          // Only show this part on non-iOS and non-web-mobile
-                          if (defaultTargetPlatform != TargetPlatform.iOS &&
-                              defaultTargetPlatform != TargetPlatform.android &&
-                              !isWebMobileWeb()) ...[
+                          if (isWebMobile) ...[
                             sizedBoxMediaQuery(context,
                                 width: 0.023, height: 0),
                             cancelButton(),
@@ -151,34 +134,29 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
                         ],
                       ),
 
-                      // For iOS and web mobile: separate row for buttons
-                      if (defaultTargetPlatform == TargetPlatform.iOS ||
-                          defaultTargetPlatform == TargetPlatform.android ||
-                          isWebMobileWeb())
+                      // Responsive section for mobile or small screens
+                      if (!isWebMobile)
                         Padding(
                           padding: const EdgeInsets.only(top: 12.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               elevatedButton(
                                 "Upload Image",
                                 () {
-                                  uploadImage(
-                                    (img) {
-                                      setState(() {
-                                        _categoryImage = img;
-                                      });
-                                    },
-                                  );
+                                  uploadImage((img) {
+                                    setState(() {
+                                      _categoryImage = img;
+                                    });
+                                  });
                                 },
                               ),
-                              const SizedBox(width: 25),
+                              const SizedBox(height: 12),
                               Row(
                                 children: [
-                                  cancelButton(),
+                                  Expanded(child: cancelButton()),
                                   const SizedBox(width: 8),
-                                  submitButton(),
+                                  Expanded(child: submitButton()),
                                 ],
                               ),
                             ],
@@ -186,24 +164,16 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
                         ),
                     ],
                   ),
-                  sizedBoxMediaQuery(
-                    context,
-                    width: 0,
-                    height: 0.02,
-                  ),
-                  if (defaultTargetPlatform != TargetPlatform.iOS &&
-                      defaultTargetPlatform != TargetPlatform.android &&
-                      !isWebMobileWeb())
+                  sizedBoxMediaQuery(context, width: 0, height: 0.02),
+                  if (isWebMobile)
                     elevatedButton(
                       "Upload Image",
                       () {
-                        uploadImage(
-                          (img) {
-                            setState(() {
-                              _categoryImage = img;
-                            });
-                          },
-                        );
+                        uploadImage((img) {
+                          setState(() {
+                            _categoryImage = img;
+                          });
+                        });
                       },
                     ),
                   divider(),
@@ -219,9 +189,9 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
               children: [
                 ModalBarrier(
                   dismissible: false,
-                  color: Colors.black.withValues(alpha: .5),
+                  color: Colors.black.withOpacity(0.5),
                 ),
-                Center(
+                const Center(
                   child: CircularProgressIndicator(),
                 ),
               ],
@@ -234,9 +204,7 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
   Widget cancelButton() {
     return TextButton(
       onPressed: () {},
-      child: webButtonGoogleText(
-        'Cancel',
-      ),
+      child: webButtonGoogleText('Cancel'),
     );
   }
 
@@ -253,7 +221,7 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
             _isSnackBarVisible = true;
             ScaffoldMessenger.of(context)
                 .showSnackBar(
-                  SnackBar(
+                  const SnackBar(
                     content: Text('Please add an image'),
                     duration: Duration(seconds: 2),
                   ),
@@ -274,7 +242,7 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
             _isSnackBarVisible = true;
             ScaffoldMessenger.of(context)
                 .showSnackBar(
-                  SnackBar(
+                  const SnackBar(
                     content: Text('Please select a category'),
                     duration: Duration(seconds: 2),
                   ),
@@ -306,7 +274,7 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
             _isLoading = false;
           });
 
-          reloadWidget(); // Only called when validation passes
+          reloadWidget();
         } else {
           setState(() {
             _isLoading = false;
