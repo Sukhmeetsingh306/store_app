@@ -104,17 +104,28 @@ class _WebDeviceViewState extends State<WebDeviceView> {
   }
 
   Widget web() {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    bool isMobilePlatform = defaultTargetPlatform == TargetPlatform.iOS ||
+        defaultTargetPlatform == TargetPlatform.android;
+
+    bool isMobileWeb = kIsWeb && screenWidth <= 1026;
+
+    double calculatedWidth =
+        isMobilePlatform || isMobileWeb ? screenWidth * 0.5 : screenWidth * 0.2;
+
     return LayoutBuilder(builder: (context, constraints) {
       return AdminScaffold(
         backgroundColor: ColorTheme.color.transparentBack,
         drawer: Drawer(
-          width: (isWebMobile(context)) ||
+          width: calculatedWidth,
+          /* (isWebMobile(context)) ||
                   defaultTargetPlatform == TargetPlatform.iOS ||
                   defaultTargetPlatform == TargetPlatform.android
-              ? kIsWeb
-                  ? MediaQuery.of(context).size.width * 0.2
-                  : MediaQuery.of(context).size.width * 0.6
-              : MediaQuery.of(context).size.width * 0.34,
+              ? MediaQuery.of(context).size.width * 0.5
+              : (isWebMobileWeb()
+                  ? MediaQuery.of(context).size.width * 0.5
+                  : MediaQuery.of(context).size.width * 0.5),*/
           backgroundColor: ColorTheme.color.whiteColor,
           child: MediaQuery.removePadding(
             context: context,
