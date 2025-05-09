@@ -141,16 +141,7 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              elevatedButton(
-                                "Upload Image",
-                                () {
-                                  uploadImage((img) {
-                                    setState(() {
-                                      _categoryImage = img;
-                                    });
-                                  });
-                                },
-                              ),
+                              uploadButton(),
                               const SizedBox(height: 12),
                               Row(
                                 children: [
@@ -165,17 +156,7 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
                     ],
                   ),
                   sizedBoxMediaQuery(context, width: 0, height: 0.02),
-                  if (isWebMobile)
-                    elevatedButton(
-                      "Upload Image",
-                      () {
-                        uploadImage((img) {
-                          setState(() {
-                            _categoryImage = img;
-                          });
-                        });
-                      },
-                    ),
+                  if (isWebMobile) uploadButton(),
                   divider(),
                   SubCategorySupportUser(),
                 ],
@@ -189,7 +170,7 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
               children: [
                 ModalBarrier(
                   dismissible: false,
-                  color: Colors.black.withOpacity(0.5),
+                  color: Colors.black.withAlpha(5),
                 ),
                 const Center(
                   child: CircularProgressIndicator(),
@@ -281,6 +262,21 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
           });
         }
       },
+      textColor: Colors.white,
+    );
+  }
+
+  Widget uploadButton() {
+    return elevatedButton(
+      "Upload Image",
+      () {
+        uploadImage((img) {
+          setState(() {
+            _categoryImage = img;
+          });
+        });
+      },
+      textColor: Colors.white,
     );
   }
 }
