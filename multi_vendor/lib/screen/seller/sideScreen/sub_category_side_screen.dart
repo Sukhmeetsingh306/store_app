@@ -197,66 +197,75 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
           _isLoading = true;
         });
 
-        if (_categoryImage == null) {
-          if (!_isSnackBarVisible) {
-            _isSnackBarVisible = true;
-            ScaffoldMessenger.of(context)
-                .showSnackBar(
-                  const SnackBar(
-                    content: Text('Please add an image'),
-                    duration: Duration(seconds: 2),
-                  ),
-                )
-                .closed
-                .then((_) {
-              _isSnackBarVisible = false;
+        try {
+          if (_categoryImage == null) {
+            if (!_isSnackBarVisible) {
+              _isSnackBarVisible = true;
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(
+                    const SnackBar(
+                      content: Text('Please add an image'),
+                      duration: Duration(seconds: 2),
+                    ),
+                  )
+                  .closed
+                  .then((_) {
+                _isSnackBarVisible = false;
+              });
+            }
+            setState(() {
+              _isLoading = false;
             });
+            return;
           }
-          setState(() {
-            _isLoading = false;
-          });
-          return;
-        }
 
-        if (selectedCategory == null) {
-          if (!_isSnackBarVisible) {
-            _isSnackBarVisible = true;
-            ScaffoldMessenger.of(context)
-                .showSnackBar(
-                  const SnackBar(
-                    content: Text('Please select a category'),
-                    duration: Duration(seconds: 2),
-                  ),
-                )
-                .closed
-                .then((_) {
-              _isSnackBarVisible = false;
+          if (selectedCategory == null) {
+            if (!_isSnackBarVisible) {
+              _isSnackBarVisible = true;
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(
+                    const SnackBar(
+                      content: Text('Please select a category'),
+                      duration: Duration(seconds: 2),
+                    ),
+                  )
+                  .closed
+                  .then((_) {
+                _isSnackBarVisible = false;
+              });
+            }
+            setState(() {
+              _isLoading = false;
             });
+            return;
           }
-          setState(() {
-            _isLoading = false;
-          });
-          return;
-        }
 
-        if (_formKey.currentState!.validate()) {
-          await subCategoryController.uploadSubCategory(
-            categoryId: selectedCategory!.categoryId,
-            categoryName: selectedCategory!.categoryName,
-            subCategoryName: subCategoryName,
-            subCategoryPickedImage: _categoryImage,
-            context: context,
+          if (_formKey.currentState!.validate()) {
+            await subCategoryController.uploadSubCategory(
+              categoryId: selectedCategory!.categoryId,
+              categoryName: selectedCategory!.categoryName,
+              subCategoryName: subCategoryName,
+              subCategoryPickedImage: _categoryImage,
+              context: context,
+            );
+
+            dynamic newImage = await simulateImageUpload();
+            setState(() {
+              _formKey.currentState!.reset();
+              _categoryImage = newImage;
+            });
+
+            reloadWidget();
+          }
+        } catch (e) {
+          // Handle unexpected exceptions
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('An error occurred: $e'),
+              duration: const Duration(seconds: 3),
+            ),
           );
-
-          dynamic newImage = await simulateImageUpload();
-          setState(() {
-            _formKey.currentState!.reset();
-            _categoryImage = newImage;
-            _isLoading = false;
-          });
-
-          reloadWidget();
-        } else {
+        } finally {
           setState(() {
             _isLoading = false;
           });
