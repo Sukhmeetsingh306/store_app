@@ -88,7 +88,7 @@ class HeaderWidgetUser extends StatelessWidget {
                     ),
                   ),
                 ],
-                Flexible(
+                Expanded(
                   flex: isWebMobile ? 2 : 1,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -118,6 +118,7 @@ class HeaderWidgetUser extends StatelessWidget {
                     ),
                   ),
                 ),
+                if (isWebMobile) const SizedBox(width: 10),
                 Wrap(
                   alignment: WrapAlignment.end,
                   crossAxisAlignment: WrapCrossAlignment.center,
