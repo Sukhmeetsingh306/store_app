@@ -87,59 +87,11 @@ class _UploadBannerSideScreenState extends State<UploadBannerSideScreen> {
                             context,
                           ),
                           sizedBoxMediaQuery(context, width: 0.023, height: 0),
-                          elevatedButton(
-                            "Submit",
-                            () async {
-                              setState(() {
-                                _isLoading = true;
-                              });
-                              if (_uploadBannerImage == null) {
-                                if (!_isSnackBarVisible) {
-                                  _isSnackBarVisible = true;
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(
-                                        SnackBar(
-                                          content: Text('Please add an image'),
-                                          duration: Duration(seconds: 2),
-                                        ),
-                                      )
-                                      .closed
-                                      .then((_) {
-                                    _isSnackBarVisible = false;
-                                  });
-                                }
-                                setState(() {
-                                  _isLoading = false;
-                                });
-                                return;
-                              }
-                              await _uploadBannerControllers.uploadBanner(
-                                pickedBanner: _uploadBannerImage,
-                                context: context,
-                              );
-                              dynamic newImage = await simulateImageUpload();
-                              setState(() {
-                                _uploadBannerImage = newImage;
-                                _isLoading = false;
-                              });
-                              reloadWidget();
-                            },
-                          ),
+                          submitButton(),
                         ],
                       ),
                       sizedBoxMediaQuery(context, width: 0, height: 0.02),
-                      elevatedButton(
-                        "Upload Image",
-                        () {
-                          uploadImage(
-                            (img) {
-                              setState(() {
-                                _uploadBannerImage = img;
-                              });
-                            },
-                          );
-                        },
-                      ),
+                      uploadButton(),
                       divider(),
                       Expanded(
                         child: BannerWidgetWeb(),
@@ -166,6 +118,62 @@ class _UploadBannerSideScreenState extends State<UploadBannerSideScreen> {
             ),
           ),
       ],
+    );
+  }
+
+  Widget submitButton() {
+    return elevatedButton(
+      "Submit",
+      () async {
+        setState(() {
+          _isLoading = true;
+        });
+        if (_uploadBannerImage == null) {
+          if (!_isSnackBarVisible) {
+            _isSnackBarVisible = true;
+            ScaffoldMessenger.of(context)
+                .showSnackBar(
+                  SnackBar(
+                    content: Text('Please add an image'),
+                    duration: Duration(seconds: 2),
+                  ),
+                )
+                .closed
+                .then((_) {
+              _isSnackBarVisible = false;
+            });
+          }
+          setState(() {
+            _isLoading = false;
+          });
+          return;
+        }
+        await _uploadBannerControllers.uploadBanner(
+          pickedBanner: _uploadBannerImage,
+          context: context,
+        );
+        dynamic newImage = await simulateImageUpload();
+        setState(() {
+          _uploadBannerImage = newImage;
+          _isLoading = false;
+        });
+        reloadWidget();
+      },
+    );
+  }
+
+  Widget uploadButton() {
+    return elevatedButton(
+      "Upload Image",
+      () {
+        uploadImage(
+          (img) {
+            setState(() {
+              _uploadBannerImage = img;
+            });
+          },
+        );
+      },
     );
   }
 }
