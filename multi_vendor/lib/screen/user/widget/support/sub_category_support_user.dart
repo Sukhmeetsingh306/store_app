@@ -92,8 +92,15 @@ class _SubCategorySupportUserState extends State<SubCategorySupportUser> {
             return GridView.builder(
                 itemCount: subCategoryCount.length,
                 shrinkWrap: true,
+                physics: defaultTargetPlatform == TargetPlatform.iOS ||
+                        defaultTargetPlatform == TargetPlatform.android
+                    ? NeverScrollableScrollPhysics()
+                    : null,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 6,
+                  crossAxisCount: defaultTargetPlatform == TargetPlatform.iOS ||
+                          defaultTargetPlatform == TargetPlatform.android
+                      ? 4 // ios
+                      : 6, // web
                   crossAxisSpacing: 15,
                   mainAxisSpacing: 8,
                 ),
@@ -102,20 +109,26 @@ class _SubCategorySupportUserState extends State<SubCategorySupportUser> {
                   return Column(
                     children: [
                       Flexible(
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 3.0),
-                          child: Image.network(
-                            width: MediaQuery.of(context).size.width * 0.2,
-                            height: MediaQuery.of(context).size.height * 0.15,
-                            subCategory.subCategoryImage,
-                          ),
+                        child: Image.network(
+                          width: defaultTargetPlatform == TargetPlatform.iOS ||
+                                  defaultTargetPlatform ==
+                                      TargetPlatform.android
+                              ? MediaQuery.of(context).size.width * 0.15
+                              : MediaQuery.of(context).size.width * 0.2,
+                          height: defaultTargetPlatform == TargetPlatform.iOS ||
+                                  defaultTargetPlatform ==
+                                      TargetPlatform.android
+                              ? MediaQuery.of(context).size.height * 0.15
+                              : MediaQuery.of(context).size.height * 0.10,
+                          subCategory.subCategoryImage,
+                          fit: BoxFit.contain,
                         ),
                       ),
                       Flexible(
                         child: googleInterText(
                           subCategory.subCategoryName,
                           fontWeight: FontWeight.w500,
-                          fontSize: 19,
+                          fontSize: 16,
                         ),
                       ),
                     ],
