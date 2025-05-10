@@ -13,7 +13,7 @@ ElevatedButton elevatedButton(
   return ElevatedButton(
     style: ButtonStyle(
       backgroundColor: WidgetStateProperty.all<Color>(
-        backgroundColor ?? gradientColors()[2],
+        backgroundColor ?? gradientColors()[3],
       ),
       shape: WidgetStateProperty.all<RoundedRectangleBorder>(
         RoundedRectangleBorder(
@@ -26,7 +26,7 @@ ElevatedButton elevatedButton(
       buttonText,
       fontSize: 16,
       fontWeight: FontWeight.w500,
-      color: textColor,
+      color: textColor ?? Colors.white,
     ),
   );
 }
