@@ -47,7 +47,7 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
     }
   }
 
-  Widget elevatedButtonCategory(ValueSetter<dynamic> image) {
+  Widget uploadButton(ValueSetter<dynamic> image) {
     return elevatedButton(
       'Upload Image',
       () {
@@ -100,7 +100,9 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: SizedBox(
-                          width: mediaQueryWidth * 0.15,
+                          width: !isWebMobile(context)
+                              ? mediaQueryWidth * 0.6
+                              : mediaQueryWidth * 0.15,
                           child: TextFormField(
                             onChanged: (value) {
                               categoryName = value;
@@ -113,31 +115,54 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
                               }
                               return null;
                             },
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               labelText: 'Enter Category Name',
                             ),
                           ),
                         ),
                       ),
-                      sizedBoxMediaQuery(
-                        context,
-                        width: 0.023,
-                        height: 0,
-                      ),
-                      cancelButton(),
-                      submitButton(),
+                      if (isWebMobile(context)) ...[
+                        sizedBoxMediaQuery(context, width: 0.023, height: 0),
+                        cancelButton(),
+                        const SizedBox(width: 8),
+                        submitButton(),
+                      ],
                     ],
                   ),
+                  // Responsive section for mobile or small screens
+                  if (!isWebMobile(context))
+                    Padding(
+                      padding: const EdgeInsets.only(top: 12.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          uploadButton(
+                            (image) {
+                              _categoryImage = image;
+                            },
+                          ),
+                          const SizedBox(height: 12),
+                          Row(
+                            children: [
+                              Expanded(child: cancelButton()),
+                              const SizedBox(width: 8),
+                              Expanded(child: submitButton()),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                   sizedBoxMediaQuery(
                     context,
                     width: 0,
                     height: 0.02,
                   ),
-                  elevatedButtonCategory(
-                    (image) {
-                      _categoryImage = image;
-                    },
-                  ),
+                  if (isWebMobile(context))
+                    uploadButton(
+                      (image) {
+                        _categoryImage = image;
+                      },
+                    ),
                   divider(),
                   webImageInput(
                     _bannerImage,
@@ -149,11 +174,26 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
                     width: 0,
                     height: 0.02,
                   ),
-                  elevatedButtonCategory(
-                    (image) {
-                      _bannerImage = image;
-                    },
-                  ),
+                  if (!isWebMobile(context))
+                    Padding(
+                      padding: const EdgeInsets.only(top: 12.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          uploadButton(
+                            (image) {
+                              _bannerImage = image;
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  if (isWebMobile(context))
+                    uploadButton(
+                      (image) {
+                        _bannerImage = image;
+                      },
+                    ),
                   divider(),
                   CategoryWidgetSupportUser(),
                 ],
