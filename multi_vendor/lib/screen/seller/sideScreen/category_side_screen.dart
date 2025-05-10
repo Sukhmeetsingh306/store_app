@@ -124,63 +124,8 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
                         width: 0.023,
                         height: 0,
                       ),
-                      TextButton(
-                        onPressed: () {},
-                        child: webButtonGoogleText(
-                          'Cancel',
-                        ),
-                      ),
-                      elevatedButton(
-                        "Submit",
-                        () async {
-                          setState(() {
-                            _isLoading = true;
-                          });
-                          if (_bannerImage == null || _categoryImage == null) {
-                            if (!_isSnackBarVisible) {
-                              _isSnackBarVisible = true;
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(
-                                    SnackBar(
-                                      content: Text('Please add an image'),
-                                      duration: Duration(seconds: 2),
-                                    ),
-                                  )
-                                  .closed
-                                  .then((_) {
-                                _isSnackBarVisible = false;
-                              });
-                            }
-                            setState(() {
-                              _isLoading = false;
-                            });
-                            return;
-                          }
-                          if (_formKey.currentState!.validate()) {
-                            print(categoryName);
-                            _categoryController.uploadCategory(
-                              pickedImage: _categoryImage,
-                              pickedBanner: _bannerImage,
-                              categoryName: categoryName,
-                              context: context,
-                            );
-
-                            dynamic newImage = await simulateImageUpload();
-                            setState(() {
-                              _categoryImage = newImage;
-                              _bannerImage = newImage;
-                              _isLoading = false;
-                            });
-
-                            reloadWidget(); // Only called when validation passes
-                          } else {
-                            setState(() {
-                              _isLoading =
-                                  false; // Reset loading if validation fails
-                            });
-                          }
-                        },
-                      ),
+                      cancelButton(),
+                      submitButton(),
                     ],
                   ),
                   sizedBoxMediaQuery(
@@ -231,6 +176,68 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
             ),
           ),
       ],
+    );
+  }
+
+  Widget cancelButton() {
+    return TextButton(
+      onPressed: () {},
+      child: webButtonGoogleText(
+        'Cancel',
+      ),
+    );
+  }
+
+  Widget submitButton() {
+    return elevatedButton(
+      "Submit",
+      () async {
+        setState(() {
+          _isLoading = true;
+        });
+        if (_bannerImage == null || _categoryImage == null) {
+          if (!_isSnackBarVisible) {
+            _isSnackBarVisible = true;
+            ScaffoldMessenger.of(context)
+                .showSnackBar(
+                  SnackBar(
+                    content: Text('Please add an image'),
+                    duration: Duration(seconds: 2),
+                  ),
+                )
+                .closed
+                .then((_) {
+              _isSnackBarVisible = false;
+            });
+          }
+          setState(() {
+            _isLoading = false;
+          });
+          return;
+        }
+        if (_formKey.currentState!.validate()) {
+          print(categoryName);
+          _categoryController.uploadCategory(
+            pickedImage: _categoryImage,
+            pickedBanner: _bannerImage,
+            categoryName: categoryName,
+            context: context,
+          );
+
+          dynamic newImage = await simulateImageUpload();
+          setState(() {
+            _categoryImage = newImage;
+            _bannerImage = newImage;
+            _isLoading = false;
+          });
+
+          reloadWidget(); // Only called when validation passes
+        } else {
+          setState(() {
+            _isLoading = false; // Reset loading if validation fails
+          });
+        }
+      },
     );
   }
 }
