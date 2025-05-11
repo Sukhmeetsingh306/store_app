@@ -57,14 +57,12 @@ class _SubCategorySupportUserState extends State<SubCategorySupportUser> {
               defaultTargetPlatform == TargetPlatform.android ||
               isWebMobileWeb()) {
             return SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
               child: Column(
                 children: List.generate(
-                  // change the element count in the row
-                  (subCategoryCount.length / 7).ceil(),
+                  (subCategoryCount.length / 4).ceil(),
                   (setIndex) {
-                    final start = setIndex * 7;
-                    final end = (setIndex + 1) * 7;
+                    final start = setIndex * 4;
+                    final end = (setIndex + 1) * 4;
                     final subCategorySubset = subCategoryCount.sublist(
                       start,
                       end > subCategoryCount.length
@@ -73,9 +71,9 @@ class _SubCategorySupportUserState extends State<SubCategorySupportUser> {
                     );
 
                     return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: Row(
-                        spacing: 8,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: subCategorySubset
                             .map((subCategory) => subCategoryMobileStyleDisplay(
                                 context,
