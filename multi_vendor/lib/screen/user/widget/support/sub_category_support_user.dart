@@ -73,7 +73,7 @@ class _SubCategorySupportUserState extends State<SubCategorySupportUser> {
                     );
 
                     return Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Row(
                         spacing: 8,
                         children: subCategorySubset
@@ -158,23 +158,20 @@ Widget subCategoryMobileStyleDisplay(
   return Column(
     children: [
       Container(
-        width: MediaQuery.of(context).size.width * 0.2,
-        height: MediaQuery.of(context).size.height * 0.15,
+        // width: MediaQuery.of(context).size.width * 0.2,
+        // height: MediaQuery.of(context).size.height * 0.15,
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(50),
           child: Image.network(
-            width: MediaQuery.of(context).size.width * 0.2,
-            height: MediaQuery.of(context).size.height * 0.15,
+            width: MediaQuery.of(context).size.width * 0.22,
+            height: MediaQuery.of(context).size.height * 0.12,
             image,
           ),
         ),
       ),
-      const SizedBox(height: 8),
-      SizedBox(
-        width: MediaQuery.of(context).size.width * .11,
-        child: googleTextRob(title),
-      )
+//      const SizedBox(height: 8),
+      googleTextRob(title)
     ],
   );
 }
