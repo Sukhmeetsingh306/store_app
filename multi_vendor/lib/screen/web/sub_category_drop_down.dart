@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:multi_vendor/utils/widget/space_widget_utils.dart';
 import '../../../../../../controllers/category_controllers.dart';
 import '../../../../../../models/api/category_api_models.dart';
 import '../../utils/fonts/google_fonts_utils.dart';
@@ -49,7 +50,8 @@ class _SubCategoryDropDownWidgetState extends State<SubCategoryDropDownWidget> {
             value: selectedCategory,
             focusColor: ColorTheme.color.transparentBack,
             dropdownColor: ColorTheme.color.whiteColor,
-            menuWidth: MediaQuery.of(context).size.width * 0.1,
+            menuWidth: MediaQuery.of(context).size.width *
+                (isWebMobile(context) ? 0.1 : 0.4),
             menuMaxHeight: MediaQuery.of(context).size.height * 0.3,
             elevation: 4,
             hint: googleInterText(
