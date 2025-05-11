@@ -49,3 +49,7 @@ Widget sizedBoxMediaQuery(
 bool isWebMobile(BuildContext context) {
   return kIsWeb && MediaQuery.of(context).size.width > 1026;
 }
+
+bool isWebMobileLess(BuildContext context) {
+  return kIsWeb && MediaQuery.of(context).size.width > 626;
+}

@@ -7,6 +7,7 @@ import '../../../../controllers/subCategory_controllers.dart';
 import '../../../../models/api/subcategory_api_models.dart';
 import '../../../../utils/fonts/google_fonts_utils.dart';
 import '../../../../utils/widget/platform/platform_check.dart';
+import '../../../../utils/widget/space_widget_utils.dart';
 
 class SubCategorySupportUser extends StatefulWidget {
   final Future<List<SubCategoryApiModels>>? future;
@@ -98,7 +99,11 @@ class _SubCategorySupportUserState extends State<SubCategorySupportUser> {
                   crossAxisCount: defaultTargetPlatform == TargetPlatform.iOS ||
                           defaultTargetPlatform == TargetPlatform.android
                       ? 4 // ios
-                      : 6, // web
+                      : isWebMobile(context)
+                          ? 8
+                          : isWebMobileLess(context)
+                              ? 5
+                              : 4, // web
                   crossAxisSpacing: 15,
                   mainAxisSpacing: 8,
                 ),
@@ -112,12 +117,13 @@ class _SubCategorySupportUserState extends State<SubCategorySupportUser> {
                                   defaultTargetPlatform ==
                                       TargetPlatform.android
                               ? MediaQuery.of(context).size.width * 0.15
-                              : MediaQuery.of(context).size.width * 0.2,
+                              : MediaQuery.of(context).size.width *
+                                  (isWebMobile(context) ? 0.1 : 0.2),
                           height: defaultTargetPlatform == TargetPlatform.iOS ||
                                   defaultTargetPlatform ==
                                       TargetPlatform.android
                               ? MediaQuery.of(context).size.height * 0.15
-                              : MediaQuery.of(context).size.height * 0.10,
+                              : MediaQuery.of(context).size.height * 0.1,
                           subCategory.subCategoryImage,
                           fit: BoxFit.contain,
                         ),
