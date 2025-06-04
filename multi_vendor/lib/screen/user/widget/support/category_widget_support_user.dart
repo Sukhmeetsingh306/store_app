@@ -350,11 +350,21 @@ class _CategoryWidgetSupportUserState extends State<CategoryWidgetSupportUser> {
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              Image.network(
-                                subCategory.subCategoryImage,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) =>
-                                    Icon(Icons.broken_image),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.22,
+                                height:
+                                    MediaQuery.of(context).size.width * 0.22,
+                                child: ClipRRect(
+                                  borderRadius:
+                                      BorderRadius.circular(6), // optional
+                                  child: Image.network(
+                                    subCategory.subCategoryImage,
+                                    fit: BoxFit.cover,
+                                    errorBuilder:
+                                        (context, error, stackTrace) =>
+                                            Icon(Icons.broken_image),
+                                  ),
+                                ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(0, 4, 0, 0),
