@@ -333,45 +333,45 @@ class _CategoryWidgetSupportUserState extends State<CategoryWidgetSupportUser> {
                 ),
               ),
               _subCategory.isNotEmpty
-                  ? GridView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      padding: const EdgeInsets.all(4),
-                      itemCount: _subCategory.length,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: isWebMobile ? 5 : 3,
-                        mainAxisSpacing: 4,
-                        crossAxisSpacing: 8,
-                        childAspectRatio: 2 / 3,
-                      ),
-                      itemBuilder: (context, index) {
-                        final subCategory = _subCategory[index];
-                        return Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            // aspectRatio: isWebMobile ? 7 / 4 : 1,
-
-                            Image.network(
-                              subCategory.subCategoryImage,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) =>
-                                  Icon(Icons.broken_image),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 4, 0, 0),
-                              child: googleInterText(
-                                subCategory.subCategoryName,
-                                textAlign: TextAlign.center,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                                fontWeight: FontWeight.w400,
-                                fontSize: isWebMobile ? 18 : 12,
+                  ? SizedBox(
+                      height: 500,
+                      child: GridView.builder(
+                        padding: const EdgeInsets.all(4),
+                        itemCount: _subCategory.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: isWebMobile ? 5 : 3,
+                          mainAxisSpacing: 4,
+                          crossAxisSpacing: 8,
+                          childAspectRatio: 2 / 3,
+                        ),
+                        itemBuilder: (context, index) {
+                          final subCategory = _subCategory[index];
+                          return Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Image.network(
+                                subCategory.subCategoryImage,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    Icon(Icons.broken_image),
                               ),
-                            ),
-                          ],
-                        );
-                      })
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 4, 0, 0),
+                                child: googleInterText(
+                                  subCategory.subCategoryName,
+                                  textAlign: TextAlign.center,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: isWebMobile ? 18 : 12,
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    )
                   : Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Center(
