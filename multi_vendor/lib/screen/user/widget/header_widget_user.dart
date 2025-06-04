@@ -71,7 +71,7 @@ class HeaderWidgetUser extends StatelessWidget {
                               children: [
                                 googleInterText(
                                   'Delivery To: User Address',
-                                  fontSize: 15,
+                                  fontSize: 14,
                                   color: ColorTheme.color.textWhiteColor,
                                   fontWeight: FontWeight.w400,
                                 ),
