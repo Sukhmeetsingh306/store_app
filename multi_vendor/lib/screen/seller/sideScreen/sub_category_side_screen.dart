@@ -43,13 +43,12 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
     FilePickerResult? fileImage = await FilePicker.platform.pickFiles(
       type: FileType.image,
       allowMultiple: false,
+      withData: true,
     );
 
-    if (fileImage != null) {
-      setState(() {
-        updateImage(fileImage.files.first.bytes);
-        print('Image uploaded');
-      });
+    if (fileImage != null && fileImage.files.first.bytes != null) {
+      updateImage(fileImage.files.first.bytes);
+      setState(() {});
     }
   }
 
