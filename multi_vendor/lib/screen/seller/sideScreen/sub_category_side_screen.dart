@@ -171,8 +171,13 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
                   dismissible: false,
                   color: Colors.black.withAlpha(5),
                 ),
-                const Center(
-                  child: CircularProgressIndicator(),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.black.withAlpha(5),
+                  ),
+                  child: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
                 ),
               ],
             ),

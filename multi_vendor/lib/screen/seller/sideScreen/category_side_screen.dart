@@ -207,8 +207,13 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
                   dismissible: false,
                   color: Colors.black.withValues(alpha: .5),
                 ),
-                Center(
-                  child: CircularProgressIndicator(),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.black.withAlpha(5),
+                  ),
+                  child: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
                 ),
               ],
             ),
