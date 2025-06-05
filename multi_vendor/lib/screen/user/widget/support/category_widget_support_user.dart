@@ -62,232 +62,239 @@ class _CategoryWidgetSupportUserState extends State<CategoryWidgetSupportUser> {
   Widget build(BuildContext context) {
     bool isWebMobile = kIsWeb && MediaQuery.of(context).size.width > 1026;
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (widget.showHeadingRow!) ...[
-          if ((defaultTargetPlatform == TargetPlatform.iOS ||
-                  defaultTargetPlatform == TargetPlatform.android) &&
-              widget.listView == false)
-            RowTextSands(
-              title: 'Categories:',
-              subTitle: ' View All',
-            ),
-          if (kIsWeb)
-            RowTextSands(
-              title: 'Categories:',
-              subTitle: ' View All',
-              mainAxisAlignment: kIsWeb && (isIOSWeb() || isAndroidWeb())
-                  ? MainAxisAlignment.spaceBetween
-                  : MainAxisAlignment.spaceEvenly,
-            ),
-        ],
-        FutureBuilder(
-          future: futureCategory,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return errormessage("Error: ${snapshot.error}");
-            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Center(
-                child: googleInterText(
-                  "No Category found",
-                  fontWeight: FontWeight.normal,
-                  fontSize: 18,
-                ),
-              );
-            } else {
-              final categoryCount = snapshot.data!;
-              //MARK: Code for mobile category screen
-              if (widget.listView == true) {
-                return SingleChildScrollView(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Flexible(
-                        flex: 1,
-                        child: Container(
-                          color: Colors.grey.shade300,
-                          height: MediaQuery.of(context).size.height *
-                              (kIsWeb ? 0.82 : 0.7),
-                          width: MediaQuery.of(context).size.width *
-                              (isWebMobile ? 0.2 : (kIsWeb ? 0.3 : 0.34)),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: googleInterText(
-                                  "Category",
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                  color: ColorTheme.color.dodgerBlue,
-                                ),
-                              ),
-                              Flexible(
-                                child: ListView.builder(
-                                  padding: EdgeInsets.zero,
-                                  itemCount: categoryCount.length,
-                                  itemBuilder: (context, index) {
-                                    final category = categoryCount[index];
-                                    final bool isSelected =
-                                        _selectedCategory == category;
-                                    return Container(
-                                      margin: const EdgeInsets.symmetric(
-                                          vertical: 4, horizontal: 8),
-                                      decoration: BoxDecoration(
-                                        color: isSelected
-                                            ? ColorTheme.color.dodgerBlue
-                                                .withAlpha(2)
-                                            : Colors.transparent,
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      child: ListTile(
-                                        onTap: () {
-                                          setState(() {
-                                            _selectedCategory = category;
-                                          });
-                                          _loadSubCategory(
-                                              category.categoryName);
-                                        },
-                                        title: googleInterText(
-                                          category.categoryName,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 16,
-                                          color: isSelected
-                                              ? ColorTheme.color.dodgerBlue
-                                              : ColorTheme.color.blackColor,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      _selectedCategory != null
-                          ? isWebMobile
-                              ? Flexible(
-                                  flex: 0, child: singleChildCategoryInner())
-                              : singleChildCategoryInner()
-                          : Container(
-                              color: Colors.grey.shade300,
-                              height: MediaQuery.of(context).size.height * 0.7,
-                              width: MediaQuery.of(context).size.width * 0.02,
-                            ),
-                    ],
+    return SingleChildScrollView(
+      // as if there is any error related to the image and screen data spacing please change the code for the singleChildScrollView
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (widget.showHeadingRow!) ...[
+            if ((defaultTargetPlatform == TargetPlatform.iOS ||
+                    defaultTargetPlatform == TargetPlatform.android) &&
+                widget.listView == false)
+              RowTextSands(
+                title: 'Categories:',
+                subTitle: ' View All',
+              ),
+            if (kIsWeb)
+              RowTextSands(
+                title: 'Categories:',
+                subTitle: ' View All',
+                mainAxisAlignment: kIsWeb && (isIOSWeb() || isAndroidWeb())
+                    ? MainAxisAlignment.spaceBetween
+                    : MainAxisAlignment.spaceEvenly,
+              ),
+          ],
+          FutureBuilder(
+            future: futureCategory,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return errormessage("Error: ${snapshot.error}");
+              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return Center(
+                  child: googleInterText(
+                    "No Category found",
+                    fontWeight: FontWeight.normal,
+                    fontSize: 18,
                   ),
                 );
-              }
-              //MARK: Code for Web View
-              if (defaultTargetPlatform == TargetPlatform.iOS ||
-                  defaultTargetPlatform == TargetPlatform.android ||
-                  isWebMobileWeb()) {
-                return GridView.builder(
-                  padding: const EdgeInsets.only(top: 10),
-                  itemCount: categoryCount.length,
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 4,
-                    crossAxisSpacing: 15,
-                    mainAxisSpacing: 8,
-                  ),
-                  itemBuilder: (context, index) {
-                    final category = categoryCount[index];
-                    return InkWell(
-                      onTap: () => materialRouteNavigator(
-                        context,
-                        InnerCategoryScreen(category: category),
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Flexible(
-                            child: Image.network(
-                              category.categoryImage,
-                              width: MediaQuery.of(context).size.width * 0.15,
-                              height: MediaQuery.of(context).size.height * 0.15,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          Flexible(
-                            child: googleInterText(
-                              category.categoryName,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                );
-              } else if (kIsWeb) {
-                return Align(
-                  alignment: Alignment.topLeft,
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
+              } else {
+                final categoryCount = snapshot.data!;
+                //MARK: Code for mobile category screen
+                if (widget.listView == true) {
+                  return SingleChildScrollView(
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: categoryCount.map((category) {
-                        return InkWell(
-                          onTap: () => materialRouteNavigator(
-                            context,
-                            InnerCategoryScreen(
-                              category: category,
-                              showBottomNav: false,
-                            ),
-                          ),
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Flexible(
+                          flex: 1,
                           child: Container(
-                            width: 100,
-                            margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                            color: Colors.grey.shade300,
+                            height: MediaQuery.of(context).size.height *
+                                (kIsWeb ? 0.82 : 0.7),
+                            width: MediaQuery.of(context).size.width *
+                                (isWebMobile ? 0.2 : (kIsWeb ? 0.3 : 0.34)),
                             child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Container(
-                                  height: 60,
-                                  width: 100,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(8),
-                                    child: Image.network(
-                                      category.categoryImage,
-                                      fit: BoxFit.contain, // avoids cropping
-                                    ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: googleInterText(
+                                    "Category",
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                    color: ColorTheme.color.dodgerBlue,
                                   ),
                                 ),
-                                const SizedBox(height: 6),
-                                googleInterText(
-                                  category.categoryName,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14,
-                                  textAlign: TextAlign.center,
+                                Flexible(
+                                  child: ListView.builder(
+                                    padding: EdgeInsets.zero,
+                                    itemCount: categoryCount.length,
+                                    itemBuilder: (context, index) {
+                                      final category = categoryCount[index];
+                                      final bool isSelected =
+                                          _selectedCategory == category;
+                                      return Container(
+                                        margin: const EdgeInsets.symmetric(
+                                            vertical: 4, horizontal: 8),
+                                        decoration: BoxDecoration(
+                                          color: isSelected
+                                              ? ColorTheme.color.dodgerBlue
+                                                  .withAlpha(2)
+                                              : Colors.transparent,
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        child: ListTile(
+                                          onTap: () {
+                                            setState(() {
+                                              _selectedCategory = category;
+                                            });
+                                            _loadSubCategory(
+                                                category.categoryName);
+                                          },
+                                          title: googleInterText(
+                                            category.categoryName,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 16,
+                                            color: isSelected
+                                                ? ColorTheme.color.dodgerBlue
+                                                : ColorTheme.color.blackColor,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
                               ],
                             ),
                           ),
-                        );
-                      }).toList(),
+                        ),
+                        _selectedCategory != null
+                            ? isWebMobile
+                                ? Flexible(
+                                    flex: 0, child: singleChildCategoryInner())
+                                : singleChildCategoryInner()
+                            : Container(
+                                color: Colors.grey.shade300,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.7,
+                                width: MediaQuery.of(context).size.width * 0.02,
+                              ),
+                      ],
                     ),
-                  ),
+                  );
+                }
+                //MARK: Code for Web View
+                if (defaultTargetPlatform == TargetPlatform.iOS ||
+                    defaultTargetPlatform == TargetPlatform.android ||
+                    isWebMobileWeb()) {
+                  return GridView.builder(
+                    padding: const EdgeInsets.only(top: 10),
+                    itemCount: categoryCount.length,
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 4,
+                      crossAxisSpacing: 15,
+                      mainAxisSpacing: 8,
+                    ),
+                    itemBuilder: (context, index) {
+                      final category = categoryCount[index];
+                      return InkWell(
+                        onTap: () => materialRouteNavigator(
+                          context,
+                          InnerCategoryScreen(category: category),
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Flexible(
+                              child: Image.network(
+                                category.categoryImage,
+                                width: MediaQuery.of(context).size.width * 0.15,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.15,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            Flexible(
+                              child: googleInterText(
+                                category.categoryName,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                } else if (kIsWeb) {
+                  return Align(
+                    alignment: Alignment.topLeft,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: categoryCount.map((category) {
+                          return InkWell(
+                            onTap: () => materialRouteNavigator(
+                              context,
+                              InnerCategoryScreen(
+                                category: category,
+                                showBottomNav: false,
+                              ),
+                            ),
+                            child: Container(
+                              width: 100,
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    height: 60,
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(8),
+                                      child: Image.network(
+                                        category.categoryImage,
+                                        fit: BoxFit.contain, // avoids cropping
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 6),
+                                  googleInterText(
+                                    category.categoryName,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 14,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  );
+                }
+                return Center(
+                  child: googleInterTextWeight4Font16('No Category Found'),
                 );
               }
-              return Center(
-                child: googleInterTextWeight4Font16('No Category Found'),
-              );
-            }
-          },
-        ),
-      ],
+            },
+          ),
+        ],
+      ),
     );
   }
 
