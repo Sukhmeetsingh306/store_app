@@ -29,9 +29,9 @@ class UserProvider extends StateNotifier<LoginUserModel?> {
   void setUser(String userJson) {
     state = LoginUserModel.fromJson(userJson);
   }
-
-  // making the data accessible within the app
-  final userProvider = StateNotifierProvider<UserProvider, LoginUserModel?>(
-    (ref) => UserProvider(),
-  );
 }
+
+// making the data accessible within the app
+final userProvider = StateNotifierProvider<UserProvider, LoginUserModel?>(
+  (ref) => UserProvider(),
+);
