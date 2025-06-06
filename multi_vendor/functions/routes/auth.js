@@ -2,7 +2,7 @@ import express from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import User from "../models/authUserInfo.js";
+import User from "../models/userInf.js";
 
 dotenv.config();
 
