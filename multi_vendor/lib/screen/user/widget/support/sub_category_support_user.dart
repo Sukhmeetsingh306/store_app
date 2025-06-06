@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import '../../../../controllers/subCategory_controllers.dart';
 import '../../../../models/api/subcategory_api_models.dart';
 import '../../../../utils/fonts/google_fonts_utils.dart';
+import '../../../../utils/widget/platform/platform_check.dart';
+import '../../../../utils/widget/space_widget_utils.dart';
 
 class SubCategorySupportUser extends StatefulWidget {
   final Future<List<SubCategoryApiModels>>? future;
@@ -52,16 +54,16 @@ class _SubCategorySupportUserState extends State<SubCategorySupportUser> {
           );
         } else {
           final subCategoryCount = snapshot.data!;
-          if (defaultTargetPlatform == TargetPlatform.iOS) {
+          if (defaultTargetPlatform == TargetPlatform.iOS ||
+              defaultTargetPlatform == TargetPlatform.android ||
+              isWebMobileWeb()) {
             return SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
               child: Column(
                 children: List.generate(
-                  // change the element count in the row
-                  (subCategoryCount.length / 7).ceil(),
+                  (subCategoryCount.length / 4).ceil(),
                   (setIndex) {
-                    final start = setIndex * 7;
-                    final end = (setIndex + 1) * 7;
+                    final start = setIndex * 4;
+                    final end = (setIndex + 1) * 4;
                     final subCategorySubset = subCategoryCount.sublist(
                       start,
                       end > subCategoryCount.length
@@ -70,9 +72,9 @@ class _SubCategorySupportUserState extends State<SubCategorySupportUser> {
                     );
 
                     return Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: Row(
-                        spacing: 8,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: subCategorySubset
                             .map((subCategory) => subCategoryMobileStyleDisplay(
                                 context,
@@ -89,8 +91,19 @@ class _SubCategorySupportUserState extends State<SubCategorySupportUser> {
             return GridView.builder(
                 itemCount: subCategoryCount.length,
                 shrinkWrap: true,
+                physics: defaultTargetPlatform == TargetPlatform.iOS ||
+                        defaultTargetPlatform == TargetPlatform.android
+                    ? NeverScrollableScrollPhysics()
+                    : null,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 6,
+                  crossAxisCount: defaultTargetPlatform == TargetPlatform.iOS ||
+                          defaultTargetPlatform == TargetPlatform.android
+                      ? 4 // ios
+                      : isWebMobile(context)
+                          ? 8
+                          : isWebMobileLess(context)
+                              ? 5
+                              : 4, // web
                   crossAxisSpacing: 15,
                   mainAxisSpacing: 8,
                 ),
@@ -99,20 +112,27 @@ class _SubCategorySupportUserState extends State<SubCategorySupportUser> {
                   return Column(
                     children: [
                       Flexible(
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 3.0),
-                          child: Image.network(
-                            width: MediaQuery.of(context).size.width * 0.2,
-                            height: MediaQuery.of(context).size.height * 0.15,
-                            subCategory.subCategoryImage,
-                          ),
+                        child: Image.network(
+                          width: defaultTargetPlatform == TargetPlatform.iOS ||
+                                  defaultTargetPlatform ==
+                                      TargetPlatform.android
+                              ? MediaQuery.of(context).size.width * 0.15
+                              : MediaQuery.of(context).size.width *
+                                  (isWebMobile(context) ? 0.1 : 0.2),
+                          height: defaultTargetPlatform == TargetPlatform.iOS ||
+                                  defaultTargetPlatform ==
+                                      TargetPlatform.android
+                              ? MediaQuery.of(context).size.height * 0.15
+                              : MediaQuery.of(context).size.height * 0.1,
+                          subCategory.subCategoryImage,
+                          fit: BoxFit.contain,
                         ),
                       ),
                       Flexible(
                         child: googleInterText(
                           subCategory.subCategoryName,
                           fontWeight: FontWeight.w500,
-                          fontSize: 19,
+                          fontSize: 16,
                         ),
                       ),
                     ],
@@ -142,23 +162,20 @@ Widget subCategoryMobileStyleDisplay(
   return Column(
     children: [
       Container(
-        width: MediaQuery.of(context).size.width * 0.2,
-        height: MediaQuery.of(context).size.height * 0.15,
+        // width: MediaQuery.of(context).size.width * 0.2,
+        // height: MediaQuery.of(context).size.height * 0.15,
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(50),
           child: Image.network(
-            width: MediaQuery.of(context).size.width * 0.2,
-            height: MediaQuery.of(context).size.height * 0.15,
+            width: MediaQuery.of(context).size.width * 0.22,
+            height: MediaQuery.of(context).size.height * 0.12,
             image,
           ),
         ),
       ),
-      const SizedBox(height: 8),
-      SizedBox(
-        width: MediaQuery.of(context).size.width * .11,
-        child: googleTextRob(title),
-      )
+//      const SizedBox(height: 8),
+      googleTextRob(title)
     ],
   );
 }

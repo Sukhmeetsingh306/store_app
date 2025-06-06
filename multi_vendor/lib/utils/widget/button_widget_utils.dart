@@ -5,12 +5,15 @@ import '../theme/color/color_theme.dart';
 
 ElevatedButton elevatedButton(
   String buttonText,
-  VoidCallback onPressed,
-) {
+  VoidCallback onPressed, {
+  Color? backgroundColor,
+  Color? textColor,
+} // Optional parameter for background color
+    ) {
   return ElevatedButton(
     style: ButtonStyle(
       backgroundColor: WidgetStateProperty.all<Color>(
-        ColorTheme.color.buttonBackgroundColor,
+        backgroundColor ?? gradientColors()[3],
       ),
       shape: WidgetStateProperty.all<RoundedRectangleBorder>(
         RoundedRectangleBorder(
@@ -23,6 +26,7 @@ ElevatedButton elevatedButton(
       buttonText,
       fontSize: 16,
       fontWeight: FontWeight.w500,
+      color: textColor ?? Colors.white,
     ),
   );
 }

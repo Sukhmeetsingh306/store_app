@@ -41,7 +41,8 @@ class _BannerWidgetSupportUserState extends State<BannerWidgetSupportUser> {
           );
         } else {
           final bannerCount = snapshot.data!;
-          if (defaultTargetPlatform == TargetPlatform.iOS) {
+          if (defaultTargetPlatform == TargetPlatform.iOS ||
+              defaultTargetPlatform == TargetPlatform.android) {
             return PageView.builder(
               itemCount: bannerCount.length,
               itemBuilder: (context, index) {

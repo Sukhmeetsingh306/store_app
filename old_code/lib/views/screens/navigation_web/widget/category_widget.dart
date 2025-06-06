@@ -221,11 +221,13 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                 padding: const EdgeInsets.only(top: 10),
                 itemCount: categoryCount.length,
                 shrinkWrap: true,
-                physics: defaultTargetPlatform == TargetPlatform.iOS
+                physics: defaultTargetPlatform == TargetPlatform.iOS ||
+                        defaultTargetPlatform == TargetPlatform.android
                     ? NeverScrollableScrollPhysics()
                     : null,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: defaultTargetPlatform == TargetPlatform.iOS
+                  crossAxisCount: defaultTargetPlatform == TargetPlatform.iOS ||
+                          defaultTargetPlatform == TargetPlatform.android
                       ? 4 // ios
                       : 6, // web
                   crossAxisSpacing: 15,
@@ -245,12 +247,18 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                       children: [
                         Flexible(
                           child: Image.network(
-                            width: defaultTargetPlatform == TargetPlatform.iOS
-                                ? MediaQuery.of(context).size.width * 0.15
-                                : MediaQuery.of(context).size.width * 0.2,
-                            height: defaultTargetPlatform == TargetPlatform.iOS
-                                ? MediaQuery.of(context).size.height * 0.15
-                                : MediaQuery.of(context).size.height * 0.10,
+                            width:
+                                defaultTargetPlatform == TargetPlatform.iOS ||
+                                        defaultTargetPlatform ==
+                                            TargetPlatform.android
+                                    ? MediaQuery.of(context).size.width * 0.15
+                                    : MediaQuery.of(context).size.width * 0.2,
+                            height:
+                                defaultTargetPlatform == TargetPlatform.iOS ||
+                                        defaultTargetPlatform ==
+                                            TargetPlatform.android
+                                    ? MediaQuery.of(context).size.height * 0.15
+                                    : MediaQuery.of(context).size.height * 0.10,
                             category.categoryImage,
                             fit: BoxFit.cover,
                           ),
