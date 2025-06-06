@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:random_avatar/random_avatar.dart'; // Add this import
 import 'package:multi_vendor/globals_variables.dart';
 import 'package:multi_vendor/models/login_user_models.dart';
 import 'package:multi_vendor/services/http_services.dart';
-import 'package:riverpod/riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../provider/user_provider.dart';
