@@ -4,14 +4,15 @@ import 'side_bar_web.dart';
 
 class AdminScaffold extends StatefulWidget {
   const AdminScaffold({
-    Key? key,
+    super.key,
     this.appBar,
     this.sideBar,
     this.leadingIcon,
     required this.body,
     this.backgroundColor,
+    this.drawer,
     this.mobileThreshold = 768.0,
-  }) : super(key: key);
+  });
 
   final AppBar? appBar;
   final SideBar? sideBar;
@@ -19,8 +20,10 @@ class AdminScaffold extends StatefulWidget {
   final Widget body;
   final Color? backgroundColor;
   final double mobileThreshold;
+  final Widget? drawer;
+
   @override
-  _AdminScaffoldState createState() => _AdminScaffoldState();
+  State<AdminScaffold> createState() => _AdminScaffoldState();
 }
 
 class _AdminScaffoldState extends State<AdminScaffold>
@@ -72,10 +75,11 @@ class _AdminScaffoldState extends State<AdminScaffold>
   void _toggleSidebar() {
     setState(() {
       _isOpenSidebar = !_isOpenSidebar;
-      if (_isOpenSidebar)
+      if (_isOpenSidebar) {
         _animationController.forward();
-      else
+      } else {
         _animationController.reverse();
+      }
     });
   }
 
@@ -136,7 +140,9 @@ class _AdminScaffoldState extends State<AdminScaffold>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: widget.backgroundColor,
+      key: widget.key,
+      backgroundColor: Colors.white,
+      drawer: widget.drawer,
       appBar: _appBar,
       body: AnimatedBuilder(
         animation: _animation,
@@ -212,7 +218,11 @@ class _AdminScaffoldState extends State<AdminScaffold>
 
     final leading = sideBar != null
         ? IconButton(
-            icon: leadingIcon ?? const Icon(Icons.menu),
+            icon: leadingIcon ??
+                const Icon(
+                  Icons.menu,
+                  color: Colors.white,
+                ),
             onPressed: _toggleSidebar,
           )
         : appBar.leading;

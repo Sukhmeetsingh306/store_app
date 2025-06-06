@@ -25,22 +25,7 @@ class HeaderWidgetUser extends StatelessWidget {
     double mediaQueryWidth = MediaQuery.of(context).size.width;
     double mediaQueryHeight = MediaQuery.of(context).size.height;
 
-    bool isWebMobile = kIsWeb && mediaQueryWidth > 1026;
-
-    int getResponsiveFlex(double width) {
-      const int minFlex = 5;
-      const int maxFlex = 11;
-      const double minWidth = 1024;
-      const double maxWidth = 1600;
-
-      double clampedWidth = width.clamp(minWidth, maxWidth);
-
-      double normalized = (clampedWidth - minWidth) / (maxWidth - minWidth);
-      int calculatedFlex =
-          (minFlex + (normalized * (maxFlex - minFlex))).round();
-
-      return calculatedFlex;
-    }
+    bool isWebMobile = kIsWeb && mediaQueryWidth > 1100;
 
     return SizedBox(
       width: mediaQueryWidth,
@@ -49,25 +34,26 @@ class HeaderWidgetUser extends StatelessWidget {
         clipBehavior: Clip.none,
         children: [
           Container(color: ColorTheme.color.mediumBlue),
-          if (isWebMobile)
-            Positioned(
-              top: mediaQueryHeight * 0.1,
-              left: mediaQueryWidth * 0.02,
-              right: mediaQueryWidth * 0.02,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  if (arrowPresent)
-                    IconButton(
-                      onPressed: backOnPressed,
-                      icon: Icon(
-                        Icons.arrow_back_ios_new,
-                        color: Colors.white,
-                      ),
+          Positioned(
+            top: mediaQueryHeight * 0.1,
+            left: mediaQueryWidth * 0.02,
+            right: mediaQueryWidth * 0.02,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (arrowPresent)
+                  IconButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: backOnPressed,
+                    icon: Icon(
+                      Icons.arrow_back_ios_new,
+                      color: Colors.white,
                     ),
-                  drawerMenuButtonPresent(scaffoldKey),
-                  Flexible(
-                    flex: 4,
+                  ),
+                drawerMenuButtonPresent(scaffoldKey),
+                if (isWebMobile) ...[
+                  const SizedBox(width: 4),
+                  Expanded(
                     child: GestureDetector(
                       onTap: () {
                         print('Enter the navigation for address page');
@@ -79,13 +65,13 @@ class HeaderWidgetUser extends StatelessWidget {
                             color: ColorTheme.color.textWhiteColor,
                           ),
                           const SizedBox(width: 4),
-                          Flexible(
+                          Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 googleInterText(
                                   'Delivery To: User Address',
-                                  fontSize: 15,
+                                  fontSize: 14,
                                   color: ColorTheme.color.textWhiteColor,
                                   fontWeight: FontWeight.w400,
                                 ),
@@ -101,112 +87,17 @@ class HeaderWidgetUser extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Flexible(
-                    flex: getResponsiveFlex(mediaQueryWidth),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                      child: SizedBox(
-                        height: 50,
-                        child: TextField(
-                          decoration: InputDecoration(
-                            hintText: "Enter",
-                            hintStyle: const TextStyle(
-                              fontSize: 14,
-                              color: Color(0xFF7F7F7F),
-                            ),
-                            contentPadding: const EdgeInsets.symmetric(
-                              vertical: 16,
-                              horizontal: 12,
-                            ),
-                            prefixIcon: const Icon(Icons.search_rounded),
-                            suffixIcon: const Icon(Icons.camera_alt_outlined),
-                            fillColor: Colors.grey.shade200,
-                            filled: true,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide: BorderSide.none,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Flexible(
-                    flex: 5,
-                    child: Wrap(
-                      alignment: WrapAlignment.end,
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: [
-                        verticalDividerIcon(),
-                        HoverWidgetSupportUser(),
-                        verticalDividerIcon(),
-                        GestureDetector(
-                          onTap: () async {
-                            showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (BuildContext context) {
-                                return const Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              },
-                            );
-
-                            await Future.delayed(const Duration(seconds: 3));
-
-                            if (!context.mounted) return;
-
-                            Navigator.of(context, rootNavigator: true).pop();
-
-                            context.go('/management');
-                          },
-                          child: googleInterTextWeight4Font16(
-                            "Become a Seller",
-                            color: ColorTheme.color.textWhiteColor,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        verticalDividerIcon(),
-                        bellIcon(),
-                        verticalDividerIcon(),
-                        messageIcon(),
-                      ],
-                    ),
-                  ),
                 ],
-              ),
-            ),
-          if (!isWebMobile) ...[
-            if (arrowPresent)
-              Positioned(
-                bottom: mediaQueryHeight * 0.013,
-                left: mediaQueryWidth * 0.0001,
-                child: IconButton(
-                  onPressed: backOnPressed,
-                  icon: Icon(
-                    Icons.arrow_back_ios_new,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            Positioned(
-              bottom: mediaQueryHeight * 0.013,
-              left:
-                  arrowPresent ? mediaQueryWidth * 0.1 : mediaQueryWidth * 0.02,
-              right: mediaQueryWidth * 0.23,
-              child: Row(
-                children: [
-                  drawerMenuButton ?? drawerMenuButtonPresent(scaffoldKey),
-                  const SizedBox(width: 12),
-                  Expanded(
+                Expanded(
+                  flex: isWebMobile ? 2 : 1,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
                     child: SizedBox(
                       height: 50,
                       child: TextField(
                         decoration: InputDecoration(
                           hintText: "Enter",
-                          hintStyle: TextStyle(
+                          hintStyle: const TextStyle(
                             fontSize: 14,
                             color: Color(0xFF7F7F7F),
                           ),
@@ -214,11 +105,10 @@ class HeaderWidgetUser extends StatelessWidget {
                             vertical: 16,
                             horizontal: 12,
                           ),
-                          prefixIcon: Icon(Icons.search_rounded),
-                          suffixIcon: Icon(Icons.camera_alt_outlined),
+                          prefixIcon: const Icon(Icons.search_rounded),
+                          suffixIcon: const Icon(Icons.camera_alt_outlined),
                           fillColor: Colors.grey.shade200,
                           filled: true,
-                          focusColor: ColorTheme.color.blackColor,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
                             borderSide: BorderSide.none,
@@ -227,20 +117,54 @@ class HeaderWidgetUser extends StatelessWidget {
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+                if (isWebMobile) const SizedBox(width: 10),
+                Wrap(
+                  alignment: WrapAlignment.end,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    if (isWebMobile) ...[
+                      verticalDividerIcon(),
+                      HoverWidgetSupportUser(),
+                      verticalDividerIcon(),
+                      GestureDetector(
+                        onTap: () async {
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (BuildContext context) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            },
+                          );
+
+                          await Future.delayed(const Duration(seconds: 3));
+
+                          if (!context.mounted) return;
+
+                          Navigator.of(context, rootNavigator: true).pop();
+
+                          context.go('/management');
+                        },
+                        child: googleInterTextWeight4Font16(
+                          "Become a Seller",
+                          color: ColorTheme.color.textWhiteColor,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      verticalDividerIcon(),
+                    ],
+                    bellIcon(),
+                    if (isWebMobile) verticalDividerIcon(),
+                    messageIcon(),
+                  ],
+                ),
+              ],
             ),
-            Positioned(
-              bottom: mediaQueryHeight * 0.022,
-              right: mediaQueryWidth * 0.12,
-              child: bellIcon(),
-            ),
-            Positioned(
-              bottom: mediaQueryHeight * 0.022,
-              right: mediaQueryWidth * 0.02,
-              child: messageIcon(),
-            ),
-          ]
+          )
         ],
       ),
     );

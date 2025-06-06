@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import '../../controllers/upload_banner_controllers.dart';
 import '../../models/api/upload_banner_api_model.dart';
 import '../../utils/fonts/google_fonts_utils.dart';
+import '../../utils/widget/platform/platform_check.dart';
+import '../../utils/widget/space_widget_utils.dart';
 
 class BannerWidgetWeb extends StatefulWidget {
   const BannerWidgetWeb({super.key});
@@ -40,42 +42,58 @@ class _BannerWidgetWebState extends State<BannerWidgetWeb> {
           );
         } else {
           final bannerCount = snapshot.data!;
-          if (defaultTargetPlatform == TargetPlatform.iOS) {
-            return PageView.builder(
-              itemCount: bannerCount.length,
-              itemBuilder: (context, index) {
-                final banner = bannerCount[index];
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Image.network(
-                    banner.bannerImage,
-                    fit: BoxFit.cover,
-                  ),
-                );
-              },
+          if (defaultTargetPlatform == TargetPlatform.iOS ||
+              defaultTargetPlatform == TargetPlatform.android ||
+              isWebMobileWeb()) {
+            return SizedBox(
+              height: 600,
+              child: ListView.builder(
+                itemCount: bannerCount.length,
+                itemBuilder: (context, index) {
+                  final banner = bannerCount[index];
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      height: 200, // fixed image height
+                      child: Image.network(
+                        banner.bannerImage,
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                      ),
+                    ),
+                  );
+                },
+              ),
             );
           } else if (kIsWeb) {
-            return GridView.builder(
-              itemCount: bannerCount.length,
-              shrinkWrap: true,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 6,
-                crossAxisSpacing: 15,
-                mainAxisSpacing: 8,
+            final isMobile = isWebMobile(context);
+
+            return SizedBox(
+              height: 400,
+              child: GridView.builder(
+                itemCount: bannerCount.length,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: isMobile ? 3 : 2,
+                  crossAxisSpacing: 15,
+                  mainAxisSpacing: 8,
+                  childAspectRatio: 2,
+                ),
+                itemBuilder: (context, index) {
+                  final banner = bannerCount[index];
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.network(
+                      banner.bannerImage,
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                },
               ),
-              itemBuilder: (context, index) {
-                final banner = bannerCount[index];
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Image.network(
-                    banner.bannerImage,
-                    width: 100,
-                    height: 10,
-                  ),
-                );
-              },
             );
           }
+
           return Center();
         }
       },

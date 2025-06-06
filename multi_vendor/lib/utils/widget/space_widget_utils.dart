@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 Widget sizedBoxH5() {
@@ -43,4 +44,12 @@ Widget sizedBoxMediaQuery(
     width: MediaQuery.of(context).size.width * width!,
     height: MediaQuery.of(context).size.height * height!,
   );
+}
+
+bool isWebMobile(BuildContext context) {
+  return kIsWeb && MediaQuery.of(context).size.width > 1026;
+}
+
+bool isWebMobileLess(BuildContext context) {
+  return kIsWeb && MediaQuery.of(context).size.width > 626;
 }

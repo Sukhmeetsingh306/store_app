@@ -5,6 +5,8 @@ import 'package:multi_vendor/services/http_services.dart';
 
 import '../../fonts/google_fonts_utils.dart';
 import '../../routes/navigation_routes.dart';
+import '../../theme/color/color_theme.dart';
+import '../platform/platform_check.dart';
 
 class DrawerWidget extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
@@ -32,23 +34,20 @@ class DrawerWidget extends StatelessWidget {
 
     return Drawer(
       width: isWebMobile
-          ? MediaQuery.of(context).size.width * 0.15
-          : MediaQuery.of(context).size.width * 0.5,
+          ? MediaQuery.of(context).size.width * 0.2
+          : (isWebMobileWeb()
+              ? MediaQuery.of(context).size.width * 0.7 // Mobile web
+              : MediaQuery.of(context).size.width * 0.5), // Desktop web
+
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
           SizedBox(
             height: MediaQuery.of(context).size.height * .18,
             child: DrawerHeader(
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [
-                    Color(0xFF247CFF),
-                    Color(0xFF2680F8),
-                    Color(0xFF2B86FF),
-                    Color(0xFF3490FE),
-                    Color(0xFF3D9CFF),
-                  ],
+                  colors: gradientColors(),
                 ),
               ),
               child: Align(
@@ -108,11 +107,29 @@ class DrawerWidget extends StatelessWidget {
 
             showSnackBar(context, 'Support is not available yet');
           }),
-          listTile("Seller", Icon(Icons.store_outlined), onTap: () {
-            pop(context);
+          listTile(
+            "Seller",
+            Icon(Icons.store_outlined),
+            onTap: () {
+              WidgetsBinding.instance.addPostFrameCallback((_) async {
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (BuildContext context) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  },
+                );
+                await Future.delayed(const Duration(seconds: 3));
 
-            showSnackBar(context, 'Seller is not available yet');
-          }),
+                if (!context.mounted) return;
+
+                Navigator.of(context, rootNavigator: true).pop();
+                context.go('/management');
+              });
+            },
+          ),
           listTile(
             "Account",
             Icon(Icons.account_circle_outlined),

@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../controllers/subCategory_controllers.dart';
@@ -42,14 +43,12 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
     FilePickerResult? fileImage = await FilePicker.platform.pickFiles(
       type: FileType.image,
       allowMultiple: false,
+      withData: true,
     );
 
-    if (fileImage != null) {
-      setState(() {
-        updateImage(fileImage
-            .files.first.bytes); // Use the callback to update the image
-        print('Image uploaded');
-      });
+    if (fileImage != null && fileImage.files.first.bytes != null) {
+      updateImage(fileImage.files.first.bytes);
+      setState(() {});
     }
   }
 
@@ -62,6 +61,7 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
   @override
   Widget build(BuildContext context) {
     double mediaQueryWidth = MediaQuery.of(context).size.width;
+    bool isWebMobile = kIsWeb && mediaQueryWidth > 1026;
 
     return Stack(
       children: [
@@ -69,10 +69,7 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
           key: _formKey,
           child: SingleChildScrollView(
             child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 15,
-                vertical: 4,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -80,10 +77,7 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
                     alignment: Alignment.topLeft,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: googleInterText(
-                        'Category',
-                        fontSize: 36,
-                      ),
+                      child: googleInterText('Category', fontSize: 36),
                     ),
                   ),
                   divider(),
@@ -94,143 +88,74 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
                       });
                     },
                   ),
-                  sizedBoxMediaQuery(
-                    context,
-                    width: 0,
-                    height: 0.01,
-                  ),
-                  Row(
+                  sizedBoxMediaQuery(context, width: 0, height: 0.01),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      webImageInput(
-                        _categoryImage,
-                        'Category Image',
-                        context,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: SizedBox(
-                          width: mediaQueryWidth * 0.15,
-                          child: TextFormField(
-                            onChanged: (value) {
-                              subCategoryName = value;
-                            },
-                            validator: (value) {
-                              if (value == null ||
-                                  value.isEmpty ||
-                                  value.length <= 3) {
-                                return 'Please Enter Valid Category Name';
-                              }
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                              labelText: 'Enter Category Name',
+                      Row(
+                        children: [
+                          webImageInput(
+                            _categoryImage,
+                            'Category Image',
+                            context,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SizedBox(
+                              width: !isWebMobile
+                                  ? mediaQueryWidth * 0.6
+                                  : mediaQueryWidth * 0.15,
+                              child: TextFormField(
+                                onChanged: (value) {
+                                  subCategoryName = value;
+                                },
+                                validator: (value) {
+                                  if (value == null ||
+                                      value.isEmpty ||
+                                      value.length <= 3) {
+                                    return 'Please Enter Valid Category Name';
+                                  }
+                                  return null;
+                                },
+                                decoration: const InputDecoration(
+                                  labelText: 'Enter Category Name',
+                                ),
+                              ),
                             ),
                           ),
+                          if (isWebMobile) ...[
+                            sizedBoxMediaQuery(context,
+                                width: 0.023, height: 0),
+                            cancelButton(),
+                            const SizedBox(width: 8),
+                            submitButton(),
+                          ],
+                        ],
+                      ),
+
+                      // Responsive section for mobile or small screens
+                      if (!isWebMobile)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 12.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              uploadButton(),
+                              const SizedBox(height: 12),
+                              Row(
+                                children: [
+                                  Expanded(child: cancelButton()),
+                                  const SizedBox(width: 8),
+                                  Expanded(child: submitButton()),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      sizedBoxMediaQuery(
-                        context,
-                        width: 0.023,
-                        height: 0,
-                      ),
-                      TextButton(
-                        onPressed: () {},
-                        child: webButtonGoogleText(
-                          'Cancel',
-                        ),
-                      ),
-                      elevatedButton(
-                        "Submit",
-                        () async {
-                          setState(() {
-                            _isLoading = true;
-                          });
-
-                          if (_categoryImage == null) {
-                            if (!_isSnackBarVisible) {
-                              _isSnackBarVisible = true;
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(
-                                    SnackBar(
-                                      content: Text('Please add an image'),
-                                      duration: Duration(seconds: 2),
-                                    ),
-                                  )
-                                  .closed
-                                  .then((_) {
-                                _isSnackBarVisible = false;
-                              });
-                            }
-                            setState(() {
-                              _isLoading = false;
-                            });
-                            return;
-                          }
-
-                          if (selectedCategory == null) {
-                            if (!_isSnackBarVisible) {
-                              _isSnackBarVisible = true;
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(
-                                    SnackBar(
-                                      content: Text('Please select a category'),
-                                      duration: Duration(seconds: 2),
-                                    ),
-                                  )
-                                  .closed
-                                  .then((_) {
-                                _isSnackBarVisible = false;
-                              });
-                            }
-                            setState(() {
-                              _isLoading = false;
-                            });
-                            return;
-                          }
-
-                          if (_formKey.currentState!.validate()) {
-                            await subCategoryController.uploadSubCategory(
-                              categoryId: selectedCategory!.categoryId,
-                              categoryName: selectedCategory!.categoryName,
-                              subCategoryName: subCategoryName,
-                              subCategoryPickedImage: _categoryImage,
-                              context: context,
-                            );
-
-                            dynamic newImage = await simulateImageUpload();
-                            setState(() {
-                              _formKey.currentState!.reset();
-                              _categoryImage = newImage;
-                              _isLoading = false;
-                            });
-
-                            reloadWidget(); // Only called when validation passes
-                          } else {
-                            setState(() {
-                              _isLoading = false;
-                            });
-                          }
-                        },
-                      ),
                     ],
                   ),
-                  sizedBoxMediaQuery(
-                    context,
-                    width: 0,
-                    height: 0.02,
-                  ),
-                  elevatedButton(
-                    "Upload Image",
-                    () {
-                      uploadImage(
-                        (img) {
-                          setState(() {
-                            _categoryImage = img;
-                          });
-                        },
-                      );
-                    },
-                  ),
+                  sizedBoxMediaQuery(context, width: 0, height: 0.02),
+                  if (isWebMobile) uploadButton(),
                   divider(),
                   SubCategorySupportUser(),
                 ],
@@ -244,15 +169,127 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
               children: [
                 ModalBarrier(
                   dismissible: false,
-                  color: Colors.black.withValues(alpha: .5),
+                  color: Colors.black.withAlpha(5),
                 ),
-                Center(
-                  child: CircularProgressIndicator(),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.black.withAlpha(5),
+                  ),
+                  child: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
                 ),
               ],
             ),
           ),
       ],
+    );
+  }
+
+  Widget cancelButton() {
+    return TextButton(
+      onPressed: () {},
+      child: webButtonGoogleText('Cancel'),
+    );
+  }
+
+  Widget submitButton() {
+    return elevatedButton(
+      "Submit",
+      () async {
+        setState(() {
+          _isLoading = true;
+        });
+
+        try {
+          if (_categoryImage == null) {
+            if (!_isSnackBarVisible) {
+              _isSnackBarVisible = true;
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(
+                    const SnackBar(
+                      content: Text('Please add an image'),
+                      duration: Duration(seconds: 2),
+                    ),
+                  )
+                  .closed
+                  .then((_) {
+                _isSnackBarVisible = false;
+              });
+            }
+            setState(() {
+              _isLoading = false;
+            });
+            return;
+          }
+
+          if (selectedCategory == null) {
+            if (!_isSnackBarVisible) {
+              _isSnackBarVisible = true;
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(
+                    const SnackBar(
+                      content: Text('Please select a category'),
+                      duration: Duration(seconds: 2),
+                    ),
+                  )
+                  .closed
+                  .then((_) {
+                _isSnackBarVisible = false;
+              });
+            }
+            setState(() {
+              _isLoading = false;
+            });
+            return;
+          }
+
+          if (_formKey.currentState!.validate()) {
+            await subCategoryController.uploadSubCategory(
+              categoryId: selectedCategory!.categoryId,
+              categoryName: selectedCategory!.categoryName,
+              subCategoryName: subCategoryName,
+              subCategoryPickedImage: _categoryImage,
+              context: context,
+            );
+
+            dynamic newImage = await simulateImageUpload();
+            setState(() {
+              _formKey.currentState!.reset();
+              _categoryImage = newImage;
+            });
+
+            reloadWidget();
+          }
+        } catch (e) {
+          // Handle unexpected exceptions
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('An error occurred: $e'),
+              duration: const Duration(seconds: 3),
+            ),
+          );
+        } finally {
+          setState(() {
+            _isLoading = false;
+          });
+        }
+      },
+      textColor: Colors.white,
+    );
+  }
+
+  Widget uploadButton() {
+    return elevatedButton(
+      "Upload Image",
+      () {
+        uploadImage((img) {
+          setState(() {
+            _categoryImage = img;
+          });
+        });
+      },
+      textColor: Colors.white,
     );
   }
 }

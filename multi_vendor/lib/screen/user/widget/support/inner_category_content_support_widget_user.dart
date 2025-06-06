@@ -45,10 +45,12 @@ class _InnerCategoryContentSupportWidgetUserState
               letterSpacing: 1.4,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: SubCategorySupportUser(
-              future: subCategoryModel,
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: SubCategorySupportUser(
+                future: subCategoryModel,
+              ),
             ),
           ),
         ],

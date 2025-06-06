@@ -36,18 +36,16 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
     FilePickerResult? fileImage = await FilePicker.platform.pickFiles(
       type: FileType.image,
       allowMultiple: false,
+      withData: true,
     );
 
-    if (fileImage != null) {
-      setState(() {
-        updateImage(fileImage
-            .files.first.bytes); // Use the callback to update the image
-        print('Image uploaded');
-      });
+    if (fileImage != null && fileImage.files.first.bytes != null) {
+      updateImage(fileImage.files.first.bytes);
+      setState(() {});
     }
   }
 
-  Widget elevatedButtonCategory(ValueSetter<dynamic> image) {
+  Widget uploadButton(ValueSetter<dynamic> image) {
     return elevatedButton(
       'Upload Image',
       () {
@@ -100,7 +98,9 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: SizedBox(
-                          width: mediaQueryWidth * 0.15,
+                          width: !isWebMobile(context)
+                              ? mediaQueryWidth * 0.6
+                              : mediaQueryWidth * 0.15,
                           child: TextFormField(
                             onChanged: (value) {
                               categoryName = value;
@@ -113,86 +113,54 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
                               }
                               return null;
                             },
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               labelText: 'Enter Category Name',
                             ),
                           ),
                         ),
                       ),
-                      sizedBoxMediaQuery(
-                        context,
-                        width: 0.023,
-                        height: 0,
-                      ),
-                      TextButton(
-                        onPressed: () {},
-                        child: webButtonGoogleText(
-                          'Cancel',
-                        ),
-                      ),
-                      elevatedButton(
-                        "Submit",
-                        () async {
-                          setState(() {
-                            _isLoading = true;
-                          });
-                          if (_bannerImage == null || _categoryImage == null) {
-                            if (!_isSnackBarVisible) {
-                              _isSnackBarVisible = true;
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(
-                                    SnackBar(
-                                      content: Text('Please add an image'),
-                                      duration: Duration(seconds: 2),
-                                    ),
-                                  )
-                                  .closed
-                                  .then((_) {
-                                _isSnackBarVisible = false;
-                              });
-                            }
-                            setState(() {
-                              _isLoading = false;
-                            });
-                            return;
-                          }
-                          if (_formKey.currentState!.validate()) {
-                            print(categoryName);
-                            _categoryController.uploadCategory(
-                              pickedImage: _categoryImage,
-                              pickedBanner: _bannerImage,
-                              categoryName: categoryName,
-                              context: context,
-                            );
-
-                            dynamic newImage = await simulateImageUpload();
-                            setState(() {
-                              _categoryImage = newImage;
-                              _bannerImage = newImage;
-                              _isLoading = false;
-                            });
-
-                            reloadWidget(); // Only called when validation passes
-                          } else {
-                            setState(() {
-                              _isLoading =
-                                  false; // Reset loading if validation fails
-                            });
-                          }
-                        },
-                      ),
+                      if (isWebMobile(context)) ...[
+                        sizedBoxMediaQuery(context, width: 0.023, height: 0),
+                        cancelButton(),
+                        const SizedBox(width: 8),
+                        submitButton(),
+                      ],
                     ],
                   ),
+                  // Responsive section for mobile or small screens
+                  if (!isWebMobile(context))
+                    Padding(
+                      padding: const EdgeInsets.only(top: 12.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          uploadButton(
+                            (image) {
+                              _categoryImage = image;
+                            },
+                          ),
+                          const SizedBox(height: 12),
+                          Row(
+                            children: [
+                              Expanded(child: cancelButton()),
+                              const SizedBox(width: 8),
+                              Expanded(child: submitButton()),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                   sizedBoxMediaQuery(
                     context,
                     width: 0,
                     height: 0.02,
                   ),
-                  elevatedButtonCategory(
-                    (image) {
-                      _categoryImage = image;
-                    },
-                  ),
+                  if (isWebMobile(context))
+                    uploadButton(
+                      (image) {
+                        _categoryImage = image;
+                      },
+                    ),
                   divider(),
                   webImageInput(
                     _bannerImage,
@@ -204,11 +172,26 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
                     width: 0,
                     height: 0.02,
                   ),
-                  elevatedButtonCategory(
-                    (image) {
-                      _bannerImage = image;
-                    },
-                  ),
+                  if (!isWebMobile(context))
+                    Padding(
+                      padding: const EdgeInsets.only(top: 12.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          uploadButton(
+                            (image) {
+                              _bannerImage = image;
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  if (isWebMobile(context))
+                    uploadButton(
+                      (image) {
+                        _bannerImage = image;
+                      },
+                    ),
                   divider(),
                   CategoryWidgetSupportUser(),
                 ],
@@ -224,13 +207,80 @@ class _CategorySideScreenState extends State<CategorySideScreen> {
                   dismissible: false,
                   color: Colors.black.withValues(alpha: .5),
                 ),
-                Center(
-                  child: CircularProgressIndicator(),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.black.withAlpha(5),
+                  ),
+                  child: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
                 ),
               ],
             ),
           ),
       ],
+    );
+  }
+
+  Widget cancelButton() {
+    return TextButton(
+      onPressed: () {},
+      child: webButtonGoogleText(
+        'Cancel',
+      ),
+    );
+  }
+
+  Widget submitButton() {
+    return elevatedButton(
+      "Submit",
+      () async {
+        setState(() {
+          _isLoading = true;
+        });
+        if (_bannerImage == null || _categoryImage == null) {
+          if (!_isSnackBarVisible) {
+            _isSnackBarVisible = true;
+            ScaffoldMessenger.of(context)
+                .showSnackBar(
+                  SnackBar(
+                    content: Text('Please add an image'),
+                    duration: Duration(seconds: 2),
+                  ),
+                )
+                .closed
+                .then((_) {
+              _isSnackBarVisible = false;
+            });
+          }
+          setState(() {
+            _isLoading = false;
+          });
+          return;
+        }
+        if (_formKey.currentState!.validate()) {
+          print(categoryName);
+          _categoryController.uploadCategory(
+            pickedImage: _categoryImage,
+            pickedBanner: _bannerImage,
+            categoryName: categoryName,
+            context: context,
+          );
+
+          dynamic newImage = await simulateImageUpload();
+          setState(() {
+            _categoryImage = newImage;
+            _bannerImage = newImage;
+            _isLoading = false;
+          });
+
+          reloadWidget(); // Only called when validation passes
+        } else {
+          setState(() {
+            _isLoading = false; // Reset loading if validation fails
+          });
+        }
+      },
     );
   }
 }
