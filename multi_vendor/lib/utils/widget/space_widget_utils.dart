@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 Widget sizedBoxH5() {
@@ -28,4 +29,27 @@ Widget sizedBoxH20() {
   return SizedBox(
     height: 20,
   );
+}
+
+Widget sizedBoxW16() {
+  return SizedBox(width: 16);
+}
+
+Widget sizedBoxMediaQuery(
+  BuildContext context, {
+  double? width,
+  double? height,
+}) {
+  return SizedBox(
+    width: MediaQuery.of(context).size.width * width!,
+    height: MediaQuery.of(context).size.height * height!,
+  );
+}
+
+bool isWebMobile(BuildContext context) {
+  return kIsWeb && MediaQuery.of(context).size.width > 1026;
+}
+
+bool isWebMobileLess(BuildContext context) {
+  return kIsWeb && MediaQuery.of(context).size.width > 626;
 }
