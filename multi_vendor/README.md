@@ -30,3 +30,12 @@ In dart file in main.dart
 add in the void main
 
     usePathUrlStrategy();
+
+# Error while committing in the main 
+As when the branch is not migrating in the main branch.
+Use 
+
+     git add multi_vendor/pubspec.lock
+     git commit -m "chore: Update pubspec.lock before pull"
+     git pull --tags origin main
+
