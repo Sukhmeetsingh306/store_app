@@ -5,28 +5,28 @@ class LoginUserModel {
   final String id;
   final String name;
   final String email;
-  final String phone;
-  final int age;
+  String? phone;
+  int? age;
   final String state;
   final String city;
   final String locality;
   final String password;
   final String token;
-  final bool isSeller;
+  bool? isSeller;
   final String image; // Ensured to always have a value
 
   LoginUserModel({
     required this.id,
     required this.name,
     required this.email,
-    required this.phone,
-    required this.age,
+    this.phone,
+    this.age,
     required this.state,
     required this.city,
     required this.locality,
     required this.password,
     required this.token,
-    required this.isSeller,
+    this.isSeller,
     String? image,
   }) : image = image ?? generateRandomAvatar(); // Use random avatar if null
 
