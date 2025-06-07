@@ -81,62 +81,77 @@ class LoginUserControllers {
     required String password,
   }) async {
     try {
-      http.Response response = await http.post(
+      final response = await http.post(
         Uri.parse("$webUri/signin"),
-        body: jsonEncode({
-          'email': email,
-          'password': password,
-        }),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
+        body: jsonEncode({'email': email, 'password': password}),
+        headers: {'Content-Type': 'application/json; charset=UTF-8'},
       ).timeout(const Duration(seconds: 10), onTimeout: () {
         throw Exception('Request timed out');
       });
 
       final responseData = jsonDecode(response.body);
-      // or use json.decode(response.body)
 
       if (response.statusCode == 200) {
-        // String token = responseData['token'];
-        // print("Login successful: Token: $token");
-        // return true;
+        final SharedPreferences pref = await SharedPreferences.getInstance();
+        final String token = responseData['token'];
+        final String userJson = jsonEncode(responseData['user']);
 
-        // accessing sharedPreferences for token and user data storage
-        SharedPreferences pref = await SharedPreferences.getInstance();
-        String token =
-            responseData['token']; // extracting token from response body
-
-        //storing token and user data in sharedPreferences
         await pref.setString('auth_token', token);
-
-        // encode user data received from the backend
-        final userJson = jsonEncode(responseData['user']);
-
-        //update the application state with riverpod
-        riverpodContainer.read(userProvider.notifier).setUser(userJson);
-
-        //storing data in the user provider
         await pref.setString('user', userJson);
 
-        if (Navigator.of(context).canPop()) {
-          Navigator.of(context).popUntil((route) => route.isFirst);
-          context.pushReplacement('/homePage');
-        } else {
-          context.go('/homePage');
+        // Update app state via provider
+        riverpodContainer.read(userProvider.notifier).setUser(userJson);
+
+        // You should do navigation only *after* checking mounted
+        if (context.mounted) {
+          context.go('/homePage'); // Direct navigation, no pop
         }
 
         return true;
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: Text(responseData['message'] ?? 'Invalid credentials')),
-        );
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(responseData['message'] ?? 'Invalid credentials'),
+            ),
+          );
+        }
         return false;
       }
     } catch (e) {
-      print('Error: ${e.toString()}');
+      debugPrint('Sign-in error: ${e.toString()}');
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text('Something went wrong. Please try again.')),
+        );
+      }
       return false;
+    }
+  }
+
+  // sign out user
+  Future<void> signOutUser(BuildContext context) async {
+    try {
+      // Clear user data from shared preferences
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      await pref.remove('auth_token');
+      await pref.remove('user');
+
+      // Clear user state in the provider
+      riverpodContainer.read(userProvider.notifier).signOut();
+
+      // Navigate to login page
+      if (context.mounted) {
+        if (Navigator.of(context).canPop()) {
+          Navigator.of(context).popUntil((route) => route.isFirst);
+          context.pushReplacement('/loginPage');
+        } else {
+          context.go('/loginPage');
+        }
+      }
+    } catch (e) {
+      print('Error signing out: ${e.toString()}');
     }
   }
 }
