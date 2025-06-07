@@ -67,10 +67,6 @@ const vendorSchema = new mongoose.Schema(
         message: "Invalid password.",
       },
     },
-    isSeller: {
-      type: Boolean,
-      default: false,
-    },
   },
   { timestamps: true }
 );
