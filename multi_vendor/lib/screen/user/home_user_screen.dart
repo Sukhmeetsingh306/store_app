@@ -64,7 +64,7 @@ class _HomeUserScreenState extends State<HomeUserScreen> {
       ),
       UserScreenWrapper(
         scaffoldKey: _scaffoldKey,
-        child: const AccountNavigationScreen(),
+        child: AccountNavigationScreen(),
       ),
     ];
   }
