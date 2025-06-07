@@ -8,6 +8,7 @@ import { categoryRouter } from "./routes/category_router.js";
 import { subCategoryRouter } from "./routes/subCategory_routes.js";
 import { productRouter } from "./routes/product_routes.js";
 import { productRatingReviewRouter } from "./routes/rating_review_routes.js";
+import { vendorRouter } from "./routes/vendor_routes.js";
 
 dotenv.config(); // Load .env variables
 
@@ -24,6 +25,7 @@ app.use(categoryRouter);
 app.use(subCategoryRouter);
 app.use(productRouter);
 app.use(productRatingReviewRouter);
+app.use(vendorRouter);
 
 if (!uri) {
   console.error("MongoDB URI is not defined. Please check your .env file.");
