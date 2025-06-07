@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 
 const vendorRouter = express.Router();
 
+// Route: POST /vendor/signup
 vendorRouter.post("/vendor/signup", async (req, res) => {
   try {
     const { name, email, password, phone, age, image } = req.body;
@@ -32,14 +33,14 @@ vendorRouter.post("/vendor/signup", async (req, res) => {
       password: hashedPassword,
       phone,
       age,
-      image: image,
+      image: image ?? null, // Optional image
     });
 
     await newVendor.save();
 
-    res.status(201).json({
+    return res.status(201).json({
       message: "Vendor registered successfully.",
-      Vendor: {
+      vendor: {
         id: newVendor._id,
         name: newVendor.name,
         email: newVendor.email,
@@ -49,7 +50,8 @@ vendorRouter.post("/vendor/signup", async (req, res) => {
       },
     });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    console.error("Error in /vendor/signup:", err);
+    return res.status(500).json({ message: "Internal server error" });
   }
 });
 
