@@ -32,20 +32,14 @@ add in the void main
 
     usePathUrlStrategy();
 
-This app uses Flutter Riverpod for managing client-side authentication and state. The authentication flow is designed to store user data locally using SharedPreferences so that when the user reopens the app, they are redirected to the appropriate screen (home or login) based on their saved token.
+# Error while committing in the main 
+As when the branch is not migrating in the main branch.
+Use 
 
-     flutter pub add flutter_riverpod
+     git add multi_vendor/pubspec.lock
+     git commit -m "chore: Update pubspec.lock before pull"
+     git pull --tags origin main
 
-Details stored in Consumer Widget 
-
-     class MyApp extends ConsumerWidget {
-          const MyApp({super.key});
-
-          @override
-          Widget build(BuildContext context, WidgetRef ref) {
-               // App routing or theme setup can go here
-          }
-     }
 
 # Riverpod
 
