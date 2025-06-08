@@ -1,12 +1,12 @@
 import express from "express";
-import Vendor from "../models/vendor.js";
+import Seller from "../models/seller.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-const vendorRouter = express.Router();
+const sellerRouter = express.Router();
 
-// Route: POST /vendor/signup
-vendorRouter.post("/vendor/signup", async (req, res) => {
+// Route: POST /seller/signup
+sellerRouter.post("/seller/signup", async (req, res) => {
   try {
     const { name, email, password, phone, age, image } = req.body;
 
@@ -17,18 +17,18 @@ vendorRouter.post("/vendor/signup", async (req, res) => {
       });
     }
 
-    // Check if vendor already exists
-    const existingVendor = await Vendor.findOne({ email });
-    if (existingVendor) {
-      return res.status(400).json({ message: "Vendor already exists." });
+    // Check if seller already exists
+    const existingSeller = await Seller.findOne({ email });
+    if (existingSeller) {
+      return res.status(400).json({ message: "Seller already exists." });
     }
 
     // Hash password
     const salt = await bcrypt.genSalt(12);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Create new vendor
-    const newVendor = new Vendor({
+    // Create new Seller
+    const newSeller = new Seller({
       name,
       email,
       password: hashedPassword,
@@ -37,27 +37,27 @@ vendorRouter.post("/vendor/signup", async (req, res) => {
       image: image ?? null, // Optional image
     });
 
-    await newVendor.save();
+    await newSeller.save();
 
     return res.status(201).json({
-      message: "Vendor registered successfully.",
-      vendor: {
-        id: newVendor._id,
-        name: newVendor.name,
-        email: newVendor.email,
-        phone: newVendor.phone,
-        age: newVendor.age,
-        image: newVendor.image,
+      message: "Seller registered successfully.",
+      Seller: {
+        id: newSeller._id,
+        name: newSeller.name,
+        email: newSeller.email,
+        phone: newSeller.phone,
+        age: newSeller.age,
+        image: newSeller.image,
       },
     });
   } catch (err) {
-    console.error("Error in /vendor/signup:", err);
+    console.error("Error in /Seller/signup:", err);
     return res.status(500).json({ message: "Internal server error" });
   }
 });
 
 // Signin Route
-vendorRouter.post("/vendor/signin", async (req, res) => {
+sellerRouter.post("/seller/signin", async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -68,14 +68,14 @@ vendorRouter.post("/vendor/signin", async (req, res) => {
         .json({ message: "Both email and password are required." });
     }
 
-    // Find Vendor by email
-    const findVendor = await Vendor.findOne({ email });
-    if (!findVendor) {
+    // Find seller by email
+    const findSeller = await Seller.findOne({ email });
+    if (!findSeller) {
       return res.status(400).json({ message: "Invalid email or password." });
     }
 
     // Compare passwords
-    const isMatch = await bcrypt.compare(password, findVendor.password);
+    const isMatch = await bcrypt.compare(password, findSeller.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid email or password." });
     }
@@ -83,8 +83,8 @@ vendorRouter.post("/vendor/signin", async (req, res) => {
     // Generate JWT token
     const token = jwt.sign(
       {
-        id: findVendor._id,
-        isSeller: findVendor.isSeller || false, // in case not set
+        id: findSeller._id,
+        isSeller: findSeller.isSeller || false, // in case not set
       },
       process.env.JWT_SECRET || "default_jwt_secret", // fallback for dev
       {
@@ -93,17 +93,17 @@ vendorRouter.post("/vendor/signin", async (req, res) => {
     );
 
     // Remove password before sending response
-    const { password: _, ...vendorWithoutPassword } = findVendor._doc;
+    const { password: _, ...sellerWithoutPassword } = findSeller._doc;
 
     return res.status(200).json({
       message: "Login successful.",
       token,
-      user: vendorWithoutPassword, // renamed to "user" for consistency
+      user: sellerWithoutPassword, // renamed to "user" for consistency
     });
   } catch (err) {
-    console.error("Error in /vendor/signin:", err);
+    console.error("Error in /seller/signin:", err);
     return res.status(500).json({ message: "Internal server error" });
   }
 });
 
-export { vendorRouter };
+export { sellerRouter };

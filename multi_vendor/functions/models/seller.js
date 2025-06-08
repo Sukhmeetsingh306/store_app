@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const vendorSchema = new mongoose.Schema(
+const sellerSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -50,8 +50,8 @@ const vendorSchema = new mongoose.Schema(
 
     role: {
       type: String,
-      default: "vendor",
-      enum: ["vendor", "admin"],
+      default: "seller",
+      enum: ["seller", "admin"],
     },
 
     password: {
@@ -71,6 +71,6 @@ const vendorSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Vendor = mongoose.model("Vendor", vendorSchema);
+const Seller = mongoose.model("Seller", sellerSchema);
 
-export default Vendor;
+export default Seller;

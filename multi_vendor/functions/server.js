@@ -8,13 +8,13 @@ import { categoryRouter } from "./routes/category_router.js";
 import { subCategoryRouter } from "./routes/subCategory_routes.js";
 import { productRouter } from "./routes/product_routes.js";
 import { productRatingReviewRouter } from "./routes/rating_review_routes.js";
-import { vendorRouter } from "./routes/vendor_routes.js";
+import { sellerRouter } from "./routes/seller_routes.js";
 
 dotenv.config(); // Load .env variables
 
 const app = express();
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 const uri = process.env.MONGODB_URI;
 
 app.use(express.json());
@@ -25,7 +25,7 @@ app.use(categoryRouter);
 app.use(subCategoryRouter);
 app.use(productRouter);
 app.use(productRatingReviewRouter);
-app.use(vendorRouter);
+app.use(sellerRouter);
 
 if (!uri) {
   console.error("MongoDB URI is not defined. Please check your .env file.");
