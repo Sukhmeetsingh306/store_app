@@ -47,6 +47,8 @@ Details stored in Consumer Widget
           }
      }
 
+# Riverpod
+
 A method _checkAuthTokenAndNavigate() is used during app startup to check if a valid auth token and user information are stored. Based on this check, the app navigates to the home page or login page:
 
      Future<void> _checkAuthTokenAndNavigate() async {
