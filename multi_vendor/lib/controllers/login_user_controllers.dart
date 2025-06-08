@@ -1,10 +1,17 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:random_avatar/random_avatar.dart'; // Add this import
 import 'package:multi_vendor/globals_variables.dart';
 import 'package:multi_vendor/models/login_user_models.dart';
 import 'package:multi_vendor/services/http_services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../provider/user_provider.dart';
+
+final riverpodContainer = ProviderContainer();
 
 class LoginUserControllers {
   Future<void> signUpUsers({
@@ -74,15 +81,10 @@ class LoginUserControllers {
     required String password,
   }) async {
     try {
-      http.Response response = await http.post(
+      final response = await http.post(
         Uri.parse("$webUri/signin"),
-        body: jsonEncode({
-          'email': email,
-          'password': password,
-        }),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
+        body: jsonEncode({'email': email, 'password': password}),
+        headers: {'Content-Type': 'application/json; charset=UTF-8'},
       ).timeout(const Duration(seconds: 10), onTimeout: () {
         throw Exception('Request timed out');
       });
@@ -90,19 +92,66 @@ class LoginUserControllers {
       final responseData = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
-        String token = responseData['token'];
-        print("Login successful: Token: $token");
+        final SharedPreferences pref = await SharedPreferences.getInstance();
+        final String token = responseData['token'];
+        final String userJson = jsonEncode(responseData['user']);
+
+        await pref.setString('auth_token', token);
+        await pref.setString('user', userJson);
+
+        // Update app state via provider
+        riverpodContainer.read(userProvider.notifier).setUser(userJson);
+
+        // You should do navigation only *after* checking mounted
+        if (context.mounted) {
+          context.go('/homePage'); // Direct navigation, no pop
+        }
+
         return true;
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: Text(responseData['message'] ?? 'Invalid credentials')),
-        );
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(responseData['message'] ?? 'Invalid credentials'),
+            ),
+          );
+        }
         return false;
       }
     } catch (e) {
-      print('Error: ${e.toString()}');
+      debugPrint('Sign-in error: ${e.toString()}');
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text('Something went wrong. Please try again.')),
+        );
+      }
       return false;
+    }
+  }
+
+  // sign out user
+  Future<void> signOutUser(BuildContext context) async {
+    try {
+      // Clear user data from shared preferences
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      await pref.remove('auth_token');
+      await pref.remove('user');
+
+      // Clear user state in the provider
+      riverpodContainer.read(userProvider.notifier).signOut();
+
+      // Navigate to login page
+      if (context.mounted) {
+        if (Navigator.of(context).canPop()) {
+          Navigator.of(context).popUntil((route) => route.isFirst);
+          context.pushReplacement('/loginPage');
+        } else {
+          context.go('/loginPage');
+        }
+      }
+    } catch (e) {
+      print('Error signing out: ${e.toString()}');
     }
   }
 }

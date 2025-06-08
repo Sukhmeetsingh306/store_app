@@ -27,6 +27,7 @@ In index.html add
 In dart file in main.dart
 
      flutter pub add flutter_web_plugins
+
 add in the void main
 
     usePathUrlStrategy();
@@ -39,3 +40,29 @@ Use
      git commit -m "chore: Update pubspec.lock before pull"
      git pull --tags origin main
 
+
+# Riverpod
+
+A method _checkAuthTokenAndNavigate() is used during app startup to check if a valid auth token and user information are stored. Based on this check, the app navigates to the home page or login page:
+
+     Future<void> _checkAuthTokenAndNavigate() async {
+          SharedPreferences pref = await SharedPreferences.getInstance();
+          String? token = pref.getString('auth_token');
+          String? userJson = pref.getString('user');
+
+          if (!mounted) return;
+
+          if (token != null && userJson != null) {
+               ref.read(userProvider.notifier).setUser(userJson);
+               context.go('/homePage');
+          } else {
+               ref.read(userProvider.notifier).signOut();
+               if (context.mounted) {
+                    context.go('/loginPage');
+               }
+          }
+     }
+
+If both the token and user data are found, the user is considered authenticated and navigated to /homePage.
+
+If not, they are signed out and redirected to /loginPage.
