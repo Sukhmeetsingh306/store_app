@@ -1,12 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:multi_vendor/controllers/login_user_controllers.dart';
+import 'package:multi_vendor/utils/widget/button_widget_utils.dart';
 
 class AccountNavigationScreen extends StatelessWidget {
-  const AccountNavigationScreen({super.key});
+  AccountNavigationScreen({super.key});
+
+  final LoginUserControllers _loginUserController = LoginUserControllers();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: const Center(child: Text("account")),
+      body: Center(
+        child: elevatedButton(
+          'Sign Out',
+          () async {
+            await _loginUserController.signOutUser(context);
+          },
+        ),
+      ),
     );
   }
 }

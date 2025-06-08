@@ -28,8 +28,12 @@ class _SplashScreenRouteState extends ConsumerState<SplashScreenRoute> {
       ref.read(userProvider.notifier).setUser(userJson);
       context.go('/homePage');
     } else {
-      context.go('/loginPage');
+      ref.read(userProvider.notifier).signOut();
+      if (context.mounted) {
+        context.go('/loginPage');
+      }
     }
+    // MARK: check for the signout way that if the user is had entered check for the cookie if already entered check for the data else navigate to login page else stay in the home page
   }
 
   @override
