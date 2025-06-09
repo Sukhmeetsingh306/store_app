@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:random_avatar/random_avatar.dart';
+import '../utils/widget/random/avatar_random.dart';
 
 class SellerModels {
   final String id;
@@ -28,14 +28,6 @@ class SellerModels {
     required this.role,
     String? image,
   }) : image = image ?? generateRandomAvatar();
-
-  static String generateRandomAvatar() {
-    return RandomAvatar(
-      DateTime.now().toIso8601String(), // Unique seed for avatar
-      height: 90,
-      width: 90,
-    ).toString();
-  }
 
   Map<String, dynamic> toSeller() {
     return {
