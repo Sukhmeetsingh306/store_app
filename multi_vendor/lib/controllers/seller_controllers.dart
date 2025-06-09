@@ -68,7 +68,7 @@ class SellerControllers {
     }
   }
 
-  Future<void> signInSeller({
+  Future<bool> signInSeller({
     required BuildContext context,
     required String email,
     required String password,
@@ -82,18 +82,16 @@ class SellerControllers {
         throw Exception('Request timed out');
       });
 
-      //final responseData = jsonDecode(response.body);
       if (response.statusCode == 200) {
-        // Handle successful login, e.g., save token, navigate, etc.
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Seller signed in successfully!")),
+            const SnackBar(content: Text("Seller signed in successfully!")),
           );
-        } else {
-          final errorResponse = jsonDecode(response.body);
-          throw Exception(
-              errorResponse['message'] ?? 'Failed to sign in seller');
         }
+        return true;
+      } else {
+        final errorResponse = jsonDecode(response.body);
+        throw Exception(errorResponse['message'] ?? 'Failed to sign in seller');
       }
     } catch (e) {
       print('Error signing in seller: ${e.toString()}');
@@ -102,6 +100,7 @@ class SellerControllers {
           SnackBar(content: Text("Failed to sign in seller: $e")),
         );
       }
+      return false;
     }
   }
 }
