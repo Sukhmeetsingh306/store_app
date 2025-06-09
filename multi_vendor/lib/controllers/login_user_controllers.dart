@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
-import 'package:random_avatar/random_avatar.dart'; // Add this import
 import 'package:multi_vendor/globals_variables.dart';
 import 'package:multi_vendor/models/login_user_models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../provider/user_provider.dart';
 import '../services/http/http_services.dart';
+import '../utils/widget/random/avatar_random.dart';
 
 final riverpodContainer = ProviderContainer();
 
@@ -63,16 +63,6 @@ class LoginUserControllers {
     } catch (e) {
       print('Error: ${e.toString()}');
     }
-  }
-
-  // Function to generate a random avatar using RandomAvatar package
-  String generateRandomAvatar() {
-    // Returns a unique random avatar URL using the current time
-    return RandomAvatar(
-      DateTime.now().toIso8601String(), // Unique seed for avatar
-      height: 90,
-      width: 90,
-    ).toString();
   }
 
   Future<bool> signInUsers({
