@@ -3,6 +3,7 @@ import 'package:multi_vendor/models/api/category_api_models.dart';
 import 'package:multi_vendor/screen/authentication/login_auth_screen.dart';
 import 'package:multi_vendor/screen/authentication/register_auth_screen.dart';
 import 'package:multi_vendor/screen/authentication/seller_auth_screen.dart';
+import 'package:multi_vendor/screen/authentication/seller_login_auth_screen.dart';
 import 'package:multi_vendor/screen/user/home_user_screen.dart';
 import 'package:multi_vendor/utils/routes/splash_screen_route.dart';
 
@@ -29,6 +30,10 @@ class AppRoutes {
       GoRoute(
         path: '/sellerPage',
         builder: (context, state) => const SellerAuthScreen(),
+      ),
+      GoRoute(
+        path: '/sellerLoginPage',
+        builder: (context, state) => const SellerLoginAuthScreen(),
       ),
       GoRoute(
         path: '/homePage',
