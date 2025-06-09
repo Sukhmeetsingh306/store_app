@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 
 import '../globals_variables.dart';
 import '../models/api/subcategory_api_models.dart';
-import '../services/http_services.dart';
+import '../services/http/http_services.dart';
 
 class SubCategoryControllers {
   uploadSubCategory({

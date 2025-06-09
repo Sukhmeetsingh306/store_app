@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 import '../globals_variables.dart';
 import '../models/api/upload_banner_api_model.dart';
-import '../services/http_services.dart';
+import '../services/http/http_services.dart';
 
 class UploadBannerControllers {
   uploadBanner({

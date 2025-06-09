@@ -6,10 +6,10 @@ import 'package:http/http.dart' as http;
 import 'package:random_avatar/random_avatar.dart'; // Add this import
 import 'package:multi_vendor/globals_variables.dart';
 import 'package:multi_vendor/models/login_user_models.dart';
-import 'package:multi_vendor/services/http_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../provider/user_provider.dart';
+import '../services/http/http_services.dart';
 
 final riverpodContainer = ProviderContainer();
 

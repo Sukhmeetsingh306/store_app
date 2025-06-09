@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:multi_vendor/services/http_services.dart';
+import 'package:multi_vendor/services/http/http_services.dart';
 
 import '../../fonts/google_fonts_utils.dart';
 import '../../routes/navigation_routes.dart';
