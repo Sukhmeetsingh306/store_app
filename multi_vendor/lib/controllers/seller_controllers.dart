@@ -67,4 +67,41 @@ class SellerControllers {
       }
     }
   }
+
+  Future<void> signInSeller({
+    required BuildContext context,
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final response = await http.post(
+        Uri.parse("$webUri/seller/signin"),
+        body: jsonEncode({'email': email, 'password': password}),
+        headers: {'Content-Type': 'application/json; charset=UTF-8'},
+      ).timeout(const Duration(seconds: 10), onTimeout: () {
+        throw Exception('Request timed out');
+      });
+
+      //final responseData = jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        // Handle successful login, e.g., save token, navigate, etc.
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Seller signed in successfully!")),
+          );
+        } else {
+          final errorResponse = jsonDecode(response.body);
+          throw Exception(
+              errorResponse['message'] ?? 'Failed to sign in seller');
+        }
+      }
+    } catch (e) {
+      print('Error signing in seller: ${e.toString()}');
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Failed to sign in seller: $e")),
+        );
+      }
+    }
+  }
 }
