@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:multi_vendor/controllers/seller_controllers.dart';
 
 // import '../../controllers/login_user_controllers.dart';
 import '../../utils/fonts/google_fonts_utils.dart';
@@ -25,7 +26,7 @@ class _SellerLoginAuthScreenState extends State<SellerLoginAuthScreen>
 
   final TextEditingController _mailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  //final LoginUserControllers _loginUserControllers = LoginUserControllers();
+  final SellerControllers _sellerControllers = SellerControllers();
 
   late AnimationController _controller;
   late Animation<double> _fadeAnimation;
@@ -379,32 +380,34 @@ class _SellerLoginAuthScreenState extends State<SellerLoginAuthScreen>
                       AppTextButton(
                         buttonText: "Login as Vendor",
                         onPressed: () async {
-                          // if (_formKey.currentState!.validate()) {
-                          //   bool isAuthenticated =
-                          //       await _loginUserControllers.signInUsers(
-                          //     context: context,
-                          //     email: _mailController.text,
-                          //     password: _passwordController.text,
-                          //   );
+                          if (_formKey.currentState!.validate()) {
+                            bool isAuthenticated =
+                                await _sellerControllers.signInSeller(
+                              context: context,
+                              email: _mailController.text.trim(),
+                              password: _passwordController.text.trim(),
+                            );
 
-                          //   if (isAuthenticated) {
-                          //     setState(() {
-                          //       hasError = false; // No error, normal spacing
-                          //     });
-                          //     print('User is validated');
-                          //   } else {
-                          //     setState(() {
-                          //       hasError = true; // Error, increase spacing
-                          //     });
-                          //     print("There is an error");
-                          //   }
-                          // } else {
-                          //   setState(() {
-                          //     hasError = true; // Error from form validation
-                          //   });
-                          // }
-                          // pushNamedAndRemoveUntil(context, '/homePage');
-                          context.go('/management');
+                            if (isAuthenticated) {
+                              setState(() {
+                                hasError = false;
+                              });
+                              print('User is validated');
+                              context.go('/management');
+                            } else {
+                              setState(() {
+                                hasError = true;
+                              });
+                              print("There is an error");
+                              // Optionally show a snackbar or error message here
+                            }
+                          } else {
+                            setState(() {
+                              hasError = true;
+                            });
+                            print("Form validation failed");
+                            // Optionally show a snackbar or form error message here
+                          }
                         },
                       ),
                     ],
