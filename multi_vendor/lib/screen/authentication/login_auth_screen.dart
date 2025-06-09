@@ -376,36 +376,76 @@ class _LoginAuthScreenState extends State<LoginAuthScreen>
                             ? MediaQuery.of(context).size.height * .022
                             : MediaQuery.of(context).size.height * .06,
                       ),
-                      AppTextButton(
-                        buttonText: "Login",
-                        onPressed: () async {
-                          // if (_formKey.currentState!.validate()) {
-                          //   bool isAuthenticated =
-                          //       await _loginUserControllers.signInUsers(
-                          //     context: context,
-                          //     email: _mailController.text,
-                          //     password: _passwordController.text,
-                          //   );
+                      Row(
+                        children: [
+                          Expanded(
+                            child: AppTextButton(
+                              buttonText: "Login as Seller",
+                              onPressed: () async {
+                                // if (_formKey.currentState!.validate()) {
+                                //   bool isAuthenticated =
+                                //       await _loginUserControllers.signInUsers(
+                                //     context: context,
+                                //     email: _mailController.text,
+                                //     password: _passwordController.text,
+                                //   );
 
-                          //   if (isAuthenticated) {
-                          //     setState(() {
-                          //       hasError = false; // No error, normal spacing
-                          //     });
-                          //     print('User is validated');
-                          //   } else {
-                          //     setState(() {
-                          //       hasError = true; // Error, increase spacing
-                          //     });
-                          //     print("There is an error");
-                          //   }
-                          // } else {
-                          //   setState(() {
-                          //     hasError = true; // Error from form validation
-                          //   });
-                          // }
-                          // pushNamedAndRemoveUntil(context, '/homePage');
-                          context.go('/homePage');
-                        },
+                                //   if (isAuthenticated) {
+                                //     setState(() {
+                                //       hasError = false; // No error, normal spacing
+                                //     });
+                                //     print('User is validated');
+                                //   } else {
+                                //     setState(() {
+                                //       hasError = true; // Error, increase spacing
+                                //     });
+                                //     print("There is an error");
+                                //   }
+                                // } else {
+                                //   setState(() {
+                                //     hasError = true; // Error from form validation
+                                //   });
+                                // }
+                                // pushNamedAndRemoveUntil(context, '/homePage');
+                                context.push('/sellerLoginPage');
+                              },
+                            ),
+                          ),
+                          SizedBox(width: 16),
+                          Expanded(
+                            child: AppTextButton(
+                              buttonText: "Login",
+                              onPressed: () async {
+                                // if (_formKey.currentState!.validate()) {
+                                //   bool isAuthenticated =
+                                //       await _loginUserControllers.signInUsers(
+                                //     context: context,
+                                //     email: _mailController.text,
+                                //     password: _passwordController.text,
+                                //   );
+
+                                //   if (isAuthenticated) {
+                                //     setState(() {
+                                //       hasError = false; // No error, normal spacing
+                                //     });
+                                //     print('User is validated');
+                                //   } else {
+                                //     setState(() {
+                                //       hasError = true; // Error, increase spacing
+                                //     });
+                                //     print("There is an error");
+                                //   }
+                                // } else {
+                                //   setState(() {
+                                //     hasError = true; // Error from form validation
+                                //   });
+                                // }
+                                // pushNamedAndRemoveUntil(context, '/homePage');
+                                context.go('/homePage');
+                              },
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
