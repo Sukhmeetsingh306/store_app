@@ -380,7 +380,7 @@ class _LoginAuthScreenState extends State<LoginAuthScreen>
                         children: [
                           Expanded(
                             child: AppTextButton(
-                              buttonText: "Login as Seller",
+                              buttonText: "Login as Vendor",
                               onPressed: () async {
                                 // if (_formKey.currentState!.validate()) {
                                 //   bool isAuthenticated =
