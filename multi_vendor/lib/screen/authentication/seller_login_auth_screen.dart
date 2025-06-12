@@ -376,39 +376,54 @@ class _SellerLoginAuthScreenState extends State<SellerLoginAuthScreen>
                             ? MediaQuery.of(context).size.height * .022
                             : MediaQuery.of(context).size.height * .06,
                       ),
-                      AppTextButton(
-                        buttonText: "Login as Vendor",
-                        onPressed: () async {
-                          // if (_formKey.currentState!.validate()) {
-                          //   bool isAuthenticated =
-                          //       await _sellerControllers.signInSeller(
-                          //     context: context,
-                          //     email: _mailController.text.trim(),
-                          //     password: _passwordController.text.trim(),
-                          //   );
+                      Row(
+                        children: [
+                          Expanded(
+                            child: AppTextButton(
+                              buttonText: "Login as User",
+                              onPressed: () async {
+                                context.go('/loginPage');
+                              },
+                            ),
+                          ),
+                          SizedBox(width: 16),
+                          Expanded(
+                            child: AppTextButton(
+                              buttonText: "Login",
+                              onPressed: () async {
+                                // if (_formKey.currentState!.validate()) {
+                                //   bool isAuthenticated =
+                                //       await _sellerControllers.signInSeller(
+                                //     context: context,
+                                //     email: _mailController.text.trim(),
+                                //     password: _passwordController.text.trim(),
+                                //   );
 
-                          //   if (isAuthenticated) {
-                          //     setState(() {
-                          //       hasError = false;
-                          //     });
-                          //     print('User is validated');
-                          //     context.go('/management');
-                          //   } else {
-                          //     setState(() {
-                          //       hasError = true;
-                          //     });
-                          //     print("There is an error");
-                          //     // Optionally show a snackbar or error message here
-                          //   }
-                          // } else {
-                          //   setState(() {
-                          //     hasError = true;
-                          //   });
-                          //   print("Form validation failed");
-                          //   // Optionally show a snackbar or form error message here
-                          // }
-                          context.go('/management');
-                        },
+                                //   if (isAuthenticated) {
+                                //     setState(() {
+                                //       hasError = false;
+                                //     });
+                                //     print('User is validated');
+                                //     context.go('/management');
+                                //   } else {
+                                //     setState(() {
+                                //       hasError = true;
+                                //     });
+                                //     print("There is an error");
+                                //     // Optionally show a snackbar or error message here
+                                //   }
+                                // } else {
+                                //   setState(() {
+                                //     hasError = true;
+                                //   });
+                                //   print("Form validation failed");
+                                //   // Optionally show a snackbar or form error message here
+                                // }
+                                context.go('/management');
+                              },
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),

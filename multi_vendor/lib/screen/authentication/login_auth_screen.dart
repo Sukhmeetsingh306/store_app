@@ -382,31 +382,6 @@ class _LoginAuthScreenState extends State<LoginAuthScreen>
                             child: AppTextButton(
                               buttonText: "Login as Vendor",
                               onPressed: () async {
-                                // if (_formKey.currentState!.validate()) {
-                                //   bool isAuthenticated =
-                                //       await _loginUserControllers.signInUsers(
-                                //     context: context,
-                                //     email: _mailController.text,
-                                //     password: _passwordController.text,
-                                //   );
-
-                                //   if (isAuthenticated) {
-                                //     setState(() {
-                                //       hasError = false; // No error, normal spacing
-                                //     });
-                                //     print('User is validated');
-                                //   } else {
-                                //     setState(() {
-                                //       hasError = true; // Error, increase spacing
-                                //     });
-                                //     print("There is an error");
-                                //   }
-                                // } else {
-                                //   setState(() {
-                                //     hasError = true; // Error from form validation
-                                //   });
-                                // }
-                                // pushNamedAndRemoveUntil(context, '/homePage');
                                 context.push('/sellerLoginPage');
                               },
                             ),
