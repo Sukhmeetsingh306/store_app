@@ -100,6 +100,30 @@ class _WebDeviceViewState extends State<WebDeviceView> {
           }
         });
         break;
+
+      case 'logout':
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          },
+        );
+
+        Future.delayed(const Duration(seconds: 3)).then((_) {
+          if (!mounted) return;
+
+          Navigator.of(context, rootNavigator: true).pop();
+
+          if (Navigator.of(context).canPop()) {
+            Navigator.of(context).pop();
+          } else {
+            context.go('/sellerLoginPage');
+          }
+        });
+        break;
     }
   }
 
@@ -218,6 +242,11 @@ class _WebDeviceViewState extends State<WebDeviceView> {
           route: 'return',
           icon: Icons.arrow_back_sharp,
         ),
+        AdminMenuItem(
+          title: 'Logout',
+          route: 'logout',
+          icon: Icons.logout_outlined,
+        )
       ];
 
   Widget buildSideBarContent({bool isInsideDrawer = false}) {
