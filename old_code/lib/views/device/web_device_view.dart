@@ -132,6 +132,7 @@ class _WebDeviceViewState extends State<WebDeviceView> {
           ),
         ],
         textStyle: TextStyle(
+          fontFamily: 'Inter',
           color: Colors.black,
           fontWeight: FontWeight.w400,
         ),
