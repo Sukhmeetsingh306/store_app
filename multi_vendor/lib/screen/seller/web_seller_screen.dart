@@ -238,9 +238,9 @@ class _WebDeviceViewState extends State<WebDeviceView> {
           icon: Icons.shopping_cart_outlined,
         ),
         AdminMenuItem(
-          title: 'Return',
+          title: 'Customer Side',
           route: 'return',
-          icon: Icons.arrow_back_sharp,
+          icon: Icons.person_2_outlined,
         ),
         AdminMenuItem(
           title: 'Logout',
