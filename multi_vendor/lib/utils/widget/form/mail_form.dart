@@ -13,7 +13,7 @@ class MailForm extends StatefulWidget {
     required this.isLargeScreen,
     required this.hasError,
     required this.otpMailController,
-    this.name,
+    this.name = '',
   });
 
   final TextEditingController mailController;
@@ -67,7 +67,7 @@ class _MailFormState extends State<MailForm> {
         textFormField(
           widget.mailController,
           autovalidateMode: AutovalidateMode.onUserInteraction,
-          ' ${widget.name} mail',
+          '${widget.name} mail',
           hintText: 'Eg: abc@gmail.com',
           (value) {
             if (value == null || value.isEmpty) {
