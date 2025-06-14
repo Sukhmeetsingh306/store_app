@@ -4,10 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/phone_number.dart';
 import 'package:multi_vendor/utils/widget/animation/seller_widget_utils_animation.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:multi_vendor/utils/widget/form/image_picker_form.dart';
 
 import '../../utils/fonts/google_fonts_utils.dart';
 import '../../utils/fonts/text_fonts_utils.dart';
@@ -40,6 +39,8 @@ class _SellerAuthScreenState extends State<SellerAuthScreen>
   final TextEditingController _otpPhoneController = TextEditingController();
   final TextEditingController _gstController = TextEditingController();
 
+  final ImagePickerForm _imagePickerForm = ImagePickerForm();
+
   int descriptionCharCount = 0;
 
   String mail = '';
@@ -55,36 +56,11 @@ class _SellerAuthScreenState extends State<SellerAuthScreen>
   File? _imageFile;
   Uint8List? _webImage;
 
-  Future<void> _pickImage() async {
-    final ImagePicker picker = ImagePicker();
-
-    if (!kIsWeb) {
-      if (Platform.isAndroid || Platform.isIOS) {
-        var status = await Permission.photos.request(); // Request permission
-
-        if (status.isDenied || status.isPermanentlyDenied) {
-          print('Permission denied');
-          openAppSettings(); // Open app settings if denied
-          return;
-        }
-      }
-    }
-
-    final XFile? pickedFile =
-        await picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      if (kIsWeb) {
-        // Convert to Uint8List for web
-        final bytes = await pickedFile.readAsBytes();
-        setState(() {
-          _webImage = bytes;
-        });
-      } else {
-        setState(() {
-          _imageFile = File(pickedFile.path);
-        });
-      }
-    }
+  void _onImagePicked(File? file, Uint8List? webImage) {
+    setState(() {
+      _imageFile = file;
+      _webImage = webImage;
+    });
   }
 
   @override
@@ -228,7 +204,7 @@ class _SellerAuthScreenState extends State<SellerAuthScreen>
                         ? (_webImage != null ? MemoryImage(_webImage!) : null)
                         : (_imageFile != null ? FileImage(_imageFile!) : null),
                     child: GestureDetector(
-                      onTap: _pickImage,
+                      onTap: () => _imagePickerForm.pickImage(_onImagePicked),
                       child: Container(
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
