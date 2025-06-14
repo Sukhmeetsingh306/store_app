@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl_phone_field/phone_number.dart';
 import 'package:multi_vendor/utils/widget/animation/seller_widget_utils_animation.dart';
 import 'package:multi_vendor/utils/widget/form/image_picker_form.dart';
+import 'package:multi_vendor/utils/widget/form/mail_form.dart';
 
 import '../../utils/fonts/google_fonts_utils.dart';
 import '../../utils/fonts/text_fonts_utils.dart';
@@ -67,35 +68,6 @@ class _SellerAuthScreenState extends State<SellerAuthScreen>
   void initState() {
     _animationUtils = SellerWidgetUtilsAnimation(vsync: this);
     super.initState();
-  }
-
-  final List<String> mailDomains = [
-    'gmail.com',
-    'yahoo.com',
-    'icloud.com',
-    'outlook.com',
-  ];
-  String selectedDomain = 'gmail.com';
-
-  void _updateEmail() {
-    String mail = _mailController.text.split('@')[0];
-    _mailController.text = '$mail@$selectedDomain';
-    _mailController.selection = TextSelection.fromPosition(
-      TextPosition(offset: mail.length),
-    );
-  }
-
-  void _sendmailOTP() {
-    if (_mailController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please enter a valid mail')),
-      );
-      return;
-    }
-
-    setState(() {
-      otpMailSent = true;
-    });
   }
 
   void _sendPhoneOTP() {
@@ -272,110 +244,13 @@ class _SellerAuthScreenState extends State<SellerAuthScreen>
                   },
                 ),
                 sizedBoxH10(),
-                textFormField(
-                  _mailController,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  'Company mail',
-                  hintText: 'Eg: abc@gmail.com',
-                  (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your mail';
-                    } else if (!RegExp(r"^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$")
-                        .hasMatch(value)) {
-                      return 'Please enter a valid mail';
-                    }
-                    return null;
-                  },
-                  suffixIcon: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      value: selectedDomain,
-                      alignment: Alignment.centerRight,
-                      onChanged: (String? newValue) {
-                        if (newValue != null) {
-                          setState(() {
-                            selectedDomain = newValue;
-                            _updateEmail();
-                          });
-                        }
-                      },
-                      items: mailDomains
-                          .map<DropdownMenuItem<String>>((String domain) {
-                        return DropdownMenuItem<String>(
-                          value: domain,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                "@$domain",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                ),
-                              ), // Smaller dropdown icon
-                            ],
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                  keyboardType: TextInputType.emailAddress,
-                  autofillHints: [AutofillHints.email],
-                  onChanged: (value) {
-                    _updateEmail();
-                  },
+                MailForm(
+                  mailController: _mailController,
+                  isLargeScreen: isLargeScreen,
+                  hasError: hasError,
+                  otpMailController: _otpMailController,
+                  name: 'Company',
                 ),
-                sizedBoxH15(),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start, // important!
-                  children: [
-                    Expanded(
-                      child: Column(
-                        children: [
-                          textFormField(
-                            _otpMailController,
-                            hintText: 'Eg: 12345',
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            'Company mail OTP',
-                            keyboardType: TextInputType.number,
-                            inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
-                            (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter a valid OTP';
-                              }
-                              return null;
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(width: 10),
-                    Column(
-                      children: [
-                        isLargeScreen
-                            ? SizedBox(height: hasError ? 8 : 2)
-                            : SizedBox(height: hasError ? 14 : 8),
-                        AppTextButton(
-                          onPressed: _sendmailOTP,
-                          buttonText: 'OTP',
-                          buttonWidth: 75,
-                          buttonHeight: 45,
-                          horizontalPadding: 0,
-                          verticalPadding: 0,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                if (otpMailSent)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 4.0),
-                    child: googleInterText(
-                      'OTP has been sent to your mail',
-                      fontSize: 10,
-                    ),
-                  ),
                 sizedBoxH15(),
                 FormField<PhoneNumber>(
                   autovalidateMode: AutovalidateMode.onUserInteraction,
