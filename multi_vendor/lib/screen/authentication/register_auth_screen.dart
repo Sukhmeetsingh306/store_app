@@ -371,6 +371,58 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen>
                     },
                   ),
                   sizedBoxH15(),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start, // important!
+                    children: [
+                      Expanded(
+                        child: Column(
+                          children: [
+                            textFormField(
+                              _otpMailController,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              'mail OTP',
+                              keyboardType: TextInputType.number,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter a valid OTP';
+                                }
+                                return null;
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Column(
+                        children: [
+                          isLargeScreen
+                              ? SizedBox(height: hasError ? 8 : 2)
+                              : SizedBox(height: hasError ? 14 : 8),
+                          AppTextButton(
+                            onPressed: _sendmailOTP,
+                            buttonText: 'OTP',
+                            buttonWidth: 75,
+                            buttonHeight: 45,
+                            horizontalPadding: 0,
+                            verticalPadding: 0,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  if (otpMailSent)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4.0),
+                      child: googleInterText(
+                        'OTP has been sent to your mail',
+                        fontSize: 10,
+                      ),
+                    ),
+                  sizedBoxH15(),
                   textFormField(
                     _passwordController,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -437,58 +489,6 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen>
                     ),
                     obscureText: _confirmObscureText,
                   ),
-                  sizedBoxH15(),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start, // important!
-                    children: [
-                      Expanded(
-                        child: Column(
-                          children: [
-                            textFormField(
-                              _otpMailController,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              'mail OTP',
-                              keyboardType: TextInputType.number,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly
-                              ],
-                              (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter a valid OTP';
-                                }
-                                return null;
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      Column(
-                        children: [
-                          isLargeScreen
-                              ? SizedBox(height: hasError ? 8 : 2)
-                              : SizedBox(height: hasError ? 14 : 8),
-                          AppTextButton(
-                            onPressed: _sendmailOTP,
-                            buttonText: 'OTP',
-                            buttonWidth: 75,
-                            buttonHeight: 45,
-                            horizontalPadding: 0,
-                            verticalPadding: 0,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  if (otpMailSent)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 4.0),
-                      child: googleInterText(
-                        'OTP has been sent to your mail',
-                        fontSize: 10,
-                      ),
-                    ),
                   sizedBoxH15(),
                   PasswordValidations(hasMinLength: hasMinLength),
                 ],
