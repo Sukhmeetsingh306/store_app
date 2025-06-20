@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl_phone_field/phone_number.dart';
 
+import '../../controllers/login_user_controllers.dart';
 import '../../utils/fonts/google_fonts_utils.dart';
 import '../../utils/fonts/text_fonts_utils.dart';
 import '../../utils/routes/navigation_routes.dart';
@@ -18,7 +19,14 @@ import '../../utils/widget/form/textForm_form.dart';
 import '../../utils/widget/space_widget_utils.dart';
 
 class RegisterDetailAuthScreen extends StatefulWidget {
-  const RegisterDetailAuthScreen({super.key});
+  const RegisterDetailAuthScreen({
+    super.key,
+    required this.email,
+    required this.password,
+  });
+
+  final String email;
+  final String password;
 
   @override
   State<RegisterDetailAuthScreen> createState() =>
@@ -35,6 +43,8 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen>
   final TextEditingController _otpPhoneController = TextEditingController();
   final ImagePickerForm _imagePickerForm = ImagePickerForm();
 
+  final LoginUserControllers _loginUserControllers = LoginUserControllers();
+
   late SellerWidgetUtilsAnimation _animationUtils;
 
   File? _imageFile;
@@ -47,6 +57,9 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen>
   @override
   void initState() {
     _animationUtils = SellerWidgetUtilsAnimation(vsync: this);
+
+    print('Received mail: ${widget.email}');
+    print('Received password: ${widget.password}');
     super.initState();
   }
 
@@ -70,18 +83,18 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen>
     });
   }
 
-  Map<String, String>? data;
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  //Map<String, String>? data;
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
 
-    if (data == null) {
-      // Extract arguments from ModalRoute safely here
-      data = ModalRoute.of(context)?.settings.arguments as Map<String, String>?;
-      print(
-          "mail: ${data?['mail']}"); // Debug to confirm data is passed correctly
-    }
-  }
+  //   if (data == null) {
+  //     // Extract arguments from ModalRoute safely here
+  //     data = ModalRoute.of(context)?.settings.arguments as Map<String, String>?;
+  //     print(
+  //         "mail: ${data?['mail']}"); // Debug to confirm data is passed correctly
+  //   }
+  // }
 
   @override
   void dispose() {
@@ -434,9 +447,29 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen>
                   if (isSeller) {
                     context.go('/sellerPage');
                   } else {
-                    context.go('/loginPage');
+                    if (_formKey.currentState!.validate()) {
+                      if (widget.email.isEmpty || widget.password.isEmpty) {
+                        print("❗ Mail or password is missing.");
+                        return;
+                      }
+                      if (_formKey.currentState!.validate()) {
+                        await _loginUserControllers.signUpUsers(
+                          context: context,
+                          email: widget.email,
+                          name: _nameController.text,
+                          password: widget.password,
+                          phone: _phoneController.text,
+                          age: int.parse(_ageController.text),
+                        );
+                        setState(() {
+                          _formKey.currentState!.reset();
+                        });
+                      }
+                      if (!context.mounted) return;
+                      context.go('/loginPage');
+                    }
+                    //}
                   }
-                  //}
                 },
               ),
               sizedBoxH10(),

@@ -45,7 +45,7 @@ class LoginUserControllers {
 
       http.Response response = await http.post(
         Uri.parse('$webUri/signup'),
-        body: jsonEncode(user.toJson()),
+        body: jsonEncode(user.toUser()),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

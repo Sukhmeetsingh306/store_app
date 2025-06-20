@@ -26,6 +26,7 @@ class RegisterAuthScreen extends StatefulWidget {
 class _RegisterAuthScreenState extends State<RegisterAuthScreen>
     with TickerProviderStateMixin {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   final TextEditingController _mailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
@@ -277,11 +278,16 @@ class _RegisterAuthScreenState extends State<RegisterAuthScreen>
               sizedBoxH15(),
               AppTextButton(
                 buttonText: "Create Account",
-                onPressed: () {
-                  materialRouteNavigator(
-                    context,
-                    RegisterDetailAuthScreen(),
-                  );
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    materialRouteNavigator(
+                      context,
+                      RegisterDetailAuthScreen(
+                        email: _mailController.text,
+                        password: _passwordController.text,
+                      ),
+                    );
+                  }
                 },
               ),
             ],
