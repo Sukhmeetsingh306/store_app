@@ -38,7 +38,6 @@ class _SellerAuthScreenState extends State<SellerAuthScreen>
   final TextEditingController _otpMailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _otpPhoneController = TextEditingController();
-  final TextEditingController _gstController = TextEditingController();
 
   final ImagePickerForm _imagePickerForm = ImagePickerForm();
 
@@ -325,23 +324,6 @@ class _SellerAuthScreenState extends State<SellerAuthScreen>
                     ),
                   ),
                 sizedBoxH15(),
-                textFormField(
-                  _gstController,
-                  'GST Number (Optional)',
-                  hintText: 'Eg: 22AAAAA0000A1Z5',
-                  (value) {
-                    if (value != null && value.isNotEmpty) {
-                      final gstRegex = RegExp(
-                          r'^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$');
-                      if (!gstRegex.hasMatch(value)) {
-                        return 'Please enter a valid GST number';
-                      }
-                    }
-                    return null;
-                  },
-                  keyboardType: TextInputType.text,
-                  maxLength: 15,
-                ),
               ],
             ),
           ),
@@ -363,6 +345,7 @@ class _SellerAuthScreenState extends State<SellerAuthScreen>
               AppTextButton(
                 buttonText: 'Create Account',
                 onPressed: () async {
+                  context.push('/sellerTaxDetailPage');
                   //if (_formKey.currentState!.validate()) {
                   // if (isSeller) {
                   //   Navigator.pushNamed(context, '/sellerPage');
