@@ -25,14 +25,14 @@ class LiveKitTheme {
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
-            padding: MaterialStateProperty.all<EdgeInsets>(
+            padding: WidgetStateProperty.all<EdgeInsets>(
                 const EdgeInsets.symmetric(vertical: 20, horizontal: 25)),
-            shape: MaterialStateProperty.all<OutlinedBorder>(
+            shape: WidgetStateProperty.all<OutlinedBorder>(
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
-            foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+            foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
             // backgroundColor: MaterialStateProperty.all<Color>(accentColor),
-            backgroundColor: MaterialStateProperty.resolveWith((states) {
-              if (states.contains(MaterialState.disabled)) {
+            backgroundColor: WidgetStateProperty.resolveWith((states) {
+              if (states.contains(WidgetState.disabled)) {
                 return accentColor.withOpacity(0.5);
               }
               return accentColor;
@@ -40,8 +40,8 @@ class LiveKitTheme {
           ),
         ),
         checkboxTheme: CheckboxThemeData(
-          checkColor: MaterialStateProperty.all(Colors.white),
-          fillColor: MaterialStateProperty.all(accentColor),
+          checkColor: WidgetStateProperty.all(Colors.white),
+          fillColor: WidgetStateProperty.all(accentColor),
         ),
         // switchTheme: SwitchThemeData(
         //   trackColor: MaterialStateProperty.resolveWith((states) {
