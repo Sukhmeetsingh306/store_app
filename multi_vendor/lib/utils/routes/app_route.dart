@@ -7,6 +7,7 @@ import 'package:multi_vendor/screen/authentication/seller_login_auth_screen.dart
 import 'package:multi_vendor/screen/user/home_user_screen.dart';
 import 'package:multi_vendor/utils/routes/splash_screen_route.dart';
 
+import '../../screen/authentication/seller_tax_detail_screen.dart';
 import '../../screen/seller/web_seller_screen.dart';
 import '../../screen/user/widget/inner_category_widget_user.dart';
 import '../../screen/user/widget/navigation/category_navigation_screen.dart';
@@ -35,6 +36,11 @@ class AppRoutes {
         path: '/sellerLoginPage',
         builder: (context, state) => const SellerLoginAuthScreen(),
       ),
+      GoRoute(
+          path: '/sellerTaxDetailPage',
+          builder: (context, state) {
+            return const SellerTaxDetailScreen();
+          }),
       GoRoute(
         path: '/homePage',
         builder: (context, state) => HomeUserScreen(),
