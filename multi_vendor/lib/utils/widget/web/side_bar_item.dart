@@ -117,12 +117,8 @@ class SideBarItem extends StatelessWidget {
             icon,
             size: 22,
             color: selected
-                ? activeIconColor != null
-                    ? activeIconColor
-                    : activeTextStyle.color
-                : iconColor != null
-                    ? iconColor
-                    : textStyle.color,
+                ? activeIconColor ?? activeTextStyle.color
+                : iconColor ?? textStyle.color,
           )
         : SizedBox();
   }
