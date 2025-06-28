@@ -277,7 +277,7 @@ class _SellerTaxDetailScreenState extends State<SellerTaxDetailScreen>
               AppTextButton(
                 buttonText: 'Create Account',
                 onPressed: () async {
-                  //context.push('/sellerTaxDetailPage');
+                  context.push('/sellerBankDetailPage');
                   //if (_formKey.currentState!.validate()) {
                   // if (isSeller) {
                   //   Navigator.pushNamed(context, '/sellerPage');
