@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 //import 'package:multi_vendor/controllers/seller_controllers.dart';
 
-import '../../utils/fonts/google_fonts_utils.dart';
-import '../../utils/fonts/text_fonts_utils.dart';
-import '../../utils/validation/password_validations.dart';
-import '../../utils/widget/animation/seller_widget_utils_animation.dart';
-import '../../utils/widget/form/appTextButton_form.dart' show AppTextButton;
-import '../../utils/widget/form/textForm_form.dart';
-import '../../utils/widget/space_widget_utils.dart';
+import '../../../utils/fonts/google_fonts_utils.dart';
+import '../../../utils/fonts/text_fonts_utils.dart';
+import '../../../utils/validation/password_validations.dart';
+import '../../../utils/widget/animation/seller_widget_utils_animation.dart';
+import '../../../utils/widget/form/appTextButton_form.dart' show AppTextButton;
+import '../../../utils/widget/form/textForm_form.dart';
+import '../../../utils/widget/space_widget_utils.dart';
 
 class SellerLoginAuthScreen extends StatefulWidget {
   const SellerLoginAuthScreen({super.key});

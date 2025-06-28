@@ -9,14 +9,14 @@ import 'package:multi_vendor/utils/widget/animation/seller_widget_utils_animatio
 import 'package:multi_vendor/utils/widget/form/image_picker_form.dart';
 import 'package:multi_vendor/utils/widget/form/mail_form.dart';
 
-import '../../utils/fonts/google_fonts_utils.dart';
-import '../../utils/fonts/text_fonts_utils.dart';
-import '../../utils/routes/navigation_routes.dart';
-import '../../utils/theme/color/color_theme.dart';
-import '../../utils/validation/termsAndConditions_core.dart';
-import '../../utils/widget/form/appTextButton_form.dart';
-import '../../utils/widget/form/textForm_form.dart';
-import '../../utils/widget/space_widget_utils.dart';
+import '../../../utils/fonts/google_fonts_utils.dart';
+import '../../../utils/fonts/text_fonts_utils.dart';
+import '../../../utils/routes/navigation_routes.dart';
+import '../../../utils/theme/color/color_theme.dart';
+import '../../../utils/validation/termsAndConditions_core.dart';
+import '../../../utils/widget/form/appTextButton_form.dart';
+import '../../../utils/widget/form/textForm_form.dart';
+import '../../../utils/widget/space_widget_utils.dart';
 
 class SellerAuthScreen extends StatefulWidget {
   const SellerAuthScreen({super.key});

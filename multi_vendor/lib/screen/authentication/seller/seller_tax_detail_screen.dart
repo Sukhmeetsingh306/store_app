@@ -4,13 +4,13 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../utils/fonts/google_fonts_utils.dart';
-import '../../utils/fonts/text_fonts_utils.dart';
-import '../../utils/routes/navigation_routes.dart';
-import '../../utils/validation/termsAndConditions_core.dart';
-import '../../utils/widget/form/appTextButton_form.dart';
-import '../../utils/widget/form/textForm_form.dart';
-import '../../utils/widget/space_widget_utils.dart';
+import '../../../utils/fonts/google_fonts_utils.dart';
+import '../../../utils/fonts/text_fonts_utils.dart';
+import '../../../utils/routes/navigation_routes.dart';
+import '../../../utils/validation/termsAndConditions_core.dart';
+import '../../../utils/widget/form/appTextButton_form.dart';
+import '../../../utils/widget/form/textForm_form.dart';
+import '../../../utils/widget/space_widget_utils.dart';
 
 class SellerTaxDetailScreen extends StatefulWidget {
   const SellerTaxDetailScreen({super.key});

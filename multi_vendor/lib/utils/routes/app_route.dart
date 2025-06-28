@@ -2,12 +2,12 @@ import 'package:go_router/go_router.dart';
 import 'package:multi_vendor/models/api/category_api_models.dart';
 import 'package:multi_vendor/screen/authentication/login_auth_screen.dart';
 import 'package:multi_vendor/screen/authentication/register_auth_screen.dart';
-import 'package:multi_vendor/screen/authentication/seller_auth_screen.dart';
-import 'package:multi_vendor/screen/authentication/seller_login_auth_screen.dart';
+import 'package:multi_vendor/screen/authentication/seller/seller_auth_screen.dart';
+import 'package:multi_vendor/screen/authentication/seller/seller_login_auth_screen.dart';
 import 'package:multi_vendor/screen/user/home_user_screen.dart';
 import 'package:multi_vendor/utils/routes/splash_screen_route.dart';
 
-import '../../screen/authentication/seller_tax_detail_screen.dart';
+import '../../screen/authentication/seller/seller_tax_detail_screen.dart';
 import '../../screen/seller/web_seller_screen.dart';
 import '../../screen/user/widget/inner_category_widget_user.dart';
 import '../../screen/user/widget/navigation/category_navigation_screen.dart';
