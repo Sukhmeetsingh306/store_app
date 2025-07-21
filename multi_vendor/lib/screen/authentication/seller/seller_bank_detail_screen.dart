@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../../utils/fonts/google_fonts_utils.dart';
 import '../../../utils/fonts/text_fonts_utils.dart';
 import '../../../utils/routes/navigation_routes.dart';
 import '../../../utils/validation/termsAndConditions_core.dart';
@@ -200,7 +201,29 @@ class _SellerBankDetailScreenState extends State<SellerBankDetailScreen>
 
   Widget _pageInnerCode(bool isLargeScreen) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            googleInterText(
+              'Withdrawals Details',
+              fontWeight: FontWeight.w700,
+              fontSize: 24,
+            ),
+            sizedBoxH8(),
+            googleInterText(
+              'Select a withdrawal method and provide the necessary details.',
+              fontWeight: FontWeight.w400,
+              fontSize: 14,
+            ),
+          ],
+        ),
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.042,
+        ),
         _buildOptionButton(PaymentMethodType.upi, "UPI"),
         _buildUPIForm(),
         _buildOptionButton(PaymentMethodType.bank, "Bank Account"),
