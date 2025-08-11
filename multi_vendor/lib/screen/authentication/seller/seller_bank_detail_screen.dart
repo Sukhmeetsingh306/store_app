@@ -236,6 +236,7 @@ class _SellerBankDetailScreenState extends State<SellerBankDetailScreen>
 
   Widget buttonBottomCode(GlobalKey<FormState> formKey, BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         _animationUtils.buildAnimated(
           type: SellerAnimationType.fadeSlide3,
@@ -247,13 +248,6 @@ class _SellerBankDetailScreenState extends State<SellerBankDetailScreen>
                 buttonText: 'Create Account',
                 onPressed: () async {
                   context.push('/');
-                  //if (_formKey.currentState!.validate()) {
-                  // if (isSeller) {
-                  //   Navigator.pushNamed(context, '/sellerPage');
-                  // } else {
-                  //   Navigator.pushReplacementNamed(context, '/loginPage');
-                  // }
-                  //}
                 },
               ),
             ],
@@ -328,14 +322,14 @@ class _SellerBankDetailScreenState extends State<SellerBankDetailScreen>
                   ],
                 ),
               )
-            : Column(
-                mainAxisSize: MainAxisSize.min,
+            : Stack(
                 children: [
-                  SingleChildScrollView(
-                    child: _pageInnerCode(isLargeScreen),
+                  _pageInnerCode(isLargeScreen), // Scrollable content
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: buttonBottomCode(
+                        _formKey, context), // Floating bottom button
                   ),
-                  SizedBox(height: 115),
-                  buttonBottomCode(_formKey, context),
                 ],
               ),
       ),
@@ -371,79 +365,10 @@ class _SellerBankDetailScreenState extends State<SellerBankDetailScreen>
                     horizontal: 30,
                     vertical: 15,
                   ),
-                  child: SingleChildScrollView(
-                    child: pageCode(isLargeScreen),
-                  ),
+                  child: pageCode(isLargeScreen),
                 ),
               );
       }),
     );
   }
 }
-/**
-
- Widget buttonBottomCode(GlobalKey<FormState> formKey, BuildContext context) {
-    return Column(
-      children: [
-        _animationUtils.buildAnimated(
-          type: SellerAnimationType.fadeSlide3,
-          child: Column(
-            children: [
-              Center(child: TermsAndConditionsText()),
-              sizedBoxH15(),
-              AppTextButton(
-                buttonText: 'Create Account',
-                onPressed: () async {
-                  context.push('/sellerBankDetailPage');
-                  //if (_formKey.currentState!.validate()) {
-                  // if (isSeller) {
-                  //   Navigator.pushNamed(context, '/sellerPage');
-                  // } else {
-                  //   Navigator.pushReplacementNamed(context, '/loginPage');
-                  // }
-                  //}
-                },
-              ),
-            ],
-          ),
-        ),
-        sizedBoxH10(),
-        _animationUtils.buildAnimated(
-          type: SellerAnimationType.fadeSlideScale2,
-          child: Column(
-            children: [
-              InkWell(
-                onTap: () async {
-                  if (Navigator.of(context).canPop()) {
-                    pop(context);
-                  } else {
-                    context.go('/sellerPage');
-                  }
-                },
-                child: Center(
-                  child: RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      children: [
-                        textSpan(
-                          'Preview Details?',
-                          fontSize: 14,
-                        ),
-                        textSpan(
-                          ' Preview',
-                          fontSize: 14,
-                          color: const Color.fromRGBO(36, 124, 255, 1),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              sizedBoxH5(),
-              Divider(),
-            ],
-          ),
-        ),
-      ],
-    );
-  }*/
