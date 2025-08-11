@@ -66,7 +66,7 @@ class _SellerLoginAuthScreenState extends State<SellerLoginAuthScreen>
     );
   }
 
-  Widget pageCode(bool isLargeScreen) {
+  Widget pageCode(bool isLargeScreen, bool isLargeScreenWeb) {
     return ConstrainedBox(
       constraints: BoxConstraints(
         maxWidth: isLargeScreen ? 500 : double.infinity,
@@ -311,7 +311,9 @@ class _SellerLoginAuthScreenState extends State<SellerLoginAuthScreen>
                     Center(
                       child: GestureDetector(
                         onTap: () {
-                          context.push('/sellerPage');
+                          isLargeScreenWeb
+                              ? context.go('/sellerPage')
+                              : context.push('/sellerPage');
                         },
                         child: RichText(
                           textAlign: TextAlign.center,
@@ -347,6 +349,7 @@ class _SellerLoginAuthScreenState extends State<SellerLoginAuthScreen>
     return Scaffold(
       body: LayoutBuilder(builder: (context, constraints) {
         bool isLargeScreen = constraints.maxWidth > 900;
+        bool isLargeScreenWeb = constraints.maxWidth > 450;
         return isLargeScreen
             ? Stack(
                 children: [
@@ -361,14 +364,15 @@ class _SellerLoginAuthScreenState extends State<SellerLoginAuthScreen>
                   ),
                   Container(
                     color: Colors.grey[200],
-                    child: Center(child: pageCode(isLargeScreen)),
+                    child: Center(
+                        child: pageCode(isLargeScreen, isLargeScreenWeb)),
                   ),
                 ],
               )
             : SafeArea(
                 child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                    child: pageCode(isLargeScreen)));
+                    child: pageCode(isLargeScreen, isLargeScreenWeb)));
       }),
     );
   }

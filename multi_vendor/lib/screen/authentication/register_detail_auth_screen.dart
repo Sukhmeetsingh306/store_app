@@ -118,6 +118,7 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen>
     return Scaffold(
       body: LayoutBuilder(builder: (context, constraints) {
         bool isLargeScreen = constraints.maxWidth > 900;
+        bool isLargeScreenWeb = constraints.maxWidth > 450;
         return isLargeScreen
             ? Stack(
                 children: [
@@ -132,14 +133,16 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen>
                   ),
                   Container(
                     color: Colors.grey[200],
-                    child: Center(child: pageCode(context, isLargeScreen)),
+                    child: Center(
+                        child:
+                            pageCode(context, isLargeScreen, isLargeScreenWeb)),
                   ),
                 ],
               )
             : SafeArea(
                 child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                    child: pageCode(context, isLargeScreen)),
+                    child: pageCode(context, isLargeScreen, isLargeScreenWeb)),
               );
       }),
     );
@@ -387,7 +390,11 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen>
     );
   }
 
-  Widget pageCode(BuildContext context, bool isLargeScreen) {
+  Widget pageCode(
+    BuildContext context,
+    bool isLargeScreen,
+    bool isLargeScreenWeb,
+  ) {
     return ConstrainedBox(
       constraints: BoxConstraints(
         maxWidth: isLargeScreen ? 500 : double.infinity,
@@ -411,7 +418,7 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen>
                   children: [
                     pageInnerCode(context, isLargeScreen),
                     SizedBox(height: 25),
-                    buttonBottomCodeDetail(_formKey, context),
+                    buttonBottomCodeDetail(_formKey, context, isLargeScreenWeb),
                   ],
                 ),
               )
@@ -423,7 +430,7 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen>
                       child: pageInnerCode(context, isLargeScreen),
                     ),
                   ),
-                  buttonBottomCodeDetail(_formKey, context),
+                  buttonBottomCodeDetail(_formKey, context, isLargeScreenWeb),
                 ],
               ),
       ),
@@ -431,7 +438,10 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen>
   }
 
   Widget buttonBottomCodeDetail(
-      GlobalKey<FormState> formKey, BuildContext context) {
+    GlobalKey<FormState> formKey,
+    BuildContext context,
+    bool isLargeScreenWeb,
+  ) {
     return Column(
       children: [
         _animationUtils.buildAnimated(
@@ -445,7 +455,9 @@ class _RegisterDetailAuthScreenState extends State<RegisterDetailAuthScreen>
                 onPressed: () async {
                   //if (_formKey.currentState!.validate()) {
                   if (isSeller) {
-                    context.go('/sellerPage');
+                    isLargeScreenWeb
+                        ? context.go('/sellerPage')
+                        : context.push('/sellerPage');
                   } else {
                     if (_formKey.currentState!.validate()) {
                       if (widget.email.isEmpty || widget.password.isEmpty) {

@@ -72,7 +72,7 @@ class _SellerTaxDetailScreenState extends State<SellerTaxDetailScreen>
     });
   }
 
-  Widget pageCode(bool isLargeScreen) {
+  Widget pageCode(bool isLargeScreen, bool isLargeScreenWeb) {
     return ConstrainedBox(
       constraints: BoxConstraints(
         maxWidth: isLargeScreen ? 500 : double.infinity,
@@ -96,7 +96,7 @@ class _SellerTaxDetailScreenState extends State<SellerTaxDetailScreen>
                   children: [
                     _pageInnerCode(isLargeScreen),
                     SizedBox(height: 25),
-                    buttonBottomCode(_formKey, context),
+                    buttonBottomCode(_formKey, context, isLargeScreenWeb),
                   ],
                 ),
               )
@@ -107,7 +107,7 @@ class _SellerTaxDetailScreenState extends State<SellerTaxDetailScreen>
                     child: _pageInnerCode(isLargeScreen),
                   ),
                   SizedBox(height: 115),
-                  buttonBottomCode(_formKey, context),
+                  buttonBottomCode(_formKey, context, isLargeScreenWeb),
                 ],
               ),
       ),
@@ -265,7 +265,11 @@ class _SellerTaxDetailScreenState extends State<SellerTaxDetailScreen>
     );
   }
 
-  Widget buttonBottomCode(GlobalKey<FormState> formKey, BuildContext context) {
+  Widget buttonBottomCode(
+    GlobalKey<FormState> formKey,
+    BuildContext context,
+    bool isLargeScreenWeb,
+  ) {
     return Column(
       children: [
         _animationUtils.buildAnimated(
@@ -277,7 +281,9 @@ class _SellerTaxDetailScreenState extends State<SellerTaxDetailScreen>
               AppTextButton(
                 buttonText: 'Create Account',
                 onPressed: () async {
-                  context.push('/sellerBankDetailPage');
+                  isLargeScreenWeb
+                      ? context.go('/sellerBankDetailPage')
+                      : context.push('/sellerBankDetailPage');
                   //if (_formKey.currentState!.validate()) {
                   // if (isSeller) {
                   //   Navigator.pushNamed(context, '/sellerPage');
@@ -336,6 +342,7 @@ class _SellerTaxDetailScreenState extends State<SellerTaxDetailScreen>
     return Scaffold(
       body: LayoutBuilder(builder: (context, constraints) {
         bool isLargeScreen = constraints.maxWidth > 900;
+        bool isLargeScreenWeb = constraints.maxWidth > 450;
         return isLargeScreen
             ? Stack(
                 children: [
@@ -350,7 +357,9 @@ class _SellerTaxDetailScreenState extends State<SellerTaxDetailScreen>
                   ),
                   Container(
                     color: Colors.grey[200],
-                    child: Center(child: pageCode(isLargeScreen)),
+                    child: Center(
+                      child: pageCode(isLargeScreen, isLargeScreenWeb),
+                    ),
                   ),
                 ],
               )
@@ -361,7 +370,7 @@ class _SellerTaxDetailScreenState extends State<SellerTaxDetailScreen>
                     vertical: 15,
                   ),
                   child: SingleChildScrollView(
-                    child: pageCode(isLargeScreen),
+                    child: pageCode(isLargeScreen, isLargeScreenWeb),
                   ),
                 ),
               );

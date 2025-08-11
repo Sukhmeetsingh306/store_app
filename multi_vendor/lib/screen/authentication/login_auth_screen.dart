@@ -181,7 +181,7 @@ class _LoginAuthScreenState extends State<LoginAuthScreen>
     );
   }
 
-  Widget pageCode(bool isLargeScreen) {
+  Widget pageCode(bool isLargeScreen, bool isLargeScreenWeb) {
     return ConstrainedBox(
       constraints: BoxConstraints(
         maxWidth: isLargeScreen ? 500 : double.infinity,
@@ -382,7 +382,7 @@ class _LoginAuthScreenState extends State<LoginAuthScreen>
                             child: AppTextButton(
                               buttonText: "Login as Vendor",
                               onPressed: () async {
-                                context.push('/sellerLoginPage');
+                                context.go('/sellerLoginPage');
                               },
                             ),
                           ),
@@ -443,7 +443,9 @@ class _LoginAuthScreenState extends State<LoginAuthScreen>
                         Center(
                           child: GestureDetector(
                             onTap: () {
-                              context.go('/registerPage');
+                              isLargeScreenWeb
+                                  ? context.go('/registerPage')
+                                  : context.push('/registerPage');
                             },
                             child: RichText(
                               textAlign: TextAlign.center,
@@ -482,6 +484,7 @@ class _LoginAuthScreenState extends State<LoginAuthScreen>
     return Scaffold(
       body: LayoutBuilder(builder: (context, constraints) {
         bool isLargeScreen = constraints.maxWidth > 900;
+        bool isLargeScreenWeb = constraints.maxWidth > 450;
         return isLargeScreen
             ? Stack(
                 children: [
@@ -496,14 +499,15 @@ class _LoginAuthScreenState extends State<LoginAuthScreen>
                   ),
                   Container(
                     color: Colors.grey[200],
-                    child: Center(child: pageCode(isLargeScreen)),
+                    child: Center(
+                        child: pageCode(isLargeScreen, isLargeScreenWeb)),
                   ),
                 ],
               )
             : SafeArea(
                 child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                    child: pageCode(isLargeScreen)));
+                    child: pageCode(isLargeScreen, isLargeScreenWeb)));
       }),
     );
   }

@@ -247,7 +247,7 @@ class _SellerBankDetailScreenState extends State<SellerBankDetailScreen>
               AppTextButton(
                 buttonText: 'Create Account',
                 onPressed: () async {
-                  context.push('/');
+                  context.go('/');
                 },
               ),
             ],
