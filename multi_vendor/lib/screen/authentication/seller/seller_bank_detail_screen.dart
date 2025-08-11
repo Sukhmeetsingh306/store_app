@@ -246,7 +246,7 @@ class _SellerBankDetailScreenState extends State<SellerBankDetailScreen>
               AppTextButton(
                 buttonText: 'Create Account',
                 onPressed: () async {
-                  context.push('/sellerBankDetailPage');
+                  context.push('/');
                   //if (_formKey.currentState!.validate()) {
                   // if (isSeller) {
                   //   Navigator.pushNamed(context, '/sellerPage');
@@ -323,7 +323,7 @@ class _SellerBankDetailScreenState extends State<SellerBankDetailScreen>
                 child: Column(
                   children: [
                     _pageInnerCode(isLargeScreen),
-                    SizedBox(height: 25),
+                    SizedBox(height: 80),
                     buttonBottomCode(_formKey, context),
                   ],
                 ),
@@ -356,13 +356,12 @@ class _SellerBankDetailScreenState extends State<SellerBankDetailScreen>
                     height: MediaQuery.of(context).size.height,
                     width: MediaQuery.of(context).size.width,
                     errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        color: Colors.grey,
-                        child: Center(
-                          child: pageCode(isLargeScreen),
-                        ),
-                      ); // fallback color
+                      return Container(color: Colors.grey); // fallback color
                     },
+                  ),
+                  Container(
+                    color: Colors.grey[200],
+                    child: Center(child: pageCode(isLargeScreen)),
                   ),
                 ],
               )
@@ -383,24 +382,68 @@ class _SellerBankDetailScreenState extends State<SellerBankDetailScreen>
 }
 /**
 
-Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            _buildOptionButton(PaymentMethodType.upi, "UPI"),
-            _buildUPIForm(),
-            _buildOptionButton(PaymentMethodType.bank, "Bank Account"),
-            _buildBankForm(),
-            _buildOptionButton(PaymentMethodType.wallet, "Wallet"),
-            _buildWalletForm(),
-            Spacer(),
-            ElevatedButton(
-              onPressed: _submit,
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 14),
+ Widget buttonBottomCode(GlobalKey<FormState> formKey, BuildContext context) {
+    return Column(
+      children: [
+        _animationUtils.buildAnimated(
+          type: SellerAnimationType.fadeSlide3,
+          child: Column(
+            children: [
+              Center(child: TermsAndConditionsText()),
+              sizedBoxH15(),
+              AppTextButton(
+                buttonText: 'Create Account',
+                onPressed: () async {
+                  context.push('/sellerBankDetailPage');
+                  //if (_formKey.currentState!.validate()) {
+                  // if (isSeller) {
+                  //   Navigator.pushNamed(context, '/sellerPage');
+                  // } else {
+                  //   Navigator.pushReplacementNamed(context, '/loginPage');
+                  // }
+                  //}
+                },
               ),
-              child: Text("Submit"),
-            ),
-          ],
+            ],
+          ),
         ),
-      ), */
+        sizedBoxH10(),
+        _animationUtils.buildAnimated(
+          type: SellerAnimationType.fadeSlideScale2,
+          child: Column(
+            children: [
+              InkWell(
+                onTap: () async {
+                  if (Navigator.of(context).canPop()) {
+                    pop(context);
+                  } else {
+                    context.go('/sellerPage');
+                  }
+                },
+                child: Center(
+                  child: RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      children: [
+                        textSpan(
+                          'Preview Details?',
+                          fontSize: 14,
+                        ),
+                        textSpan(
+                          ' Preview',
+                          fontSize: 14,
+                          color: const Color.fromRGBO(36, 124, 255, 1),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              sizedBoxH5(),
+              Divider(),
+            ],
+          ),
+        ),
+      ],
+    );
+  }*/
