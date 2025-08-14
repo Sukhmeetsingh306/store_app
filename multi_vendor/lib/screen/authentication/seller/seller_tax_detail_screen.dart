@@ -106,7 +106,7 @@ class _SellerTaxDetailScreenState extends State<SellerTaxDetailScreen>
                   SingleChildScrollView(
                     child: _pageInnerCode(isLargeScreen),
                   ),
-                  SizedBox(height: 115),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.18),
                   buttonBottomCode(_formKey, context, isLargeScreenWeb),
                 ],
               ),
@@ -296,7 +296,7 @@ class _SellerTaxDetailScreenState extends State<SellerTaxDetailScreen>
             ],
           ),
         ),
-        sizedBoxH10(),
+        sizedBoxH8(),
         _animationUtils.buildAnimated(
           type: SellerAnimationType.fadeSlideScale2,
           child: Column(
