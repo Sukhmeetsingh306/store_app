@@ -374,7 +374,7 @@ class _LoginAuthScreenState extends State<LoginAuthScreen>
                       SizedBox(
                         height: hasError
                             ? MediaQuery.of(context).size.height * .022
-                            : MediaQuery.of(context).size.height * .06,
+                            : MediaQuery.of(context).size.height * .09,
                       ),
                       Row(
                         children: [
@@ -430,7 +430,7 @@ class _LoginAuthScreenState extends State<LoginAuthScreen>
                   ),
                 ),
               ),
-              sizedBoxH15(),
+              sizedBoxH10(),
               FadeTransition(
                 opacity: _fadeAnimation2,
                 child: SlideTransition(
