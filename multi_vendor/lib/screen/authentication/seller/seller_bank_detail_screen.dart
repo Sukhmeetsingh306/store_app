@@ -6,6 +6,7 @@ import '../../../utils/routes/navigation_routes.dart';
 import '../../../utils/validation/termsAndConditions_core.dart';
 import '../../../utils/widget/animation/seller_widget_utils_animation.dart';
 import '../../../utils/widget/form/appTextButton_form.dart';
+import '../../../utils/widget/form/textForm_form.dart';
 import '../../../utils/widget/space_widget_utils.dart';
 
 enum PaymentMethodType { upi, bank, wallet }
@@ -150,24 +151,27 @@ class _SellerBankDetailScreenState extends State<SellerBankDetailScreen>
           ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Account Number"),
-                SizedBox(height: 8),
-                TextFormField(
-                  controller: _accountNumberController,
-                  decoration: InputDecoration(
-                    hintText: "1234567890",
-                    border: OutlineInputBorder(),
-                  ),
+                textFormField(
+                  _accountNumberController,
+                  'Account Number',
+                  (val) {},
+                  hintText: '1234567890',
+                  keyboardType: TextInputType.number,
                 ),
                 SizedBox(height: 12),
-                Text("IFSC Code"),
-                SizedBox(height: 8),
-                TextFormField(
-                  controller: _ifscController,
-                  decoration: InputDecoration(
-                    hintText: "ABCD0123456",
-                    border: OutlineInputBorder(),
-                  ),
+                textFormField(
+                  _accountNumberController,
+                  'Re-enter Account Number',
+                  (val) {},
+                  hintText: '1234567890',
+                  keyboardType: TextInputType.number,
+                ),
+                SizedBox(height: 12),
+                textFormField(
+                  _accountNumberController,
+                  'IFSC Code',
+                  (val) {},
+                  hintText: 'ABCD12345',
                 ),
                 SizedBox(height: 20),
               ],
@@ -294,7 +298,11 @@ class _SellerBankDetailScreenState extends State<SellerBankDetailScreen>
     );
   }
 
-  Widget pageCode(bool isLargeScreen) {
+  Widget pageCode(
+    bool isLargeScreen,
+  ) {
+    final isKeyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
+
     return ConstrainedBox(
       constraints: BoxConstraints(
         maxWidth: isLargeScreen ? 500 : double.infinity,
@@ -322,15 +330,31 @@ class _SellerBankDetailScreenState extends State<SellerBankDetailScreen>
                   ],
                 ),
               )
-            : Stack(
-                children: [
-                  _pageInnerCode(isLargeScreen), // Scrollable content
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: buttonBottomCode(
-                        _formKey, context), // Floating bottom button
-                  ),
-                ],
+            : LayoutBuilder(
+                builder: (context, constraints) {
+                  return SingleChildScrollView(
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight: constraints
+                            .maxHeight, // fills the screen if content is small
+                      ),
+                      child: IntrinsicHeight(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // your main content
+                            _pageInnerCode(isLargeScreen),
+
+                            Spacer(), // pushes button to the bottom
+
+                            // bottom button
+                            buttonBottomCode(_formKey, context),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
               ),
       ),
     );
