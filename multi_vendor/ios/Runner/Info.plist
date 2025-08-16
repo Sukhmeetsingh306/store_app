@@ -26,6 +26,11 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	//
+	<key>NSAppTransportSecurity</key>
+	<key>NSAllowsArbitraryLoads</key>
+	<true/>
+	remove this code in production //
 	<key>NSCameraUsageDescription</key>
 	<string>App needs access to your camera to take photos.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
