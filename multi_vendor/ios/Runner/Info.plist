@@ -15,7 +15,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>multi_vendor</string>
+	<string>store_app</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -26,17 +26,21 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	//
+
+	<!-- App Transport Security (Allows HTTP for dev; remove for production if not needed) -->
 	<key>NSAppTransportSecurity</key>
-	<key>NSAllowsArbitraryLoads</key>
-	<true/>
-	remove this code in production //
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+
 	<key>NSCameraUsageDescription</key>
 	<string>App needs access to your camera to take photos.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>App needs access to add photos to your library.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>App needs access to your photo library to upload images.</string>
+
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
