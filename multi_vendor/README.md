@@ -66,3 +66,36 @@ A method _checkAuthTokenAndNavigate() is used during app startup to check if a v
 If both the token and user data are found, the user is considered authenticated and navigated to /homePage.
 
 If not, they are signed out and redirected to /loginPage.
+
+# Orientation 
+
+Orientation of the code stick to the portrait-up as per to make the rotation of the application to work
+edit:
+
+In your main.dart, lock the orientation using SystemChrome remove this :
+     
+     // Lock app to portrait-up only
+     await SystemChrome.setPreferredOrientations([
+     DeviceOrientation.portraitUp,
+     ]);
+
+In AndroidManifest.xml, remove any orientation lock that might conflict with Flutter’s orientation code:
+
+     <!-- Remove this line if present -->
+     <activity
+     android:screenOrientation="portrait"
+     ... >
+
+n Info.plist, ensure the orientation entries allow Flutter to manage rotation. You can uncomment or adjust the supported orientations:
+
+     <key>UISupportedInterfaceOrientations</key>
+     <array>
+          <string>UIInterfaceOrientationPortrait</string>
+          <!-- Optional: remove landscape and upside-down orientations if you want strict portrait-up -->
+          <!-- <string>UIInterfaceOrientationPortraitUpsideDown</string> -->
+          <!-- <string>UIInterfaceOrientationLandscapeLeft</string> -->
+          <!-- <string>UIInterfaceOrientationLandscapeRight</string> -->
+     </array>
+
+
+          
