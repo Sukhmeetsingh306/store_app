@@ -1,11 +1,16 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:multi_vendor/models/seller_models.dart';
 import 'package:http/http.dart' as http;
+import 'package:multi_vendor/provider/seller_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../globals_variables.dart';
 import '../utils/widget/random/avatar_random.dart';
+
+final riverpodContainer = ProviderContainer();
 
 class SellerControllers {
   Future<void> signUpSeller({
@@ -83,6 +88,21 @@ class SellerControllers {
       });
 
       if (response.statusCode == 200) {
+        // generating and storing the token in the shared preferences
+        SharedPreferences pref = await SharedPreferences.getInstance();
+        String token = jsonDecode(response.body)['token'];
+        await pref.setString('auth_token', token);
+
+        // encode user data
+        final sellerData = jsonEncode(jsonDecode(response.body)['seller']);
+
+        // update the state using Riverpod
+        // riverpodContainer.read(sellerProvider.notifier).setSeller(sellerData);
+        riverpodContainer.read(sellerProvider.notifier).setSeller(sellerData);
+
+        //storing in shared preferences
+        await pref.setString('seller', sellerData);
+
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Seller signed in successfully!")),
