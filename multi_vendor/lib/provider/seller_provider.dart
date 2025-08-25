@@ -26,6 +26,7 @@ class SellerProvider extends StateNotifier<SellerModels> {
 
   // method to get the state form the json
   // updating seller state as per the json string representation of seller object
+  // creating the function setSeller so we can use the provider class and update the state of the seller in the app
 
   void setSeller(String sellerJson) {
     state = SellerModels.fromJson(sellerJson);
