@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 //import 'package:multi_vendor/controllers/seller_controllers.dart';
 
+import '../../../controllers/seller_controllers.dart';
 import '../../../utils/fonts/google_fonts_utils.dart';
 import '../../../utils/fonts/text_fonts_utils.dart';
 import '../../../utils/validation/password_validations.dart';
@@ -26,7 +27,7 @@ class _SellerLoginAuthScreenState extends State<SellerLoginAuthScreen>
 
   final TextEditingController _mailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  //final SellerControllers _sellerControllers = SellerControllers();
+  final SellerControllers _sellerControllers = SellerControllers();
 
   String mail = '';
   String password = "";
@@ -265,35 +266,35 @@ class _SellerLoginAuthScreenState extends State<SellerLoginAuthScreen>
                           child: AppTextButton(
                             buttonText: "Login",
                             onPressed: () async {
-                              // if (_formKey.currentState!.validate()) {
-                              //   bool isAuthenticated =
-                              //       await _sellerControllers.signInSeller(
-                              //     context: context,
-                              //     email: _mailController.text.trim(),
-                              //     password: _passwordController.text.trim(),
-                              //   );
+                              if (_formKey.currentState!.validate()) {
+                                bool isAuthenticated =
+                                    await _sellerControllers.signInSeller(
+                                  context: context,
+                                  email: _mailController.text.trim(),
+                                  password: _passwordController.text.trim(),
+                                );
 
-                              //   if (isAuthenticated) {
-                              //     setState(() {
-                              //       hasError = false;
-                              //     });
-                              //     print('User is validated');
-                              //     context.go('/management');
-                              //   } else {
-                              //     setState(() {
-                              //       hasError = true;
-                              //     });
-                              //     print("There is an error");
-                              //     // Optionally show a snackbar or error message here
-                              //   }
-                              // } else {
-                              //   setState(() {
-                              //     hasError = true;
-                              //   });
-                              //   print("Form validation failed");
-                              //   // Optionally show a snackbar or form error message here
-                              // }
-                              context.go('/management');
+                                if (isAuthenticated) {
+                                  setState(() {
+                                    hasError = false;
+                                  });
+                                  print('User is validated');
+                                  context.go('/management');
+                                } else {
+                                  setState(() {
+                                    hasError = true;
+                                  });
+                                  print("There is an error");
+                                  // Optionally show a snackbar or error message here
+                                }
+                              } else {
+                                setState(() {
+                                  hasError = true;
+                                });
+                                print("Form validation failed");
+                                // Optionally show a snackbar or form error message here
+                              }
+                              // context.go('/management');
                             },
                           ),
                         ),
