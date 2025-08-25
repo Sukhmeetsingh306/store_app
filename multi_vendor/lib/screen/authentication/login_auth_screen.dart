@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-//import '../../controllers/login_user_controllers.dart';
+import '../../controllers/login_user_controllers.dart';
 import '../../utils/fonts/google_fonts_utils.dart';
 import '../../utils/fonts/text_fonts_utils.dart';
 import '../../utils/validation/password_validations.dart';
@@ -25,7 +25,7 @@ class _LoginAuthScreenState extends State<LoginAuthScreen>
 
   final TextEditingController _mailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  //final LoginUserControllers _loginUserControllers = LoginUserControllers();
+  final LoginUserControllers _loginUserControllers = LoginUserControllers();
 
   late AnimationController _controller;
   late Animation<double> _fadeAnimation;
@@ -391,36 +391,38 @@ class _LoginAuthScreenState extends State<LoginAuthScreen>
                             child: AppTextButton(
                               buttonText: "Login",
                               onPressed: () async {
-                                // if (_formKey.currentState!.validate()) {
-                                //   bool isAuthenticated =
-                                //       await _loginUserControllers.signInUsers(
-                                //     context: context,
-                                //     email: _mailController.text.trim(),
-                                //     password: _passwordController.text,
-                                //   );
+                                /// The above Dart code snippet is handling a form submission for user
+                                /// login. Here's a breakdown of what the code is doing:
+                                if (_formKey.currentState!.validate()) {
+                                  bool isAuthenticated =
+                                      await _loginUserControllers.signInUsers(
+                                    context: context,
+                                    email: _mailController.text.trim(),
+                                    password: _passwordController.text,
+                                  );
 
-                                //   if (isAuthenticated) {
-                                //     setState(() {
-                                //       hasError = false;
-                                //     });
-                                //     print('User is validated');
+                                  if (isAuthenticated) {
+                                    setState(() {
+                                      hasError = false;
+                                    });
+                                    print('User is validated');
 
-                                //     if (!context.mounted) return;
-                                //     context.go('/homePage');
-                                //   } else {
-                                //     setState(() {
-                                //       hasError = true;
-                                //     });
-                                //     print(
-                                //         "Invalid credentials or user does not exist");
-                                //   }
-                                // } else {
-                                //   setState(() {
-                                //     hasError = true;
-                                //   });
-                                //   print("Form validation failed");
-                                // }
-                                context.go('/homePage');
+                                    if (!context.mounted) return;
+                                    context.go('/homePage');
+                                  } else {
+                                    setState(() {
+                                      hasError = true;
+                                    });
+                                    print(
+                                        "Invalid credentials or user does not exist");
+                                  }
+                                } else {
+                                  setState(() {
+                                    hasError = true;
+                                  });
+                                  print("Form validation failed");
+                                }
+                                //context.go('/homePage');
                               },
                             ),
                           ),
