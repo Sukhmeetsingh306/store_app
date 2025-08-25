@@ -98,7 +98,8 @@ sellerRouter.post("/seller/signin", async (req, res) => {
     return res.status(200).json({
       message: "Login successful.",
       token,
-      user: sellerWithoutPassword, // renamed to "user" for consistency
+      seller: sellerWithoutPassword, // renamed to "user" for consistency
+      // if any error change seller to user
     });
   } catch (err) {
     console.error("Error in /seller/signin:", err);
