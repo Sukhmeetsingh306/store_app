@@ -9,7 +9,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../provider/user_provider.dart';
 import '../services/http/http_services.dart';
-import '../utils/widget/random/avatar_random.dart';
 
 final riverpodContainer = ProviderContainer();
 
@@ -22,25 +21,24 @@ class LoginUserControllers {
     required String phone,
     required int age,
     String? image, // Optional
-    bool? isSeller,
   }) async {
     try {
-      // Generate random avatar if image is null
-      image = image ?? generateRandomAvatar();
+      image = image ?? LoginUserModel.generateRandomAvatar();
 
+      // Create user model with roles
       LoginUserModel user = LoginUserModel(
         id: "",
         name: name,
         email: email,
         phone: phone,
         age: age,
-        image: image, // Default avatar or custom image
         state: "",
         city: "",
         locality: "",
         password: password,
         token: "",
-        isSeller: isSeller ?? false,
+        roles: ["consumer"],
+        image: image,
       );
 
       http.Response response = await http.post(
@@ -49,9 +47,12 @@ class LoginUserControllers {
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-      ).timeout(const Duration(seconds: 10), onTimeout: () {
-        throw Exception('Request timed out');
-      });
+      ).timeout(
+        const Duration(seconds: 10),
+        onTimeout: () {
+          throw Exception('Request timed out');
+        },
+      );
 
       manageHttpResponse(
         response: response,
@@ -120,7 +121,7 @@ class LoginUserControllers {
     }
   }
 
-  // sign out user
+// sign out user
   Future<void> signOutUser(BuildContext context) async {
     try {
       // Clear user data from shared preferences
