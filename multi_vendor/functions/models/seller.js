@@ -48,10 +48,10 @@ const sellerSchema = new mongoose.Schema(
       default: "",
     },
 
-    role: {
-      type: String,
-      default: "seller",
-      enum: ["seller", "admin"],
+    roles: {
+      type: [String],
+      default: ["seller"],
+      enum: ["seller", "admin", "consumer"],
     },
 
     password: {

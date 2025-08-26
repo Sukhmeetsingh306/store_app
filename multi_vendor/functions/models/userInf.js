@@ -60,9 +60,10 @@ const userSchema = new mongoose.Schema(
         message: "Invalid password.",
       },
     },
-    isSeller: {
-      type: Boolean,
-      default: false,
+    roles: {
+      type: [String],
+      default: ["consumer"],
+      enum: ["consumer", "seller", "admin"],
     },
   },
   { timestamps: true }
