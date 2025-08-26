@@ -15,10 +15,10 @@ class SellerProvider extends StateNotifier<SellerModels> {
             city: '',
             locality: '',
             password: '',
-            role: '',
+            roles: ['seller', 'consumer'],
           ),
         );
-  // password and role will be assigned
+  // password and roles will be assigned
 
   //getter method for extracting the value
 
@@ -33,6 +33,7 @@ class SellerProvider extends StateNotifier<SellerModels> {
   }
 
   // method to clear the seller state
+
   void signOut() {
     state = SellerModels(
       id: '',
@@ -42,7 +43,7 @@ class SellerProvider extends StateNotifier<SellerModels> {
       city: '',
       locality: '',
       password: '',
-      role: '',
+      roles: ['seller', 'consumer'],
     );
   }
 }
