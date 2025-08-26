@@ -85,18 +85,35 @@ class LoginUserControllers {
       if (response.statusCode == 200) {
         final SharedPreferences pref = await SharedPreferences.getInstance();
         final String token = responseData['token'];
-        final String userJson = jsonEncode(responseData['user']);
 
-        await pref.setString('auth_token', token);
-        await pref.setString('user', userJson);
+        // Already a Map<String, dynamic>, no need to jsonDecode again
+        final Map<String, dynamic> userMap = responseData['user'];
+        final user = LoginUserModel.fromUser(userMap);
 
-        // Update app state via provider
-        riverpodContainer.read(userProvider.notifier).setUser(userJson);
-
-        // You should do navigation only *after* checking mounted
-        if (context.mounted) {
-          context.go('/homePage'); // Direct navigation, no pop
+        // ✅ Allow login if user is consumer OR seller
+        if (!(user.roles.contains("consumer") ||
+            user.roles.contains("seller"))) {
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('You do not have access to login.'),
+              ),
+            );
+          }
+          return false;
         }
+
+        // Save token & user (userMap must be saved as JSON string in prefs)
+        await pref.setString('auth_token', token);
+        await pref.setString('user', jsonEncode(userMap));
+
+        // Update app state (pass string JSON here)
+        riverpodContainer
+            .read(userProvider.notifier)
+            .setUser(jsonEncode(userMap));
+
+        // Navigate to home
+        if (context.mounted) context.go('/homePage');
 
         return true;
       } else {
