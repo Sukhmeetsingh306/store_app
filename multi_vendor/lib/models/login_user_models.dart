@@ -12,7 +12,7 @@ class LoginUserModel {
   final String locality;
   final String password;
   final String token;
-  bool? isSeller;
+  final List<String> roles; // <-- Unified roles array
   final String image; // Ensured to always have a value
 
   LoginUserModel({
@@ -26,14 +26,14 @@ class LoginUserModel {
     required this.locality,
     required this.password,
     required this.token,
-    this.isSeller,
+    required this.roles, // must pass roles when creating
     String? image,
-  }) : image = image ?? generateRandomAvatar(); // Use random avatar if null
+  }) : image = image ?? generateRandomAvatar();
 
   // Generates a random avatar using the package
   static String generateRandomAvatar() {
     return RandomAvatar(
-      DateTime.now().toIso8601String(), // Unique seed for avatar
+      DateTime.now().toIso8601String(),
       height: 90,
       width: 90,
     ).toString();
@@ -51,33 +51,31 @@ class LoginUserModel {
       'locality': locality,
       'password': password,
       'token': token,
-      'isSeller': isSeller,
-      'image': image, // Always has a value
+      'roles': roles,
+      'image': image,
     };
   }
 
-  /// Converts a `Map<String, dynamic>` to a `LoginUserModel` instance.
   factory LoginUserModel.fromUser(Map<String, dynamic> map) {
     return LoginUserModel(
       id: map['_id'] ?? "",
       name: map['name'] ?? "",
       email: map['email'] ?? "",
-      phone: map['phone'] ?? "",
-      age: map['age'] ?? 18, // Default to 18 if missing
+      phone: map['phone'],
+      age: map['age'] ?? 18,
       state: map['state'] ?? "",
       city: map['city'] ?? "",
       locality: map['locality'] ?? "",
       password: map['password'] ?? "",
       token: map['token'] ?? "",
-      isSeller: map['isSeller'] ?? false,
+      roles:
+          List<String>.from(map['roles'] ?? ["consumer"]), // default consumer
       image: map['image'],
     );
   }
 
-  /// Converts a `LoginUserModel` instance to a JSON string.
   String toJson() => json.encode(toUser());
 
-  /// Converts a JSON string to a `LoginUserModel` instance.
   factory LoginUserModel.fromJson(String source) =>
       LoginUserModel.fromUser(json.decode(source));
 }
