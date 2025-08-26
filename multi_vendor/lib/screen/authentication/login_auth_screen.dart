@@ -391,8 +391,6 @@ class _LoginAuthScreenState extends State<LoginAuthScreen>
                             child: AppTextButton(
                               buttonText: "Login",
                               onPressed: () async {
-                                /// The above Dart code snippet is handling a form submission for user
-                                /// login. Here's a breakdown of what the code is doing:
                                 if (_formKey.currentState!.validate()) {
                                   bool isAuthenticated =
                                       await _loginUserControllers.signInUsers(
@@ -401,20 +399,16 @@ class _LoginAuthScreenState extends State<LoginAuthScreen>
                                     password: _passwordController.text,
                                   );
 
-                                  if (isAuthenticated) {
-                                    setState(() {
-                                      hasError = false;
-                                    });
-                                    print('User is validated');
+                                  setState(() {
+                                    hasError = !isAuthenticated;
+                                  });
 
-                                    if (!context.mounted) return;
-                                    context.go('/homePage');
+                                  if (isAuthenticated) {
+                                    print('User is validated');
+                                    // No need to call context.go here; controller already does it
                                   } else {
-                                    setState(() {
-                                      hasError = true;
-                                    });
                                     print(
-                                        "Invalid credentials or user does not exist");
+                                        "Invalid credentials or user does not have consumer role");
                                   }
                                 } else {
                                   setState(() {
@@ -422,7 +416,6 @@ class _LoginAuthScreenState extends State<LoginAuthScreen>
                                   });
                                   print("Form validation failed");
                                 }
-                                //context.go('/homePage');
                               },
                             ),
                           ),
