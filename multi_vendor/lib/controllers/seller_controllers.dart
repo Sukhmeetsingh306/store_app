@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:multi_vendor/models/seller_models.dart';
 import 'package:http/http.dart' as http;
 import 'package:multi_vendor/provider/seller_provider.dart';
@@ -33,7 +34,7 @@ class SellerControllers {
         city: '',
         locality: '',
         password: password,
-        role: '',
+        roles: ["seller", "consumer"],
         image: image,
         age: int.tryParse(age),
         phone: phone,
@@ -88,26 +89,29 @@ class SellerControllers {
       });
 
       if (response.statusCode == 200) {
-        // generating and storing the token in the shared preferences
-        SharedPreferences pref = await SharedPreferences.getInstance();
-        String token = jsonDecode(response.body)['token'];
+        final responseData = jsonDecode(response.body);
+
+        // Store token
+        final SharedPreferences pref = await SharedPreferences.getInstance();
+        final String token = responseData['token'];
         await pref.setString('auth_token', token);
 
-        // encode user data
-        final sellerData = jsonEncode(jsonDecode(response.body)['seller']);
+        // Store seller data
+        final String sellerJson = jsonEncode(responseData['seller']);
+        await pref.setString('seller', sellerJson);
 
-        // update the state using Riverpod
-        // riverpodContainer.read(sellerProvider.notifier).setSeller(sellerData);
-        riverpodContainer.read(sellerProvider.notifier).setSeller(sellerData);
-
-        //storing in shared preferences
-        await pref.setString('seller', sellerData);
+        // Update Riverpod state
+        riverpodContainer.read(sellerProvider.notifier).setSeller(sellerJson);
 
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Seller signed in successfully!")),
           );
+
+          // Redirect seller directly
+          context.go('/management');
         }
+
         return true;
       } else {
         final errorResponse = jsonDecode(response.body);
