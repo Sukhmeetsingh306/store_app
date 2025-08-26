@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:multi_vendor/controllers/login_user_controllers.dart';
 
-import '../../controllers/login_user_controllers.dart';
 import '../../utils/fonts/google_fonts_utils.dart';
 import '../../utils/fonts/text_fonts_utils.dart';
 import '../../utils/validation/password_validations.dart';
