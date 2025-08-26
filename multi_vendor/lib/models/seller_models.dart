@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import '../utils/widget/random/avatar_random.dart';
 
 class SellerModels {
@@ -10,7 +9,7 @@ class SellerModels {
   final String city;
   final String locality;
   final String password;
-  final String role;
+  final List<String> roles;
   final String image;
   int? age;
   String? phone;
@@ -25,11 +24,11 @@ class SellerModels {
     required this.city,
     required this.locality,
     required this.password,
-    required this.role,
+    required this.roles,
     String? image,
   }) : image = image ?? generateRandomAvatar();
 
-  Map<String, dynamic> toSeller() {
+  Map<String, dynamic> toJson() {
     return {
       '_id': id,
       'name': name,
@@ -40,12 +39,12 @@ class SellerModels {
       'city': city,
       'locality': locality,
       'password': password,
-      'role': role,
+      'roles': roles, // send as list
       'image': image,
     };
   }
 
-  factory SellerModels.fromSeller(Map<String, dynamic> map) {
+  factory SellerModels.fromMap(Map<String, dynamic> map) {
     return SellerModels(
       id: map['_id'] ?? '',
       name: map['name'] ?? '',
@@ -56,14 +55,14 @@ class SellerModels {
       city: map['city'] ?? '',
       locality: map['locality'] ?? '',
       password: map['password'] ?? '',
-      role: map['role'] ?? 'seller',
+      roles: List<String>.from(map['roles'] ?? ['seller']), // ensures list
       image: map['image'] ?? generateRandomAvatar(),
     );
   }
 
-  String toJson() => json.encode(toSeller());
+  String toJsonString() => json.encode(toJson());
 
   factory SellerModels.fromJson(String source) {
-    return SellerModels.fromSeller(json.decode(source));
+    return SellerModels.fromMap(json.decode(source));
   }
 }
