@@ -10,48 +10,46 @@ sellerRouter.post("/seller/signup", async (req, res) => {
   try {
     const { name, email, password, phone, age, image } = req.body;
 
-    // Validate required fields
     if (!name || !email || !password || !phone || !age) {
       return res.status(400).json({
         message: "All fields are required: name, email, password, phone, age.",
       });
     }
 
-    // Check if seller already exists
     const existingSeller = await Seller.findOne({ email });
     if (existingSeller) {
       return res.status(400).json({ message: "Seller already exists." });
     }
 
-    // Hash password
     const salt = await bcrypt.genSalt(12);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Create new Seller
     const newSeller = new Seller({
       name,
       email,
       password: hashedPassword,
       phone,
       age,
-      image: image ?? null, // Optional image
+      image: image ?? null,
+      roles: ["seller", "consumer"],
     });
 
     await newSeller.save();
 
     return res.status(201).json({
       message: "Seller registered successfully.",
-      Seller: {
+      seller: {
         id: newSeller._id,
         name: newSeller.name,
         email: newSeller.email,
         phone: newSeller.phone,
         age: newSeller.age,
         image: newSeller.image,
+        roles: newSeller.roles,
       },
     });
   } catch (err) {
-    console.error("Error in /Seller/signup:", err);
+    console.error("Error in /seller/signup:", err);
     return res.status(500).json({ message: "Internal server error" });
   }
 });
