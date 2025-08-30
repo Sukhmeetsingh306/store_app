@@ -103,13 +103,22 @@ class SellerControllers {
         // Update Riverpod state
         riverpodContainer.read(sellerProvider.notifier).setSeller(sellerJson);
 
+        // Parse roles from response
+        final roles = List<String>.from(responseData['seller']['roles'] ?? []);
+
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Seller signed in successfully!")),
           );
 
-          // Redirect seller directly
-          context.go('/management');
+          if (roles.contains("admin")) {
+            context.go('/management');
+          } else if (roles.contains("seller")) {
+            context.go('/seller/dashboard');
+          } else {
+            // Default fallback
+            context.go('/');
+          }
         }
 
         return true;
