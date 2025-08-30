@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:multi_vendor/services/http/http_services.dart';
 
 import '../../fonts/google_fonts_utils.dart';
+import '../../routes/list/seller_list_route.dart';
 import '../../routes/navigation_routes.dart';
 import '../../theme/color/color_theme.dart';
 import '../platform/platform_check.dart';
@@ -107,29 +108,8 @@ class DrawerWidget extends StatelessWidget {
 
             showSnackBar(context, 'Support is not available yet');
           }),
-          listTile(
-            "Seller",
-            Icon(Icons.store_outlined),
-            onTap: () {
-              WidgetsBinding.instance.addPostFrameCallback((_) async {
-                showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (BuildContext context) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  },
-                );
-                await Future.delayed(const Duration(seconds: 3));
-
-                if (!context.mounted) return;
-
-                Navigator.of(context, rootNavigator: true).pop();
-                context.go('/management');
-              });
-            },
-          ),
+          const SellerListTile(),
+          Divider(),
           listTile(
             "Account",
             Icon(Icons.account_circle_outlined),
