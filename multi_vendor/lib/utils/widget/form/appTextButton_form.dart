@@ -9,7 +9,7 @@ class AppTextButton extends StatelessWidget {
   final double? buttonWidth;
   final double? buttonHeight;
   final String buttonText;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final double? fontSize;
   final Color? color;
 
