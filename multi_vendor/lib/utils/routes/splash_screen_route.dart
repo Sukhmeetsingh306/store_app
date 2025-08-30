@@ -35,12 +35,16 @@ class _SplashScreenRouteState extends ConsumerState<SplashScreenRoute> {
       ref.read(userProvider.notifier).updateUser(user);
 
       // Navigate based on role
-      if (user.roles.contains("seller")) {
-        context.go('/management'); // Seller dashboard
-      } else if (user.roles.contains("admin")) {
-        context.go('/adminDashboard'); // Future use
+      if (user.roles.contains("admin")) {
+        context.go('/management'); // Admin dashboard
+      } else if (user.roles.contains("seller")) {
+        context.go('/seller/dashboard'); // Seller dashboard
+      } else if (user.roles.contains("consumer")) {
+        context.go('/homePage'); // Consumer homepage
       } else {
-        context.go('/homePage'); // Default consumer dashboard
+        // Fallback for unknown role
+        ref.read(userProvider.notifier).signOut();
+        context.go('/loginPage');
       }
     } else {
       // No token/user → logout
@@ -49,18 +53,15 @@ class _SplashScreenRouteState extends ConsumerState<SplashScreenRoute> {
         context.go('/loginPage');
       }
     }
-
-    // MARK: check for the signout way that if the user is had entered check for the cookie if already entered check for the data else navigate to login page else stay in the home page
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-          decoration: BoxDecoration(
-            color: Colors.black.withAlpha(5),
-          ),
-          child: const Center(child: CircularProgressIndicator())),
+        color: Colors.black.withAlpha(5),
+        child: const Center(child: CircularProgressIndicator()),
+      ),
     );
   }
 }
