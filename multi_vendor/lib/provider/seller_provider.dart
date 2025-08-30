@@ -1,53 +1,54 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:multi_vendor/models/seller_models.dart';
+import '../models/seller_models.dart';
 
-// notifier is used to manage the state of the application as it also designed to notify listeners about the changes taking place in the state
-// StateNotifier is a class that helps to manage and notify the state changes
 class SellerProvider extends StateNotifier<SellerModels> {
-  // Constructor initializes with a default seller object
   SellerProvider()
       : super(
           SellerModels(
             id: '',
             name: '',
             email: '',
+            phone: null,
+            age: null,
             state: '',
             city: '',
             locality: '',
             password: '',
-            roles: ['seller', 'consumer'],
+            roles: [], // start empty, must be set from backend
           ),
         );
-  // password and roles will be assigned
 
-  //getter method for extracting the value
-
-  SellerModels? get seller => state;
-
-  // method to get the state form the json
-  // updating seller state as per the json string representation of seller object
-  // creating the function setSeller so we can use the provider class and update the state of the seller in the app
-
-  void setSeller(String sellerJson) {
-    state = SellerModels.fromJson(sellerJson);
+  /// Update seller from backend Map or JSON string
+  void setSeller(dynamic sellerData) {
+    if (sellerData is String) {
+      state = SellerModels.fromJson(sellerData);
+    } else if (sellerData is Map<String, dynamic>) {
+      state = SellerModels.fromMap(sellerData);
+    }
   }
 
-  // method to clear the seller state
-
+  /// Clear seller state
   void signOut() {
     state = SellerModels(
       id: '',
       name: '',
       email: '',
+      phone: null,
+      age: null,
       state: '',
       city: '',
       locality: '',
       password: '',
-      roles: ['seller', 'consumer'],
+      roles: [],
     );
   }
+
+  /// Role helpers
+  bool get isAdmin => state.roles.contains('admin');
+  bool get isSeller => state.roles.contains('seller');
+  bool get isConsumer => state.roles.contains('consumer');
 }
 
+/// Provider to access seller state app-wide
 final sellerProvider = StateNotifierProvider<SellerProvider, SellerModels>(
-  (ref) => SellerProvider(),
-);
+    (ref) => SellerProvider());
