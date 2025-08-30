@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../provider/user_provider.dart';
+import '../../fonts/google_fonts_utils.dart';
 
 class SellerListTile extends ConsumerWidget {
   const SellerListTile({super.key});
@@ -10,7 +11,11 @@ class SellerListTile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ListTile(
       leading: const Icon(Icons.store_outlined),
-      title: const Text('Seller'),
+      title: googleInterText(
+        'Seller',
+        fontSize: 16,
+        fontWeight: FontWeight.normal,
+      ),
       onTap: () {
         WidgetsBinding.instance.addPostFrameCallback((_) async {
           // Show loading spinner
