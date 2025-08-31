@@ -84,7 +84,14 @@ appAuthSignAndSignUp.post("/signin", async (req, res) => {
       return res.status(400).json({ message: "Invalid email or password." });
     }
 
-    const roles = isSellerLogin ? ["seller"] : ["consumer"];
+    let roles = findUser.roles || [];
+
+    if (isSellerLogin && !roles.includes("seller")) {
+      roles.push("seller");
+    }
+    if (!isSellerLogin && !roles.includes("consumer")) {
+      roles.push("consumer");
+    }
 
     const token = jwt.sign(
       { id: findUser._id, roles },
