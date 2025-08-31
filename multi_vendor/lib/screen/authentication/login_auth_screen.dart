@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multi_vendor/controllers/login_user_controllers.dart';
 
+import '../../provider/user_provider.dart';
 import '../../utils/fonts/google_fonts_utils.dart';
 import '../../utils/fonts/text_fonts_utils.dart';
 import '../../utils/validation/password_validations.dart';
@@ -399,22 +400,39 @@ class _LoginAuthScreenState extends State<LoginAuthScreen>
                                     password: _passwordController.text,
                                   );
 
-                                  setState(() {
-                                    hasError = !isAuthenticated;
-                                  });
+                                  setState(() => hasError = !isAuthenticated);
 
                                   if (isAuthenticated) {
-                                    print('User is validated');
-                                    // No need to call context.go here; controller already does it
+                                    final user =
+                                        riverpodContainer.read(userProvider);
+
+                                    if (user != null) {
+                                      print("✅ User Details:");
+                                      print("ID: ${user.id}");
+                                      print("Name: ${user.name}");
+                                      print("Email: ${user.email}");
+                                      print("Roles: ${user.roles}");
+                                      print(
+                                          "Primary Role: ${user.primaryRole}");
+
+                                      switch (user.primaryRole) {
+                                        case "admin":
+                                          print("➡️ Redirect to /management");
+                                          break;
+                                        case "seller":
+                                          print(
+                                              "➡️ Redirect to /seller/dashboard");
+                                          break;
+                                        case "consumer":
+                                          print("➡️ Consumer only");
+                                          break;
+                                      }
+                                    }
                                   } else {
-                                    print(
-                                        "Invalid credentials or user does not have consumer role");
+                                    print("❌ Invalid credentials or roles");
                                   }
                                 } else {
-                                  setState(() {
-                                    hasError = true;
-                                  });
-                                  print("Form validation failed");
+                                  print("⚠️ Form validation failed");
                                 }
                               },
                             ),
