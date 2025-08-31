@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multi_vendor/controllers/login_user_controllers.dart';
 
-import '../../provider/user_provider.dart';
 import '../../utils/fonts/google_fonts_utils.dart';
 import '../../utils/fonts/text_fonts_utils.dart';
 import '../../utils/validation/password_validations.dart';
 import '../../utils/widget/form/appTextButton_form.dart' show AppTextButton;
 import '../../utils/widget/form/textForm_form.dart';
 import '../../utils/widget/space_widget_utils.dart';
+import 'seller/button/user_login_button.dart';
 
 class LoginAuthScreen extends StatefulWidget {
   const LoginAuthScreen({super.key});
@@ -389,51 +389,15 @@ class _LoginAuthScreenState extends State<LoginAuthScreen>
                           ),
                           SizedBox(width: 16),
                           Expanded(
-                            child: AppTextButton(
-                              buttonText: "Login",
-                              onPressed: () async {
-                                if (_formKey.currentState!.validate()) {
-                                  bool isAuthenticated =
-                                      await _loginUserControllers.signInUsers(
-                                    context: context,
-                                    email: _mailController.text.trim(),
-                                    password: _passwordController.text,
-                                  );
-
-                                  setState(() => hasError = !isAuthenticated);
-
-                                  if (isAuthenticated) {
-                                    final user =
-                                        riverpodContainer.read(userProvider);
-
-                                    if (user != null) {
-                                      print("✅ User Details:");
-                                      print("ID: ${user.id}");
-                                      print("Name: ${user.name}");
-                                      print("Email: ${user.email}");
-                                      print("Roles: ${user.roles}");
-                                      print(
-                                          "Primary Role: ${user.primaryRole}");
-
-                                      switch (user.primaryRole) {
-                                        case "admin":
-                                          print("➡️ Redirect to /management");
-                                          break;
-                                        case "seller":
-                                          print(
-                                              "➡️ Redirect to /seller/dashboard");
-                                          break;
-                                        case "consumer":
-                                          print("➡️ Consumer only");
-                                          break;
-                                      }
-                                    }
-                                  } else {
-                                    print("❌ Invalid credentials or roles");
-                                  }
-                                } else {
-                                  print("⚠️ Form validation failed");
-                                }
+                            child: UserLoginButton(
+                              formKey: _formKey,
+                              emailController: _mailController,
+                              passwordController: _passwordController,
+                              loginUserControllers: _loginUserControllers,
+                              onError: (value) {
+                                setState(() {
+                                  hasError = value;
+                                });
                               },
                             ),
                           ),
