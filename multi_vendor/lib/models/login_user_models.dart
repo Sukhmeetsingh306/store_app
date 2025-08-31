@@ -12,8 +12,9 @@ class LoginUserModel {
   final String locality;
   final String password;
   final String token;
-  final List<String> roles; // <-- Unified roles array
-  final String image; // Ensured to always have a value
+  final List<String> roles; // all roles
+  final String primaryRole; // 🔹 new primary role
+  final String image;
 
   LoginUserModel({
     required this.id,
@@ -26,11 +27,20 @@ class LoginUserModel {
     required this.locality,
     required this.password,
     required this.token,
-    required this.roles, // must pass roles when creating
+    required this.roles,
+    String? primaryRole,
     String? image,
-  }) : image = image ?? generateRandomAvatar();
+  })  : primaryRole = primaryRole ?? _determinePrimaryRole(roles),
+        image = image ?? generateRandomAvatar();
 
-  // Generates a random avatar using the package
+  // Determine primary role based on priority
+  static String _determinePrimaryRole(List<String> roles) {
+    if (roles.contains("admin")) return "admin";
+    if (roles.contains("seller")) return "seller";
+    if (roles.contains("consumer")) return "consumer";
+    return "";
+  }
+
   static String generateRandomAvatar() {
     return RandomAvatar(
       DateTime.now().toIso8601String(),
@@ -52,11 +62,13 @@ class LoginUserModel {
       'password': password,
       'token': token,
       'roles': roles,
+      'primaryRole': primaryRole,
       'image': image,
     };
   }
 
   factory LoginUserModel.fromUser(Map<String, dynamic> map) {
+    final rolesList = List<String>.from(map['roles'] ?? ["consumer"]);
     return LoginUserModel(
       id: map['_id'] ?? "",
       name: map['name'] ?? "",
@@ -68,8 +80,8 @@ class LoginUserModel {
       locality: map['locality'] ?? "",
       password: map['password'] ?? "",
       token: map['token'] ?? "",
-      roles:
-          List<String>.from(map['roles'] ?? ["consumer"]), // default consumer
+      roles: rolesList,
+      primaryRole: map['primaryRole'], // optional if coming from backend
       image: map['image'],
     );
   }
