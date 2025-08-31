@@ -1,6 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:multi_vendor/screen/seller/user_screen/edit_user_seller_screen.dart';
+import 'package:multi_vendor/screen/seller/user_screen/order_user_seller_screen.dart';
+import 'package:multi_vendor/screen/seller/user_screen/profile_user_seller_screen.dart';
+import 'package:multi_vendor/screen/seller/user_screen/upload_user_seller_screen.dart';
 import '../../utils/theme/color/color_theme.dart';
+import 'user_screen/earning_user_seller_screen.dart';
 
 class UserSellerScreen extends StatefulWidget {
   const UserSellerScreen({super.key});
@@ -21,11 +26,11 @@ class _UserSellerScreenState extends State<UserSellerScreen> {
     super.initState();
 
     pages = [
-      const Center(child: Text("Earnings Page")),
-      const Center(child: Text("Upload Page")),
-      const Center(child: Text("Edit Page")),
-      const Center(child: Text("Orders Page")),
-      const Center(child: Text("Logout Page")),
+      EarningUserSellerScreen(),
+      UploadUserSellerScreen(),
+      EditUserSellerScreen(),
+      OrderUserSellerScreen(),
+      ProfileUserSellerScreen(),
     ];
   }
 
@@ -52,7 +57,7 @@ class _UserSellerScreenState extends State<UserSellerScreen> {
           bottomBarItem(const Icon(CupertinoIcons.upload_circle), 'Upload'),
           bottomBarItem(const Icon(Icons.edit), 'Edit'),
           bottomBarItem(const Icon(CupertinoIcons.shopping_cart), 'Orders'),
-          bottomBarItem(const Icon(Icons.logout_outlined), 'Logout'),
+          bottomBarItem(const Icon(CupertinoIcons.profile_circled), 'Profile'),
         ],
         elevation: 5,
       ),
