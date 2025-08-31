@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class MobileSellerScreen extends StatelessWidget {
-  const MobileSellerScreen({super.key});
+class UserSellerScreen extends StatelessWidget {
+  const UserSellerScreen({super.key});
 
   static String routeName = '/seller/dashboard';
   static String routePath = '/seller/dashboard';
