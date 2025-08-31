@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../provider/user_provider.dart';
+import '../../../utils/code/dialog_code.dart';
 import 'support/hover_widget_support_user.dart';
 import '../../../utils/fonts/google_fonts_utils.dart';
 import '../../../utils/theme/color/color_theme.dart';
@@ -178,8 +179,23 @@ class HeaderWidgetUser extends StatelessWidget {
                                       '/seller/dashboard'); // seller dashboard
                                   break;
                                 case "consumer":
-                                  context.go(
-                                      '/sellerPage'); // consumer flow to become seller
+                                  // 🔹 Show confirmation dialog
+                                  final result = await showDialog<bool>(
+                                    context: context,
+                                    barrierDismissible: false,
+                                    builder: (context) => alertDialog(
+                                      context,
+                                      onPressed: () {
+                                        // Close dialog and return true
+                                        Navigator.of(context).pop(true);
+                                      },
+                                    ),
+                                  );
+
+                                  if (result == true && context.mounted) {
+                                    context.go(
+                                        '/sellerPage'); // navigate only if confirmed
+                                  }
                                   break;
                                 default:
                                   ScaffoldMessenger.of(context).showSnackBar(
