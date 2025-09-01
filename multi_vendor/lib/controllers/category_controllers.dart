@@ -48,7 +48,7 @@ class CategoryControllers {
       );
 
       http.Response response = await http.post(
-        Uri.parse("$webUri/api/category"),
+        Uri.parse("$webUri/seller/category"),
         body: category.categoryToJson(),
         headers: <String, String>{
           "content-type": "application/json; charset=UTF-8",
@@ -71,7 +71,7 @@ class CategoryControllers {
   Future<List<CategoryApiModels>> fetchCategory() async {
     try {
       http.Response response = await http.get(
-        Uri.parse("$webUri/api/category"),
+        Uri.parse("$webUri/seller/category"),
         headers: <String, String>{
           "content-type": "application/json; charset=UTF-8",
         },

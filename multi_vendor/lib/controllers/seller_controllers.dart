@@ -1,11 +1,17 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:multi_vendor/models/seller_models.dart';
 import 'package:http/http.dart' as http;
+import 'package:multi_vendor/provider/seller_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../globals_variables.dart';
 import '../utils/widget/random/avatar_random.dart';
+
+final riverpodContainer = ProviderContainer();
 
 class SellerControllers {
   Future<void> signUpSeller({
@@ -28,7 +34,7 @@ class SellerControllers {
         city: '',
         locality: '',
         password: password,
-        role: '',
+        roles: ["seller", "consumer"],
         image: image,
         age: int.tryParse(age),
         phone: phone,
@@ -83,11 +89,38 @@ class SellerControllers {
       });
 
       if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+
+        // Store token
+        final SharedPreferences pref = await SharedPreferences.getInstance();
+        final String token = responseData['token'];
+        await pref.setString('auth_token', token);
+
+        // Store seller data
+        final String sellerJson = jsonEncode(responseData['seller']);
+        await pref.setString('seller', sellerJson);
+
+        // Update Riverpod state
+        riverpodContainer.read(sellerProvider.notifier).setSeller(sellerJson);
+
+        // Parse roles from response
+        final roles = List<String>.from(responseData['seller']['roles'] ?? []);
+
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Seller signed in successfully!")),
           );
+
+          if (roles.contains("admin")) {
+            context.go('/management');
+          } else if (roles.contains("seller")) {
+            context.go('/seller/dashboard');
+          } else {
+            // Default fallback
+            context.go('/');
+          }
         }
+
         return true;
       } else {
         final errorResponse = jsonDecode(response.body);

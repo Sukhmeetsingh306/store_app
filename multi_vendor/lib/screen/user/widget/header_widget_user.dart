@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../provider/user_provider.dart';
+import '../../../utils/code/dialog_code.dart';
 import 'support/hover_widget_support_user.dart';
 import '../../../utils/fonts/google_fonts_utils.dart';
 import '../../../utils/theme/color/color_theme.dart';
@@ -129,31 +132,85 @@ class HeaderWidgetUser extends StatelessWidget {
                       verticalDividerIcon(),
                       HoverWidgetSupportUser(),
                       verticalDividerIcon(),
-                      GestureDetector(
-                        onTap: () async {
-                          showDialog(
-                            context: context,
-                            barrierDismissible: false,
-                            builder: (BuildContext context) {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
+                      Consumer(
+                        builder: (context, ref, child) {
+                          final user = ref.read(userProvider);
+
+                          String buttonText = "Become a Seller"; // default
+
+                          if (user != null) {
+                            switch (user.primaryRole) {
+                              case "admin":
+                                buttonText = "Seller Side Admin";
+                                break;
+                              case "seller":
+                                buttonText = "Sell Goods";
+                                break;
+                              case "consumer":
+                                buttonText = "Become a Seller";
+                                break;
+                            }
+                          }
+                          return GestureDetector(
+                            onTap: () async {
+                              // Optional: show loading
+                              showLoadingDialog(context);
+
+                              await Future.delayed(const Duration(seconds: 2));
+
+                              if (!context.mounted) return;
+                              Navigator.of(context, rootNavigator: true).pop();
+
+                              if (user == null) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text("Please login first.")),
+                                );
+                                return;
+                              }
+
+                              // Navigation based on role
+                              switch (user.primaryRole) {
+                                case "admin":
+                                  context.go('/management'); // admin dashboard
+                                  break;
+                                case "seller":
+                                  context.go(
+                                      '/seller/dashboard'); // seller dashboard
+                                  break;
+                                case "consumer":
+                                  // 🔹 Show confirmation dialog
+                                  final result = await showDialog<bool>(
+                                    context: context,
+                                    barrierDismissible: false,
+                                    builder: (context) => alertDialog(
+                                      context,
+                                      onPressed: () {
+                                        // Close dialog and return true
+                                        Navigator.of(context).pop(true);
+                                      },
+                                    ),
+                                  );
+
+                                  if (result == true && context.mounted) {
+                                    context.go(
+                                        '/sellerPage'); // navigate only if confirmed
+                                  }
+                                  break;
+                                default:
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text("Unauthorized role")),
+                                  );
+                              }
                             },
+                            child: googleInterTextWeight4Font16(
+                              buttonText,
+                              color: ColorTheme.color.textWhiteColor,
+                              fontWeight: FontWeight.w500,
+                            ),
                           );
-
-                          await Future.delayed(const Duration(seconds: 3));
-
-                          if (!context.mounted) return;
-
-                          Navigator.of(context, rootNavigator: true).pop();
-
-                          context.go('/management');
                         },
-                        child: googleInterTextWeight4Font16(
-                          "Become a Seller",
-                          color: ColorTheme.color.textWhiteColor,
-                          fontWeight: FontWeight.w500,
-                        ),
                       ),
                       verticalDividerIcon(),
                     ],

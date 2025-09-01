@@ -12,8 +12,9 @@ class LoginUserModel {
   final String locality;
   final String password;
   final String token;
-  bool? isSeller;
-  final String image; // Ensured to always have a value
+  final List<String> roles; // all roles
+  final String primaryRole; // 🔹 new primary role
+  final String image;
 
   LoginUserModel({
     required this.id,
@@ -26,14 +27,23 @@ class LoginUserModel {
     required this.locality,
     required this.password,
     required this.token,
-    this.isSeller,
+    required this.roles,
+    String? primaryRole,
     String? image,
-  }) : image = image ?? generateRandomAvatar(); // Use random avatar if null
+  })  : primaryRole = primaryRole ?? _determinePrimaryRole(roles),
+        image = image ?? generateRandomAvatar();
 
-  // Generates a random avatar using the package
+  // Determine primary role based on priority
+  static String _determinePrimaryRole(List<String> roles) {
+    if (roles.contains("admin")) return "admin";
+    if (roles.contains("seller")) return "seller";
+    if (roles.contains("consumer")) return "consumer";
+    return "";
+  }
+
   static String generateRandomAvatar() {
     return RandomAvatar(
-      DateTime.now().toIso8601String(), // Unique seed for avatar
+      DateTime.now().toIso8601String(),
       height: 90,
       width: 90,
     ).toString();
@@ -51,33 +61,33 @@ class LoginUserModel {
       'locality': locality,
       'password': password,
       'token': token,
-      'isSeller': isSeller,
-      'image': image, // Always has a value
+      'roles': roles,
+      'primaryRole': primaryRole,
+      'image': image,
     };
   }
 
-  /// Converts a `Map<String, dynamic>` to a `LoginUserModel` instance.
   factory LoginUserModel.fromUser(Map<String, dynamic> map) {
+    final rolesList = List<String>.from(map['roles'] ?? ["consumer"]);
     return LoginUserModel(
       id: map['_id'] ?? "",
       name: map['name'] ?? "",
       email: map['email'] ?? "",
-      phone: map['phone'] ?? "",
-      age: map['age'] ?? 18, // Default to 18 if missing
+      phone: map['phone'],
+      age: map['age'] ?? 18,
       state: map['state'] ?? "",
       city: map['city'] ?? "",
       locality: map['locality'] ?? "",
       password: map['password'] ?? "",
       token: map['token'] ?? "",
-      isSeller: map['isSeller'] ?? false,
+      roles: rolesList,
+      primaryRole: map['primaryRole'], // optional if coming from backend
       image: map['image'],
     );
   }
 
-  /// Converts a `LoginUserModel` instance to a JSON string.
   String toJson() => json.encode(toUser());
 
-  /// Converts a JSON string to a `LoginUserModel` instance.
   factory LoginUserModel.fromJson(String source) =>
       LoginUserModel.fromUser(json.decode(source));
 }

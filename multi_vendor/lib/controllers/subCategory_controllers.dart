@@ -42,7 +42,7 @@ class SubCategoryControllers {
       );
 
       http.Response response = await http.post(
-        Uri.parse("$webUri/api/subCategory"),
+        Uri.parse("$webUri/seller/subCategory"),
         body: subCategory.subCategoryToJson(),
         headers: <String, String>{
           "content-Type": "application/json; charset=UTF-8"
@@ -64,7 +64,7 @@ class SubCategoryControllers {
   Future<List<SubCategoryApiModels>> fetchSubCategories() async {
     try {
       http.Response response = await http.get(
-        Uri.parse("$webUri/api/subCategory"),
+        Uri.parse("$webUri/seller/subCategory"),
         headers: <String, String>{
           "Content-Type": "application/json; charset=UTF-8",
         },
@@ -92,7 +92,7 @@ class SubCategoryControllers {
       String categoryName) async {
     try {
       http.Response response = await http.get(
-        Uri.parse("$webUri/api/category/$categoryName/subCategories"),
+        Uri.parse("$webUri/seller/category/$categoryName/subCategories"),
         headers: <String, String>{
           "Content-Type": "application/json; charset=UTF-8",
         },

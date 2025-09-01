@@ -10,6 +10,7 @@ import '../../../utils/widget/animation/seller_widget_utils_animation.dart';
 import '../../../utils/widget/form/appTextButton_form.dart' show AppTextButton;
 import '../../../utils/widget/form/textForm_form.dart';
 import '../../../utils/widget/space_widget_utils.dart';
+import 'button/seller_login_button.dart';
 
 class SellerLoginAuthScreen extends StatefulWidget {
   const SellerLoginAuthScreen({super.key});
@@ -263,38 +264,15 @@ class _SellerLoginAuthScreenState extends State<SellerLoginAuthScreen>
                         ),
                         SizedBox(width: 16),
                         Expanded(
-                          child: AppTextButton(
-                            buttonText: "Login",
-                            onPressed: () async {
-                              if (_formKey.currentState!.validate()) {
-                                bool isAuthenticated =
-                                    await _sellerControllers.signInSeller(
-                                  context: context,
-                                  email: _mailController.text.trim(),
-                                  password: _passwordController.text.trim(),
-                                );
-
-                                if (isAuthenticated) {
-                                  setState(() {
-                                    hasError = false;
-                                  });
-                                  print('User is validated');
-                                  context.go('/management');
-                                } else {
-                                  setState(() {
-                                    hasError = true;
-                                  });
-                                  print("There is an error");
-                                  // Optionally show a snackbar or error message here
-                                }
-                              } else {
-                                setState(() {
-                                  hasError = true;
-                                });
-                                print("Form validation failed");
-                                // Optionally show a snackbar or form error message here
-                              }
-                              // context.go('/management');
+                          child: SellerLoginButton(
+                            formKey: _formKey,
+                            emailController: _mailController,
+                            passwordController: _passwordController,
+                            sellerControllers: _sellerControllers,
+                            onError: (value) {
+                              setState(() {
+                                hasError = value;
+                              });
                             },
                           ),
                         ),

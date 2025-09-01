@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:multi_vendor/utils/routes/app_route.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Lock the app to portrait mode only
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    // DeviceOrientation.portraitDown,
+  ]);
+
   runApp(ProviderScope(child: const MyApp()));
 }
 
@@ -22,9 +31,3 @@ class MyApp extends ConsumerWidget {
     );
   }
 }
-
-
-/**
-
-
- */

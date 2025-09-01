@@ -9,7 +9,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../provider/user_provider.dart';
 import '../services/http/http_services.dart';
-import '../utils/widget/random/avatar_random.dart';
 
 final riverpodContainer = ProviderContainer();
 
@@ -22,25 +21,24 @@ class LoginUserControllers {
     required String phone,
     required int age,
     String? image, // Optional
-    bool? isSeller,
   }) async {
     try {
-      // Generate random avatar if image is null
-      image = image ?? generateRandomAvatar();
+      image = image ?? LoginUserModel.generateRandomAvatar();
 
+      // Create user model with roles
       LoginUserModel user = LoginUserModel(
         id: "",
         name: name,
         email: email,
         phone: phone,
         age: age,
-        image: image, // Default avatar or custom image
         state: "",
         city: "",
         locality: "",
         password: password,
         token: "",
-        isSeller: isSeller ?? false,
+        roles: ["consumer"],
+        image: image,
       );
 
       http.Response response = await http.post(
@@ -49,9 +47,12 @@ class LoginUserControllers {
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-      ).timeout(const Duration(seconds: 10), onTimeout: () {
-        throw Exception('Request timed out');
-      });
+      ).timeout(
+        const Duration(seconds: 10),
+        onTimeout: () {
+          throw Exception('Request timed out');
+        },
+      );
 
       manageHttpResponse(
         response: response,
@@ -84,18 +85,35 @@ class LoginUserControllers {
       if (response.statusCode == 200) {
         final SharedPreferences pref = await SharedPreferences.getInstance();
         final String token = responseData['token'];
-        final String userJson = jsonEncode(responseData['user']);
 
-        await pref.setString('auth_token', token);
-        await pref.setString('user', userJson);
+        // Already a Map<String, dynamic>, no need to jsonDecode again
+        final Map<String, dynamic> userMap = responseData['user'];
+        final user = LoginUserModel.fromUser(userMap);
 
-        // Update app state via provider
-        riverpodContainer.read(userProvider.notifier).setUser(userJson);
-
-        // You should do navigation only *after* checking mounted
-        if (context.mounted) {
-          context.go('/homePage'); // Direct navigation, no pop
+        // ✅ Allow login if user is consumer OR seller
+        if (!(user.roles.contains("consumer") ||
+            user.roles.contains("seller"))) {
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('You do not have access to login.'),
+              ),
+            );
+          }
+          return false;
         }
+
+        // Save token & user (userMap must be saved as JSON string in prefs)
+        await pref.setString('auth_token', token);
+        await pref.setString('user', jsonEncode(userMap));
+
+        // Update app state (pass string JSON here)
+        riverpodContainer
+            .read(userProvider.notifier)
+            .setUser(jsonEncode(userMap));
+
+        // Navigate to home
+        if (context.mounted) context.go('/homePage');
 
         return true;
       } else {
@@ -120,7 +138,7 @@ class LoginUserControllers {
     }
   }
 
-  // sign out user
+// sign out user
   Future<void> signOutUser(BuildContext context) async {
     try {
       // Clear user data from shared preferences

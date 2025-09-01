@@ -3,15 +3,16 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import User from "../models/userInf.js";
+import Seller from "../models/seller.js";
 
 dotenv.config();
 
 const appAuthSignAndSignUp = express();
 
-// Signup Route
+// ---------------- Signup Route ----------------
 appAuthSignAndSignUp.post("/signup", async (req, res) => {
   try {
-    const { name, email, password, phone, age, image, isSeller } = req.body;
+    const { name, email, password, phone, age, image } = req.body;
 
     // Validate required fields
     if (!name || !email || !password || !phone || !age) {
@@ -30,15 +31,15 @@ appAuthSignAndSignUp.post("/signup", async (req, res) => {
     const salt = await bcrypt.genSalt(12);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Create new user
+    // Create user with default role 'consumer'
     const newUser = new User({
       name,
       email,
       password: hashedPassword,
       phone,
       age,
-      image: image, // Default avatar
-      isSeller: isSeller || false,
+      image: image ?? null,
+      roles: ["consumer"], // default role
     });
 
     await newUser.save();
@@ -52,47 +53,62 @@ appAuthSignAndSignUp.post("/signup", async (req, res) => {
         phone: newUser.phone,
         age: newUser.age,
         image: newUser.image,
-        isSeller: newUser.isSeller,
+        roles: newUser.roles,
       },
     });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    console.error("Error in /signup:", err);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
-// Signin Route
+// ---------------- Signin Route ----------------
 appAuthSignAndSignUp.post("/signin", async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Find user by email
-    const findUser = await User.findOne({ email });
+    let findUser = await User.findOne({ email });
+    let isSellerLogin = false;
+
+    if (!findUser) {
+      findUser = await Seller.findOne({ email });
+      if (findUser) isSellerLogin = true;
+    }
+
     if (!findUser) {
       return res.status(400).json({ message: "Invalid email or password." });
     }
 
-    // Compare passwords
     const isMatch = await bcrypt.compare(password, findUser.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid email or password." });
     }
 
-    // Generate JWT token
+    let roles = findUser.roles || [];
+
+    if (isSellerLogin && !roles.includes("seller")) {
+      roles.push("seller");
+    }
+    if (!isSellerLogin && !roles.includes("consumer")) {
+      roles.push("consumer");
+    }
+
     const token = jwt.sign(
-      { id: findUser._id, isSeller: findUser.isSeller },
+      { id: findUser._id, roles },
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
 
     const { password: _, ...userWithoutPassword } = findUser._doc;
 
-    res.status(200).json({
+    return res.status(200).json({
       message: "Login successful.",
       token,
-      user: userWithoutPassword,
+      user: { ...userWithoutPassword, roles },
     });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    console.error("Error in /signin:", err);
+    return res.status(500).json({ message: "Internal server error" });
   }
 });
 
