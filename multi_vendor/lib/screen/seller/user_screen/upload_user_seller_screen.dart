@@ -6,6 +6,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:multi_vendor/utils/widget/form/textForm_form.dart';
 import 'package:multi_vendor/utils/widget/space_widget_utils.dart';
 
+import '../../../controllers/category_controllers.dart';
+import '../../../controllers/subCategory_controllers.dart';
+import '../../../models/api/category_api_models.dart';
+import '../../../models/api/subcategory_api_models.dart';
+import '../../../utils/fonts/google_fonts_utils.dart';
+
 class UploadUserSellerScreen extends StatefulWidget {
   const UploadUserSellerScreen({super.key});
 
@@ -19,6 +25,27 @@ class _UploadUserSellerScreenState extends State<UploadUserSellerScreen> {
   final TextEditingController _productController = TextEditingController();
 
   List<XFile>? imageFileList = [];
+
+  late Future<List<CategoryApiModels>> futureCategory;
+  late Future<List<SubCategoryApiModels>> futureSubCategory;
+
+  CategoryApiModels? _selectedCategory;
+  SubCategoryApiModels? _selectedSubCategory;
+
+  @override
+  void initState() {
+    super.initState();
+    futureCategory = CategoryControllers().fetchCategory();
+    futureSubCategory =
+        SubCategoryControllers().fetchSubCategories(); // default load
+  }
+
+  getSubcategoryByCategory(val) {
+    setState(() {
+      futureSubCategory =
+          SubCategoryControllers().getSubCategoryByCategoryName(val.name);
+    });
+  }
 
   // chooseImage() async {
   //   final pickedImage = await _picker.pickImage(source: ImageSource.gallery);
@@ -138,6 +165,124 @@ class _UploadUserSellerScreenState extends State<UploadUserSellerScreen> {
               sizedBoxH15(),
               Row(
                 children: [
+                  // Category Dropdown
+                  Expanded(
+                    child: FutureBuilder(
+                      future: futureCategory,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return errormessage("Error: ${snapshot.error}");
+                        } else if (!snapshot.hasData ||
+                            snapshot.data!.isEmpty) {
+                          return Center(
+                            child: googleInterText(
+                              "No Category found",
+                              fontWeight: FontWeight.normal,
+                              fontSize: 18,
+                            ),
+                          );
+                        } else {
+                          return DropdownButtonFormField<CategoryApiModels>(
+                            initialValue: _selectedCategory,
+                            decoration: InputDecoration(
+                              labelText: 'Category',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                            ),
+                            items: snapshot.data!
+                                .map((CategoryApiModels category) {
+                              return DropdownMenuItem<CategoryApiModels>(
+                                value: category,
+                                child: Text(
+                                    category.categoryName), // ✅ Correct field
+                              );
+                            }).toList(),
+                            onChanged: (CategoryApiModels? newValue) {
+                              setState(() {
+                                _selectedCategory = newValue;
+                                futureSubCategory = SubCategoryControllers()
+                                    .getSubCategoryByCategoryName(
+                                        newValue!.categoryName); // ✅ Correct
+                              });
+                            },
+                            validator: (value) => value == null
+                                ? 'Please select a category'
+                                : null,
+                          );
+                        }
+                      },
+                    ),
+                  ),
+
+                  const SizedBox(width: 16),
+
+                  // Sub-Category Dropdown
+                  Expanded(
+                    child: FutureBuilder(
+                      future: futureSubCategory,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return errormessage("Error: ${snapshot.error}");
+                        } else if (!snapshot.hasData ||
+                            snapshot.data!.isEmpty) {
+                          return InputDecorator(
+                            decoration: InputDecoration(
+                              labelText: 'Sub-Category',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 16),
+                            ),
+                            child: googleInterText(
+                              "No Sub-Category",
+                              fontWeight: FontWeight.normal,
+                              fontSize: 16,
+                            ),
+                          );
+                        } else {
+                          return DropdownButtonFormField<SubCategoryApiModels>(
+                            initialValue: _selectedSubCategory,
+                            decoration: InputDecoration(
+                              labelText: 'Sub-Category',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                            ),
+                            items: snapshot.data!
+                                .map((SubCategoryApiModels subcategory) {
+                              return DropdownMenuItem<SubCategoryApiModels>(
+                                value: subcategory,
+                                child: Text(subcategory.subCategoryName),
+                              );
+                            }).toList(),
+                            onChanged: (SubCategoryApiModels? newValue) {
+                              setState(() {
+                                _selectedSubCategory = newValue;
+                              });
+                            },
+                            validator: (value) => value == null
+                                ? 'Please select a sub-category'
+                                : null,
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              sizedBoxH15(),
+              Row(
+                children: [
                   Expanded(
                     child: textFormField(
                       _productController,
@@ -146,11 +291,11 @@ class _UploadUserSellerScreenState extends State<UploadUserSellerScreen> {
                       keyboardType: TextInputType.number,
                     ),
                   ),
-                  const SizedBox(width: 16), // spacing between fields
+                  const SizedBox(width: 16),
                   Expanded(
                     child: textFormField(
                       _productController, // use a separate controller
-                      'Product Price Per Unit',
+                      'Price Per Unit',
                       (val) {},
                       keyboardType: TextInputType.number,
                     ),
