@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:multi_vendor/utils/widget/form/textForm_form.dart';
+import 'package:multi_vendor/utils/widget/space_widget_utils.dart';
 
 class UploadUserSellerScreen extends StatefulWidget {
   const UploadUserSellerScreen({super.key});
@@ -13,6 +15,8 @@ class UploadUserSellerScreen extends StatefulWidget {
 
 class _UploadUserSellerScreenState extends State<UploadUserSellerScreen> {
   final ImagePicker _picker = ImagePicker();
+
+  final TextEditingController _productController = TextEditingController();
 
   List<XFile>? imageFileList = [];
 
@@ -121,6 +125,65 @@ class _UploadUserSellerScreenState extends State<UploadUserSellerScreen> {
                   );
           },
         ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              textFormField(
+                _productController,
+                'Product Name',
+                (val) {},
+              ),
+              sizedBoxH15(),
+              Row(
+                children: [
+                  Expanded(
+                    child: textFormField(
+                      _productController,
+                      'Product Quantity',
+                      (val) {},
+                      keyboardType: TextInputType.number,
+                    ),
+                  ),
+                  const SizedBox(width: 16), // spacing between fields
+                  Expanded(
+                    child: textFormField(
+                      _productController, // use a separate controller
+                      'Product Price Per Unit',
+                      (val) {},
+                      keyboardType: TextInputType.number,
+                    ),
+                  ),
+                ],
+              ),
+              sizedBoxH15(),
+              textFormField(
+                _productController,
+                'Description',
+                (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Description is required';
+                  } else if (value.length < 50) {
+                    return 'Minimum 50 characters required';
+                  } else if (value.length > 200) {
+                    return 'Maximum 200 characters allowed';
+                  }
+                  return null;
+                },
+                minLines: 2,
+                maxLines: 10,
+                maxLength: 200,
+                keyboardType: TextInputType.multiline,
+                onChanged: (value) {
+                  setState(() {
+                    //descriptionCharCount = value.length;
+                  });
+                },
+              ),
+            ],
+          ),
+        )
       ],
     );
   }
