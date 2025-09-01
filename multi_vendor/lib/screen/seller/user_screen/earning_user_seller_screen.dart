@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class EarningUserSellerScreen extends StatelessWidget {
   static const String routeName = '/seller/earningSellerScreen';
@@ -8,9 +9,19 @@ class EarningUserSellerScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text(
-          'Earnings Screen',
-          style: TextStyle(fontSize: 24),
+        child: Column(
+          children: [
+            Text(
+              'Earnings Screen',
+              style: TextStyle(fontSize: 24),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+                onPressed: () {
+                  context.go('/loginPage');
+                },
+                child: Text('Go Back')),
+          ],
         ),
       ),
     );
