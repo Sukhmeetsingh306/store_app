@@ -25,6 +25,9 @@ class _UploadUserSellerScreenState extends State<UploadUserSellerScreen> {
   final ImagePicker _picker = ImagePicker();
 
   final TextEditingController _productController = TextEditingController();
+  final TextEditingController _quantityController = TextEditingController();
+  final TextEditingController _priceController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
 
   List<XFile>? imageFileList = [];
 
@@ -317,7 +320,7 @@ class _UploadUserSellerScreenState extends State<UploadUserSellerScreen> {
                     children: [
                       Expanded(
                         child: textFormField(
-                          _productController,
+                          _quantityController,
                           'Product Quantity',
                           (value) {
                             if (value == null || value.isEmpty) {
@@ -334,7 +337,7 @@ class _UploadUserSellerScreenState extends State<UploadUserSellerScreen> {
                       const SizedBox(width: 16),
                       Expanded(
                         child: textFormField(
-                          _productController, // use a separate controller
+                          _priceController,
                           'Price Per Unit',
                           (value) {
                             if (value == null || value.isEmpty) {
@@ -352,7 +355,7 @@ class _UploadUserSellerScreenState extends State<UploadUserSellerScreen> {
                   ),
                   sizedBoxH15(),
                   textFormField(
-                    _productController,
+                    _descriptionController,
                     'Description',
                     (value) {
                       if (value == null || value.trim().isEmpty) {
@@ -377,7 +380,13 @@ class _UploadUserSellerScreenState extends State<UploadUserSellerScreen> {
                 ],
               ),
             ),
-            elevatedButton('Upload Product', () {})
+            elevatedButton('Upload Product', () {
+              if (_formKey.currentState!.validate()) {
+                print("Form is valid, proceed with upload");
+              } else {
+                print("Form is invalid, please correct the errors");
+              }
+            })
           ],
         ),
       ),
