@@ -124,6 +124,11 @@ class _WebDeviceViewState extends State<WebDeviceView> {
           }
         });
         break;
+
+      case 'dashboard':
+        context.go('/seller/dashboard');
+        break;
+      // rm this after the code is completed
     }
   }
 
@@ -245,6 +250,12 @@ class _WebDeviceViewState extends State<WebDeviceView> {
         AdminMenuItem(
           title: 'Logout',
           route: 'logout',
+          icon: Icons.logout_outlined,
+        ),
+        AdminMenuItem(
+          // rm this after the code is completed
+          title: 'seller dashboard',
+          route: 'dashboard',
           icon: Icons.logout_outlined,
         )
       ];
