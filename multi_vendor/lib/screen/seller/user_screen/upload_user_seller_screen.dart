@@ -198,16 +198,17 @@ class _UploadUserSellerScreenState extends State<UploadUserSellerScreen> {
                                 .map((CategoryApiModels category) {
                               return DropdownMenuItem<CategoryApiModels>(
                                 value: category,
-                                child: Text(
-                                    category.categoryName), // ✅ Correct field
+                                child: Text(category.categoryName),
                               );
                             }).toList(),
                             onChanged: (CategoryApiModels? newValue) {
                               setState(() {
                                 _selectedCategory = newValue;
+                                _selectedSubCategory =
+                                    null; // reset subcategory
                                 futureSubCategory = SubCategoryControllers()
                                     .getSubCategoryByCategoryName(
-                                        newValue!.categoryName); // ✅ Correct
+                                        newValue!.categoryName);
                               });
                             },
                             validator: (value) => value == null
@@ -218,23 +219,11 @@ class _UploadUserSellerScreenState extends State<UploadUserSellerScreen> {
                       },
                     ),
                   ),
-
                   const SizedBox(width: 16),
-
-                  // Sub-Category Dropdown
                   Expanded(
-                    child: FutureBuilder(
-                      future: futureSubCategory,
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        } else if (snapshot.hasError) {
-                          return errormessage("Error: ${snapshot.error}");
-                        } else if (!snapshot.hasData ||
-                            snapshot.data!.isEmpty) {
-                          return InputDecorator(
+                    child: _selectedCategory == null
+                        // 🚨 Before selecting a category → always show this
+                        ? InputDecorator(
                             decoration: InputDecoration(
                               labelText: 'Sub-Category',
                               border: OutlineInputBorder(
@@ -248,35 +237,63 @@ class _UploadUserSellerScreenState extends State<UploadUserSellerScreen> {
                               fontWeight: FontWeight.normal,
                               fontSize: 16,
                             ),
-                          );
-                        } else {
-                          return DropdownButtonFormField<SubCategoryApiModels>(
-                            initialValue: _selectedSubCategory,
-                            decoration: InputDecoration(
-                              labelText: 'Sub-Category',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                            ),
-                            items: snapshot.data!
-                                .map((SubCategoryApiModels subcategory) {
-                              return DropdownMenuItem<SubCategoryApiModels>(
-                                value: subcategory,
-                                child: Text(subcategory.subCategoryName),
-                              );
-                            }).toList(),
-                            onChanged: (SubCategoryApiModels? newValue) {
-                              setState(() {
-                                _selectedSubCategory = newValue;
-                              });
+                          )
+                        : FutureBuilder(
+                            future: futureSubCategory,
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Center(
+                                    child: CircularProgressIndicator());
+                              } else if (snapshot.hasError) {
+                                return errormessage("Error: ${snapshot.error}");
+                              } else if (!snapshot.hasData ||
+                                  snapshot.data!.isEmpty) {
+                                return InputDecorator(
+                                  decoration: InputDecoration(
+                                    labelText: 'Sub-Category',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        horizontal: 12, vertical: 16),
+                                  ),
+                                  child: googleInterText(
+                                    "No Sub-Category",
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 16,
+                                  ),
+                                );
+                              } else {
+                                return DropdownButtonFormField<
+                                    SubCategoryApiModels>(
+                                  initialValue: _selectedSubCategory,
+                                  decoration: InputDecoration(
+                                    labelText: 'Sub-Category',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                  ),
+                                  items: snapshot.data!
+                                      .map((SubCategoryApiModels subcategory) {
+                                    return DropdownMenuItem<
+                                        SubCategoryApiModels>(
+                                      value: subcategory,
+                                      child: Text(subcategory.subCategoryName),
+                                    );
+                                  }).toList(),
+                                  onChanged: (SubCategoryApiModels? newValue) {
+                                    setState(() {
+                                      _selectedSubCategory = newValue;
+                                    });
+                                  },
+                                  validator: (value) => value == null
+                                      ? 'Please select a sub-category'
+                                      : null,
+                                );
+                              }
                             },
-                            validator: (value) => value == null
-                                ? 'Please select a sub-category'
-                                : null,
-                          );
-                        }
-                      },
-                    ),
+                          ),
                   ),
                 ],
               ),
