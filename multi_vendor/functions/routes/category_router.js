@@ -4,7 +4,7 @@ import Category from "../models/category_models.js";
 const categoryRouter = express.Router();
 
 categoryRouter
-  .route("/api/category")
+  .route("/seller/category")
   .post(async (req, res) => {
     try {
       const { categoryName, categoryImage, categoryBanner } = req.body;

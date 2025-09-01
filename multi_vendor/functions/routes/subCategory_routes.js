@@ -1,11 +1,11 @@
 import express from "express";
 import { SubCategory } from "../models/subCategory_models.js";
-import Category from "../models/category_models.js"; 
+import Category from "../models/category_models.js";
 
 const subCategoryRouter = express.Router();
 
 subCategoryRouter
-  .route("/api/subCategory")
+  .route("/seller/subCategory")
   .post(async (req, res) => {
     try {
       const { categoryId, categoryName, subCategoryImage, subCategoryName } =
@@ -61,7 +61,7 @@ subCategoryRouter
   });
 
 subCategoryRouter
-  .route("/api/category/:categoryName/subCategories")
+  .route("/seller/category/:categoryName/subCategories")
   .get(async (req, res) => {
     const { categoryName } = req.params;
     try {
