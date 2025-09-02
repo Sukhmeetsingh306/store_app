@@ -1,36 +1,43 @@
 import express from "express";
 import { Product } from "../models/product_models.js";
 import Category from "../models/category_models.js";
+import { sellerAuth } from "../middleware/auth.js";
 
 const productRouter = express.Router();
 
-productRouter.post("/seller/add-product", async (req, res) => {
+productRouter.post("/seller/add-product", sellerAuth, async (req, res) => {
   try {
+    console.log("🔹 Received add-product request:", req.body);
+
     const {
       productName,
       productPrice,
       productQuantity,
       productDescription,
-      sellerId,
-      sellerName,
       productCategory,
       productSubCategory,
       productImage,
     } = req.body;
 
-    // Check category exists
-    const category = await Category.findById(productCategory);
-    if (!category) {
-      return res.status(400).json({ error: "Invalid category" });
+    const sellerId = req.seller.id;
+    const sellerName = req.seller.name;
+
+    if (!sellerId || !sellerName) {
+      console.log("❌ Seller info missing in request");
+      return res.status(400).json({ error: "Seller info missing" });
     }
 
-    // If category has subcategories, subcategory must be selected
-    if (category.subCategories && category.subCategories.length > 0) {
-      if (!productSubCategory || productSubCategory.trim() === "") {
-        return res
-          .status(400)
-          .json({ error: "Subcategory is required for this category" });
-      }
+    const category = await Category.findOne({ categoryName: productCategory });
+    if (!category) {
+      console.log("❌ Invalid category:", productCategory);
+      return res.status(400).json({ error: "Invalid category name" });
+    }
+
+    if (
+      category.subCategories?.length > 0 &&
+      (!productSubCategory || productSubCategory.trim() === "")
+    ) {
+      return res.status(400).json({ error: "Subcategory is required" });
     }
 
     const newProduct = new Product({
@@ -46,11 +53,12 @@ productRouter.post("/seller/add-product", async (req, res) => {
     });
 
     await newProduct.save();
+    console.log("✅ Product saved successfully:", newProduct);
 
-    res.status(201).json(newProduct);
+    return res.status(201).json(newProduct);
   } catch (e) {
-    console.log("Error creating product:", e);
-    res.status(400).json({ error: e.message });
+    console.error("❌ Error creating product:", e);
+    return res.status(400).json({ error: e.message });
   }
 });
 
