@@ -26,7 +26,6 @@ const productSchema = mongoose.Schema({
 
   sellerId: {
     type: String,
-    //type: mongoose.Schema.Types.ObjectId,
     required: true,
   },
 
