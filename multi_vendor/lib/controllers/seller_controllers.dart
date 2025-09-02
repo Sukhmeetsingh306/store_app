@@ -80,6 +80,8 @@ class SellerControllers {
     required String password,
   }) async {
     try {
+      print("🔹 Attempting seller login with email: $email");
+
       final response = await http.post(
         Uri.parse("$webUri/seller/signin"),
         body: jsonEncode({'email': email, 'password': password}),
@@ -88,23 +90,27 @@ class SellerControllers {
         throw Exception('Request timed out');
       });
 
+      print("🔹 Response status: ${response.statusCode}");
+      print("🔹 Response body: ${response.body}");
+
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
 
-        // Store token
+        // Save token
         final SharedPreferences pref = await SharedPreferences.getInstance();
         final String token = responseData['token'];
         await pref.setString('auth_token', token);
 
-        // Store seller data
+        // Save seller data
         final String sellerJson = jsonEncode(responseData['seller']);
-        await pref.setString('seller', sellerJson);
+        await pref.setString('sellerData', sellerJson); // ✅ consistent key
+        print("🔹 Saved seller JSON: $sellerJson");
 
         // Update Riverpod state
         riverpodContainer.read(sellerProvider.notifier).setSeller(sellerJson);
 
-        // Parse roles from response
         final roles = List<String>.from(responseData['seller']['roles'] ?? []);
+        print("🔹 Seller roles: $roles");
 
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -116,7 +122,6 @@ class SellerControllers {
           } else if (roles.contains("seller")) {
             context.go('/seller/dashboard');
           } else {
-            // Default fallback
             context.go('/');
           }
         }
@@ -127,7 +132,7 @@ class SellerControllers {
         throw Exception(errorResponse['message'] ?? 'Failed to sign in seller');
       }
     } catch (e) {
-      print('Error signing in seller: ${e.toString()}');
+      print('❌ Error signing in seller: $e');
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("Failed to sign in seller: $e")),
