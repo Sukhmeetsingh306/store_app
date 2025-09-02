@@ -5,24 +5,19 @@ import jwt from "jsonwebtoken";
 
 const sellerRouter = express.Router();
 
-// Route: POST /seller/signup
+// Seller signup
 sellerRouter.post("/seller/signup", async (req, res) => {
   try {
     const { name, email, password, phone, age, image } = req.body;
-
     if (!name || !email || !password || !phone || !age) {
-      return res.status(400).json({
-        message: "All fields are required: name, email, password, phone, age.",
-      });
+      return res.status(400).json({ message: "All fields are required" });
     }
 
     const existingSeller = await Seller.findOne({ email });
-    if (existingSeller) {
+    if (existingSeller)
       return res.status(400).json({ message: "Seller already exists." });
-    }
 
-    const salt = await bcrypt.genSalt(12);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const hashedPassword = await bcrypt.hash(password, 12);
 
     const newSeller = new Seller({
       name,
@@ -54,50 +49,41 @@ sellerRouter.post("/seller/signup", async (req, res) => {
   }
 });
 
-// Signin Route
+// Seller signin
 sellerRouter.post("/seller/signin", async (req, res) => {
   try {
     const { email, password } = req.body;
-
-    // Validate input
-    if (!email || !password) {
+    if (!email || !password)
       return res
         .status(400)
         .json({ message: "Both email and password are required." });
-    }
 
-    // Find seller by email
     const findSeller = await Seller.findOne({ email });
-    if (!findSeller) {
+    if (!findSeller)
       return res.status(400).json({ message: "Invalid email or password." });
-    }
 
-    // Compare passwords
     const isMatch = await bcrypt.compare(password, findSeller.password);
-    if (!isMatch) {
+    if (!isMatch)
       return res.status(400).json({ message: "Invalid email or password." });
-    }
 
-    // Generate JWT token
+    // 🔹 Include name, roles in JWT
     const token = jwt.sign(
       {
         id: findSeller._id,
-        isSeller: findSeller.isSeller || false, // in case not set
+        name: findSeller.name,
+        roles: findSeller.roles,
+        isSeller: true,
       },
-      process.env.JWT_SECRET || "default_jwt_secret", // fallback for dev
-      {
-        expiresIn: "1h",
-      }
+      process.env.JWT_SECRET || "default_jwt_secret",
+      { expiresIn: "1h" }
     );
 
-    // Remove password before sending response
     const { password: _, ...sellerWithoutPassword } = findSeller._doc;
 
     return res.status(200).json({
       message: "Login successful.",
       token,
-      seller: sellerWithoutPassword, // renamed to "user" for consistency
-      // if any error change seller to user
+      seller: sellerWithoutPassword,
     });
   } catch (err) {
     console.error("Error in /seller/signin:", err);
