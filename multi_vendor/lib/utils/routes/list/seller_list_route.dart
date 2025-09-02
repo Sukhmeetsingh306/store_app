@@ -55,14 +55,11 @@ class SellerListTile extends ConsumerWidget {
 
           // 🔹 Role-based navigation using primaryRole
           switch (user.primaryRole) {
-            case "admin":
-              context.go('/management');
-              break;
-            case "seller":
-              context.go('/seller/dashboard');
+            case "admin" || "seller":
+              context.go('/sellerLoginPage');
               break;
             case "consumer":
-              context.go('/homePage');
+              context.go('/sellerPage');
               break;
             default:
               ScaffoldMessenger.of(context).showSnackBar(
