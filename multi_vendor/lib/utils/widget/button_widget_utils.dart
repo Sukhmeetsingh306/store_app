@@ -5,7 +5,7 @@ import '../theme/color/color_theme.dart';
 
 ElevatedButton elevatedButton(
   String buttonText,
-  VoidCallback onPressed, {
+  VoidCallback? onPressed, {
   Color? backgroundColor,
   Color? textColor,
 } // Optional parameter for background color
