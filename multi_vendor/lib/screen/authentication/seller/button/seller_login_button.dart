@@ -36,51 +36,44 @@ class _SellerLoginButtonState extends ConsumerState<SellerLoginButton> {
       onPressed: _isLoading
           ? null
           : () async {
-              if (widget.formKey.currentState!.validate()) {
-                setState(() {
-                  _isLoading = true;
-                });
+              if (!widget.formKey.currentState!.validate()) {
+                print("⚠️ Form validation failed");
+                return;
+              }
 
-                try {
-                  await widget.sellerControllers.signInSeller(
-                    email: widget.emailController.text.trim(),
-                    password: widget.passwordController.text.trim(),
-                    context: context,
-                  );
+              setState(() => _isLoading = true);
 
-                  // Update seller state in Riverpod
-                  final sellerNotifier = ref.read(sellerProvider.notifier);
-                  final pref = await SharedPreferences.getInstance();
-                  final sellerData = pref.getString('sellerData');
-                  if (sellerData != null) {
-                    sellerNotifier.setSeller(sellerData);
-                  }
+              try {
+                print("🔹 Attempting seller login from button...");
 
-                  final sellerState = ref.read(sellerProvider);
-                  final roles = sellerState.roles;
-                  if (!context.mounted) return;
-                  if (roles.contains('admin')) {
-                    context.go('/management');
-                  } else if (roles.contains('seller')) {
-                    context.go('/seller/dashboard');
-                  } else if (roles.contains('consumer')) {
-                    context.go('/homePage');
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Unauthorized role")),
-                    );
-                  }
-                } catch (e) {
-                  if (widget.onError != null) {
-                    widget.onError!(true);
-                  }
-                } finally {
-                  if (mounted) {
-                    setState(() {
-                      _isLoading = false;
-                    });
-                  }
+                bool success = await widget.sellerControllers.signInSeller(
+                  email: widget.emailController.text.trim(),
+                  password: widget.passwordController.text.trim(),
+                  context: context,
+                );
+
+                if (!success) {
+                  print("❌ Seller login failed");
+                  if (widget.onError != null) widget.onError!(true);
+                  return;
                 }
+
+                // Read seller data from SharedPreferences
+                final pref = await SharedPreferences.getInstance();
+                final sellerData = pref.getString('sellerData'); // ✅ match key
+                print("🔹 SharedPreferences sellerData: $sellerData");
+
+                if (sellerData != null) {
+                  ref.read(sellerProvider.notifier).setSeller(sellerData);
+                  print("✅ Seller provider updated successfully");
+                } else {
+                  print("❌ SharedPreferences has no sellerData");
+                }
+              } catch (e) {
+                print("❌ Error in SellerLoginButton: $e");
+                if (widget.onError != null) widget.onError!(true);
+              } finally {
+                if (mounted) setState(() => _isLoading = false);
               }
             },
     );
