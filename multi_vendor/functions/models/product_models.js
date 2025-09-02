@@ -1,55 +1,67 @@
 import mongoose from "mongoose";
+import { type } from "os";
 
 const productSchema = mongoose.Schema({
-     productName:{
-          type: String,
-          required: true,
-          trim: true,
-     },
+  productName: {
+    type: String,
+    required: true,
+    trim: true,
+  },
 
-     productPrice:{
-          type: Number,
-          required: true,
-     },
+  productPrice: {
+    type: Number,
+    required: true,
+  },
 
-     productQuantity: {
-          type: Number,
-          required: true,
-     },
+  productQuantity: {
+    type: Number,
+    required: true,
+  },
 
-     productDescription: {
-          type: String,
-          required: true,
-          trim: true,
-     },
+  productDescription: {
+    type: String,
+    required: true,
+    trim: true,
+  },
 
-     productCategory: {
-          type: String,
-          required: true,
-     },
+  sellerId: {
+    type: String,
+    //type: mongoose.Schema.Types.ObjectId,
+    required: true,
+  },
 
-     productSubCategory: {
-          type: String,
-          required: true,
-     },
+  sellerName: {
+    type: String,
+    required: true,
+  },
 
-     productImage: [
-          {
-               type: String,
-               required: true,
-          }
-     ],
+  productCategory: {
+    type: String,
+    required: true,
+  },
 
-     productPopularity:{
-          type: Boolean,
-          default: false,
-     },
+  productSubCategory: {
+    type: String,
+    required: true,
+  },
 
-     productRecommended:{
-          type: Boolean,
-          default: false,
-     }
+  productImage: [
+    {
+      type: String,
+      required: true,
+    },
+  ],
+
+  productPopularity: {
+    type: Boolean,
+    default: false,
+  },
+
+  productRecommended: {
+    type: Boolean,
+    default: false,
+  },
 });
 
-const Product = mongoose.model('Product', productSchema);
-export  { Product };
+const Product = mongoose.model("Product", productSchema);
+export { Product };

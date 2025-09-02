@@ -3,13 +3,15 @@ import { Product } from "../models/product_models.js";
 
 const productRouter = express.Router();
 
-productRouter.post("/api/add-product", async (req, res) => {
+productRouter.post("/add-product", async (req, res) => {
   try {
     const {
       productName,
       productPrice,
       productQuantity,
       productDescription,
+      sellerId,
+      sellerName,
       productCategory,
       productSubCategory,
       productImage,
@@ -19,6 +21,8 @@ productRouter.post("/api/add-product", async (req, res) => {
       productPrice,
       productQuantity,
       productDescription,
+      sellerId,
+      sellerName,
       productCategory,
       productSubCategory,
       productImage,
@@ -32,7 +36,7 @@ productRouter.post("/api/add-product", async (req, res) => {
   }
 });
 
-productRouter.get("/api/popular-product", async (req, res) => {
+productRouter.get("/popular-product", async (req, res) => {
   try {
     const popularProducts = await Product.find({ productPopularity: true });
     if (!popularProducts || popularProducts.length == 0) {
@@ -50,7 +54,7 @@ productRouter.get("/api/popular-product", async (req, res) => {
   }
 });
 
-productRouter.get("/api/recommended-product", async (req, res) => {
+productRouter.get("/recommended-product", async (req, res) => {
   try {
     const recommendedProducts = await Product.find({
       productRecommended: true,
