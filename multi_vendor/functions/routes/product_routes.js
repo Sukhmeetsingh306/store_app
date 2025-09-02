@@ -3,7 +3,7 @@ import { Product } from "../models/product_models.js";
 
 const productRouter = express.Router();
 
-productRouter.post("/add-product", async (req, res) => {
+productRouter.post("/seller/add-product", async (req, res) => {
   try {
     const {
       productName,
@@ -16,6 +16,21 @@ productRouter.post("/add-product", async (req, res) => {
       productSubCategory,
       productImage,
     } = req.body;
+
+    const category = await Category.findById(productCategory);
+    if (!category) {
+      return res.status(400).json({ error: "Invalid category" });
+    }
+
+    if (category.subCategories && category.subCategories.length > 0) {
+      if (!productSubCategory || productSubCategory.trim() === "") {
+        return res
+          .status(400)
+          .json({ error: "Subcategory is required for this category" });
+      }
+    }
+
+    // ✅ Step 3: Create product
     const newProduct = new Product({
       productName,
       productPrice,
@@ -24,11 +39,13 @@ productRouter.post("/add-product", async (req, res) => {
       sellerId,
       sellerName,
       productCategory,
-      productSubCategory,
+      productSubCategory: productSubCategory || null, // allow null if no subCategory
       productImage,
     });
+
     await newProduct.save();
-    console.log("Product", newProduct, "saved successfully");
+
+    console.log("Product saved successfully:", newProduct);
     return res.status(201).json(newProduct);
   } catch (e) {
     console.log("Error in creating product", e);
@@ -36,7 +53,7 @@ productRouter.post("/add-product", async (req, res) => {
   }
 });
 
-productRouter.get("/popular-product", async (req, res) => {
+productRouter.get("/seller/popular-product", async (req, res) => {
   try {
     const popularProducts = await Product.find({ productPopularity: true });
     if (!popularProducts || popularProducts.length == 0) {
@@ -54,7 +71,7 @@ productRouter.get("/popular-product", async (req, res) => {
   }
 });
 
-productRouter.get("/recommended-product", async (req, res) => {
+productRouter.get("/seller/recommended-product", async (req, res) => {
   try {
     const recommendedProducts = await Product.find({
       productRecommended: true,
