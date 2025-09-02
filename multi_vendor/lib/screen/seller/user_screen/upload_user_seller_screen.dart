@@ -20,7 +20,8 @@ class UploadUserSellerScreen extends ConsumerStatefulWidget {
   const UploadUserSellerScreen({super.key});
 
   @override
-  _UploadUserSellerScreenState createState() => _UploadUserSellerScreenState();
+  ConsumerState<UploadUserSellerScreen> createState() =>
+      _UploadUserSellerScreenState();
 }
 
 class _UploadUserSellerScreenState
@@ -46,6 +47,8 @@ class _UploadUserSellerScreenState
   late double productQuantity;
   late double productPrice;
   late String productDescription;
+
+  bool _isUploading = false;
 
   @override
   void initState() {
@@ -138,6 +141,77 @@ class _UploadUserSellerScreenState
   }
 
   @override
+  void dispose() {
+    _productController.dispose();
+    _quantityController.dispose();
+    _priceController.dispose();
+    _descriptionController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _uploadProduct(final seller) async {
+    if (_isUploading) return; // safeguard
+
+    if (_formKey.currentState!.validate()) {
+      if (seller.id.isEmpty || seller.name.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text("Seller info missing! Please login again.")),
+        );
+        return;
+      }
+
+      setState(() => _isUploading = true);
+
+      try {
+        await _productControllerInstance.uploadProduct(
+          productName: _productController.text.trim(),
+          productCategory: _selectedCategory?.categoryName ?? "Uncategorized",
+          productSubCategory:
+              _selectedSubCategory?.subCategoryName ?? "General",
+          productDescription: _descriptionController.text.trim(),
+          productPrice: productPrice,
+          productQuantity: productQuantity.toInt(),
+          sellerId: seller.id,
+          sellerName: seller.name,
+          productImage: imageFileList?.map((file) => file.path).toList() ?? [],
+          context: context,
+          subCategories: [],
+        );
+
+        print("✅ Product uploaded");
+
+        // clear all fields
+        _productController.clear();
+        _quantityController.clear();
+        _priceController.clear();
+        _descriptionController.clear();
+        setState(() {
+          productPrice = 0.0;
+          productQuantity = 0;
+          imageFileList = [];
+        });
+
+        ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar() // removes any active snackbar first
+          ..showSnackBar(
+            const SnackBar(
+              content: Text("Product uploaded successfully!"),
+              duration: Duration(seconds: 2),
+            ),
+          );
+      } catch (e) {
+        print("❌ Upload failed: $e");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Upload failed: $e")),
+        );
+      } finally {
+        setState(() => _isUploading = false);
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final seller = ref.watch(sellerProvider);
 
@@ -181,18 +255,15 @@ class _UploadUserSellerScreenState
                   textFormField(
                       _productController,
                       'Product Name',
-                      (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter product name';
-                        }
-                        return null;
-                      },
+                      (value) => value == null || value.isEmpty
+                          ? 'Please enter product name'
+                          : null,
                       hintText: 'e.g. Shirt, T-Shirt, Pant...',
                       onChanged: (val) {
-                        setState(() {
-                          productName = val;
-                        });
-                      }),
+                    setState(() {
+                      productName = val;
+                    });
+                  }),
                   sizedBoxH15(),
                   Row(
                     children: [
@@ -410,34 +481,10 @@ class _UploadUserSellerScreenState
                 ],
               ),
             ),
-            elevatedButton('Upload Product', () async {
-              if (_formKey.currentState!.validate()) {
-                if (seller.id.isEmpty || seller.name.isEmpty) {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content:
-                          Text("Seller info missing! Please login again.")));
-                  return;
-                }
-
-                await _productControllerInstance.uploadProduct(
-                  productName: productName,
-                  productCategory: _selectedCategory!.categoryName,
-                  productSubCategory: _selectedSubCategory?.subCategoryName,
-                  productDescription: productDescription,
-                  productPrice: productPrice,
-                  productQuantity: productQuantity.toInt(),
-                  sellerId: seller.id,
-                  sellerName: seller.name,
-                  productImage:
-                      imageFileList!.map((file) => file.path).toList(),
-                  context: context,
-                  subCategories: [],
-                );
-                print("Form is valid, product uploaded");
-              } else {
-                print("Form is invalid");
-              }
-            })
+            elevatedButton(
+              _isUploading ? "Uploading..." : "Upload Product",
+              _isUploading ? null : () => _uploadProduct(seller),
+            ),
           ],
         ),
       ),
