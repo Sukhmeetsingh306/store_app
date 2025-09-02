@@ -2,7 +2,10 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:multi_vendor/controllers/product_controllers.dart';
+import 'package:multi_vendor/provider/seller_provider.dart';
 import 'package:multi_vendor/utils/widget/button_widget_utils.dart';
 import 'package:multi_vendor/utils/widget/form/textForm_form.dart';
 import 'package:multi_vendor/utils/widget/space_widget_utils.dart';
@@ -13,17 +16,19 @@ import '../../../models/api/category_api_models.dart';
 import '../../../models/api/subcategory_api_models.dart';
 import '../../../utils/fonts/google_fonts_utils.dart';
 
-class UploadUserSellerScreen extends StatefulWidget {
+class UploadUserSellerScreen extends ConsumerStatefulWidget {
   const UploadUserSellerScreen({super.key});
 
   @override
-  State<UploadUserSellerScreen> createState() => _UploadUserSellerScreenState();
+  _UploadUserSellerScreenState createState() => _UploadUserSellerScreenState();
 }
 
-class _UploadUserSellerScreenState extends State<UploadUserSellerScreen> {
+class _UploadUserSellerScreenState
+    extends ConsumerState<UploadUserSellerScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final ImagePicker _picker = ImagePicker();
 
+  final ProductController _productControllerInstance = ProductController();
   final TextEditingController _productController = TextEditingController();
   final TextEditingController _quantityController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
@@ -134,6 +139,8 @@ class _UploadUserSellerScreenState extends State<UploadUserSellerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final seller = ref.watch(sellerProvider);
+
     return SingleChildScrollView(
       child: Form(
         key: _formKey,
@@ -382,7 +389,7 @@ class _UploadUserSellerScreenState extends State<UploadUserSellerScreen> {
                     (value) {
                       if (value == null || value.trim().isEmpty) {
                         return 'Description is required';
-                      } else if (value.length < 50) {
+                      } else if (value.length < 5) {
                         return 'Minimum 50 characters required';
                       } else if (value.length > 200) {
                         return 'Maximum 200 characters allowed';
@@ -403,11 +410,32 @@ class _UploadUserSellerScreenState extends State<UploadUserSellerScreen> {
                 ],
               ),
             ),
-            elevatedButton('Upload Product', () {
+            elevatedButton('Upload Product', () async {
               if (_formKey.currentState!.validate()) {
-                print("Form is valid, proceed with upload");
+                if (seller.id.isEmpty || seller.name.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content:
+                          Text("Seller info missing! Please login again.")));
+                  return;
+                }
+
+                await _productControllerInstance.uploadProduct(
+                  productName: productName,
+                  productCategory: _selectedCategory!.categoryName,
+                  productSubCategory: _selectedSubCategory?.subCategoryName,
+                  productDescription: productDescription,
+                  productPrice: productPrice,
+                  productQuantity: productQuantity.toInt(),
+                  sellerId: seller.id,
+                  sellerName: seller.name,
+                  productImage:
+                      imageFileList!.map((file) => file.path).toList(),
+                  context: context,
+                  subCategories: [],
+                );
+                print("Form is valid, product uploaded");
               } else {
-                print("Form is invalid, please correct the errors");
+                print("Form is invalid");
               }
             })
           ],
