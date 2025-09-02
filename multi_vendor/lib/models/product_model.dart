@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-class Product {
+class ProductModel {
   final String id;
   final String productName;
   final double productPrice;
@@ -9,12 +9,12 @@ class Product {
   final String sellerId;
   final String sellerName;
   final String productCategory;
-  final String productSubCategory;
+  final String? productSubCategory;
   final List<String> productImage;
   final bool productPopularity;
   final bool productRecommended;
 
-  Product({
+  ProductModel({
     required this.id,
     required this.productName,
     required this.productPrice,
@@ -23,7 +23,7 @@ class Product {
     required this.sellerId,
     required this.sellerName,
     required this.productCategory,
-    required this.productSubCategory,
+    this.productSubCategory,
     required this.productImage,
     this.productPopularity = false,
     this.productRecommended = false,
@@ -48,8 +48,8 @@ class Product {
   }
 
   /// Create Product object from Map
-  factory Product.fromProduct(Map<String, dynamic> map) {
-    return Product(
+  factory ProductModel.fromProduct(Map<String, dynamic> map) {
+    return ProductModel(
       id: map['_id'] ?? "",
       productName: map['productName'] ?? "",
       productPrice: (map['productPrice'] as num?)?.toDouble() ?? 0.0,
@@ -69,6 +69,6 @@ class Product {
   String toJson() => json.encode(toProduct());
 
   /// Decode JSON string → Product object
-  factory Product.fromJson(String source) =>
-      Product.fromProduct(json.decode(source));
+  factory ProductModel.fromJson(String source) =>
+      ProductModel.fromProduct(json.decode(source));
 }
