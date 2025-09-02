@@ -37,6 +37,11 @@ class _UploadUserSellerScreenState extends State<UploadUserSellerScreen> {
   CategoryApiModels? _selectedCategory;
   SubCategoryApiModels? _selectedSubCategory;
 
+  late String productName;
+  late double productQuantity;
+  late double productPrice;
+  late String productDescription;
+
   @override
   void initState() {
     super.initState();
@@ -167,15 +172,20 @@ class _UploadUserSellerScreenState extends State<UploadUserSellerScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   textFormField(
-                    _productController,
-                    'Product Name',
-                    (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter product name';
-                      }
-                      return null;
-                    },
-                  ),
+                      _productController,
+                      'Product Name',
+                      (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter product name';
+                        }
+                        return null;
+                      },
+                      hintText: 'e.g. Shirt, T-Shirt, Pant...',
+                      onChanged: (val) {
+                        setState(() {
+                          productName = val;
+                        });
+                      }),
                   sizedBoxH15(),
                   Row(
                     children: [
@@ -332,6 +342,12 @@ class _UploadUserSellerScreenState extends State<UploadUserSellerScreen> {
                             return null;
                           },
                           keyboardType: TextInputType.number,
+                          hintText: 'e.g. 20',
+                          onChanged: (val) {
+                            setState(() {
+                              productQuantity = double.tryParse(val) ?? 0.0;
+                            });
+                          },
                         ),
                       ),
                       const SizedBox(width: 16),
@@ -349,6 +365,12 @@ class _UploadUserSellerScreenState extends State<UploadUserSellerScreen> {
                             return null;
                           },
                           keyboardType: TextInputType.number,
+                          hintText: 'e.g. ₹200',
+                          onChanged: (val) {
+                            setState(() {
+                              productPrice = double.tryParse(val) ?? 0.0;
+                            });
+                          },
                         ),
                       ),
                     ],
@@ -371,9 +393,10 @@ class _UploadUserSellerScreenState extends State<UploadUserSellerScreen> {
                     maxLines: 10,
                     maxLength: 200,
                     keyboardType: TextInputType.multiline,
+                    hintText: 'Write about your product...',
                     onChanged: (value) {
                       setState(() {
-                        //descriptionCharCount = value.length;
+                        productDescription = value;
                       });
                     },
                   ),

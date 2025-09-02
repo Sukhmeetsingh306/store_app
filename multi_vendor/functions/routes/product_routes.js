@@ -1,5 +1,6 @@
 import express from "express";
 import { Product } from "../models/product_models.js";
+import Category from "../models/category_models.js";
 
 const productRouter = express.Router();
 
@@ -17,11 +18,13 @@ productRouter.post("/seller/add-product", async (req, res) => {
       productImage,
     } = req.body;
 
+    // Check category exists
     const category = await Category.findById(productCategory);
     if (!category) {
       return res.status(400).json({ error: "Invalid category" });
     }
 
+    // If category has subcategories, subcategory must be selected
     if (category.subCategories && category.subCategories.length > 0) {
       if (!productSubCategory || productSubCategory.trim() === "") {
         return res
@@ -30,7 +33,6 @@ productRouter.post("/seller/add-product", async (req, res) => {
       }
     }
 
-    // ✅ Step 3: Create product
     const newProduct = new Product({
       productName,
       productPrice,
@@ -39,17 +41,16 @@ productRouter.post("/seller/add-product", async (req, res) => {
       sellerId,
       sellerName,
       productCategory,
-      productSubCategory: productSubCategory || null, // allow null if no subCategory
+      productSubCategory: productSubCategory || null,
       productImage,
     });
 
     await newProduct.save();
 
-    console.log("Product saved successfully:", newProduct);
-    return res.status(201).json(newProduct);
+    res.status(201).json(newProduct);
   } catch (e) {
-    console.log("Error in creating product", e);
-    return res.status(400).json({ error: e.message });
+    console.log("Error creating product:", e);
+    res.status(400).json({ error: e.message });
   }
 });
 
