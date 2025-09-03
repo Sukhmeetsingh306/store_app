@@ -52,98 +52,118 @@ class _UserSellerScreenState extends State<UserSellerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    bool isWebMobile = kIsWeb && MediaQuery.of(context).size.width > 1026;
+    bool isWeb = kIsWeb; // Running on web
+    double width = MediaQuery.of(context).size.width;
+    bool isMobilePlatform = defaultTargetPlatform == TargetPlatform.iOS ||
+        defaultTargetPlatform == TargetPlatform.android;
 
-    return Scaffold(
-      drawer: Drawer(
-        width: isWebMobile
-            ? MediaQuery.of(context).size.width * 0.2
-            : (isWebMobileWeb()
-                ? MediaQuery.of(context).size.width * 0.7 // Mobile web
-                : MediaQuery.of(context).size.width * 0.5), // Desktop web
+    bool isLargeScreen = kIsWeb && width <= 1026;
 
-        child: Column(
-          children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height * .18,
-              child: DrawerHeader(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: gradientColors(),
+    double calculatedWidth =
+        isMobilePlatform || isLargeScreen ? width * 0.5 : width * 0.2;
+
+    return LayoutBuilder(builder: (context, constraints) {
+      return Scaffold(
+        drawer: Drawer(
+          backgroundColor: ColorTheme.color.whiteColor,
+          width: calculatedWidth,
+          child: Column(
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * .18,
+                child: DrawerHeader(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: gradientColors(),
+                    ),
+                  ),
+                  child: Align(
+                    alignment: Alignment.bottomLeft,
+                    child: googleInterText("Menu",
+                        color: Colors.white, fontSize: 28),
                   ),
                 ),
-                child: Align(
-                  alignment: Alignment.bottomLeft,
-                  child: googleInterText("Menu",
-                      color: Colors.white, fontSize: 28),
-                ),
               ),
-            ),
-            listTile(
-              "Earnings",
-              const Icon(Icons.monetization_on_outlined),
-              onTap: () {
-                Navigator.of(context).pop();
-                onPageSelected(0);
-              },
-            ),
-            listTile(
-              "Upload Products",
-              const Icon(Icons.upload_outlined),
-              onTap: () {
-                Navigator.of(context).pop();
-                onPageSelected(1);
-              },
-            ),
-            listTile(
-              "Edit Products",
-              const Icon(Icons.edit_outlined),
-              onTap: () {
-                Navigator.of(context).pop();
-                onPageSelected(2);
-              },
-            ),
-            listTile(
-              "Orders",
-              const Icon(Icons.shopping_cart_outlined),
-              onTap: () {
-                Navigator.of(context).pop();
-                onPageSelected(3);
-              },
-            ),
-            listTile(
-              "Profile",
-              const Icon(Icons.account_circle_outlined),
-              onTap: () {
-                Navigator.of(context).pop();
-                onPageSelected(4);
-              },
-            ),
-            listTile("Logout", Icon(Icons.logout_outlined), onTap: () {
-              pop(context);
-              Navigator.of(context).popUntil((route) => route.isFirst);
-              context.pushReplacement('/loginPage');
-            }),
-          ],
+              listTile(
+                "Earnings",
+                const Icon(Icons.monetization_on_outlined),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  onPageSelected(0);
+                },
+              ),
+              listTile(
+                "Upload Products",
+                const Icon(Icons.upload_outlined),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  onPageSelected(1);
+                },
+              ),
+              listTile(
+                "Edit Products",
+                const Icon(Icons.edit_outlined),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  onPageSelected(2);
+                },
+              ),
+              listTile(
+                "Orders",
+                const Icon(Icons.shopping_cart_outlined),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  onPageSelected(3);
+                },
+              ),
+              listTile(
+                "Profile",
+                const Icon(Icons.account_circle_outlined),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  onPageSelected(4);
+                },
+              ),
+              listTile("Logout", const Icon(Icons.logout_outlined), onTap: () {
+                pop(context);
+                Navigator.of(context).popUntil((route) => route.isFirst);
+                context.pushReplacement('/loginPage');
+              }),
+            ],
+          ),
         ),
-      ),
-      body: sellerPages[pageIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: pageIndex,
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: ColorTheme.color.dodgerBlue,
-        unselectedItemColor: ColorTheme.color.grayColor,
-        onTap: onPageSelected,
-        items: [
-          bottomBarItem(const Icon(Icons.monetization_on_outlined), 'Earnings'),
-          bottomBarItem(const Icon(Icons.upload_outlined), 'Upload'),
-          bottomBarItem(const Icon(Icons.edit_outlined), 'Edit'),
-          bottomBarItem(const Icon(Icons.shopping_cart_outlined), 'Orders'),
-          bottomBarItem(const Icon(Icons.account_circle_outlined), 'Profile'),
-        ],
-        elevation: 5,
-      ),
-    );
+        appBar: AppBar(
+          backgroundColor: ColorTheme.color.mediumBlue,
+          iconTheme: const IconThemeData(color: Colors.white),
+          title:
+              googleInterText("Management", color: Colors.white, fontSize: 23),
+          centerTitle: false,
+          elevation: 5,
+          toolbarHeight: 80,
+        ),
+        body: sellerPages[pageIndex],
+        bottomNavigationBar: isWeb
+            ? null
+            : BottomNavigationBar(
+                currentIndex: pageIndex,
+                type: BottomNavigationBarType.fixed,
+                selectedItemColor: ColorTheme.color.dodgerBlue,
+                unselectedItemColor: ColorTheme.color.grayColor,
+                onTap: onPageSelected,
+                items: [
+                  bottomBarItem(
+                      const Icon(Icons.monetization_on_outlined), 'Earnings'),
+                  bottomBarItem(const Icon(Icons.upload_outlined), 'Upload'),
+                  bottomBarItem(const Icon(Icons.edit_outlined), 'Edit'),
+                  bottomBarItem(
+                      const Icon(Icons.shopping_cart_outlined), 'Orders'),
+                  bottomBarItem(
+                      const Icon(Icons.account_circle_outlined), 'Profile'),
+                ],
+                elevation: 5,
+              ),
+      );
+    });
   }
 
   Widget listTile(String text, Widget leading, {GestureTapCallback? onTap}) {
