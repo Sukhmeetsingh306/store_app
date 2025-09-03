@@ -50,6 +50,23 @@ class _UserSellerScreenState extends State<UserSellerScreen> {
     print("🔹 Drawer/BottomNav tapped: Page Index = $pageIndex");
   }
 
+  String getPageTitle(int index) {
+    switch (index) {
+      case 0:
+        return "Earnings";
+      case 1:
+        return "Upload Products";
+      case 2:
+        return "Edit Products";
+      case 3:
+        return "Orders";
+      case 4:
+        return "Profile";
+      default:
+        return "Management";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     bool isWeb = kIsWeb; // Running on web
@@ -135,11 +152,51 @@ class _UserSellerScreenState extends State<UserSellerScreen> {
         appBar: AppBar(
           backgroundColor: ColorTheme.color.mediumBlue,
           iconTheme: const IconThemeData(color: Colors.white),
-          title:
-              googleInterText("Management", color: Colors.white, fontSize: 23),
+          title: googleInterText(
+            getPageTitle(pageIndex),
+            color: Colors.white,
+            fontSize: 23,
+          ),
           centerTitle: false,
           elevation: 5,
           toolbarHeight: 80,
+          actions: [
+            if (width > 500)
+              Row(
+                children: [
+                  CircleAvatar(
+                    radius: 18,
+                    backgroundColor: Colors.white,
+                    child: Icon(
+                      Icons.person,
+                      color: ColorTheme.color.deepPuceColor,
+                      size: 25,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  googleInterText(
+                    "Seller",
+                    color: Colors.white,
+                    fontSize: 20,
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                ],
+              ),
+            Padding(
+              padding: EdgeInsets.all(isWeb ? 18.0 : 0),
+              child: IconButton(
+                icon: const Icon(Icons.logout_outlined, color: Colors.white),
+                tooltip: "Logout",
+                onPressed: () {
+                  context.go('/loginPage');
+                },
+              ),
+            ),
+          ],
         ),
         body: sellerPages[pageIndex],
         bottomNavigationBar: isWeb
