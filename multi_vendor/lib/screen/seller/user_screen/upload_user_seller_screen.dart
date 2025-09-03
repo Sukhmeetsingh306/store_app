@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -86,8 +87,8 @@ class _UploadUserSellerScreenState
           child: Wrap(
             children: [
               ListTile(
-                leading: const Icon(Icons.camera_alt),
-                title: const Text('Camera'),
+                leading: Icon(CupertinoIcons.photo_camera),
+                title: googleInterText('Camera', fontSize: 15),
                 onTap: () async {
                   Navigator.pop(context);
                   final pickedImage =
@@ -100,35 +101,41 @@ class _UploadUserSellerScreenState
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.photo_library),
-                title: const Text('Gallery'),
+                leading: Icon(CupertinoIcons.photo),
+                title: googleInterText('Gallery', fontSize: 15),
                 onTap: () async {
                   Navigator.pop(context);
-                  final pickedImage =
-                      await _picker.pickImage(source: ImageSource.gallery);
-                  if (pickedImage != null) {
+                  final pickedImages = await _picker.pickMultiImage();
+                  if (pickedImages.isNotEmpty) {
                     setState(() {
-                      imageFileList!.add(pickedImage);
+                      imageFileList!.addAll(pickedImages);
                     });
                   }
                 },
               ),
               ListTile(
                 leading: const Icon(Icons.attach_file),
-                title: const Text('Files'),
+                title: googleInterText('Files', fontSize: 15),
                 onTap: () async {
                   Navigator.pop(context);
                   FilePickerResult? result =
                       await FilePicker.platform.pickFiles(
-                    allowMultiple: false,
-                    type: FileType
-                        .any, // you can restrict to FileType.image, pdf, etc.
+                    allowMultiple: true,
+                    type: FileType.custom,
+                    allowedExtensions: [
+                      'jpg',
+                      'jpeg',
+                      'png',
+                    ],
                   );
-                  if (result != null && result.files.single.path != null) {
-                    File file = File(result.files.single.path!);
-                    // Not an XFile, but you can handle separately
+
+                  if (result != null) {
                     setState(() {
-                      imageFileList!.add(XFile(file.path));
+                      for (var file in result.files) {
+                        if (file.path != null) {
+                          imageFileList!.add(XFile(file.path!));
+                        }
+                      }
                     });
                   }
                 },
@@ -220,7 +227,7 @@ class _UploadUserSellerScreenState
         key: _formKey,
         child: Column(
           children: [
-            // Main image preview
+            sizedBoxH20(),
             GestureDetector(
               onTap: () {
                 if (imageFileList != null && imageFileList!.isNotEmpty) {
@@ -387,7 +394,6 @@ class _UploadUserSellerScreenState
                 ],
               ),
             ),
-
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
               child: Column(
