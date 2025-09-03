@@ -227,88 +227,98 @@ class _UploadUserSellerScreenState
                   showModalBottomSheet(
                     context: context,
                     isScrollControlled: true,
+                    isDismissible: true,
+                    enableDrag: true,
                     builder: (_) {
-                      return Container(
-                        padding: const EdgeInsets.all(16),
-                        height: MediaQuery.of(context).size.height * 0.6,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Uploaded Images",
-                              style: const TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(height: 12),
-                            Expanded(
-                              child: GridView.builder(
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 3,
-                                  mainAxisSpacing: 8,
-                                  crossAxisSpacing: 8,
+                      return StatefulBuilder(
+                        builder: (context, setModalState) {
+                          return Container(
+                            padding: const EdgeInsets.all(16),
+                            height: MediaQuery.of(context).size.height * 0.6,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Center(
+                                  child: googleInterText(
+                                    "Uploaded Images",
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
-                                itemCount: imageFileList!.length,
-                                itemBuilder: (context, index) {
-                                  return Stack(
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                          image: DecorationImage(
-                                            image: FileImage(File(
-                                                imageFileList![index].path)),
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ),
-                                      Positioned(
-                                        top: 4,
-                                        left: 4,
-                                        child: Container(
-                                          padding: const EdgeInsets.all(4),
-                                          decoration: BoxDecoration(
-                                            color: Colors.black54,
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                          ),
-                                          child: Text(
-                                            '${index + 1}',
-                                            style: const TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ),
-                                      ),
-                                      Positioned(
-                                        top: 4,
-                                        right: 4,
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              imageFileList!.removeAt(index);
-                                            });
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: const CircleAvatar(
-                                            radius: 16,
-                                            backgroundColor: Colors.red,
-                                            child: Icon(
-                                              Icons.close,
-                                              size: 20,
-                                              color: Colors.white,
+                                const SizedBox(height: 15),
+                                Expanded(
+                                  child: GridView.builder(
+                                    gridDelegate:
+                                        const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 3,
+                                      mainAxisSpacing: 8,
+                                      crossAxisSpacing: 8,
+                                    ),
+                                    itemCount: imageFileList!.length,
+                                    itemBuilder: (context, index) {
+                                      return Stack(
+                                        children: [
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              image: DecorationImage(
+                                                image: FileImage(File(
+                                                    imageFileList![index]
+                                                        .path)),
+                                                fit: BoxFit.cover,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              ),
+                                          Positioned(
+                                            top: 4,
+                                            left: 4,
+                                            child: Container(
+                                              padding: const EdgeInsets.all(4),
+                                              decoration: BoxDecoration(
+                                                color: Colors.black54,
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                              ),
+                                              child: googleInterText(
+                                                '${index + 1}',
+                                                fontSize: 14,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                          Positioned(
+                                            top: 4,
+                                            right: 4,
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  imageFileList!
+                                                      .removeAt(index);
+                                                });
+                                                setModalState(() {});
+                                              },
+                                              child: const CircleAvatar(
+                                                radius: 12,
+                                                backgroundColor: Colors.red,
+                                                child: Icon(
+                                                  Icons.close,
+                                                  size: 16,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          );
+                        },
                       );
                     },
                   );
@@ -322,15 +332,14 @@ class _UploadUserSellerScreenState
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
                       color: Colors.grey.shade200,
-                      image: (imageFileList != null &&
-                              imageFileList!.isNotEmpty)
+                      image: imageFileList!.isNotEmpty
                           ? DecorationImage(
                               image: FileImage(File(imageFileList!.last.path)),
                               fit: BoxFit.cover,
                             )
                           : null,
                     ),
-                    child: (imageFileList == null || imageFileList!.isEmpty)
+                    child: imageFileList!.isEmpty
                         ? const Center(
                             child: Icon(
                               Icons.add_a_photo,
@@ -340,7 +349,7 @@ class _UploadUserSellerScreenState
                           )
                         : null,
                   ),
-                  if (imageFileList != null && imageFileList!.isNotEmpty)
+                  if (imageFileList!.isNotEmpty)
                     Positioned(
                       top: 8,
                       left: 8,
@@ -350,10 +359,12 @@ class _UploadUserSellerScreenState
                           color: Colors.black54,
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: Text(
+                        child: googleInterText(
                           '${imageFileList!.length}', // total images count
-                          style: const TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
+
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
                         ),
                       ),
                     ),
