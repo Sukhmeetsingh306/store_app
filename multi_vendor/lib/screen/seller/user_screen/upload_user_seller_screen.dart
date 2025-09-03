@@ -223,34 +223,75 @@ class _UploadUserSellerScreenState
             Center(
               child: ConstrainedBox(
                 constraints: BoxConstraints(
-                  maxWidth: 350, // max width of grid
+                  maxWidth: 360, // max width for grid
                 ),
                 child: GridView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: imageFileList!.length + 1,
+                  itemCount: (imageFileList?.length ?? 0) + 1,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 4.0,
-                    mainAxisSpacing: 4.0,
+                    crossAxisCount: 3, // 3 items per row
+                    crossAxisSpacing: 8.0,
+                    mainAxisSpacing: 8.0,
                     childAspectRatio: 1.0,
                   ),
                   itemBuilder: (context, index) {
-                    return index == 0
-                        ? Center(
-                            child: IconButton(
-                              icon: const Icon(Icons.add_a_photo),
-                              onPressed: chooseImage,
+                    // First item: add image icon
+                    if (index == 0) {
+                      return GestureDetector(
+                        onTap: chooseImage,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: const Center(
+                            child: Icon(
+                              Icons.add_a_photo,
+                              size: 36,
+                              color: Colors.grey,
                             ),
-                          )
-                        : SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: Image.file(
-                              File(imageFileList![index - 1].path),
+                          ),
+                        ),
+                      );
+                    }
+
+                    // Remaining items: user images
+                    final imageIndex = index - 1;
+                    return Stack(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            image: DecorationImage(
+                              image: FileImage(
+                                  File(imageFileList![imageIndex].path)),
                               fit: BoxFit.cover,
                             ),
-                          );
+                          ),
+                        ),
+                        // Number badge
+                        Positioned(
+                          top: 4,
+                          right: 4,
+                          child: Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: BoxDecoration(
+                              color: Colors.black54,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              '$index', // Show number
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
                   },
                 ),
               ),
