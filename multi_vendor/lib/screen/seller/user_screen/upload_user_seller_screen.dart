@@ -220,32 +220,40 @@ class _UploadUserSellerScreenState
         key: _formKey,
         child: Column(
           children: [
-            GridView.builder(
-              shrinkWrap: true,
-              itemCount: imageFileList!.length + 1,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 4.0,
-                mainAxisSpacing: 4.0,
-                childAspectRatio: 1.0,
+            Center(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: 350, // max width of grid
+                ),
+                child: GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: imageFileList!.length + 1,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 4.0,
+                    mainAxisSpacing: 4.0,
+                    childAspectRatio: 1.0,
+                  ),
+                  itemBuilder: (context, index) {
+                    return index == 0
+                        ? Center(
+                            child: IconButton(
+                              icon: const Icon(Icons.add_a_photo),
+                              onPressed: chooseImage,
+                            ),
+                          )
+                        : SizedBox(
+                            width: 50,
+                            height: 50,
+                            child: Image.file(
+                              File(imageFileList![index - 1].path),
+                              fit: BoxFit.cover,
+                            ),
+                          );
+                  },
+                ),
               ),
-              itemBuilder: (context, index) {
-                return index == 0
-                    ? Center(
-                        child: IconButton(
-                          icon: const Icon(Icons.add_a_photo),
-                          onPressed: chooseImage,
-                        ),
-                      )
-                    : SizedBox(
-                        width: 50,
-                        height: 50,
-                        child: Image.file(
-                          File(imageFileList![index - 1].path),
-                          fit: BoxFit.cover,
-                        ),
-                      );
-              },
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
