@@ -222,7 +222,7 @@ class _UploadUserSellerScreenState
           children: [
             Center(
               child: ConstrainedBox(
-                constraints: BoxConstraints(
+                constraints: const BoxConstraints(
                   maxWidth: 360, // max width for grid
                 ),
                 child: GridView.builder(
@@ -281,11 +281,30 @@ class _UploadUserSellerScreenState
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Text(
-                              '$index', // Show number
+                              '${imageIndex + 1}', // Show number
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                        // Remove icon
+                        Positioned(
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                imageFileList!.removeAt(imageIndex);
+                              });
+                            },
+                            child: const CircleAvatar(
+                              radius: 9,
+                              backgroundColor: Colors.red,
+                              child: Icon(
+                                Icons.close,
+                                size: 14,
+                                color: Colors.white,
                               ),
                             ),
                           ),
