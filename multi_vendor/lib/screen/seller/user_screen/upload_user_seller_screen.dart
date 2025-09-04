@@ -105,7 +105,8 @@ class _UploadUserSellerScreenState
       );
     }
 
-    final lastImage = imageFileList.last;
+    final displayIndex = selectedImageIndex ?? imageFileList.length - 1;
+    final displayImage = imageFileList[displayIndex];
 
     return Container(
       width: !isWebMobile ? 140 : width,
@@ -118,7 +119,7 @@ class _UploadUserSellerScreenState
         borderRadius: BorderRadius.circular(12),
         child: kIsWeb
             ? FutureBuilder<Uint8List>(
-                future: lastImage.readAsBytes(), // async -> Uint8List
+                future: displayImage.readAsBytes(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
@@ -132,7 +133,7 @@ class _UploadUserSellerScreenState
                 },
               )
             : Image.file(
-                io.File(lastImage.path),
+                io.File(displayImage.path),
                 fit: BoxFit.cover,
                 width: 140,
                 height: 140,
@@ -304,6 +305,7 @@ class _UploadUserSellerScreenState
   }
 
   bool get isWebMobileIn => kIsWeb && mediaQueryWidth > 1026;
+  int? selectedImageIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -311,7 +313,7 @@ class _UploadUserSellerScreenState
 
     var gestureDetector = GestureDetector(
       onTap: () {
-        if (imageFileList != null && imageFileList!.isNotEmpty) {
+        if (imageFileList!.isNotEmpty) {
           showModalBottomSheet(
             context: context,
             isScrollControlled: true,
@@ -326,11 +328,13 @@ class _UploadUserSellerScreenState
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Center(
-                          child: googleInterText(
+                        const Center(
+                          child: Text(
                             "Uploaded Images",
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                         const SizedBox(height: 15),
@@ -344,61 +348,85 @@ class _UploadUserSellerScreenState
                             ),
                             itemCount: imageFileList!.length,
                             itemBuilder: (context, index) {
-                              return Stack(
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12),
-                                      image: DecorationImage(
-                                        image: kIsWeb
-                                            ? NetworkImage(imageFileList![index]
-                                                .path) // blob url works
-                                            : FileImage(File(
-                                                    imageFileList![index].path))
-                                                as ImageProvider,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                  Positioned(
-                                    top: 4,
-                                    left: 4,
-                                    child: Container(
-                                      padding: const EdgeInsets.all(4),
+                              final file = imageFileList![index];
+                              return GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    selectedImageIndex = index;
+                                  });
+                                  Navigator.pop(context); // close modal
+                                },
+                                child: Stack(
+                                  children: [
+                                    Container(
                                       decoration: BoxDecoration(
-                                        color: Colors.black54,
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      child: googleInterText(
-                                        '${index + 1}',
-                                        fontSize: 14,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                  Positioned(
-                                    top: 4,
-                                    right: 4,
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          imageFileList!.removeAt(index);
-                                        });
-                                        setModalState(() {});
-                                      },
-                                      child: const CircleAvatar(
-                                        radius: 12,
-                                        backgroundColor: Colors.red,
-                                        child: Icon(
-                                          Icons.close,
-                                          size: 16,
-                                          color: Colors.white,
+                                        borderRadius: BorderRadius.circular(12),
+                                        border: Border.all(
+                                          color: selectedImageIndex == index
+                                              ? Colors.blue
+                                              : Colors.transparent,
+                                          width: 3,
+                                        ),
+                                        image: DecorationImage(
+                                          image: kIsWeb
+                                              ? NetworkImage(file.path)
+                                              : FileImage(io.File(file.path))
+                                                  as ImageProvider,
+                                          fit: BoxFit.cover,
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                    Positioned(
+                                      top: 4,
+                                      left: 4,
+                                      child: Container(
+                                        padding: const EdgeInsets.all(4),
+                                        decoration: BoxDecoration(
+                                          color: Colors.black54,
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        child: Text(
+                                          '${index + 1}',
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      top: 4,
+                                      right: 4,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            imageFileList!.removeAt(index);
+                                            // reset selection if needed
+                                            if (selectedImageIndex == index) {
+                                              selectedImageIndex =
+                                                  imageFileList!.isNotEmpty
+                                                      ? imageFileList!.length -
+                                                          1
+                                                      : null;
+                                            }
+                                          });
+                                          setModalState(() {});
+                                        },
+                                        child: const CircleAvatar(
+                                          radius: 12,
+                                          backgroundColor: Colors.red,
+                                          child: Icon(
+                                            Icons.close,
+                                            size: 16,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               );
                             },
                           ),
@@ -425,12 +453,13 @@ class _UploadUserSellerScreenState
                   color: Colors.black54,
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: googleInterText(
-                  '${imageFileList!.length}', // total images count
-
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
+                child: Text(
+                  '${imageFileList!.length}',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
                 ),
               ),
             ),
