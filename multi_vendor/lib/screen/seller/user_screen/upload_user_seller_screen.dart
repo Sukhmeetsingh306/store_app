@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:io' as io;
 
 import 'package:file_picker/file_picker.dart';
@@ -620,10 +619,33 @@ class _UploadUserSellerScreenState
     );
   }
 
-  ElevatedButton _uploadingButton(SellerModels seller) {
-    return elevatedButton(
-      _isUploading ? "Uploading..." : "Upload Product",
-      _isUploading ? null : () => _uploadProduct(seller),
+  Widget _uploadingButton(SellerModels seller) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        elevatedButton(
+          'Clear',
+          () {
+            _productController.clear();
+            _quantityController.clear();
+            _priceController.clear();
+            _descriptionController.clear();
+
+            setState(() {
+              productPrice = 0.0;
+              productQuantity = 0;
+              imageFileList = [];
+              _selectedCategory = null;
+              _selectedSubCategory = null;
+            });
+          },
+        ),
+        SizedBox(width: 20),
+        elevatedButton(
+          _isUploading ? "Uploading..." : "Upload Product",
+          _isUploading ? null : () => _uploadProduct(seller),
+        ),
+      ],
     );
   }
 
