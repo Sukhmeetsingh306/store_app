@@ -17,7 +17,7 @@ class UserScreenWrapper extends StatelessWidget {
     return Column(
       children: [
         HeaderWidgetUser(scaffoldKey: scaffoldKey),
-        Expanded(child: child),
+        Expanded(child: SingleChildScrollView(child: child)),
       ],
     );
   }
