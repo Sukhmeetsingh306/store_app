@@ -54,6 +54,9 @@ class _UploadUserSellerScreenState
 
   bool _isUploading = false;
 
+  double get mediaQueryWidth => MediaQuery.of(context).size.width;
+  bool get isWebMobile => kIsWeb && mediaQueryWidth > 626;
+
   @override
   void initState() {
     super.initState();
@@ -85,8 +88,8 @@ class _UploadUserSellerScreenState
   Widget buildImageContainer(List<XFile> imageFileList) {
     if (imageFileList.isEmpty) {
       return Container(
-        width: 140,
-        height: 140,
+        width: !isWebMobile ? 140 : width,
+        height: !isWebMobile ? 140 : height,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           color: Colors.grey.shade200,
@@ -104,8 +107,8 @@ class _UploadUserSellerScreenState
     final lastImage = imageFileList.last;
 
     return Container(
-      width: 140,
-      height: 140,
+      width: !isWebMobile ? 140 : width,
+      height: !isWebMobile ? 140 : height,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         color: Colors.grey.shade200,
@@ -447,10 +450,62 @@ class _UploadUserSellerScreenState
         ],
       ),
     );
-    return SingleChildScrollView(
-      child: Form(
-        key: _formKey,
-        child: _mobileCode(gestureDetector, context, seller),
+
+    return Form(
+      key: _formKey,
+      child: !isWebMobile
+          ? _mobileCode(gestureDetector, context, seller)
+          : _webCode(gestureDetector, context, seller),
+    );
+  }
+
+  late double width = MediaQuery.of(context).size.width * .5;
+  late double height = MediaQuery.of(context).size.height * 1;
+
+  Widget _webCode(
+    GestureDetector gestureDetector,
+    BuildContext context,
+    SellerModels seller,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(30.0),
+            child: SizedBox(
+              width: width,
+              height: height,
+              child: gestureDetector,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 10, bottom: 10),
+            child: const VerticalDivider(
+              width: 32,
+              thickness: 1,
+              color: Colors.grey,
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _productName(),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Expanded(child: _selectCategory()),
+                    const SizedBox(width: 16),
+                    Expanded(child: _selectSubCategory()),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -460,53 +515,56 @@ class _UploadUserSellerScreenState
     BuildContext context,
     SellerModels seller,
   ) {
-    return Column(
-      children: [
-        sizedBoxH20(),
-        gestureDetector,
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _productName(),
-              sizedBoxH15(),
-              Row(
-                children: [
-                  // Category Dropdown
-                  Expanded(
-                    child: _selectCategory(),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: _selectSubCategory(),
-                  ),
-                ],
-              ),
-              sizedBoxH15(),
-              Row(
-                children: [
-                  Expanded(
-                    child: _productQuantity(),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: _pricePerUnit(),
-                  ),
-                ],
-              ),
-              sizedBoxH15(),
-              _productDescription(),
-            ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          sizedBoxH20(),
+          gestureDetector,
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _productName(),
+                sizedBoxH15(),
+                Row(
+                  children: [
+                    // Category Dropdown
+                    Expanded(
+                      child: _selectCategory(),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: _selectSubCategory(),
+                    ),
+                  ],
+                ),
+                sizedBoxH15(),
+                Row(
+                  children: [
+                    Expanded(
+                      child: _productQuantity(),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: _pricePerUnit(),
+                    ),
+                  ],
+                ),
+                sizedBoxH15(),
+                _productDescription(),
+              ],
+            ),
           ),
-        ),
-        SizedBox(
-            height: MediaQuery.of(context).size.width * (kIsWeb ? 0.12 : 0.25)),
-        elevatedButton(
-          _isUploading ? "Uploading..." : "Upload Product",
-          _isUploading ? null : () => _uploadProduct(seller),
-        ),
-      ],
+          SizedBox(
+              height:
+                  MediaQuery.of(context).size.width * (kIsWeb ? 0.12 : 0.25)),
+          elevatedButton(
+            _isUploading ? "Uploading..." : "Upload Product",
+            _isUploading ? null : () => _uploadProduct(seller),
+          ),
+        ],
+      ),
     );
   }
 
