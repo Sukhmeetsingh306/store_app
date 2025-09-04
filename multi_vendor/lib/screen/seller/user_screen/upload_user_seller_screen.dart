@@ -193,8 +193,21 @@ class _UploadUserSellerScreenState
                   if (result != null) {
                     setState(() {
                       for (var file in result.files) {
-                        if (file.path != null) {
-                          imageFileList!.add(XFile(file.path!));
+                        if (kIsWeb) {
+                          if (file.bytes != null) {
+                            final webFile = XFile.fromData(
+                              file.bytes!,
+                              name: file.name,
+                              mimeType: file.extension != null
+                                  ? 'image/${file.extension}'
+                                  : null,
+                            );
+                            imageFileList!.add(webFile);
+                          }
+                        } else {
+                          if (file.path != null) {
+                            imageFileList!.add(XFile(file.path!));
+                          }
                         }
                       }
                     });
