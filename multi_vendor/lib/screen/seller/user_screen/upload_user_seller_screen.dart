@@ -19,6 +19,7 @@ import '../../../controllers/subCategory_controllers.dart';
 import '../../../models/api/category_api_models.dart';
 import '../../../models/api/subcategory_api_models.dart';
 import '../../../utils/fonts/google_fonts_utils.dart';
+import '../../../utils/theme/color/color_theme.dart';
 
 class UploadUserSellerScreen extends ConsumerStatefulWidget {
   const UploadUserSellerScreen({super.key});
@@ -302,6 +303,8 @@ class _UploadUserSellerScreenState
     }
   }
 
+  bool get isWebMobileIn => kIsWeb && mediaQueryWidth > 1026;
+
   @override
   Widget build(BuildContext context) {
     final seller = ref.watch(sellerProvider);
@@ -453,13 +456,13 @@ class _UploadUserSellerScreenState
 
     return Form(
       key: _formKey,
-      child: !isWebMobile
+      child: !isWebMobileIn
           ? _mobileCode(gestureDetector, context, seller)
           : _webCode(gestureDetector, context, seller),
     );
   }
 
-  late double width = MediaQuery.of(context).size.width * .5;
+  late double width = MediaQuery.of(context).size.width * .3;
   late double height = MediaQuery.of(context).size.height * 1;
 
   Widget _webCode(
@@ -468,33 +471,44 @@ class _UploadUserSellerScreenState
     SellerModels seller,
   ) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(left: 8.0, right: 30),
       child: Row(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(30.0),
-            child: SizedBox(
-              width: width,
-              height: height,
-              child: gestureDetector,
-            ),
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(30.0),
+                child: SizedBox(
+                  width: width,
+                  height: height,
+                  child: gestureDetector,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 10, bottom: 10),
+                child: const VerticalDivider(
+                  width: 32,
+                  thickness: 1,
+                  color: Colors.grey,
+                ),
+              ),
+              const SizedBox(width: 16),
+            ],
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10, bottom: 10),
-            child: const VerticalDivider(
-              width: 32,
-              thickness: 1,
-              color: Colors.grey,
-            ),
-          ),
-          const SizedBox(width: 16),
           Expanded(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Center(
+                  child: googleInterText('Upload New Product',
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      color: ColorTheme.color.dodgerBlue),
+                ),
+                SizedBox(height: 20),
                 _productName(),
-                const SizedBox(height: 8),
+                const SizedBox(height: 10),
                 Row(
                   children: [
                     Expanded(child: _selectCategory()),
@@ -502,6 +516,18 @@ class _UploadUserSellerScreenState
                     Expanded(child: _selectSubCategory()),
                   ],
                 ),
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    Expanded(child: _productQuantity()),
+                    const SizedBox(width: 16),
+                    Expanded(child: _pricePerUnit()),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                _productDescription(),
+                const SizedBox(height: 30),
+                Center(child: _uploadingButton(seller)),
               ],
             ),
           ),
@@ -559,12 +585,16 @@ class _UploadUserSellerScreenState
           SizedBox(
               height:
                   MediaQuery.of(context).size.width * (kIsWeb ? 0.12 : 0.25)),
-          elevatedButton(
-            _isUploading ? "Uploading..." : "Upload Product",
-            _isUploading ? null : () => _uploadProduct(seller),
-          ),
+          _uploadingButton(seller),
         ],
       ),
+    );
+  }
+
+  ElevatedButton _uploadingButton(SellerModels seller) {
+    return elevatedButton(
+      _isUploading ? "Uploading..." : "Upload Product",
+      _isUploading ? null : () => _uploadProduct(seller),
     );
   }
 
