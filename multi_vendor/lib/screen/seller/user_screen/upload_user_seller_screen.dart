@@ -1,7 +1,9 @@
 import 'dart:io';
+import 'dart:io' as io;
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -79,6 +81,61 @@ class _UploadUserSellerScreenState
   //   }
   // }
 
+  Widget buildImageContainer(List<XFile> imageFileList) {
+    if (imageFileList.isEmpty) {
+      return Container(
+        width: 140,
+        height: 140,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: Colors.grey.shade200,
+        ),
+        child: const Center(
+          child: Icon(
+            Icons.add_a_photo,
+            size: 36,
+            color: Colors.grey,
+          ),
+        ),
+      );
+    }
+
+    final lastImage = imageFileList.last;
+
+    return Container(
+      width: 140,
+      height: 140,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: Colors.grey.shade200,
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: kIsWeb
+            ? FutureBuilder<Uint8List>(
+                future: lastImage.readAsBytes(), // async -> Uint8List
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return const Center(
+                        child: Icon(Icons.error, color: Colors.red));
+                  } else {
+                    return Image.memory(snapshot.data!,
+                        fit: BoxFit.cover, width: 140, height: 140);
+                  }
+                },
+              )
+            : Image.file(
+                io.File(lastImage.path),
+                fit: BoxFit.cover,
+                width: 140,
+                height: 140,
+              ),
+      ),
+    );
+  }
+
   Future<void> chooseImage() async {
     showModalBottomSheet(
       context: context,
@@ -86,33 +143,37 @@ class _UploadUserSellerScreenState
         return SafeArea(
           child: Wrap(
             children: [
-              ListTile(
-                leading: Icon(CupertinoIcons.photo_camera),
-                title: googleInterText('Camera', fontSize: 15),
-                onTap: () async {
-                  Navigator.pop(context);
-                  final pickedImage =
-                      await _picker.pickImage(source: ImageSource.camera);
-                  if (pickedImage != null) {
-                    setState(() {
-                      imageFileList!.add(pickedImage);
-                    });
-                  }
-                },
-              ),
-              ListTile(
-                leading: Icon(CupertinoIcons.photo),
-                title: googleInterText('Gallery', fontSize: 15),
-                onTap: () async {
-                  Navigator.pop(context);
-                  final pickedImages = await _picker.pickMultiImage();
-                  if (pickedImages.isNotEmpty) {
-                    setState(() {
-                      imageFileList!.addAll(pickedImages);
-                    });
-                  }
-                },
-              ),
+              if (!kIsWeb) ...[
+                ListTile(
+                  leading: Icon(CupertinoIcons.photo_camera),
+                  title: googleInterText('Camera', fontSize: 15),
+                  onTap: () async {
+                    Navigator.pop(context);
+                    final pickedImage =
+                        await _picker.pickImage(source: ImageSource.camera);
+                    if (pickedImage != null) {
+                      setState(() {
+                        imageFileList!.add(pickedImage);
+                      });
+                    }
+                  },
+                ),
+                Divider(),
+                ListTile(
+                  leading: Icon(CupertinoIcons.photo),
+                  title: googleInterText('Gallery', fontSize: 15),
+                  onTap: () async {
+                    Navigator.pop(context);
+                    final pickedImages = await _picker.pickMultiImage();
+                    if (pickedImages.isNotEmpty) {
+                      setState(() {
+                        imageFileList!.addAll(pickedImages);
+                      });
+                    }
+                  },
+                ),
+                Divider(),
+              ],
               ListTile(
                 leading: const Icon(Icons.attach_file),
                 title: googleInterText('Files', fontSize: 15),
@@ -140,6 +201,12 @@ class _UploadUserSellerScreenState
                   }
                 },
               ),
+              Divider(),
+              if (kIsWeb) ...[
+                SizedBox(
+                  height: 70,
+                ),
+              ],
             ],
           ),
         );
@@ -270,9 +337,15 @@ class _UploadUserSellerScreenState
                                               borderRadius:
                                                   BorderRadius.circular(12),
                                               image: DecorationImage(
-                                                image: FileImage(File(
-                                                    imageFileList![index]
-                                                        .path)),
+                                                image: kIsWeb
+                                                    ? NetworkImage(imageFileList![
+                                                            index]
+                                                        .path) // blob url works
+                                                    : FileImage(File(
+                                                            imageFileList![
+                                                                    index]
+                                                                .path))
+                                                        as ImageProvider,
                                                 fit: BoxFit.cover,
                                               ),
                                             ),
@@ -333,29 +406,7 @@ class _UploadUserSellerScreenState
               },
               child: Stack(
                 children: [
-                  Container(
-                    width: 140,
-                    height: 140,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: Colors.grey.shade200,
-                      image: imageFileList!.isNotEmpty
-                          ? DecorationImage(
-                              image: FileImage(File(imageFileList!.last.path)),
-                              fit: BoxFit.cover,
-                            )
-                          : null,
-                    ),
-                    child: imageFileList!.isEmpty
-                        ? const Center(
-                            child: Icon(
-                              Icons.add_a_photo,
-                              size: 36,
-                              color: Colors.grey,
-                            ),
-                          )
-                        : null,
-                  ),
+                  buildImageContainer(imageFileList!),
                   if (imageFileList!.isNotEmpty)
                     Positioned(
                       top: 8,
@@ -628,6 +679,9 @@ class _UploadUserSellerScreenState
                 ],
               ),
             ),
+            SizedBox(
+                height:
+                    MediaQuery.of(context).size.width * (kIsWeb ? 0.12 : 0.25)),
             elevatedButton(
               _isUploading ? "Uploading..." : "Upload Product",
               _isUploading ? null : () => _uploadProduct(seller),
