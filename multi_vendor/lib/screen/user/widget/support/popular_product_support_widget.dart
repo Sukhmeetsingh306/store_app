@@ -28,6 +28,8 @@ class _PopularProductSupportWidgetState
     extends State<PopularProductSupportWidget> {
   late Future<List<ProductModel>> popularProductsFuture;
   final Set<int> favoriteIndexes = {};
+  bool cart = false;
+  Set<int> cartIndexes = {};
 
   @override
   void initState() {
@@ -206,10 +208,59 @@ class _PopularProductSupportWidgetState
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                           const SizedBox(height: 4),
-                                          googleInterText(
-                                            "₹${product.productPrice.toStringAsFixed(2)}",
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 13,
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              googleInterText(
+                                                "₹${product.productPrice.toStringAsFixed(2)}",
+                                                fontWeight: FontWeight.normal,
+                                                fontSize: 14,
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  setState(() {
+                                                    if (cartIndexes
+                                                        .contains(index)) {
+                                                      cartIndexes.remove(
+                                                          index); // remove from cart
+                                                    } else {
+                                                      cartIndexes.add(
+                                                          index); // add to cart
+                                                    }
+                                                  });
+                                                },
+                                                child: AnimatedSwitcher(
+                                                  duration: const Duration(
+                                                      milliseconds: 300),
+                                                  transitionBuilder:
+                                                      (child, animation) {
+                                                    return ScaleTransition(
+                                                      scale: CurvedAnimation(
+                                                        parent: animation,
+                                                        curve: Curves.easeInOut,
+                                                      ),
+                                                      child: child,
+                                                    );
+                                                  },
+                                                  child: Icon(
+                                                    cartIndexes.contains(index)
+                                                        ? Icons.shopping_cart
+                                                        : Icons
+                                                            .shopping_cart_outlined,
+                                                    key: ValueKey<bool>(
+                                                        cartIndexes.contains(
+                                                            index)), // triggers animation
+                                                    color: cartIndexes
+                                                            .contains(index)
+                                                        ? ColorTheme
+                                                            .color.dodgerBlue
+                                                        : Colors.grey,
+                                                    size: 26,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
