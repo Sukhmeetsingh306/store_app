@@ -94,7 +94,7 @@ class ProductController {
     }
   }
 
-  Future<List<ProductModel>> fetchProduct() async {
+  Future<List<ProductModel>> fetchPopularProduct() async {
     try {
       http.Response response = await http.get(
         Uri.parse("$webUri/product/popular-product"),
