@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:multi_vendor/screen/user/widget/support/popular_product_support_widget.dart';
 
 import '../../utils/theme/color/color_theme.dart';
 import '../../utils/widget/mobile/drawer_mobile_widget.dart';
@@ -43,6 +44,8 @@ class _HomeUserScreenState extends State<HomeUserScreen> {
           children: const [
             BannerWidgetIOS(),
             CategoryWidgetSupportUser(),
+            SizedBox(height: kIsWeb ? 10 : 4),
+            PopularProductSupportWidget(),
           ],
         ),
       ),
