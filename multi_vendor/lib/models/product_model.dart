@@ -59,7 +59,7 @@ class ProductModel {
       sellerName: map['sellerName'] ?? "",
       productCategory: map['productCategory'] ?? "",
       productSubCategory: map['productSubCategory'] ?? "",
-      productImage: List<String>.from(map['productImage'] ?? []),
+      productImage: List<String>.from(map['productImage'] as List<dynamic>),
       productPopularity: map['productPopularity'] ?? false,
       productRecommended: map['productRecommended'] ?? false,
     );
