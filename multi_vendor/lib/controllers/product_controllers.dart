@@ -93,4 +93,31 @@ class ProductController {
       }
     }
   }
+
+  Future<List<ProductModel>> fetchProduct() async {
+    try {
+      http.Response response = await http.get(
+        Uri.parse("$webUri/product/popular-product"),
+        headers: <String, String>{
+          "content-type": "application/json; charset=UTF-8",
+        },
+      );
+
+      //print(response.body);
+      if (response.statusCode == 200) {
+        List<dynamic> productData = jsonDecode(response.body);
+
+        List<ProductModel> productModel = productData.map((product) {
+          return ProductModel.fromProduct(product);
+        }).toList();
+
+        return productModel;
+      } else {
+        throw Exception("Failed to fetch product");
+      }
+    } catch (e) {
+      print("Error fetching product : $e");
+      return [];
+    }
+  }
 }

@@ -62,7 +62,7 @@ productRouter.post("/seller/add-product", sellerAuth, async (req, res) => {
   }
 });
 
-productRouter.get("/seller/popular-product", async (req, res) => {
+productRouter.get("/product/popular-product", async (req, res) => {
   try {
     const popularProducts = await Product.find({ productPopularity: true });
     if (!popularProducts || popularProducts.length == 0) {
@@ -80,7 +80,7 @@ productRouter.get("/seller/popular-product", async (req, res) => {
   }
 });
 
-productRouter.get("/seller/recommended-product", async (req, res) => {
+productRouter.get("/product/recommended-product", async (req, res) => {
   try {
     const recommendedProducts = await Product.find({
       productRecommended: true,
