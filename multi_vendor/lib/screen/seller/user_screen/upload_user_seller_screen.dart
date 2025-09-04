@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_vendor/controllers/product_controllers.dart';
+import 'package:multi_vendor/models/seller_models.dart';
 import 'package:multi_vendor/provider/seller_provider.dart';
 import 'package:multi_vendor/utils/widget/button_widget_utils.dart';
 import 'package:multi_vendor/utils/widget/form/textForm_form.dart';
@@ -449,56 +450,63 @@ class _UploadUserSellerScreenState
     return SingleChildScrollView(
       child: Form(
         key: _formKey,
-        child: Column(
-          children: [
-            sizedBoxH20(),
-            gestureDetector,
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+        child: _mobileCode(gestureDetector, context, seller),
+      ),
+    );
+  }
+
+  Widget _mobileCode(
+    GestureDetector gestureDetector,
+    BuildContext context,
+    SellerModels seller,
+  ) {
+    return Column(
+      children: [
+        sizedBoxH20(),
+        gestureDetector,
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _productName(),
+              sizedBoxH15(),
+              Row(
                 children: [
-                  _productName(),
-                  sizedBoxH15(),
-                  Row(
-                    children: [
-                      // Category Dropdown
-                      Expanded(
-                        child: _selectCategory(),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: _selectSubCategory(),
-                      ),
-                    ],
+                  // Category Dropdown
+                  Expanded(
+                    child: _selectCategory(),
                   ),
-                  sizedBoxH15(),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _productQuantity(),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: _pricePerUnit(),
-                      ),
-                    ],
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: _selectSubCategory(),
                   ),
-                  sizedBoxH15(),
-                  _productDescription(),
                 ],
               ),
-            ),
-            SizedBox(
-                height:
-                    MediaQuery.of(context).size.width * (kIsWeb ? 0.12 : 0.25)),
-            elevatedButton(
-              _isUploading ? "Uploading..." : "Upload Product",
-              _isUploading ? null : () => _uploadProduct(seller),
-            ),
-          ],
+              sizedBoxH15(),
+              Row(
+                children: [
+                  Expanded(
+                    child: _productQuantity(),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: _pricePerUnit(),
+                  ),
+                ],
+              ),
+              sizedBoxH15(),
+              _productDescription(),
+            ],
+          ),
         ),
-      ),
+        SizedBox(
+            height: MediaQuery.of(context).size.width * (kIsWeb ? 0.12 : 0.25)),
+        elevatedButton(
+          _isUploading ? "Uploading..." : "Upload Product",
+          _isUploading ? null : () => _uploadProduct(seller),
+        ),
+      ],
     );
   }
 
