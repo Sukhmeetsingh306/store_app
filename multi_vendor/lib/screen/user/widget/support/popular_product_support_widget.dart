@@ -177,8 +177,8 @@ class _PopularProductSupportWidgetState
                                                       ? Icons.favorite
                                                       : Icons.favorite_border,
                                                   key: ValueKey<bool>(
-                                                      favoriteIndexes.contains(
-                                                          index)), // ensures animation triggers
+                                                      favoriteIndexes
+                                                          .contains(index)),
                                                   color: favoriteIndexes
                                                           .contains(index)
                                                       ? Colors.red

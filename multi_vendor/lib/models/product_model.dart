@@ -13,7 +13,6 @@ class ProductModel {
   final List<String> productImage;
   final bool productPopularity;
   final bool productRecommended;
-  final bool productFavorite;
 
   ProductModel({
     required this.id,
@@ -28,7 +27,6 @@ class ProductModel {
     required this.productImage,
     this.productPopularity = false,
     this.productRecommended = false,
-    required this.productFavorite,
   });
 
   /// Convert Dart object → Map
@@ -46,7 +44,6 @@ class ProductModel {
       'productImage': productImage,
       'productPopularity': productPopularity,
       'productRecommended': productRecommended,
-      'productFavorite': productFavorite,
     };
   }
 
@@ -65,7 +62,6 @@ class ProductModel {
       productImage: List<String>.from(map['productImage'] as List<dynamic>),
       productPopularity: map['productPopularity'] ?? false,
       productRecommended: map['productRecommended'] ?? false,
-      productFavorite: map['productFavorite'] ?? false,
     );
   }
 

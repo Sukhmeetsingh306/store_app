@@ -60,7 +60,6 @@ class ProductController {
         productCategory: productCategory,
         productSubCategory: productSubCategory ?? '',
         productImage: uploadedUrls,
-        productFavorite: productFav ?? false,
       );
 
       print("Uploading Product: ${product.toProduct()}");
