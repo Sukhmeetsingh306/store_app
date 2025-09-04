@@ -11,9 +11,13 @@ import '../../../../utils/widget/platform/platform_check.dart';
 class PopularProductSupportWidget extends StatefulWidget {
   final bool listView;
   final bool? showHeadingRow;
+  final bool? productFavorite;
 
   const PopularProductSupportWidget(
-      {super.key, this.showHeadingRow = true, this.listView = false});
+      {super.key,
+      this.showHeadingRow = true,
+      this.listView = false,
+      this.productFavorite});
 
   @override
   State<PopularProductSupportWidget> createState() =>
@@ -23,6 +27,7 @@ class PopularProductSupportWidget extends StatefulWidget {
 class _PopularProductSupportWidgetState
     extends State<PopularProductSupportWidget> {
   late Future<List<ProductModel>> popularProductsFuture;
+  final Set<int> favoriteIndexes = {};
 
   @override
   void initState() {
@@ -121,9 +126,67 @@ class _PopularProductSupportWidgetState
                                   children: [
                                     AspectRatio(
                                       aspectRatio: 1,
-                                      child: Image.network(
-                                        product.productImage[0],
-                                        fit: BoxFit.cover,
+                                      child: Stack(
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius:
+                                                const BorderRadius.only(
+                                              topLeft: Radius.circular(10),
+                                              topRight: Radius.circular(10),
+                                            ),
+                                            child: Image.network(
+                                              product.productImage[0],
+                                              fit: BoxFit.cover,
+                                              width: double.infinity,
+                                              height: double.infinity,
+                                            ),
+                                          ),
+                                          Positioned(
+                                            top: 8,
+                                            right: 9,
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  if (favoriteIndexes
+                                                      .contains(index)) {
+                                                    favoriteIndexes
+                                                        .remove(index);
+                                                  } else {
+                                                    favoriteIndexes.add(index);
+                                                  }
+                                                });
+                                              },
+                                              child: AnimatedSwitcher(
+                                                duration: const Duration(
+                                                    milliseconds: 300),
+                                                transitionBuilder:
+                                                    (child, animation) {
+                                                  return ScaleTransition(
+                                                    scale: CurvedAnimation(
+                                                      parent: animation,
+                                                      curve: Curves.easeInOut,
+                                                    ),
+                                                    child: child,
+                                                  );
+                                                },
+                                                child: Icon(
+                                                  favoriteIndexes
+                                                          .contains(index)
+                                                      ? Icons.favorite
+                                                      : Icons.favorite_border,
+                                                  key: ValueKey<bool>(
+                                                      favoriteIndexes.contains(
+                                                          index)), // ensures animation triggers
+                                                  color: favoriteIndexes
+                                                          .contains(index)
+                                                      ? Colors.red
+                                                      : Colors.grey,
+                                                  size: 24,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                     const SizedBox(height: 8),

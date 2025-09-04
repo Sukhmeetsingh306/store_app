@@ -19,6 +19,7 @@ class ProductController {
     required List<String> productImage,
     required BuildContext context,
     required List<String> subCategories,
+    bool? productFav,
   }) async {
     final cloudinary = CloudinaryPublic(cloudinaryName, cloudinaryPresentName);
 
@@ -59,6 +60,7 @@ class ProductController {
         productCategory: productCategory,
         productSubCategory: productSubCategory ?? '',
         productImage: uploadedUrls,
+        productFavorite: productFav ?? false,
       );
 
       print("Uploading Product: ${product.toProduct()}");
