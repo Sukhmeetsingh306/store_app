@@ -24,13 +24,19 @@ class _BannerWidgetSupportUserState extends State<BannerWidgetSupportUser> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
+    return FutureBuilder<List<UploadBannerApiModels>>(
       future: futureBanner,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
-          return errormessage("Error: ${snapshot.error}");
+          return Center(
+            child: googleInterText(
+              "Error: ${snapshot.error}",
+              fontWeight: FontWeight.normal,
+              fontSize: 16,
+            ),
+          );
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return Center(
             child: googleInterText(
@@ -40,13 +46,16 @@ class _BannerWidgetSupportUserState extends State<BannerWidgetSupportUser> {
             ),
           );
         } else {
-          final bannerCount = snapshot.data!;
+          final banners = snapshot.data!;
+
+          // Mobile / iOS / Android
           if (defaultTargetPlatform == TargetPlatform.iOS ||
               defaultTargetPlatform == TargetPlatform.android) {
             return PageView.builder(
-              itemCount: bannerCount.length,
+              physics: const NeverScrollableScrollPhysics(), // disable swipe
+              itemCount: banners.length,
               itemBuilder: (context, index) {
-                final banner = bannerCount[index];
+                final banner = banners[index];
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Image.network(
@@ -56,16 +65,20 @@ class _BannerWidgetSupportUserState extends State<BannerWidgetSupportUser> {
                 );
               },
             );
-          } else if (kIsWeb) {
+          }
+
+          // Web
+          if (kIsWeb) {
             double screenWidth = MediaQuery.of(context).size.width;
             bool isSmallWebScreen = screenWidth < 600;
 
+            // Small web screen: PageView but non-scrollable
             if (isSmallWebScreen) {
-              // Small screen web: PageView
               return PageView.builder(
-                itemCount: bannerCount.length,
+                physics: const NeverScrollableScrollPhysics(), // disable swipe
+                itemCount: banners.length,
                 itemBuilder: (context, index) {
-                  final banner = bannerCount[index];
+                  final banner = banners[index];
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Image.network(
@@ -75,28 +88,29 @@ class _BannerWidgetSupportUserState extends State<BannerWidgetSupportUser> {
                   );
                 },
               );
-            } else {
-              // Large screen web: scrollable GridView
-              return SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: bannerCount.map((banner) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Image.network(
-                        banner.bannerImage,
-                        width: 300,
-                        height: 170,
-                        fit: BoxFit.cover,
-                      ),
-                    );
-                  }).toList(),
-                ),
-              );
             }
+
+            // Large web screen: static horizontal row
+            return SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              physics: const NeverScrollableScrollPhysics(), // stop scroll
+              child: Row(
+                children: banners.map((banner) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.network(
+                      banner.bannerImage,
+                      width: 300,
+                      height: 170,
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                }).toList(),
+              ),
+            );
           }
 
-          return const Center();
+          return const SizedBox.shrink();
         }
       },
     );
