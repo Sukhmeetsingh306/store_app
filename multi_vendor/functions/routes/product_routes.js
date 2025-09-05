@@ -106,7 +106,10 @@ productRouter.get(
   async (req, res) => {
     try {
       const { category } = req.params;
-      const products = await Product.find({ productCategory: category });
+      const products = await Product.find({
+        productCategory: category,
+        productPopularity: true,
+      });
 
       if (!products || products.length === 0) {
         return res
