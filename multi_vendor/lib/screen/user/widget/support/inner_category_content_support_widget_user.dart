@@ -11,7 +11,6 @@ import '../../../../utils/fonts/google_fonts_utils.dart';
 import '../../../../utils/fonts/row_text_sands.dart';
 import '../../../../utils/widget/platform/platform_check.dart';
 import 'banner_image_support_widget_user.dart';
-import 'sub_category_support_user.dart';
 
 class InnerCategoryContentSupportWidgetUser extends StatefulWidget {
   final CategoryApiModels category;
@@ -65,7 +64,12 @@ class _InnerCategoryContentSupportWidgetUserState
             ),
           ),
           const SizedBox(height: 10),
-          SubCategorySupportUser(future: subCategoryModel),
+          futureBuilderSubCategory(
+            context,
+            subCategoryModel,
+            "No Sub Category Found",
+            horizontalScroll: true,
+          ),
           const SizedBox(height: 10),
           kIsWeb
               ? RowTextSands(
@@ -80,6 +84,7 @@ class _InnerCategoryContentSupportWidgetUserState
                   subTitle: ' View All',
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 ),
+          const SizedBox(height: 10),
           futureBuilderProduct(
             context,
             productModel,
