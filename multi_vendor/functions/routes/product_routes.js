@@ -100,4 +100,23 @@ productRouter.get("/product/recommended-product", async (req, res) => {
   }
 });
 
+// api for fetching of the product
+productRouter.get(
+  "/product/product-by-category/:category",
+  async (req, res) => {
+    try {
+      const { category } = req.params;
+      const product = await Product.find({ category });
+      if (!product || product.length == 0) {
+        return res.status(404).json({ msg: "Error in finding the product" });
+      } else {
+        return res.status(200).json(product);
+      }
+    } catch (error) {
+      console.log("Error in getting products", e);
+      return res.status(400).json({ error: e.message });
+    }
+  }
+);
+
 export { productRouter };
