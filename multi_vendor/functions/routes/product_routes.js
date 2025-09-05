@@ -106,14 +106,17 @@ productRouter.get(
   async (req, res) => {
     try {
       const { category } = req.params;
-      const product = await Product.find({ category });
-      if (!product || product.length == 0) {
-        return res.status(404).json({ msg: "Error in finding the product" });
-      } else {
-        return res.status(200).json(product);
+      const products = await Product.find({ productCategory: category });
+
+      if (!products || products.length === 0) {
+        return res
+          .status(404)
+          .json({ msg: "No products found in this category" });
       }
-    } catch (error) {
-      console.log("Error in getting products", e);
+
+      return res.status(200).json(products);
+    } catch (e) {
+      console.error("Error in getting products", e);
       return res.status(400).json({ error: e.message });
     }
   }
