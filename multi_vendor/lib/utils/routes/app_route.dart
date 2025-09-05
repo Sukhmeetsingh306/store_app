@@ -24,54 +24,103 @@ class AppRoutes {
       ),
       GoRoute(
         path: '/loginPage',
-        builder: (context, state) => const LoginAuthScreen(),
+        builder: (context, state) {
+          return state.extra is! LoginAuthScreen
+              ? const LoginAuthScreen()
+              : state.extra as LoginAuthScreen;
+        },
       ),
       GoRoute(
         path: '/registerPage',
-        builder: (context, state) => const RegisterAuthScreen(),
+        builder: (context, state) {
+          return state.extra is! RegisterAuthScreen
+              ? const RegisterAuthScreen()
+              : state.extra as RegisterAuthScreen;
+        },
       ),
       GoRoute(
         path: '/sellerPage',
-        builder: (context, state) => const SellerAuthScreen(),
+        builder: (context, state) {
+          return state.extra is! SellerAuthScreen
+              ? const SellerAuthScreen()
+              : state.extra as SellerAuthScreen;
+        },
       ),
       GoRoute(
         path: '/sellerLoginPage',
-        builder: (context, state) => const SellerLoginAuthScreen(),
+        builder: (context, state) {
+          return state.extra is! SellerLoginAuthScreen
+              ? const SellerLoginAuthScreen()
+              : state.extra as SellerLoginAuthScreen;
+        },
       ),
       GoRoute(
         path: '/sellerTaxDetailPage',
         builder: (context, state) {
-          return const SellerTaxDetailScreen();
+          return state.extra is! SellerTaxDetailScreen
+              ? const SellerTaxDetailScreen()
+              : state.extra as SellerTaxDetailScreen;
         },
       ),
       GoRoute(
         path: '/sellerBankDetailPage',
         builder: (context, state) {
-          return const SellerBankDetailScreen();
+          return state.extra is! SellerBankDetailScreen
+              ? const SellerBankDetailScreen()
+              : state.extra as SellerBankDetailScreen;
         },
       ),
       GoRoute(
         path: '/homePage',
-        builder: (context, state) => HomeUserScreen(),
+        builder: (context, state) {
+          return state.extra is! HomeUserScreen
+              ? HomeUserScreen()
+              : state.extra as HomeUserScreen;
+        },
       ),
       GoRoute(
         path: '/categoryPage',
-        builder: (context, state) => CategoryNavigationScreen(hasAppBar: true),
-      ),
-      GoRoute(
-        path: '/innerCategoryPage',
         builder: (context, state) {
-          final category = state.extra as CategoryApiModels;
-          return InnerCategoryScreen(category: category);
+          return state.extra is! CategoryNavigationScreen
+              ? CategoryNavigationScreen(hasAppBar: true)
+              : state.extra as CategoryNavigationScreen;
         },
       ),
       GoRoute(
         path: '/management',
-        builder: (context, state) => const WebDeviceView(),
+        builder: (context, state) {
+          return state.extra is! WebDeviceView
+              ? const WebDeviceView()
+              : state.extra as WebDeviceView;
+        },
       ),
       GoRoute(
         path: '/seller/dashboard',
-        builder: (context, state) => const UserSellerScreen(),
+        builder: (context, state) {
+          return state.extra is! UserSellerScreen
+              ? const UserSellerScreen()
+              : state.extra as UserSellerScreen;
+        },
+      ),
+      GoRoute(
+        path: '/category/:categoryName',
+        builder: (context, state) {
+          // Try to use extra first
+          final extraCategory = state.extra as CategoryApiModels?;
+          if (extraCategory != null) {
+            return InnerCategoryScreen(category: extraCategory);
+          }
+
+          // Fallback: build category from path param
+          final categoryName = state.pathParameters['categoryName']!;
+          final category = CategoryApiModels(
+            categoryId: '',
+            categoryName: categoryName,
+            categoryImage: '',
+            categoryBanner: '',
+          );
+          return InnerCategoryScreen(category: category);
+        },
       ),
     ],
   );
