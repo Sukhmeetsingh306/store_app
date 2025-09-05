@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../models/api/subcategory_api_models.dart';
 import '../../../../utils/fonts/google_fonts_utils.dart';
 import '../../../../utils/theme/color/color_theme.dart';
 
@@ -63,7 +64,7 @@ Widget futureBuilderProduct(
                   },
                 )
               : SizedBox(
-                  height: isWebMobile ? 320 : 270,
+                  height: isWebMobile ? 300 : 250,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: popularProducts.length,
@@ -141,7 +142,7 @@ Widget futureBuilderProduct(
                                     product.productName,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 14,
-                                    maxLines: 2, // ✅ allow wrapping
+                                    maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   const SizedBox(height: 4),
@@ -196,5 +197,121 @@ Widget futureBuilderProduct(
         );
       }
     },
+  );
+}
+
+Widget futureBuilderSubCategory(
+  BuildContext context,
+  Future<List<SubCategoryApiModels>> future,
+  String errorText, {
+  bool horizontalScroll = false,
+}) {
+  final isWebMobile = kIsWeb && MediaQuery.of(context).size.width > 1024;
+
+  return FutureBuilder<List<SubCategoryApiModels>>(
+    future: future,
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const Center(child: CircularProgressIndicator());
+      } else if (snapshot.hasError) {
+        return Center(child: Text("Error: ${snapshot.error}"));
+      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+        return Center(
+          child: googleInterText(
+            errorText,
+            fontWeight: FontWeight.normal,
+            fontSize: 18,
+          ),
+        );
+      } else {
+        final subCategories = snapshot.data!;
+
+        if (horizontalScroll) {
+          return SizedBox(
+            height: isWebMobile ? 255 : 205,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: subCategories.length,
+              itemBuilder: (context, index) {
+                final subCategory = subCategories[index];
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: subCategoryCard(context, subCategory),
+                );
+              },
+            ),
+          );
+        } else {
+          final crossAxis = isWebMobile ? 5 : 4;
+          return GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: subCategories.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: crossAxis,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 12,
+              childAspectRatio: 0.85,
+            ),
+            itemBuilder: (context, index) {
+              final subCategory = subCategories[index];
+              return subCategoryCard(context, subCategory);
+            },
+          );
+        }
+      }
+    },
+  );
+}
+
+Widget subCategoryCard(
+  BuildContext context,
+  SubCategoryApiModels subCategory,
+) {
+  return Container(
+    decoration: BoxDecoration(
+      color: ColorTheme.color.whiteColor,
+      borderRadius: BorderRadius.circular(10),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.grey.withAlpha(2),
+          blurRadius: 4,
+          offset: const Offset(0, 2),
+        ),
+      ],
+    ),
+    width: kIsWeb && MediaQuery.of(context).size.width > 1024 ? 180 : 140,
+    margin: const EdgeInsets.all(4),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        AspectRatio(
+          aspectRatio: 1,
+          child: ClipRRect(
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(10),
+              topRight: Radius.circular(10),
+            ),
+            child: Image.network(
+              subCategory.subCategoryImage,
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: double.infinity,
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 6),
+          child: googleInterText(
+            subCategory.subCategoryName,
+            fontWeight: FontWeight.w500,
+            fontSize: 14,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
+    ),
   );
 }
