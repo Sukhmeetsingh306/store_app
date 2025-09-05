@@ -831,10 +831,15 @@ class _UploadUserSellerScreenState
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                   ),
+                  isExpanded: true,
                   items: snapshot.data!.map((SubCategoryApiModels subcategory) {
                     return DropdownMenuItem<SubCategoryApiModels>(
                       value: subcategory,
-                      child: Text(subcategory.subCategoryName),
+                      child: Text(
+                        subcategory.subCategoryName,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
                     );
                   }).toList(),
                   onChanged: (SubCategoryApiModels? newValue) {

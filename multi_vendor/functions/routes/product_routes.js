@@ -100,4 +100,29 @@ productRouter.get("/product/recommended-product", async (req, res) => {
   }
 });
 
+// api for fetching of the product
+productRouter.get(
+  "/product/product-by-category/:category",
+  async (req, res) => {
+    try {
+      const { category } = req.params;
+      const products = await Product.find({
+        productCategory: category,
+        productPopularity: true,
+      });
+
+      if (!products || products.length === 0) {
+        return res
+          .status(404)
+          .json({ msg: "No products found in this category" });
+      }
+
+      return res.status(200).json(products);
+    } catch (e) {
+      console.error("Error in getting products", e);
+      return res.status(400).json({ error: e.message });
+    }
+  }
+);
+
 export { productRouter };

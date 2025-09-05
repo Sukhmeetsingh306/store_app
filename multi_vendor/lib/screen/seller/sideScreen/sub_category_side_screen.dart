@@ -6,12 +6,13 @@ import 'package:flutter/material.dart';
 
 import '../../../controllers/subCategory_controllers.dart';
 import '../../../models/api/category_api_models.dart';
+import '../../../models/api/subcategory_api_models.dart';
+import '../../user/widget/support/reuse_widget_support.dart';
 import '../../web/sub_category_drop_down.dart';
 import '../../../utils/fonts/google_fonts_utils.dart';
 import '../../../utils/widget/button_widget_utils.dart';
 import '../../../utils/widget/space_widget_utils.dart';
 import '../../../utils/widget/web/web_input_image.dart';
-import '../../user/widget/support/sub_category_support_user.dart';
 
 class SubCategorySideScreen extends StatefulWidget {
   static const String routeName = '/subCategoryScreen';
@@ -24,6 +25,8 @@ class SubCategorySideScreen extends StatefulWidget {
 
 class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
   final SubCategoryControllers subCategoryController = SubCategoryControllers();
+  late Future<List<SubCategoryApiModels>> subCategoryModel;
+
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   late String subCategoryName;
@@ -157,7 +160,13 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
                   sizedBoxMediaQuery(context, width: 0, height: 0.02),
                   if (isWebMobile) uploadButton(),
                   divider(),
-                  SubCategorySupportUser(),
+                  //SubCategorySupportUser(),// code removed check in branch seller state management
+                  futureBuilderSubCategory(
+                    context,
+                    subCategoryModel,
+                    "No Sub Category Found",
+                    horizontalScroll: true,
+                  ),
                 ],
               ),
             ),
