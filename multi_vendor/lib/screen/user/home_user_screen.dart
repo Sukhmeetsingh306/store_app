@@ -40,7 +40,8 @@ class _HomeUserScreenState extends State<HomeUserScreen> {
     mobilePages = [
       UserScreenWrapper(
         scaffoldKey: _scaffoldKey,
-        child: Column(
+        child: ListView(
+          padding: EdgeInsets.zero,
           children: const [
             BannerWidgetIOS(),
             CategoryWidgetSupportUser(),
