@@ -91,10 +91,17 @@ Widget futureBuilderProduct(
                                     onTap: () {
                                       final jsonString =
                                           jsonEncode(product.toJson());
-                                      context.go(
-                                        '/product/productDetail/${product.productName}',
-                                        extra: jsonString,
-                                      );
+                                      String path =
+                                          '/product/productDetail/${product.productName}';
+                                      kIsWeb
+                                          ? context.go(
+                                              path,
+                                              extra: jsonString,
+                                            )
+                                          : context.push(
+                                              path,
+                                              extra: jsonString,
+                                            );
                                     },
                                     child: ClipRRect(
                                       borderRadius: const BorderRadius.only(
