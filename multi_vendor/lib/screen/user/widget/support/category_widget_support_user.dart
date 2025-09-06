@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../controllers/category_controllers.dart';
 import '../../../../controllers/subCategory_controllers.dart';
@@ -242,13 +243,12 @@ class _CategoryWidgetSupportUserState extends State<CategoryWidgetSupportUser> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: categoryCount.map((category) {
                           return InkWell(
-                            onTap: () => materialRouteNavigator(
-                              context,
-                              InnerCategoryScreen(
-                                category: category,
-                                showBottomNav: false,
-                              ),
-                            ),
+                            onTap: () {
+                              context.go(
+                                '/category/${category.categoryName}',
+                                extra: category, // pass whole model here
+                              );
+                            },
                             child: Container(
                               width: 100,
                               margin:
