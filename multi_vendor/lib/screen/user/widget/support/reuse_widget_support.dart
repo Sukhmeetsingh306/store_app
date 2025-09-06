@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../models/api/subcategory_api_models.dart';
 import '../../../../utils/fonts/google_fonts_utils.dart';
@@ -84,16 +87,26 @@ Widget futureBuilderProduct(
                               aspectRatio: 1,
                               child: Stack(
                                 children: [
-                                  ClipRRect(
-                                    borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(10),
-                                      topRight: Radius.circular(10),
-                                    ),
-                                    child: Image.network(
-                                      product.productImage[0],
-                                      fit: BoxFit.cover,
-                                      width: double.infinity,
-                                      height: double.infinity,
+                                  InkWell(
+                                    onTap: () {
+                                      final jsonString =
+                                          jsonEncode(product.toJson());
+                                      context.go(
+                                        '/product/productDetail/${product.productName}',
+                                        extra: jsonString,
+                                      );
+                                    },
+                                    child: ClipRRect(
+                                      borderRadius: const BorderRadius.only(
+                                        topLeft: Radius.circular(10),
+                                        topRight: Radius.circular(10),
+                                      ),
+                                      child: Image.network(
+                                        product.productImage[0],
+                                        fit: BoxFit.cover,
+                                        width: double.infinity,
+                                        height: double.infinity,
+                                      ),
                                     ),
                                   ),
                                   Positioned(
