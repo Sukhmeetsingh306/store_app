@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -24,19 +26,13 @@ class _BannerWidgetSupportUserState extends State<BannerWidgetSupportUser> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<UploadBannerApiModels>>(
+    return FutureBuilder(
       future: futureBanner,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
-          return Center(
-            child: googleInterText(
-              "Error: ${snapshot.error}",
-              fontWeight: FontWeight.normal,
-              fontSize: 16,
-            ),
-          );
+          return errormessage("Error: ${snapshot.error}");
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return Center(
             child: googleInterText(
@@ -46,101 +42,89 @@ class _BannerWidgetSupportUserState extends State<BannerWidgetSupportUser> {
             ),
           );
         } else {
-          final banners = snapshot.data!;
-
-          // Mobile / iOS / Android
+          final bannerCount = snapshot.data!;
           if (defaultTargetPlatform == TargetPlatform.iOS ||
               defaultTargetPlatform == TargetPlatform.android) {
             return PageView.builder(
-              physics: const NeverScrollableScrollPhysics(), // disable swipe
-              itemCount: banners.length,
+              itemCount: bannerCount.length,
               itemBuilder: (context, index) {
-                final banner = banners[index];
+                final banner = bannerCount[index];
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Image.network(
-                    banner.bannerImage,
-                    fit: BoxFit.cover,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.network(
+                      banner.bannerImage,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 );
               },
             );
-          }
-
-          // Web
-          if (kIsWeb) {
+          } else if (kIsWeb) {
             double screenWidth = MediaQuery.of(context).size.width;
             bool isSmallWebScreen = screenWidth < 600;
 
-            // Small web screen: PageView but non-scrollable
             if (isSmallWebScreen) {
-              return PageView.builder(
-                physics: const NeverScrollableScrollPhysics(), // disable swipe
-                itemCount: banners.length,
-                itemBuilder: (context, index) {
-                  final banner = banners[index];
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.network(
-                      banner.bannerImage,
-                      fit: BoxFit.cover,
-                    ),
-                  );
-                },
+              // Small screen web: PageView
+              return ScrollConfiguration(
+                behavior: CustomScrollBehavior(),
+                child: PageView.builder(
+                  itemCount: bannerCount.length,
+                  itemBuilder: (context, index) {
+                    final banner = bannerCount[index];
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.network(
+                          banner.bannerImage,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              );
+            } else {
+              // Large screen web: scrollable GridView
+              return ScrollConfiguration(
+                behavior: CustomScrollBehavior(),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: bannerCount.map((banner) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.network(
+                            banner.bannerImage,
+                            width: 300,
+                            height: 170,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
               );
             }
-
-            // Large web screen: static horizontal row
-            return SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              physics: const NeverScrollableScrollPhysics(), // stop scroll
-              child: Row(
-                children: banners.map((banner) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.network(
-                      banner.bannerImage,
-                      width: 300,
-                      height: 170,
-                      fit: BoxFit.cover,
-                    ),
-                  );
-                }).toList(),
-              ),
-            );
           }
 
-          return const SizedBox.shrink();
+          return const Center();
         }
       },
     );
   }
 }
 
-/*
-/save this code later as this will require in the seller screen
-
-return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: GridView.builder(
-          itemCount: bannerCount.length,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(), // disables GridView scroll
-          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-            crossAxisSpacing: 15,
-            mainAxisSpacing: 8,
-            childAspectRatio: 16 / 9,
-            maxCrossAxisExtent: 350,
-          ),
-          itemBuilder: (context, index) {
-            final banner = bannerCount[index];
-            return Image.network(
-              banner.bannerImage,
-              fit: BoxFit.cover,
-            );
-          },
-        ),
-      ),
-    );
- */
+class CustomScrollBehavior extends MaterialScrollBehavior {
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+        PointerDeviceKind.trackpad,
+      };
+}
