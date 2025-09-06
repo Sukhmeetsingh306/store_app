@@ -109,21 +109,22 @@ class AppRoutes {
       GoRoute(
         path: '/category/:categoryName',
         builder: (context, state) {
-          // Try to use extra first
           final extraCategory = state.extra as CategoryApiModels?;
           if (extraCategory != null) {
             return InnerCategoryScreen(category: extraCategory);
           }
 
-          // Fallback: build category from path param
           final categoryName = state.pathParameters['categoryName']!;
-          final category = CategoryApiModels(
-            categoryId: '',
-            categoryName: categoryName,
-            categoryImage: '',
-            categoryBanner: '',
+          // Pass only the name, fetch real category inside the screen
+          return InnerCategoryScreen(
+            category: CategoryApiModels(
+              categoryId: '',
+              categoryName: categoryName,
+              categoryImage: '',
+              categoryBanner: '', // temporary, will be replaced by API
+            ),
+            fetchFromApi: true, // 👈 new flag
           );
-          return InnerCategoryScreen(category: category);
         },
       ),
       GoRoute(
