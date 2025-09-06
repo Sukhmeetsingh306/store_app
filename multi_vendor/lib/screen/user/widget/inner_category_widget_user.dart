@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../controllers/category_controllers.dart';
 import '../../../models/api/category_api_models.dart';
 import '../../../utils/theme/color/color_theme.dart';
 import '../../../utils/widget/button_widget_utils.dart';
@@ -19,11 +20,13 @@ class InnerCategoryScreen extends StatefulWidget {
 
   final CategoryApiModels category;
   final bool showBottomNav;
+  late bool fetchFromApi;
 
-  const InnerCategoryScreen({
+  InnerCategoryScreen({
     super.key,
     required this.category,
     this.showBottomNav = true,
+    this.fetchFromApi = false,
   });
 
   @override
@@ -32,8 +35,29 @@ class InnerCategoryScreen extends StatefulWidget {
 
 class _InnerCategoryScreenState extends State<InnerCategoryScreen> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  CategoryApiModels? category;
+  bool loading = false;
 
   int mobilePagesIndex = 0;
+  @override
+  void initState() {
+    super.initState();
+    if (widget.fetchFromApi) {
+      _fetchCategory();
+    } else {
+      category = widget.category;
+    }
+  }
+
+  Future<void> _fetchCategory() async {
+    setState(() => loading = true);
+    final result = await CategoryControllers()
+        .getCategoryByName(widget.category.categoryName);
+    setState(() {
+      category = result ?? widget.category;
+      loading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +77,9 @@ class _InnerCategoryScreenState extends State<InnerCategoryScreen> {
     final headerWidgetUser = HeaderWidgetUser(
       scaffoldKey: scaffoldKey,
     );
+    if (loading || category == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
 
     return Scaffold(
       key: scaffoldKey,
