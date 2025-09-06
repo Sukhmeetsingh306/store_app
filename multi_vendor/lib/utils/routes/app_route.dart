@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:go_router/go_router.dart';
 import 'package:multi_vendor/models/api/category_api_models.dart';
 import 'package:multi_vendor/screen/authentication/login_auth_screen.dart';
@@ -7,12 +9,14 @@ import 'package:multi_vendor/screen/authentication/seller/seller_login_auth_scre
 import 'package:multi_vendor/screen/user/home_user_screen.dart';
 import 'package:multi_vendor/utils/routes/splash_screen_route.dart';
 
+import '../../models/product_model.dart';
 import '../../screen/authentication/seller/seller_bank_detail_screen.dart';
 import '../../screen/authentication/seller/seller_tax_detail_screen.dart';
 import '../../screen/seller/user_seller_screen.dart';
 import '../../screen/seller/web_seller_screen.dart';
 import '../../screen/user/widget/inner_category_widget_user.dart';
 import '../../screen/user/widget/navigation/category_navigation_screen.dart';
+import '../../screen/user/widget/support/product/product_detail_support_widget.dart';
 
 class AppRoutes {
   static final GoRouter router = GoRouter(
@@ -120,6 +124,49 @@ class AppRoutes {
             categoryBanner: '',
           );
           return InnerCategoryScreen(category: category);
+        },
+      ),
+      GoRoute(
+        path: '/product/productDetail/:productName',
+        builder: (context, state) {
+          final extra = state.extra;
+
+          ProductModel? product;
+
+          if (extra != null) {
+            if (extra is ProductModel) {
+              // Already a ProductModel
+              product = extra;
+            } else if (extra is Map<String, dynamic>) {
+              // Got a Map, convert to ProductModel
+              product = ProductModel.fromProduct(extra);
+            } else if (extra is String) {
+              // Got a JSON string, decode first
+              final decoded = jsonDecode(extra);
+
+              if (decoded is Map<String, dynamic>) {
+                product = ProductModel.fromProduct(decoded);
+              }
+            }
+          }
+
+          // If still null, fallback with just productName
+          product ??= ProductModel(
+            id: '',
+            productName: state.pathParameters['productName'] ?? 'Unknown',
+            productPrice: 0,
+            productQuantity: 0,
+            productDescription: '',
+            sellerId: '',
+            sellerName: '',
+            productCategory: '',
+            productSubCategory: null,
+            productImage: [],
+            productPopularity: false,
+            productRecommended: false,
+          );
+
+          return ProductDetailSupportWidget(product: product);
         },
       ),
     ],
