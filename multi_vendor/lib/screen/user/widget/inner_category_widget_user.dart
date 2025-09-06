@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../models/api/category_api_models.dart';
 import '../../../utils/theme/color/color_theme.dart';
@@ -13,6 +14,9 @@ import 'navigation/store_navigation_screen.dart';
 import 'support/inner_category_content_support_widget_user.dart';
 
 class InnerCategoryScreen extends StatefulWidget {
+  static const String routeName = '/category/:categoryName';
+  static const String routePath = '/homePage/:categoryName';
+
   final CategoryApiModels category;
   final bool showBottomNav;
 
@@ -54,7 +58,7 @@ class _InnerCategoryScreenState extends State<InnerCategoryScreen> {
       key: scaffoldKey,
       appBar: headerWidgetUser.detailHeaderWidget(
         context,
-        backOnPressed: () => Navigator.pop(context),
+        backOnPressed: () => context.go('/homePage'),
         scaffoldKey: scaffoldKey,
       ),
       drawer: DrawerWidget(
