@@ -132,25 +132,16 @@ class AppRoutes {
           final extra = state.extra;
 
           ProductModel? product;
+          String? from;
 
-          if (extra != null) {
-            if (extra is ProductModel) {
-              // Already a ProductModel
-              product = extra;
-            } else if (extra is Map<String, dynamic>) {
-              // Got a Map, convert to ProductModel
-              product = ProductModel.fromProduct(extra);
-            } else if (extra is String) {
-              // Got a JSON string, decode first
-              final decoded = jsonDecode(extra);
-
-              if (decoded is Map<String, dynamic>) {
-                product = ProductModel.fromProduct(decoded);
-              }
+          if (extra is Map<String, dynamic>) {
+            if (extra["product"] is String) {
+              final decoded = jsonDecode(extra["product"]);
+              product = ProductModel.fromJson(decoded);
             }
+            from = extra["from"] as String?;
           }
 
-          // If still null, fallback with just productName
           product ??= ProductModel(
             id: '',
             productName: state.pathParameters['productName'] ?? 'Unknown',
@@ -166,7 +157,10 @@ class AppRoutes {
             productRecommended: false,
           );
 
-          return ProductDetailSupportWidget(product: product);
+          return ProductDetailSupportWidget(
+            product: product,
+            from: from,
+          );
         },
       ),
     ],

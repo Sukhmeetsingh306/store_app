@@ -93,15 +93,27 @@ Widget futureBuilderProduct(
                                           jsonEncode(product.toJson());
                                       String path =
                                           '/product/productDetail/${product.productName}';
-                                      kIsWeb
-                                          ? context.go(
-                                              path,
-                                              extra: jsonString,
-                                            )
-                                          : context.push(
-                                              path,
-                                              extra: jsonString,
-                                            );
+
+                                      if (kIsWeb) {
+                                        final currentLocation =
+                                            GoRouterState.of(context)
+                                                .uri
+                                                .toString();
+                                        context.go(
+                                          path,
+                                          extra: {
+                                            "product": jsonString,
+                                            "from": currentLocation,
+                                          },
+                                        );
+                                      } else {
+                                        context.push(
+                                          path,
+                                          extra: {
+                                            "product": jsonString,
+                                          },
+                                        );
+                                      }
                                     },
                                     child: ClipRRect(
                                       borderRadius: const BorderRadius.only(
