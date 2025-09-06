@@ -127,4 +127,8 @@ class CustomScrollBehavior extends MaterialScrollBehavior {
         PointerDeviceKind.mouse,
         PointerDeviceKind.trackpad,
       };
+  @override
+  ScrollPhysics getScrollPhysics(BuildContext context) {
+    return const ClampingScrollPhysics();
+  }
 }
