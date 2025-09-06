@@ -15,7 +15,7 @@ import 'support/inner_category_content_support_widget_user.dart';
 
 class InnerCategoryScreen extends StatefulWidget {
   static const String routeName = '/category/:categoryName';
-  static const String routePath = '/homePage/:categoryName';
+  static const String routePath = '/category/:categoryName';
 
   final CategoryApiModels category;
   final bool showBottomNav;
