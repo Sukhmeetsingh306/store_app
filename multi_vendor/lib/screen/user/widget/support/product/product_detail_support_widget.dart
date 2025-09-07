@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../../../../models/product_model.dart';
+import '../../../../../utils/code/quantity_code_utils.dart';
 import '../../../../../utils/fonts/google_fonts_utils.dart';
 import '../../../../../utils/theme/color/color_theme.dart';
 import '../../../../../utils/widget/banner_widget_support_user.dart';
@@ -26,7 +27,9 @@ class ProductDetailSupportWidget extends StatefulWidget {
 class _ProductDetailSupportWidgetState
     extends State<ProductDetailSupportWidget> {
   late PageController _pageController;
+
   int _currentPage = 0;
+  int selectedQty = 1;
 
   bool _isFavorite = false;
 
@@ -173,7 +176,8 @@ class _ProductDetailSupportWidgetState
                     "https://yourapp.com/product/${widget.product.id}";
 
                 final params = ShareParams(
-                  text: "Check out this product!\n$productLink",
+                  text:
+                      "Check out this ${widget.product.productName}.\n$productLink",
                 );
 
                 await SharePlus.instance.share(params);
@@ -195,7 +199,7 @@ class _ProductDetailSupportWidgetState
       "About",
       fontWeight: isWebLarge() ? FontWeight.w500 : FontWeight.w400,
       color: ColorTheme.color.grayColor,
-      fontSize: isWebLarge() ? 20 : 17,
+      fontSize: isWebLarge() ? 18 : 17,
     );
   }
 
@@ -226,7 +230,15 @@ class _ProductDetailSupportWidgetState
     );
   }
 
-  /// 📱 Mobile layout (Column)
+  Widget _productPrice() {
+    return googleInterText(
+      "₹${widget.product.productPrice}",
+      fontWeight: FontWeight.w600,
+      fontSize: isWebLarge() ? 18 : 16,
+      color: Colors.green,
+    );
+  }
+
   Widget _buildMobileLayout(BuildContext context) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(20.0),
@@ -242,25 +254,29 @@ class _ProductDetailSupportWidgetState
           _offer(),
           const SizedBox(height: 8),
           _nameCode(),
-          const SizedBox(height: 6),
-          googleInterText(
-            "₹${widget.product.productPrice}",
-            fontWeight: FontWeight.w600,
-            fontSize: 18,
-            color: Colors.green,
-          ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 4),
+          _productPrice(),
+          const SizedBox(height: 18),
           _about(),
-          const SizedBox(height: 15),
-
-          // Description
+          const SizedBox(height: 4),
           googleInterText(
             widget.product.productDescription,
             fontWeight: FontWeight.normal,
             fontSize: 16,
           ),
-          const SizedBox(height: 24),
-
+          const SizedBox(height: 10),
+          const Divider(),
+          const SizedBox(
+            height: 10,
+          ),
+          QuantitySelectorFullWidth(
+            initialQuantity: selectedQty,
+            onChanged: (value) {
+              setState(() {
+                selectedQty = value;
+              });
+            },
+          ),
           // Actions
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
