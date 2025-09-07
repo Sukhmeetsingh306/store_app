@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../../../models/product_model.dart';
 import '../../../../../utils/fonts/google_fonts_utils.dart';
@@ -26,6 +27,8 @@ class _ProductDetailSupportWidgetState
     extends State<ProductDetailSupportWidget> {
   late PageController _pageController;
   int _currentPage = 0;
+
+  bool _isFavorite = false;
 
   @override
   void initState() {
@@ -54,10 +57,12 @@ class _ProductDetailSupportWidgetState
     }
   }
 
+  bool isWebLarge() {
+    return kIsWeb && MediaQuery.of(context).size.width > 1024;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final bool isWebLarge = kIsWeb && MediaQuery.of(context).size.width > 1024;
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorTheme.color.mediumBlue,
@@ -81,7 +86,7 @@ class _ProductDetailSupportWidgetState
         ),
         centerTitle: true,
       ),
-      body: isWebLarge
+      body: isWebLarge()
           ? _buildWebLayout(context) // 💻 Web Layout
           : _buildMobileLayout(context), // 📱 Mobile Layout
     );
@@ -135,6 +140,92 @@ class _ProductDetailSupportWidgetState
     );
   }
 
+  Widget _offer() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        googleInterText(
+          "Limited Time Deal",
+          fontWeight: FontWeight.bold,
+          color: ColorTheme.color.lustRedColor,
+          fontSize: isWebLarge() ? 28 : 25,
+        ),
+        Row(
+          children: [
+            IconButton(
+              icon: Icon(
+                size: 26,
+                _isFavorite ? Icons.favorite : Icons.favorite_border,
+                color:
+                    _isFavorite ? ColorTheme.color.lustRedColor : Colors.black,
+              ),
+              onPressed: () {
+                setState(() {
+                  _isFavorite = !_isFavorite;
+                });
+              },
+            ),
+            // 📤 Share button
+            IconButton(
+              icon: const Icon(Icons.share, color: Colors.black),
+              onPressed: () async {
+                final productLink =
+                    "https://yourapp.com/product/${widget.product.id}";
+
+                final params = ShareParams(
+                  text: "Check out this product!\n$productLink",
+                );
+
+                await SharePlus.instance.share(params);
+              },
+            ),
+
+            if (kIsWeb)
+              SizedBox(
+                width: 5,
+              ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _about() {
+    return googleInterText(
+      "About",
+      fontWeight: isWebLarge() ? FontWeight.w500 : FontWeight.w400,
+      color: ColorTheme.color.grayColor,
+      fontSize: isWebLarge() ? 20 : 17,
+    );
+  }
+
+  Widget _nameCode() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        googleInterText(
+          widget.product.productName,
+          fontWeight: FontWeight.w600,
+          fontSize: isWebLarge() ? 25 : 22,
+        ),
+        Row(
+          children: [
+            googleInterText(
+              widget.product.productCategory,
+              fontWeight: FontWeight.w400,
+              color: ColorTheme.color.buttonBackgroundColor,
+              fontSize: 15,
+            ),
+            if (kIsWeb)
+              SizedBox(
+                width: 20,
+              )
+          ],
+        ),
+      ],
+    );
+  }
+
   /// 📱 Mobile layout (Column)
   Widget _buildMobileLayout(BuildContext context) {
     return SingleChildScrollView(
@@ -148,21 +239,19 @@ class _ProductDetailSupportWidgetState
             child: _pageImage(),
           ),
           const SizedBox(height: 16),
-
-          // Name & Price
-          googleInterText(
-            widget.product.productName,
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-          ),
+          _offer(),
           const SizedBox(height: 8),
+          _nameCode(),
+          const SizedBox(height: 6),
           googleInterText(
-            "\$${widget.product.productPrice}",
+            "₹${widget.product.productPrice}",
             fontWeight: FontWeight.w600,
             fontSize: 18,
             color: Colors.green,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 8),
+          _about(),
+          const SizedBox(height: 15),
 
           // Description
           googleInterText(
@@ -178,7 +267,7 @@ class _ProductDetailSupportWidgetState
             children: [
               ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: ColorTheme.color.deepPuceColor,
+                  backgroundColor: const Color.fromARGB(255, 194, 111, 111),
                 ),
                 onPressed: () {
                   // TODO: add to favorites
@@ -207,79 +296,86 @@ class _ProductDetailSupportWidgetState
   Widget _buildWebLayout(BuildContext context) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(32.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Left Side - Product Image
-          Expanded(
-            flex: 5,
-            child: AspectRatio(
-              aspectRatio: 1,
-              child: _pageImage(),
+      child: IntrinsicHeight(
+        // 👈 ensures children get same height
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 5,
+              child: AspectRatio(
+                aspectRatio: 1,
+                child: _pageImage(),
+              ),
             ),
-          ),
-          const SizedBox(width: 32),
-
-          // Right Side - Product Details
-          Expanded(
-            flex: 6,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                googleInterText(
-                  widget.product.productName,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 28,
-                ),
-                const SizedBox(height: 12),
-                googleInterText(
-                  "\$${widget.product.productPrice}",
-                  fontWeight: FontWeight.w600,
-                  fontSize: 24,
-                  color: Colors.green,
-                ),
-                const SizedBox(height: 24),
-                googleInterText(
-                  widget.product.productDescription,
-                  fontWeight: FontWeight.normal,
-                  fontSize: 18,
-                ),
-                const SizedBox(height: 32),
-
-                // Action Buttons
-                Row(
-                  children: [
-                    ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: ColorTheme.color.deepPuceColor,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 16),
-                      ),
-                      onPressed: () {
-                        // TODO: add to favorites
-                      },
-                      icon: const Icon(Icons.favorite_border),
-                      label: const Text("Favorite"),
-                    ),
-                    const SizedBox(width: 20),
-                    ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: ColorTheme.color.mediumBlue,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 16),
-                      ),
-                      onPressed: () {
-                        // TODO: add to cart
-                      },
-                      icon: const Icon(Icons.shopping_cart_outlined),
-                      label: const Text("Add to Cart"),
-                    ),
-                  ],
-                )
-              ],
+            SizedBox(
+              width: 10,
             ),
-          ),
-        ],
+            VerticalDivider(
+              thickness: 1,
+              color: Colors.grey,
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Expanded(
+              flex: 6,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _offer(),
+                  _nameCode(),
+                  _about(),
+                  const SizedBox(height: 12),
+                  googleInterText(
+                    "\$${widget.product.productPrice}",
+                    fontWeight: FontWeight.w600,
+                    fontSize: 24,
+                    color: Colors.green,
+                  ),
+                  const SizedBox(height: 24),
+                  googleInterText(
+                    widget.product.productDescription,
+                    fontWeight: FontWeight.normal,
+                    fontSize: 18,
+                  ),
+                  const SizedBox(height: 32),
+
+                  // Action Buttons
+                  Row(
+                    children: [
+                      ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: ColorTheme.color.deepPuceColor,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 16),
+                        ),
+                        onPressed: () {
+                          // TODO: add to favorites
+                        },
+                        icon: const Icon(Icons.favorite_border),
+                        label: const Text("Favorite"),
+                      ),
+                      const SizedBox(width: 20),
+                      ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: ColorTheme.color.mediumBlue,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 16),
+                        ),
+                        onPressed: () {
+                          // TODO: add to cart
+                        },
+                        icon: const Icon(Icons.shopping_cart_outlined),
+                        label: const Text("Add to Cart"),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
