@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:multi_vendor/utils/widget/space_widget_utils.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../../../../models/product_model.dart';
@@ -269,15 +270,18 @@ class _ProductDetailSupportWidgetState
           const SizedBox(
             height: 10,
           ),
-          QuantitySelectorFullWidth(
-            initialQuantity: selectedQty,
-            onChanged: (value) {
-              setState(() {
-                selectedQty = value;
-              });
-            },
+          Center(
+            child: QuantitySelectorFullWidth(
+              width: 220,
+              initialQuantity: selectedQty,
+              onChanged: (value) {
+                setState(() {
+                  selectedQty = value;
+                });
+              },
+            ),
           ),
-          // Actions
+          sizedBoxH10(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [

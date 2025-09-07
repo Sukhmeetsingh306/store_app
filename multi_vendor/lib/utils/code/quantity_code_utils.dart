@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 
+import '../fonts/google_fonts_utils.dart';
+
 class QuantitySelectorFullWidth extends StatefulWidget {
   final int initialQuantity;
   final ValueChanged<int> onChanged;
+  final double? width;
 
   const QuantitySelectorFullWidth({
     super.key,
     required this.initialQuantity,
     required this.onChanged,
+    this.width,
   });
 
   @override
@@ -25,9 +29,11 @@ class _QuantitySelectorFullWidthState extends State<QuantitySelectorFullWidth> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(
+    BuildContext context,
+  ) {
     return Container(
-      width: double.infinity, // full width
+      width: widget.width ?? 200,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey.shade400),
@@ -46,13 +52,15 @@ class _QuantitySelectorFullWidthState extends State<QuantitySelectorFullWidth> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                  googleInterText(
                     "Quantity",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
                   ),
-                  Text(
+                  googleInterText(
                     value.toString(),
-                    style: const TextStyle(fontSize: 16),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
                   ),
                 ],
               ),
