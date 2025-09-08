@@ -34,6 +34,8 @@ class _ProductDetailSupportWidgetState
 
   bool _isFavorite = false;
 
+  List<Color>? gradientColors;
+
   @override
   void initState() {
     super.initState();
@@ -240,6 +242,61 @@ class _ProductDetailSupportWidgetState
     );
   }
 
+  Widget containerButton(
+    String text,
+    IconData icon,
+    final VoidCallback? onPressed,
+  ) {
+    return Container(
+      width: double.maxFinite,
+      height: 52,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        gradient: gradientColors != null
+            ? LinearGradient(
+                colors: gradientColors!,
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              )
+            : null,
+        color: gradientColors == null
+            ? const Color.fromRGBO(36, 124, 255, 1)
+            : null,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            icon,
+            color: ColorTheme.color.whiteColor,
+          ),
+          TextButton(
+            onPressed: onPressed,
+            style: ButtonStyle(
+              shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+              ),
+              padding: WidgetStateProperty.all<EdgeInsets>(
+                EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 14,
+                ),
+              ),
+            ),
+            child: googleInterText(
+              text,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildMobileLayout(BuildContext context) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(20.0),
@@ -283,30 +340,22 @@ class _ProductDetailSupportWidgetState
           ),
           sizedBoxH10(),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(255, 194, 111, 111),
-                ),
-                onPressed: () {
-                  // TODO: add to favorites
-                },
-                icon: const Icon(Icons.favorite_border),
-                label: const Text("Favorite"),
+              Expanded(
+                  child: containerButton(
+                      'Buy', Icons.shopping_bag_outlined, () {})),
+              SizedBox(
+                width: 16,
               ),
-              ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: ColorTheme.color.mediumBlue,
-                ),
-                onPressed: () {
-                  // TODO: add to cart
-                },
-                icon: const Icon(Icons.shopping_cart_outlined),
-                label: const Text("Add to Cart"),
+              Expanded(
+                child: containerButton('Add to Carts',
+                    Icons.shopping_cart_checkout_outlined, () {}),
               ),
             ],
           ),
+          sizedBoxH10(),
+          const Divider(),
+          sizedBoxH10(),
         ],
       ),
     );
@@ -400,7 +449,6 @@ class _ProductDetailSupportWidgetState
     );
   }
 }
-
 
 
       // appBar: AppBar(title: Text(widget.product.productName)),
