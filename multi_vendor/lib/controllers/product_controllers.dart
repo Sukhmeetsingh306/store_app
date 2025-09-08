@@ -19,6 +19,7 @@ class ProductController {
     required List<String> productImage,
     required BuildContext context,
     required List<String> subCategories,
+    bool? productFav,
   }) async {
     final cloudinary = CloudinaryPublic(cloudinaryName, cloudinaryPresentName);
 
@@ -91,6 +92,60 @@ class ProductController {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text("Error: $e")));
       }
+    }
+  }
+
+  Future<List<ProductModel>> fetchPopularProduct() async {
+    try {
+      http.Response response = await http.get(
+        Uri.parse("$webUri/product/popular-product"),
+        headers: <String, String>{
+          "content-type": "application/json; charset=UTF-8",
+        },
+      );
+
+      //print(response.body);
+      if (response.statusCode == 200) {
+        List<dynamic> productData = jsonDecode(response.body);
+
+        List<ProductModel> productModel = productData.map((product) {
+          return ProductModel.fromProduct(product);
+        }).toList();
+
+        return productModel;
+      } else {
+        throw Exception("Failed to fetch product");
+      }
+    } catch (e) {
+      print("Error fetching product : $e");
+      return [];
+    }
+  }
+
+  Future<List<ProductModel>> fetchProductCategory(String category) async {
+    try {
+      http.Response response = await http.get(
+        Uri.parse("$webUri/product/product-by-category/$category"),
+        headers: <String, String>{
+          "content-type": "application/json; charset=UTF-8",
+        },
+      );
+
+      //print(response.body);
+      if (response.statusCode == 200) {
+        List<dynamic> productData = jsonDecode(response.body);
+
+        List<ProductModel> productModel = productData.map((product) {
+          return ProductModel.fromProduct(product);
+        }).toList();
+
+        return productModel;
+      } else {
+        throw Exception("Failed to fetch product by category");
+      }
+    } catch (e) {
+      print("Error fetching product : $e");
+      return [];
     }
   }
 }

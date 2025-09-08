@@ -33,7 +33,7 @@ class RowTextSands extends StatelessWidget {
           googleInterText(
             title,
             fontWeight: FontWeight.bold,
-            fontSize: 15,
+            fontSize: 16,
           ),
           googleInterText(
             subTitle,

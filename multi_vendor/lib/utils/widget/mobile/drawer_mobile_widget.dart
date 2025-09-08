@@ -130,6 +130,11 @@ class DrawerWidget extends StatelessWidget {
             Navigator.of(context).popUntil((route) => route.isFirst);
             context.pushReplacement('/loginPage');
           }),
+          listTile("Seller Dashboard", Icon(Icons.logout_outlined), onTap: () {
+            pop(context);
+            Navigator.of(context).popUntil((route) => route.isFirst);
+            context.pushReplacement('/seller/dashboard');
+          }),
         ],
       ),
     );

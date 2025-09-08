@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -49,9 +51,12 @@ class _BannerWidgetSupportUserState extends State<BannerWidgetSupportUser> {
                 final banner = bannerCount[index];
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Image.network(
-                    banner.bannerImage,
-                    fit: BoxFit.cover,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.network(
+                      banner.bannerImage,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 );
               },
@@ -62,35 +67,47 @@ class _BannerWidgetSupportUserState extends State<BannerWidgetSupportUser> {
 
             if (isSmallWebScreen) {
               // Small screen web: PageView
-              return PageView.builder(
-                itemCount: bannerCount.length,
-                itemBuilder: (context, index) {
-                  final banner = bannerCount[index];
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.network(
-                      banner.bannerImage,
-                      fit: BoxFit.cover,
-                    ),
-                  );
-                },
+              return ScrollConfiguration(
+                behavior: CustomScrollBehavior(),
+                child: PageView.builder(
+                  itemCount: bannerCount.length,
+                  itemBuilder: (context, index) {
+                    final banner = bannerCount[index];
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.network(
+                          banner.bannerImage,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    );
+                  },
+                ),
               );
             } else {
               // Large screen web: scrollable GridView
-              return SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: bannerCount.map((banner) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Image.network(
-                        banner.bannerImage,
-                        width: 300,
-                        height: 170,
-                        fit: BoxFit.cover,
-                      ),
-                    );
-                  }).toList(),
+              return ScrollConfiguration(
+                behavior: CustomScrollBehavior(),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: bannerCount.map((banner) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.network(
+                            banner.bannerImage,
+                            width: 300,
+                            height: 170,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
                 ),
               );
             }
@@ -103,30 +120,15 @@ class _BannerWidgetSupportUserState extends State<BannerWidgetSupportUser> {
   }
 }
 
-/*
-/save this code later as this will require in the seller screen
-
-return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: GridView.builder(
-          itemCount: bannerCount.length,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(), // disables GridView scroll
-          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-            crossAxisSpacing: 15,
-            mainAxisSpacing: 8,
-            childAspectRatio: 16 / 9,
-            maxCrossAxisExtent: 350,
-          ),
-          itemBuilder: (context, index) {
-            final banner = bannerCount[index];
-            return Image.network(
-              banner.bannerImage,
-              fit: BoxFit.cover,
-            );
-          },
-        ),
-      ),
-    );
- */
+class CustomScrollBehavior extends MaterialScrollBehavior {
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+        PointerDeviceKind.trackpad,
+      };
+  @override
+  ScrollPhysics getScrollPhysics(BuildContext context) {
+    return const ClampingScrollPhysics();
+  }
+}
