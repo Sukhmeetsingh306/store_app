@@ -4,20 +4,24 @@ import 'package:go_router/go_router.dart';
 import 'package:multi_vendor/utils/widget/space_widget_utils.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../../../../controllers/product_controllers.dart';
 import '../../../../../models/product_model.dart';
 import '../../../../../utils/code/quantity_code_utils.dart';
 import '../../../../../utils/fonts/google_fonts_utils.dart';
 import '../../../../../utils/theme/color/color_theme.dart';
 import '../../../../../utils/widget/banner_widget_support_user.dart';
+import '../reuse_widget_support.dart';
 
 class ProductDetailSupportWidget extends StatefulWidget {
   final ProductModel product;
   final String? from;
+  final bool listView;
 
   const ProductDetailSupportWidget({
     super.key,
     required this.product,
     this.from,
+    this.listView = false,
   });
 
   @override
@@ -27,6 +31,8 @@ class ProductDetailSupportWidget extends StatefulWidget {
 
 class _ProductDetailSupportWidgetState
     extends State<ProductDetailSupportWidget> {
+  final ProductController productController = ProductController();
+
   late PageController _pageController;
 
   int _currentPage = 0;
@@ -35,6 +41,10 @@ class _ProductDetailSupportWidgetState
   bool _isFavorite = false;
 
   List<Color>? gradientColors;
+  late Future<List<ProductModel>> _categoryProducts;
+
+  final Set<int> favoriteIndexes = {};
+  final Set<int> cartIndexes = {};
 
   @override
   void initState() {
@@ -48,6 +58,9 @@ class _ProductDetailSupportWidgetState
         });
       }
     });
+
+    _categoryProducts =
+        productController.fetchProductCategory(widget.product.productCategory);
   }
 
   @override
@@ -356,6 +369,50 @@ class _ProductDetailSupportWidgetState
           sizedBoxH10(),
           const Divider(),
           sizedBoxH10(),
+          FutureBuilder<List<ProductModel>>(
+            future: _categoryProducts,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Center(child: Text("Error: ${snapshot.error}"));
+              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return Center(child: Text("No similar products found"));
+              }
+
+              final categoryProducts = snapshot.data!
+                  .where((p) => p.id != widget.product.id)
+                  .toList();
+
+              // 🔑 Wrap list in a Future so function signature stays the same
+              return futureBuilderProduct(
+                context,
+                Future.value(categoryProducts),
+                "No Similar Products",
+                widget.listView,
+                favoriteIndexes,
+                cartIndexes,
+                (index) {
+                  setState(() {
+                    if (favoriteIndexes.contains(index)) {
+                      favoriteIndexes.remove(index);
+                    } else {
+                      favoriteIndexes.add(index);
+                    }
+                  });
+                },
+                (index) {
+                  setState(() {
+                    if (cartIndexes.contains(index)) {
+                      cartIndexes.remove(index);
+                    } else {
+                      cartIndexes.add(index);
+                    }
+                  });
+                },
+              );
+            },
+          ),
         ],
       ),
     );
