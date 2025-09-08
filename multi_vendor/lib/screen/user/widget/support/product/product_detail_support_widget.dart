@@ -310,6 +310,52 @@ class _ProductDetailSupportWidgetState
     );
   }
 
+  Widget similarCategoryProduct() {
+    return FutureBuilder<List<ProductModel>>(
+      future: _categoryProducts,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text("Error: ${snapshot.error}"));
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Center(child: Text("No similar products found"));
+        }
+
+        final categoryProducts =
+            snapshot.data!.where((p) => p.id != widget.product.id).toList();
+
+        // 🔑 Wrap list in a Future so function signature stays the same
+        return futureBuilderProduct(
+          context,
+          Future.value(categoryProducts),
+          "No Similar Products",
+          widget.listView,
+          favoriteIndexes,
+          cartIndexes,
+          (index) {
+            setState(() {
+              if (favoriteIndexes.contains(index)) {
+                favoriteIndexes.remove(index);
+              } else {
+                favoriteIndexes.add(index);
+              }
+            });
+          },
+          (index) {
+            setState(() {
+              if (cartIndexes.contains(index)) {
+                cartIndexes.remove(index);
+              } else {
+                cartIndexes.add(index);
+              }
+            });
+          },
+        );
+      },
+    );
+  }
+
   Widget _buildMobileLayout(BuildContext context) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(20.0),
@@ -369,50 +415,7 @@ class _ProductDetailSupportWidgetState
           sizedBoxH10(),
           const Divider(),
           sizedBoxH10(),
-          FutureBuilder<List<ProductModel>>(
-            future: _categoryProducts,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                return Center(child: Text("Error: ${snapshot.error}"));
-              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return Center(child: Text("No similar products found"));
-              }
-
-              final categoryProducts = snapshot.data!
-                  .where((p) => p.id != widget.product.id)
-                  .toList();
-
-              // 🔑 Wrap list in a Future so function signature stays the same
-              return futureBuilderProduct(
-                context,
-                Future.value(categoryProducts),
-                "No Similar Products",
-                widget.listView,
-                favoriteIndexes,
-                cartIndexes,
-                (index) {
-                  setState(() {
-                    if (favoriteIndexes.contains(index)) {
-                      favoriteIndexes.remove(index);
-                    } else {
-                      favoriteIndexes.add(index);
-                    }
-                  });
-                },
-                (index) {
-                  setState(() {
-                    if (cartIndexes.contains(index)) {
-                      cartIndexes.remove(index);
-                    } else {
-                      cartIndexes.add(index);
-                    }
-                  });
-                },
-              );
-            },
-          ),
+          similarCategoryProduct(),
         ],
       ),
     );
