@@ -422,31 +422,34 @@ class _ProductDetailSupportWidgetState
 
   /// 💻 Web layout (Row with image left, details right)
   Widget _buildWebLayout(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(32.0),
-      child: IntrinsicHeight(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 5,
-              child: AspectRatio(
-                aspectRatio: 1,
+    final largeScreen = isWebLarge();
+
+    // for the larger width
+    if (largeScreen) {
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // LEFT SIDE (Static)
+          Expanded(
+            flex: 5,
+            child: AspectRatio(
+              aspectRatio: 0.5,
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
                 child: _pageImage(),
               ),
             ),
-            SizedBox(
-              width: 10,
-            ),
-            VerticalDivider(
-              thickness: 1,
-              color: Colors.grey,
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Expanded(
-              flex: 6,
+          ),
+          const SizedBox(height: 10),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: const VerticalDivider(thickness: 1, color: Colors.grey),
+          ),
+          const SizedBox(height: 10),
+          Expanded(
+            flex: 6,
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(32.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -465,9 +468,7 @@ class _ProductDetailSupportWidgetState
                   ),
                   const SizedBox(height: 10),
                   const Divider(),
-                  const SizedBox(
-                    height: 10,
-                  ),
+                  const SizedBox(height: 10),
                   Center(
                     child: QuantitySelectorFullWidth(
                       width: 220,
@@ -483,14 +484,19 @@ class _ProductDetailSupportWidgetState
                   Row(
                     children: [
                       Expanded(
-                          child: containerButton(
-                              'Buy', Icons.shopping_bag_outlined, () {})),
-                      SizedBox(
-                        width: 16,
+                        child: containerButton(
+                          'Buy',
+                          Icons.shopping_bag_outlined,
+                          () {},
+                        ),
                       ),
+                      const SizedBox(width: 16),
                       Expanded(
-                        child: containerButton('Add to Carts',
-                            Icons.shopping_cart_checkout_outlined, () {}),
+                        child: containerButton(
+                          'Add to Carts',
+                          Icons.shopping_cart_checkout_outlined,
+                          () {},
+                        ),
                       ),
                     ],
                   ),
@@ -501,10 +507,79 @@ class _ProductDetailSupportWidgetState
                 ],
               ),
             ),
-          ],
+          ),
+        ],
+      );
+    } else {
+      return SingleChildScrollView(
+        padding: const EdgeInsets.all(32.0),
+        child: IntrinsicHeight(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AspectRatio(
+                aspectRatio: 1,
+                child: _pageImage(),
+              ),
+              const SizedBox(height: 10),
+              const Divider(thickness: 1, color: Colors.grey),
+              const SizedBox(height: 10),
+              _offer(),
+              const SizedBox(height: 8),
+              _nameCode(),
+              const SizedBox(height: 4),
+              _productPrice(),
+              const SizedBox(height: 18),
+              _about(),
+              const SizedBox(height: 4),
+              googleInterText(
+                widget.product.productDescription,
+                fontWeight: FontWeight.normal,
+                fontSize: 16,
+              ),
+              const SizedBox(height: 10),
+              const Divider(),
+              const SizedBox(height: 10),
+              Center(
+                child: QuantitySelectorFullWidth(
+                  width: 220,
+                  initialQuantity: selectedQty,
+                  onChanged: (value) {
+                    setState(() {
+                      selectedQty = value;
+                    });
+                  },
+                ),
+              ),
+              sizedBoxH10(),
+              Row(
+                children: [
+                  Expanded(
+                    child: containerButton(
+                      'Buy',
+                      Icons.shopping_bag_outlined,
+                      () {},
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: containerButton(
+                      'Add to Carts',
+                      Icons.shopping_cart_checkout_outlined,
+                      () {},
+                    ),
+                  ),
+                ],
+              ),
+              sizedBoxH10(),
+              const Divider(),
+              sizedBoxH10(),
+              similarCategoryProduct(),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 }
 
