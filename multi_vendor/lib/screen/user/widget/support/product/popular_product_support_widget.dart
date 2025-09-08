@@ -2,10 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_vendor/controllers/product_controllers.dart';
 
-import '../../../../models/product_model.dart';
-import '../../../../utils/fonts/row_text_sands.dart';
-import '../../../../utils/widget/platform/platform_check.dart';
-import 'reuse_widget_support.dart';
+import '../../../../../models/product_model.dart';
+import '../../../../../utils/fonts/row_text_sands.dart';
+import '../../../../../utils/widget/platform/platform_check.dart';
+import '../reuse_widget_support.dart';
 
 class PopularProductSupportWidget extends StatefulWidget {
   final bool listView;

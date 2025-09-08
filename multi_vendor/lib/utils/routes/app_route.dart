@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:go_router/go_router.dart';
 import 'package:multi_vendor/models/api/category_api_models.dart';
 import 'package:multi_vendor/screen/authentication/login_auth_screen.dart';
@@ -7,12 +9,14 @@ import 'package:multi_vendor/screen/authentication/seller/seller_login_auth_scre
 import 'package:multi_vendor/screen/user/home_user_screen.dart';
 import 'package:multi_vendor/utils/routes/splash_screen_route.dart';
 
+import '../../models/product_model.dart';
 import '../../screen/authentication/seller/seller_bank_detail_screen.dart';
 import '../../screen/authentication/seller/seller_tax_detail_screen.dart';
 import '../../screen/seller/user_seller_screen.dart';
 import '../../screen/seller/web_seller_screen.dart';
 import '../../screen/user/widget/inner_category_widget_user.dart';
 import '../../screen/user/widget/navigation/category_navigation_screen.dart';
+import '../../screen/user/widget/support/product/product_detail_support_widget.dart';
 
 class AppRoutes {
   static final GoRouter router = GoRouter(
@@ -24,54 +28,141 @@ class AppRoutes {
       ),
       GoRoute(
         path: '/loginPage',
-        builder: (context, state) => const LoginAuthScreen(),
+        builder: (context, state) {
+          return state.extra is! LoginAuthScreen
+              ? const LoginAuthScreen()
+              : state.extra as LoginAuthScreen;
+        },
       ),
       GoRoute(
         path: '/registerPage',
-        builder: (context, state) => const RegisterAuthScreen(),
+        builder: (context, state) {
+          return state.extra is! RegisterAuthScreen
+              ? const RegisterAuthScreen()
+              : state.extra as RegisterAuthScreen;
+        },
       ),
       GoRoute(
         path: '/sellerPage',
-        builder: (context, state) => const SellerAuthScreen(),
+        builder: (context, state) {
+          return state.extra is! SellerAuthScreen
+              ? const SellerAuthScreen()
+              : state.extra as SellerAuthScreen;
+        },
       ),
       GoRoute(
         path: '/sellerLoginPage',
-        builder: (context, state) => const SellerLoginAuthScreen(),
+        builder: (context, state) {
+          return state.extra is! SellerLoginAuthScreen
+              ? const SellerLoginAuthScreen()
+              : state.extra as SellerLoginAuthScreen;
+        },
       ),
       GoRoute(
         path: '/sellerTaxDetailPage',
         builder: (context, state) {
-          return const SellerTaxDetailScreen();
+          return state.extra is! SellerTaxDetailScreen
+              ? const SellerTaxDetailScreen()
+              : state.extra as SellerTaxDetailScreen;
         },
       ),
       GoRoute(
         path: '/sellerBankDetailPage',
         builder: (context, state) {
-          return const SellerBankDetailScreen();
+          return state.extra is! SellerBankDetailScreen
+              ? const SellerBankDetailScreen()
+              : state.extra as SellerBankDetailScreen;
         },
       ),
       GoRoute(
         path: '/homePage',
-        builder: (context, state) => HomeUserScreen(),
+        builder: (context, state) {
+          return state.extra is! HomeUserScreen
+              ? HomeUserScreen()
+              : state.extra as HomeUserScreen;
+        },
       ),
       GoRoute(
         path: '/categoryPage',
-        builder: (context, state) => CategoryNavigationScreen(hasAppBar: true),
-      ),
-      GoRoute(
-        path: '/innerCategoryPage',
         builder: (context, state) {
-          final category = state.extra as CategoryApiModels;
-          return InnerCategoryScreen(category: category);
+          return state.extra is! CategoryNavigationScreen
+              ? CategoryNavigationScreen(hasAppBar: true)
+              : state.extra as CategoryNavigationScreen;
         },
       ),
       GoRoute(
         path: '/management',
-        builder: (context, state) => const WebDeviceView(),
+        builder: (context, state) {
+          return state.extra is! WebDeviceView
+              ? const WebDeviceView()
+              : state.extra as WebDeviceView;
+        },
       ),
       GoRoute(
         path: '/seller/dashboard',
-        builder: (context, state) => const UserSellerScreen(),
+        builder: (context, state) {
+          return state.extra is! UserSellerScreen
+              ? const UserSellerScreen()
+              : state.extra as UserSellerScreen;
+        },
+      ),
+      GoRoute(
+        path: '/category/:categoryName',
+        builder: (context, state) {
+          final extraCategory = state.extra as CategoryApiModels?;
+          if (extraCategory != null) {
+            return InnerCategoryScreen(category: extraCategory);
+          }
+
+          final categoryName = state.pathParameters['categoryName']!;
+          // Pass only the name, fetch real category inside the screen
+          return InnerCategoryScreen(
+            category: CategoryApiModels(
+              categoryId: '',
+              categoryName: categoryName,
+              categoryImage: '',
+              categoryBanner: '', // temporary, will be replaced by API
+            ),
+            fetchFromApi: true, // 👈 new flag
+          );
+        },
+      ),
+      GoRoute(
+        path: '/product/productDetail/:productName',
+        builder: (context, state) {
+          final extra = state.extra;
+
+          ProductModel? product;
+          String? from;
+
+          if (extra is Map<String, dynamic>) {
+            if (extra["product"] is String) {
+              final decoded = jsonDecode(extra["product"]);
+              product = ProductModel.fromJson(decoded);
+            }
+            from = extra["from"] as String?;
+          }
+
+          product ??= ProductModel(
+            id: '',
+            productName: state.pathParameters['productName'] ?? 'Unknown',
+            productPrice: 0,
+            productQuantity: 0,
+            productDescription: '',
+            sellerId: '',
+            sellerName: '',
+            productCategory: '',
+            productSubCategory: null,
+            productImage: [],
+            productPopularity: false,
+            productRecommended: false,
+          );
+
+          return ProductDetailSupportWidget(
+            product: product,
+            from: from,
+          );
+        },
       ),
     ],
   );

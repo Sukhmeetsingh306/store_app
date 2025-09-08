@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:multi_vendor/screen/user/widget/support/popular_product_support_widget.dart';
+import 'package:multi_vendor/screen/user/widget/support/product/popular_product_support_widget.dart';
 
 import '../../utils/theme/color/color_theme.dart';
 import '../../utils/widget/mobile/drawer_mobile_widget.dart';
@@ -41,11 +41,14 @@ class _HomeUserScreenState extends State<HomeUserScreen> {
       UserScreenWrapper(
         scaffoldKey: _scaffoldKey,
         child: ListView(
+          physics: kIsWeb
+              ? const NeverScrollableScrollPhysics()
+              : const AlwaysScrollableScrollPhysics(),
           padding: EdgeInsets.zero,
           children: const [
-            BannerWidgetIOS(),
+            BannerWidgetIOS(), // make sure BannerWidgetIOS PageView also has NeverScrollableScrollPhysics
             CategoryWidgetSupportUser(),
-            SizedBox(height: kIsWeb ? 10 : 4),
+            SizedBox(height: 10),
             PopularProductSupportWidget(),
           ],
         ),
@@ -85,40 +88,24 @@ class _HomeUserScreenState extends State<HomeUserScreen> {
       key: _scaffoldKey,
       drawer: DrawerWidget(
         scaffoldKey: _scaffoldKey,
-        onHomeTap: () {
-          print("worked in home screen");
-          setState(() {
-            mobilePagesIndex = 0;
-          });
-        },
-        onFavTap: () {
-          setState(() {
-            mobilePagesIndex = 1;
-          });
-        },
-        onCategoryTap: () {
-          print("worked in inner screen"); // now should print ✅
-          setState(() {
-            mobilePagesIndex = 2;
-          });
-        },
-        onStoreTap: () {
-          setState(() {
-            mobilePagesIndex = 3;
-          });
-        },
-        onCartTap: () {
-          setState(() {
-            mobilePagesIndex = 4;
-          });
-        },
-        onAccountTap: () {
-          setState(() {
-            mobilePagesIndex = 5;
-          });
-        },
+        onHomeTap: () => setState(() => mobilePagesIndex = 0),
+        onFavTap: () => setState(() => mobilePagesIndex = 1),
+        onCategoryTap: () => setState(() => mobilePagesIndex = 2),
+        onStoreTap: () => setState(() => mobilePagesIndex = 3),
+        onCartTap: () => setState(() => mobilePagesIndex = 4),
+        onAccountTap: () => setState(() => mobilePagesIndex = 5),
       ),
-      body: mobilePages[mobilePagesIndex],
+      body: kIsWeb
+          ? Listener(
+              onPointerSignal: (event) {
+                // Intercept all scroll events on Web to block accidental scroll
+              },
+              child: AbsorbPointer(
+                absorbing: false, // allows taps on buttons
+                child: mobilePages[mobilePagesIndex],
+              ),
+            )
+          : mobilePages[mobilePagesIndex],
       bottomNavigationBar: showBottomBar
           ? BottomNavigationBar(
               type: BottomNavigationBarType.fixed,
@@ -127,11 +114,7 @@ class _HomeUserScreenState extends State<HomeUserScreen> {
               selectedFontSize: 14,
               unselectedFontSize: 12,
               unselectedItemColor: ColorTheme.color.grayColor,
-              onTap: (index) {
-                setState(() {
-                  mobilePagesIndex = index;
-                });
-              },
+              onTap: (index) => setState(() => mobilePagesIndex = index),
               items: [
                 bottomBarItem(Icon(Icons.home_outlined), 'Home'),
                 bottomBarItem(Icon(Icons.favorite_border_outlined), 'Favorite'),

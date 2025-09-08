@@ -94,4 +94,28 @@ class CategoryControllers {
       return [];
     }
   }
+
+  Future<CategoryApiModels?> getCategoryByName(String categoryName) async {
+    try {
+      final response = await http.get(
+        Uri.parse("$webUri/seller/category/$categoryName"),
+        headers: {
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return CategoryApiModels.categoryFromMap(data);
+      } else if (response.statusCode == 404) {
+        print("Category not found: $categoryName");
+        return null;
+      } else {
+        throw Exception("Failed to fetch category: ${response.statusCode}");
+      }
+    } catch (e) {
+      print("Error fetching category by name: $e");
+      return null;
+    }
+  }
 }

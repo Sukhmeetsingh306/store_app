@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_vendor/controllers/product_controllers.dart';
+import 'package:multi_vendor/controllers/category_controllers.dart';
 import 'package:multi_vendor/screen/user/widget/support/reuse_widget_support.dart';
 
 import '../../../../controllers/subCategory_controllers.dart';
@@ -35,26 +36,65 @@ class _InnerCategoryContentSupportWidgetUserState
   final SubCategoryControllers subCategoryControllers =
       SubCategoryControllers();
   final ProductController productController = ProductController();
+  final CategoryControllers categoryController = CategoryControllers();
 
   final Set<int> favoriteIndexes = {};
   final Set<int> cartIndexes = {};
 
+  CategoryApiModels? _category;
+  bool _loadingCategory = false;
+
   @override
   void initState() {
     super.initState();
+
+    // If banner missing → fetch category from API
+    if (widget.category.categoryBanner.isEmpty) {
+      _fetchCategory();
+    } else {
+      _category = widget.category;
+    }
+
     subCategoryModel = subCategoryControllers
         .getSubCategoryByCategoryName(widget.category.categoryName);
     productModel =
         productController.fetchProductCategory(widget.category.categoryName);
   }
 
+  Future<void> _fetchCategory() async {
+    setState(() => _loadingCategory = true);
+    final fetched = await categoryController
+        .getCategoryByName(widget.category.categoryName);
+    setState(() {
+      _category = fetched ?? widget.category;
+      _loadingCategory = false;
+    });
+  }
+
+  @override
+  void didUpdateWidget(
+      covariant InnerCategoryContentSupportWidgetUser oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Re-fetch if category changed or banner is empty
+    if (_category == null || _category!.categoryBanner.isEmpty) {
+      _fetchCategory();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (_loadingCategory || _category == null) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
     return Scaffold(
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
         children: [
-          bannerImageResponsiveWidget(context, widget.category.categoryBanner),
+          const SizedBox(height: 10),
+          bannerImageResponsiveWidget(context, _category!.categoryBanner),
           const SizedBox(height: 10),
           Center(
             child: googleInterText(

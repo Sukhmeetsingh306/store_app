@@ -33,4 +33,24 @@ categoryRouter
     }
   });
 
+// Get category by name
+categoryRouter.route("/seller/category/:categoryName").get(async (req, res) => {
+  const { categoryName } = req.params;
+  try {
+    const category = await Category.findOne({ categoryName });
+
+    if (!category) {
+      return res.status(404).json({
+        message: `No category found for ${categoryName}`,
+      });
+    }
+
+    console.log("Category found:", category);
+    return res.status(200).json(category);
+  } catch (e) {
+    console.log("Error fetching category", categoryName, e);
+    return res.status(400).json({ error: e.message });
+  }
+});
+
 export { categoryRouter };
