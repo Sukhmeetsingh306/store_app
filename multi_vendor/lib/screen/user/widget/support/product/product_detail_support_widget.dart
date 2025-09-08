@@ -167,7 +167,7 @@ class _ProductDetailSupportWidgetState
           "Limited Time Deal",
           fontWeight: FontWeight.bold,
           color: ColorTheme.color.lustRedColor,
-          fontSize: isWebLarge() ? 28 : 25,
+          fontSize: isWebLarge() ? 29 : 25,
         ),
         Row(
           children: [
@@ -226,7 +226,7 @@ class _ProductDetailSupportWidgetState
         googleInterText(
           widget.product.productName,
           fontWeight: FontWeight.w600,
-          fontSize: isWebLarge() ? 25 : 22,
+          fontSize: isWebLarge() ? 26 : 22,
         ),
         Row(
           children: [
@@ -250,7 +250,7 @@ class _ProductDetailSupportWidgetState
     return googleInterText(
       "₹${widget.product.productPrice}",
       fontWeight: FontWeight.w600,
-      fontSize: isWebLarge() ? 18 : 16,
+      fontSize: isWebLarge() ? 20 : 16,
       color: Colors.green,
     );
   }
@@ -425,7 +425,6 @@ class _ProductDetailSupportWidgetState
     return SingleChildScrollView(
       padding: const EdgeInsets.all(32.0),
       child: IntrinsicHeight(
-        // 👈 ensures children get same height
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -452,53 +451,53 @@ class _ProductDetailSupportWidgetState
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _offer(),
+                  const SizedBox(height: 8),
                   _nameCode(),
+                  const SizedBox(height: 4),
+                  _productPrice(),
+                  const SizedBox(height: 18),
                   _about(),
-                  const SizedBox(height: 12),
-                  googleInterText(
-                    "\$${widget.product.productPrice}",
-                    fontWeight: FontWeight.w600,
-                    fontSize: 24,
-                    color: Colors.green,
-                  ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 4),
                   googleInterText(
                     widget.product.productDescription,
                     fontWeight: FontWeight.normal,
-                    fontSize: 18,
+                    fontSize: 16,
                   ),
-                  const SizedBox(height: 32),
-
-                  // Action Buttons
+                  const SizedBox(height: 10),
+                  const Divider(),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Center(
+                    child: QuantitySelectorFullWidth(
+                      width: 220,
+                      initialQuantity: selectedQty,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedQty = value;
+                        });
+                      },
+                    ),
+                  ),
+                  sizedBoxH10(),
                   Row(
                     children: [
-                      ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: ColorTheme.color.deepPuceColor,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 16),
-                        ),
-                        onPressed: () {
-                          // TODO: add to favorites
-                        },
-                        icon: const Icon(Icons.favorite_border),
-                        label: const Text("Favorite"),
+                      Expanded(
+                          child: containerButton(
+                              'Buy', Icons.shopping_bag_outlined, () {})),
+                      SizedBox(
+                        width: 16,
                       ),
-                      const SizedBox(width: 20),
-                      ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: ColorTheme.color.mediumBlue,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 16),
-                        ),
-                        onPressed: () {
-                          // TODO: add to cart
-                        },
-                        icon: const Icon(Icons.shopping_cart_outlined),
-                        label: const Text("Add to Cart"),
+                      Expanded(
+                        child: containerButton('Add to Carts',
+                            Icons.shopping_cart_checkout_outlined, () {}),
                       ),
                     ],
-                  )
+                  ),
+                  sizedBoxH10(),
+                  const Divider(),
+                  sizedBoxH10(),
+                  similarCategoryProduct(),
                 ],
               ),
             ),
