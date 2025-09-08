@@ -212,7 +212,7 @@ class _ProductDetailSupportWidgetState
 
   Widget _about() {
     return googleInterText(
-      "About",
+      "Description",
       fontWeight: isWebLarge() ? FontWeight.w500 : FontWeight.w400,
       color: ColorTheme.color.grayColor,
       fontSize: isWebLarge() ? 18 : 17,
@@ -325,7 +325,6 @@ class _ProductDetailSupportWidgetState
         final categoryProducts =
             snapshot.data!.where((p) => p.id != widget.product.id).toList();
 
-        // 🔑 Wrap list in a Future so function signature stays the same
         return futureBuilderProduct(
           context,
           Future.value(categoryProducts),
