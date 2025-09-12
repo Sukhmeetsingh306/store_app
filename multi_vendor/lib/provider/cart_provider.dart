@@ -25,7 +25,6 @@ class CartProvider extends StateNotifier<Map<String, ChartModel>> {
       state = {
         ...state,
         productId: ChartModel(
-//          productName: state[productId]!.productId,
           productName: state[productId]!.productName,
           productPrice: state[productId]!.productPrice,
           productCategory: state[productId]!.productCategory,
@@ -41,6 +40,20 @@ class CartProvider extends StateNotifier<Map<String, ChartModel>> {
     } else {
       // if the cart == null
       // add the product using the provider
+      state = {
+        productId: ChartModel(
+          productName: productName,
+          productPrice: productPrice,
+          productCategory: productCategory,
+          productImage: productImage,
+          sellerId: sellerId,
+          productQuantity: productQuantity,
+          totalQuantity: totalQuantity,
+          productId: productId,
+          productDescription: productDescription,
+          fullName: fullName,
+        )
+      };
     }
   }
 }
