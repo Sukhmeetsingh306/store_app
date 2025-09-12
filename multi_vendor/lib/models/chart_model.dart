@@ -1,0 +1,25 @@
+class ChartModel {
+  final String productName;
+  final int productPrice;
+  final String productCategory;
+  final List productImage;
+  final String sellerId;
+  final int productQuantity;
+  final int totalQuantity;
+  final String productId;
+  final String productDescription;
+  final String fullName;
+
+  ChartModel({
+    required this.productName,
+    required this.productPrice,
+    required this.productCategory,
+    required this.productImage,
+    required this.sellerId,
+    required this.productQuantity,
+    required this.totalQuantity,
+    required this.productId,
+    required this.productDescription,
+    required this.fullName,
+  });
+}
