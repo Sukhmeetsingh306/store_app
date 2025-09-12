@@ -1,0 +1,318 @@
+{
+  "Banner": {
+    "type": "object",
+    "properties": {
+      "bannerImage": {
+        "type": "string"
+      },
+      "_id": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "__v": {
+        "type": "number"
+      }
+    },
+    "required": [
+      "bannerImage"
+    ]
+  },
+  "Category": {
+    "type": "object",
+    "properties": {
+      "categoryName": {
+        "type": "string"
+      },
+      "categoryImage": {
+        "type": "string"
+      },
+      "categoryBanner": {
+        "type": "string"
+      },
+      "_id": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "__v": {
+        "type": "number"
+      }
+    },
+    "required": [
+      "categoryName",
+      "categoryImage"
+    ]
+  },
+  "Product": {
+    "type": "object",
+    "properties": {
+      "productName": {
+        "type": "string"
+      },
+      "productPrice": {
+        "type": "number"
+      },
+      "productQuantity": {
+        "type": "number"
+      },
+      "productDescription": {
+        "type": "string"
+      },
+      "sellerId": {
+        "type": "string"
+      },
+      "sellerName": {
+        "type": "string"
+      },
+      "productCategory": {
+        "type": "string"
+      },
+      "productSubCategory": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "default": null
+      },
+      "productImage": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "productPopularity": {
+        "type": "boolean",
+        "default": false
+      },
+      "productRecommended": {
+        "type": "boolean",
+        "default": false
+      },
+      "_id": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "__v": {
+        "type": "number"
+      }
+    },
+    "required": [
+      "productName",
+      "productPrice",
+      "productQuantity",
+      "productDescription",
+      "sellerId",
+      "sellerName",
+      "productCategory"
+    ]
+  },
+  "ProductRatingReview": {
+    "type": "object",
+    "properties": {
+      "buyerId": {
+        "type": "string"
+      },
+      "buyerEmail": {
+        "type": "string"
+      },
+      "buyerFullName": {
+        "type": "string"
+      },
+      "productId": {
+        "type": "string"
+      },
+      "productRating": {
+        "type": "number"
+      },
+      "productReview": {
+        "type": "string"
+      },
+      "_id": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "__v": {
+        "type": "number"
+      }
+    },
+    "required": [
+      "buyerId",
+      "buyerEmail",
+      "buyerFullName",
+      "productId"
+    ]
+  },
+  "Seller": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "email": {
+        "type": "string"
+      },
+      "phone": {
+        "type": "string"
+      },
+      "age": {
+        "type": "number"
+      },
+      "image": {
+        "type": "string",
+        "default": ""
+      },
+      "state": {
+        "type": "string",
+        "default": ""
+      },
+      "city": {
+        "type": "string",
+        "default": ""
+      },
+      "locality": {
+        "type": "string",
+        "default": ""
+      },
+      "roles": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "enum": [
+          "seller",
+          "admin",
+          "consumer"
+        ],
+        "default": [
+          "seller"
+        ]
+      },
+      "password": {
+        "type": "string"
+      },
+      "_id": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "createdAt": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "updatedAt": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "__v": {
+        "type": "number"
+      }
+    },
+    "required": [
+      "name",
+      "email",
+      "phone",
+      "age",
+      "password"
+    ]
+  },
+  "SubCategory": {
+    "type": "object",
+    "properties": {
+      "categoryId": {
+        "type": "string"
+      },
+      "categoryName": {
+        "type": "string"
+      },
+      "subCategoryImage": {
+        "type": "string"
+      },
+      "subCategoryName": {
+        "type": "string"
+      },
+      "_id": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "__v": {
+        "type": "number"
+      }
+    },
+    "required": [
+      "categoryId",
+      "categoryName",
+      "subCategoryImage",
+      "subCategoryName"
+    ]
+  },
+  "User": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "email": {
+        "type": "string"
+      },
+      "phone": {
+        "type": "string"
+      },
+      "age": {
+        "type": "number"
+      },
+      "image": {
+        "type": "string",
+        "default": ""
+      },
+      "state": {
+        "type": "string",
+        "default": ""
+      },
+      "city": {
+        "type": "string",
+        "default": ""
+      },
+      "locality": {
+        "type": "string",
+        "default": ""
+      },
+      "password": {
+        "type": "string"
+      },
+      "roles": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "enum": [
+          "consumer",
+          "seller",
+          "admin"
+        ],
+        "default": [
+          "consumer"
+        ]
+      },
+      "_id": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "createdAt": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "updatedAt": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "__v": {
+        "type": "number"
+      }
+    },
+    "required": [
+      "name",
+      "email",
+      "phone",
+      "age",
+      "password"
+    ]
+  }
+}

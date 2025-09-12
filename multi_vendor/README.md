@@ -98,4 +98,17 @@ n Info.plist, ensure the orientation entries allow Flutter to manage rotation. Y
      </array>
 
 
-          
+# ER-diagram
+
+To create the er-diagram for the node.js code model 
+run in terminal
+
+     npm install -g sequelize-erd
+
+     sudo npm install mongoose-schema-jsonschema
+
+     sudo node erd-generator.js > schema.json
+
+Go to Website and paste the code for the json er
+
+     https://dbdiagram.io.com
