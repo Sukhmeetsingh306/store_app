@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../utils/fonts/google_fonts_utils.dart';
 import '../../utils/routes/navigation_routes.dart';
 import '../../utils/theme/color/color_theme.dart';
-import '../../utils/widget/platform/platform_check.dart';
+//import '../../utils/widget/platform/platform_check.dart';
 import 'user_screen/earning_user_seller_screen.dart';
 import 'user_screen/upload_user_seller_screen.dart';
 import 'user_screen/edit_user_seller_screen.dart';
