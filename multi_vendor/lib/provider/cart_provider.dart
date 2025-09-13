@@ -2,9 +2,9 @@
 // the state of the initial cart
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:multi_vendor/models/chart_model.dart';
+import 'package:multi_vendor/models/cart_model.dart';
 
-class CartProvider extends StateNotifier<Map<String, ChartModel>> {
+class CartProvider extends StateNotifier<Map<String, CartModel>> {
   CartProvider() : super({});
 
   // method to add the product in the cart
@@ -24,7 +24,7 @@ class CartProvider extends StateNotifier<Map<String, ChartModel>> {
     if (state.containsKey(productId)) {
       state = {
         ...state,
-        productId: ChartModel(
+        productId: CartModel(
           productName: state[productId]!.productName,
           productPrice: state[productId]!.productPrice,
           productCategory: state[productId]!.productCategory,
@@ -41,7 +41,7 @@ class CartProvider extends StateNotifier<Map<String, ChartModel>> {
       // if the cart == null
       // add the product using the provider
       state = {
-        productId: ChartModel(
+        productId: CartModel(
           productName: productName,
           productPrice: productPrice,
           productCategory: productCategory,
@@ -93,3 +93,8 @@ class CartProvider extends StateNotifier<Map<String, ChartModel>> {
     return totalAmount;
   }
 }
+
+final cartProvider =
+    StateNotifierProvider<CartProvider, Map<String, CartModel>>(
+  (ref) => CartProvider(),
+);
