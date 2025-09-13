@@ -56,4 +56,24 @@ class CartProvider extends StateNotifier<Map<String, ChartModel>> {
       };
     }
   }
+
+  // method to increase product quantity in cart
+  void incrementCartItem(String productId) {
+    if (state.containsKey(productId)) {
+      state[productId]!.totalQuantity++;
+
+      // notify that the state is changed
+      state = {...state};
+    }
+  }
+
+  //method to decrement the quantity in cart
+  void decrementCartItem(String productId) {
+    if (state.containsKey(productId)) {
+      state[productId]!.totalQuantity--;
+
+      // notify that the state is changed
+      state = {...state};
+    }
+  }
 }
