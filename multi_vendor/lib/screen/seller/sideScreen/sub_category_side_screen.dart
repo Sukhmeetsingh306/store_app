@@ -38,6 +38,12 @@ class _SubCategorySideScreenState extends State<SubCategorySideScreen> {
   bool _isLoading = false;
   bool _isSnackBarVisible = false;
 
+  @override
+  void initState() {
+    super.initState();
+    subCategoryModel = subCategoryController.fetchSubCategories();
+  }
+
   Future<dynamic> simulateImageUpload() async {
     await Future.delayed(Duration(seconds: 2));
   }
