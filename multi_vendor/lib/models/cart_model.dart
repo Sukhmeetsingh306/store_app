@@ -1,4 +1,4 @@
-class ChartModel {
+class CartModel {
   final String productName;
   final int productPrice;
   final String productCategory;
@@ -10,7 +10,7 @@ class ChartModel {
   final String productDescription;
   final String fullName;
 
-  ChartModel({
+  CartModel({
     required this.productName,
     required this.productPrice,
     required this.productCategory,
