@@ -97,5 +97,15 @@ n Info.plist, ensure the orientation entries allow Flutter to manage rotation. Y
           <!-- <string>UIInterfaceOrientationLandscapeRight</string> -->
      </array>
 
+<!-- MARK: Spread operator -->
+# Spread Operator 
+ Spread operator in the (...) that is used in this manner in the code 
 
-          
+     void main() {
+          List<int> a = [1, 2, 3];
+          List<int> b = [0, ...a, 4, 5];
+          print(b); // [0, 1, 2, 3, 4, 5]
+     }
+
+this can be only used in List,set or map 
+As to add the element of the one list to the other z
