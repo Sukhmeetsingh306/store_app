@@ -5,7 +5,7 @@ class ChartModel {
   final List<String> productImage;
   final String sellerId;
   final int productQuantity;
-  final int totalQuantity;
+  int totalQuantity;
   final String productId;
   final String productDescription;
   final String fullName;
