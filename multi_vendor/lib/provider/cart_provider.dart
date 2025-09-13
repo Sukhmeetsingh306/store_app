@@ -76,4 +76,20 @@ class CartProvider extends StateNotifier<Map<String, ChartModel>> {
       state = {...state};
     }
   }
+
+  // method to remove item from the cart
+  void removeCartItem(String productId) {
+    state.remove(productId);
+    // notify about the state
+  }
+
+  //method for total items in cart
+  double calculateTotalAmount() {
+    double totalAmount = 0.0;
+    state.forEach((productId, cartItem) {
+      totalAmount += cartItem.totalQuantity * cartItem.productPrice;
+    });
+
+    return totalAmount;
+  }
 }
