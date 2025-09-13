@@ -1,6 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:multi_vendor/provider/cart_provider.dart';
+import 'package:multi_vendor/services/http/http_services.dart';
 import 'package:multi_vendor/utils/widget/space_widget_utils.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -12,7 +15,7 @@ import '../../../../../utils/theme/color/color_theme.dart';
 import '../../../../../utils/widget/banner_widget_support_user.dart';
 import '../reuse_widget_support.dart';
 
-class ProductDetailSupportWidget extends StatefulWidget {
+class ProductDetailSupportWidget extends ConsumerStatefulWidget {
   final ProductModel product;
   final String? from;
   final bool listView;
@@ -25,12 +28,12 @@ class ProductDetailSupportWidget extends StatefulWidget {
   });
 
   @override
-  State<ProductDetailSupportWidget> createState() =>
+  ConsumerState<ProductDetailSupportWidget> createState() =>
       _ProductDetailSupportWidgetState();
 }
 
 class _ProductDetailSupportWidgetState
-    extends State<ProductDetailSupportWidget> {
+    extends ConsumerState<ProductDetailSupportWidget> {
   final ProductController productController = ProductController();
 
   late PageController _pageController;
@@ -107,7 +110,7 @@ class _ProductDetailSupportWidgetState
       ),
       body: isWebLarge()
           ? _buildWebLayout(context) // 💻 Web Layout
-          : _buildMobileLayout(context), // 📱 Mobile Layout
+          : _buildMobileLayout(context, ref), // 📱 Mobile Layout
     );
   }
 
@@ -355,7 +358,8 @@ class _ProductDetailSupportWidgetState
     );
   }
 
-  Widget _buildMobileLayout(BuildContext context) {
+  Widget _buildMobileLayout(BuildContext context, WidgetRef ref) {
+    final cartProviderRef = ref.read(cartProvider.notifier);
     return SingleChildScrollView(
       padding: const EdgeInsets.all(20.0),
       child: Column(
@@ -406,8 +410,29 @@ class _ProductDetailSupportWidgetState
                 width: 16,
               ),
               Expanded(
-                child: containerButton('Add to Carts',
-                    Icons.shopping_cart_checkout_outlined, () {}),
+                child: containerButton(
+                    'Add to Carts', Icons.shopping_cart_checkout_outlined, () {
+                  cartProviderRef.addProductToCart(
+                    productName: widget.product.productName,
+                    productPrice: widget.product.productPrice,
+                    productCategory: widget.product.productCategory,
+                    productImage: widget.product.productImage,
+                    sellerId: widget.product.sellerId,
+                    productQuantity: 1,
+                    totalQuantity: widget.product.productQuantity,
+                    productId: widget.product.id,
+                    productDescription: widget.product.productDescription,
+                    fullName: widget.product.sellerName,
+                  );
+                  ScaffoldMessenger.of(context)
+                    ..hideCurrentSnackBar() // removes any active snackbar first
+                    ..showSnackBar(
+                      SnackBar(
+                        content: googleInterText(widget.product.productName),
+                        duration: const Duration(seconds: 2),
+                      ),
+                    );
+                }),
               ),
             ],
           ),

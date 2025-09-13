@@ -10,7 +10,7 @@ class CartProvider extends StateNotifier<Map<String, CartModel>> {
   // method to add the product in the cart
   void addProductToCart({
     required String productName,
-    required int productPrice,
+    required double productPrice,
     required String productCategory,
     required List<String> productImage,
     required String sellerId,
