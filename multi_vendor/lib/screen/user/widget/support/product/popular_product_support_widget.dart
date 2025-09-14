@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:multi_vendor/controllers/product_controllers.dart';
 
 import '../../../../../models/product_model.dart';
@@ -7,7 +8,7 @@ import '../../../../../utils/fonts/row_text_sands.dart';
 import '../../../../../utils/widget/platform/platform_check.dart';
 import '../reuse_widget_support.dart';
 
-class PopularProductSupportWidget extends StatefulWidget {
+class PopularProductSupportWidget extends ConsumerStatefulWidget {
   final bool listView;
   final bool? showHeadingRow;
 
@@ -18,12 +19,12 @@ class PopularProductSupportWidget extends StatefulWidget {
   });
 
   @override
-  State<PopularProductSupportWidget> createState() =>
+  ConsumerState<PopularProductSupportWidget> createState() =>
       _PopularProductSupportWidgetState();
 }
 
 class _PopularProductSupportWidgetState
-    extends State<PopularProductSupportWidget> {
+    extends ConsumerState<PopularProductSupportWidget> {
   late Future<List<ProductModel>> popularProductsFuture;
   final Set<int> favoriteIndexes = {};
   final Set<int> cartIndexes = {};
@@ -83,6 +84,7 @@ class _PopularProductSupportWidgetState
                 }
               });
             },
+            ref,
           ),
         ],
       ),

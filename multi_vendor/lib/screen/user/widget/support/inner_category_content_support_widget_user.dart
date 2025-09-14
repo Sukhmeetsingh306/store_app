@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:multi_vendor/controllers/product_controllers.dart';
 import 'package:multi_vendor/controllers/category_controllers.dart';
 import 'package:multi_vendor/screen/user/widget/support/reuse_widget_support.dart';
@@ -13,7 +14,7 @@ import '../../../../utils/fonts/row_text_sands.dart';
 import '../../../../utils/widget/platform/platform_check.dart';
 import 'banner_image_support_widget_user.dart';
 
-class InnerCategoryContentSupportWidgetUser extends StatefulWidget {
+class InnerCategoryContentSupportWidgetUser extends ConsumerStatefulWidget {
   final CategoryApiModels category;
   final bool listView;
 
@@ -24,12 +25,12 @@ class InnerCategoryContentSupportWidgetUser extends StatefulWidget {
   });
 
   @override
-  State<InnerCategoryContentSupportWidgetUser> createState() =>
+  ConsumerState<InnerCategoryContentSupportWidgetUser> createState() =>
       _InnerCategoryContentSupportWidgetUserState();
 }
 
 class _InnerCategoryContentSupportWidgetUserState
-    extends State<InnerCategoryContentSupportWidgetUser> {
+    extends ConsumerState<InnerCategoryContentSupportWidgetUser> {
   late Future<List<SubCategoryApiModels>> subCategoryModel;
   late Future<List<ProductModel>> productModel;
 
@@ -150,6 +151,7 @@ class _InnerCategoryContentSupportWidgetUserState
                 }
               });
             },
+            ref,
           ),
         ],
       ),
