@@ -28,6 +28,30 @@ Text googleInterText(
   );
 }
 
+Text googleInterTextLato(
+  String text, {
+  double? fontSize,
+  FontWeight? fontWeight,
+  Color? color,
+  TextAlign? textAlign,
+  double? letterSpacing,
+  int? maxLines,
+  TextOverflow? overflow,
+}) {
+  return Text(
+    text,
+    textAlign: textAlign,
+    style: GoogleFonts.lato(
+      color: color ?? ColorTheme.color.blackColor,
+      fontWeight: fontWeight ?? FontWeight.w600,
+      letterSpacing: letterSpacing ?? 0.1,
+      fontSize: fontSize ?? 21,
+    ),
+    maxLines: maxLines,
+    overflow: overflow,
+  );
+}
+
 Text googleInterTextWeight4Font16(String text,
     {double? fontSize,
     FontWeight? fontWeight,

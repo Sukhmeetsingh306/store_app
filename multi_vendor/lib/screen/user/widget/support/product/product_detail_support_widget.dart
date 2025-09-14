@@ -379,7 +379,7 @@ class _ProductDetailSupportWidgetState
           const SizedBox(height: 18),
           _about(),
           const SizedBox(height: 4),
-          googleInterText(
+          googleInterTextLato(
             widget.product.productDescription,
             fontWeight: FontWeight.normal,
             fontSize: 16,
