@@ -57,6 +57,36 @@ class CartProvider extends StateNotifier<Map<String, CartModel>> {
     }
   }
 
+  void removeProductFromCart(String productId) {
+    if (state.containsKey(productId)) {
+      final currentItem = state[productId]!;
+
+      if (currentItem.totalQuantity > 1) {
+        // decrease quantity instead of removing
+        state = {
+          ...state,
+          productId: CartModel(
+            productName: currentItem.productName,
+            productPrice: currentItem.productPrice,
+            productCategory: currentItem.productCategory,
+            productImage: currentItem.productImage,
+            sellerId: currentItem.sellerId,
+            productQuantity: currentItem.productQuantity,
+            totalQuantity: currentItem.totalQuantity - 1,
+            productId: currentItem.productId,
+            productDescription: currentItem.productDescription,
+            fullName: currentItem.fullName,
+          ),
+        };
+      } else {
+        // if quantity == 1, remove the product from cart
+        final updatedState = {...state};
+        updatedState.remove(productId);
+        state = updatedState;
+      }
+    }
+  }
+
   // method to increase product quantity in cart
   void incrementCartItem(String productId) {
     if (state.containsKey(productId)) {
