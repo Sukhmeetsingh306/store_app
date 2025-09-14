@@ -1,10 +1,13 @@
 import 'dart:convert';
 
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../models/api/subcategory_api_models.dart';
+import '../../../../provider/cart_provider.dart';
 import '../../../../utils/fonts/google_fonts_utils.dart';
 import '../../../../utils/theme/color/color_theme.dart';
 
@@ -17,8 +20,10 @@ Widget futureBuilderProduct(
   Set<int> cartIndexes,
   void Function(int index)? onFavoritePressed,
   void Function(int index)? onCartPressed,
+  WidgetRef ref,
 ) {
   bool isWebMobile = kIsWeb && MediaQuery.of(context).size.width > 1026;
+  final cartProviderRef = ref.read(cartProvider.notifier);
 
   return FutureBuilder(
     future: future,
@@ -188,7 +193,85 @@ Widget futureBuilderProduct(
                                         fontSize: 14,
                                       ),
                                       GestureDetector(
-                                        onTap: () => onCartPressed?.call(index),
+                                        onTap: () {
+                                          final product =
+                                              popularProducts[index];
+
+                                          if (cartIndexes.contains(index)) {
+                                            cartIndexes.remove(index);
+                                            cartProviderRef
+                                                .removeProductFromCart(
+                                                    product.id);
+
+                                            Flushbar(
+                                              messageText: googleInterText(
+                                                '${product.productName} removed from cart',
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.white,
+                                              ),
+                                              backgroundColor: Colors.redAccent,
+                                              margin: const EdgeInsets.all(16),
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              duration:
+                                                  const Duration(seconds: 2),
+                                              animationDuration: const Duration(
+                                                  milliseconds: 500),
+                                              forwardAnimationCurve:
+                                                  Curves.easeOutBack,
+                                              reverseAnimationCurve:
+                                                  Curves.easeInBack,
+                                            ).show(context);
+                                          } else {
+                                            // 👉 Add to cart
+                                            cartIndexes.add(index);
+
+                                            cartProviderRef.addProductToCart(
+                                              productName: product.productName,
+                                              productPrice:
+                                                  product.productPrice,
+                                              productCategory:
+                                                  product.productCategory,
+                                              productImage:
+                                                  product.productImage,
+                                              sellerId: product.sellerId,
+                                              productQuantity: 1,
+                                              totalQuantity:
+                                                  product.productQuantity,
+                                              productId: product
+                                                  .id, // use correct field from ProductModel
+                                              productDescription:
+                                                  product.productDescription,
+                                              fullName: product
+                                                  .sellerName, // or another field if different
+                                            );
+
+                                            Flushbar(
+                                              messageText: googleInterText(
+                                                '${product.productName} added to cart',
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.white,
+                                              ),
+                                              backgroundColor: Colors.black87,
+                                              margin: const EdgeInsets.all(16),
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              duration:
+                                                  const Duration(seconds: 2),
+                                              animationDuration: const Duration(
+                                                  milliseconds: 500),
+                                              forwardAnimationCurve:
+                                                  Curves.easeOutBack,
+                                              reverseAnimationCurve:
+                                                  Curves.easeInBack,
+                                            ).show(context);
+                                          }
+
+                                          // 🔄 Refresh UI
+                                          (context as Element).markNeedsBuild();
+                                        },
                                         child: AnimatedSwitcher(
                                           duration:
                                               const Duration(milliseconds: 300),
