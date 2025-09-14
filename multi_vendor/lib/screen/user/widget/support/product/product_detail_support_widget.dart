@@ -1,9 +1,9 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multi_vendor/provider/cart_provider.dart';
-import 'package:multi_vendor/services/http/http_services.dart';
 import 'package:multi_vendor/utils/widget/space_widget_utils.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -424,14 +424,21 @@ class _ProductDetailSupportWidgetState
                     productDescription: widget.product.productDescription,
                     fullName: widget.product.sellerName,
                   );
-                  ScaffoldMessenger.of(context)
-                    ..hideCurrentSnackBar() // removes any active snackbar first
-                    ..showSnackBar(
-                      SnackBar(
-                        content: googleInterText(widget.product.productName),
-                        duration: const Duration(seconds: 2),
-                      ),
-                    );
+                  Flushbar(
+                    messageText: googleInterText(
+                      '${widget.product.productName} added to cart',
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                    ),
+                    backgroundColor: Colors.black87,
+                    margin: const EdgeInsets.all(16),
+                    borderRadius: BorderRadius.circular(12),
+                    duration: const Duration(seconds: 2),
+                    animationDuration: const Duration(milliseconds: 500),
+                    forwardAnimationCurve: Curves.easeOutBack,
+                    reverseAnimationCurve: Curves.easeInBack,
+                  ).show(context);
                 }),
               ),
             ],
